@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import { 
-  Sword, 
-  Shield, 
-  Scroll, 
-  Map, 
-  Users, 
-  Download, 
-  Zap, 
-  Flame, 
-  Menu, 
-  X, 
+
+import {
+  Sword,
+  Shield,
+  Scroll,
+  Map,
+  Users,
+  Download,
+  Zap,
+  Flame,
+  Menu,
+  X,
   ChevronRight,
   ExternalLink,
   Server,
@@ -60,11 +60,10 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
                 <button
                   key={item.id}
                   onClick={() => set(item.id)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${
-                    active === item.id
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${active === item.id
                       ? 'text-green-400 bg-green-900/20 shadow-[0_0_10px_rgba(74,222,128,0.1)]'
                       : 'text-gray-300 hover:text-white hover:bg-slate-800'
-                  }`}
+                    }`}
                 >
                   <span className="relative z-10">{item.label}</span>
                   {active === item.id && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>}
@@ -172,11 +171,10 @@ const ReforgingSummary = () => {
             <button
               key={key}
               onClick={() => setActiveTab(key)}
-              className={`flex items-center gap-3 px-4 py-4 rounded-lg text-left transition-all duration-300 group ${
-                activeTab === key 
-                  ? 'bg-green-900/30 text-green-400 border border-green-700/50 shadow-[0_0_15px_rgba(74,222,128,0.1)]' 
+              className={`flex items-center gap-3 px-4 py-4 rounded-lg text-left transition-all duration-300 group ${activeTab === key
+                  ? 'bg-green-900/30 text-green-400 border border-green-700/50 shadow-[0_0_15px_rgba(74,222,128,0.1)]'
                   : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-              }`}
+                }`}
             >
               <div className={`${activeTab === key ? 'scale-110 text-green-400' : 'opacity-70 group-hover:text-white'} transition-all duration-300`}>
                 {data.icon}
@@ -199,7 +197,7 @@ const ReforgingSummary = () => {
                 {content[activeTab].title}
               </h3>
               <div className="h-1 w-20 bg-gradient-to-r from-green-500 to-emerald-700 rounded-full mb-4"></div>
-              
+
               <p className="text-slate-300 text-sm md:text-base mb-6 leading-relaxed max-w-3xl">
                 {content[activeTab].desc}
               </p>
@@ -208,17 +206,15 @@ const ReforgingSummary = () => {
             <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-green-900 pr-2 max-h-[400px]">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {content[activeTab].features.map((feature, idx) => (
-                  <div 
-                    key={idx} 
+                  <div
+                    key={idx}
                     onMouseEnter={() => setHoveredFeature(idx)}
                     onMouseLeave={() => setHoveredFeature(null)}
-                    className={`bg-slate-800/50 p-4 rounded-lg border transition-all duration-300 cursor-default group ${
-                      hoveredFeature === idx ? 'border-green-500 bg-slate-800 shadow-lg -translate-y-1' : 'border-slate-700'
-                    }`}
+                    className={`bg-slate-800/50 p-4 rounded-lg border transition-all duration-300 cursor-default group ${hoveredFeature === idx ? 'border-green-500 bg-slate-800 shadow-lg -translate-y-1' : 'border-slate-700'
+                      }`}
                   >
-                    <h4 className={`font-bold text-sm mb-2 transition-colors flex items-center gap-2 ${
-                      hoveredFeature === idx ? 'text-green-400' : 'text-slate-200'
-                    }`}>
+                    <h4 className={`font-bold text-sm mb-2 transition-colors flex items-center gap-2 ${hoveredFeature === idx ? 'text-green-400' : 'text-slate-200'
+                      }`}>
                       <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
                       {feature.name}
                     </h4>
@@ -230,7 +226,7 @@ const ReforgingSummary = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Footer of the Summary */}
       <div className="bg-slate-950 p-3 border-t border-green-900/30 flex justify-between items-center text-xs text-slate-500 px-6">
         <span className="font-mono">SYSTEM VERSION: TBC+ 1.6</span>
@@ -254,33 +250,33 @@ const Hero = ({ setPage }) => {
   };
 
   return (
-    <div 
+    <div
       onMouseMove={handleMouseMove}
       className="relative bg-slate-900 min-h-[700px] py-12 flex flex-col items-center justify-start overflow-hidden perspective-1000"
     >
       {/* Abstract Fel Background with Parallax */}
-      <div 
+      <div
         className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?q=80&w=2072&auto=format&fit=crop')] bg-cover bg-center opacity-20 mix-blend-overlay pointer-events-none transition-transform duration-100 ease-out"
         style={{ transform: `scale(1.1) translate(${mousePos.x * -1}px, ${mousePos.y * -1}px)` }}
       ></div>
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/80 to-slate-950 pointer-events-none"></div>
-      
+
       {/* Floating Particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(15)].map((_, i) => (
-              <div 
-                  key={i}
-                  className="absolute bg-green-500 rounded-full opacity-20 blur-sm animate-pulse"
-                  style={{
-                      width: Math.random() * 4 + 'px',
-                      height: Math.random() * 4 + 'px',
-                      top: Math.random() * 100 + '%',
-                      left: Math.random() * 100 + '%',
-                      animationDuration: Math.random() * 3 + 2 + 's',
-                      transform: `translate(${mousePos.x * (Math.random() * 2)}px, ${mousePos.y * (Math.random() * 2)}px)`
-                  }}
-              ></div>
-          ))}
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute bg-green-500 rounded-full opacity-20 blur-sm animate-pulse"
+            style={{
+              width: Math.random() * 4 + 'px',
+              height: Math.random() * 4 + 'px',
+              top: Math.random() * 100 + '%',
+              left: Math.random() * 100 + '%',
+              animationDuration: Math.random() * 3 + 2 + 's',
+              transform: `translate(${mousePos.x * (Math.random() * 2)}px, ${mousePos.y * (Math.random() * 2)}px)`
+            }}
+          ></div>
+        ))}
       </div>
 
       <div className="relative z-10 text-center max-w-4xl px-4 w-full">
@@ -290,7 +286,7 @@ const Hero = ({ setPage }) => {
         <p className="text-base md:text-lg text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
           Relive the glory of The Burning Crusade, reforged. We have rebuilt every class, added new races, and reimagined the world to deliver the experience you remember, not the one you played.
         </p>
-        
+
         {/* Interactive Summary Component */}
         <ReforgingSummary />
       </div>
@@ -308,28 +304,28 @@ const Features = () => (
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <FeatureCard 
-          icon={<Zap className="text-yellow-400" />} 
-          title="Instant 58" 
-          desc="Skip the vanilla grind. Start your journey directly in Outland with starter gear." 
+        <FeatureCard
+          icon={<Zap className="text-yellow-400" />}
+          title="Instant 58"
+          desc="Skip the vanilla grind. Start your journey directly in Outland with starter gear."
           detail="Includes 60% mount, weapon skills maxed, and a 'Hero's Welcome' cache."
         />
-        <FeatureCard 
-          icon={<Users className="text-blue-400" />} 
-          title="Cross-Faction" 
+        <FeatureCard
+          icon={<Users className="text-blue-400" />}
+          title="Cross-Faction"
           desc="Party, raid, and trade with anyone. Faction barriers removed for PvE content."
           detail="Guilds are fully cross-faction. Speak Orcish and Common freely in sanctuary zones."
         />
-        <FeatureCard 
-          icon={<Sword className="text-red-400" />} 
-          title="Tuned Raids" 
-          desc="Bosses have been re-scripted and buffed to provide a true challenge for modern players." 
+        <FeatureCard
+          icon={<Sword className="text-red-400" />}
+          title="Tuned Raids"
+          desc="Bosses have been re-scripted and buffed to provide a true challenge for modern players."
           detail="New mechanics for Karazhan, Gruul, and Magtheridon. Heroic modes for 10-man content."
         />
-        <FeatureCard 
-          icon={<Activity className="text-green-400" />} 
-          title="Dual Spec" 
-          desc="Swap between two specialization layouts instantly. No more respec fees." 
+        <FeatureCard
+          icon={<Activity className="text-green-400" />}
+          title="Dual Spec"
+          desc="Swap between two specialization layouts instantly. No more respec fees."
           detail="Switch from Tank to DPS in seconds. Action bars save automatically."
         />
       </div>
@@ -341,15 +337,15 @@ const FeatureCard = ({ icon, title, desc, detail }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div 
+    <div
       className="relative h-64 perspective-1000 cursor-pointer group"
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div className={`relative w-full h-full transition-transform duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
-        
+
         {/* Front of Card */}
         <div className="absolute w-full h-full bg-slate-950/50 p-6 rounded-xl border border-slate-800 hover:border-green-500/50 transition-all duration-300 flex flex-col items-center justify-center text-center backface-hidden shadow-lg">
-           <div className="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-slate-800 group-hover:border-green-800">
+          <div className="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform border border-slate-800 group-hover:border-green-800">
             {React.cloneElement(icon, { size: 24 })}
           </div>
           <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
@@ -375,45 +371,45 @@ const FeatureCard = ({ icon, title, desc, detail }) => {
 };
 
 const Footer = () => (
-    <footer className="bg-slate-950 border-t border-slate-900 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div className="col-span-1 md:col-span-2">
-                    <div className="flex items-center gap-2 mb-4">
-                        <Flame className="text-green-500" size={24} />
-                        <span className="text-2xl font-bold text-white font-serif">TBC+</span>
-                    </div>
-                    <p className="text-slate-500 text-sm max-w-xs">
-                        An educational project recreating the 2.4.3 experience. 
-                        Not affiliated with Blizzard Entertainment.
-                    </p>
-                </div>
-                <div>
-                    <h4 className="text-white font-bold mb-4">Links</h4>
-                    <ul className="space-y-2 text-sm text-slate-400">
-                        <li className="hover:text-green-400 cursor-pointer">Bug Tracker</li>
-                        <li className="hover:text-green-400 cursor-pointer">Changelog</li>
-                        <li className="hover:text-green-400 cursor-pointer">Terms of Service</li>
-                        <li className="hover:text-green-400 cursor-pointer">Rules</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 className="text-white font-bold mb-4">Social</h4>
-                    <div className="flex gap-4">
-                        <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-slate-400 hover:text-white hover:bg-indigo-600 transition-colors cursor-pointer">
-                            <Users size={16} />
-                        </div>
-                        <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-slate-400 hover:text-white hover:bg-sky-500 transition-colors cursor-pointer">
-                            <ExternalLink size={16} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="border-t border-slate-900 pt-8 text-center text-xs text-slate-600">
-                &copy; 2024 TBC Plus Project. All rights reserved. World of Warcraft is a trademark of Blizzard Entertainment.
-            </div>
+  <footer className="bg-slate-950 border-t border-slate-900 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="col-span-1 md:col-span-2">
+          <div className="flex items-center gap-2 mb-4">
+            <Flame className="text-green-500" size={24} />
+            <span className="text-2xl font-bold text-white font-serif">TBC+</span>
+          </div>
+          <p className="text-slate-500 text-sm max-w-xs">
+            An educational project recreating the 2.4.3 experience.
+            Not affiliated with Blizzard Entertainment.
+          </p>
         </div>
-    </footer>
+        <div>
+          <h4 className="text-white font-bold mb-4">Links</h4>
+          <ul className="space-y-2 text-sm text-slate-400">
+            <li className="hover:text-green-400 cursor-pointer">Bug Tracker</li>
+            <li className="hover:text-green-400 cursor-pointer">Changelog</li>
+            <li className="hover:text-green-400 cursor-pointer">Terms of Service</li>
+            <li className="hover:text-green-400 cursor-pointer">Rules</li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-white font-bold mb-4">Social</h4>
+          <div className="flex gap-4">
+            <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-slate-400 hover:text-white hover:bg-indigo-600 transition-colors cursor-pointer">
+              <Users size={16} />
+            </div>
+            <div className="w-8 h-8 bg-slate-900 rounded flex items-center justify-center text-slate-400 hover:text-white hover:bg-sky-500 transition-colors cursor-pointer">
+              <ExternalLink size={16} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-slate-900 pt-8 text-center text-xs text-slate-600">
+        &copy; 2024 TBC Plus Project. All rights reserved. World of Warcraft is a trademark of Blizzard Entertainment.
+      </div>
+    </div>
+  </footer>
 )
 
 // --- Main Layout ---
@@ -424,29 +420,29 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans selection:bg-green-500/30 selection:text-green-100">
-      <NavBar 
-        active={activePage} 
-        set={setActivePage} 
+      <NavBar
+        active={activePage}
+        set={setActivePage}
         mobileOpen={mobileOpen}
         setMobileOpen={setMobileOpen}
       />
-      
+
       <main>
         {activePage === 'home' && (
-            <>
-                <Hero setPage={setActivePage} />
-                {/* NewsSection removed */}
-                <Features />
-            </>
+          <>
+            <Hero setPage={setActivePage} />
+            {/* NewsSection removed */}
+            <Features />
+          </>
         )}
         {/* Placeholders for other pages */}
         {activePage !== 'home' && (
-            <div className="h-[600px] flex items-center justify-center flex-col text-slate-500 animate-in fade-in duration-300">
-                <Scroll size={48} className="mb-4 opacity-50" />
-                <h2 className="text-2xl font-serif text-slate-400 mb-2">{activePage.charAt(0).toUpperCase() + activePage.slice(1)}</h2>
-                <p>This module is currently under construction by the Goblins.</p>
-                <button onClick={() => setActivePage('home')} className="mt-6 text-green-500 hover:underline">Return Home</button>
-            </div>
+          <div className="h-[600px] flex items-center justify-center flex-col text-slate-500 animate-in fade-in duration-300">
+            <Scroll size={48} className="mb-4 opacity-50" />
+            <h2 className="text-2xl font-serif text-slate-400 mb-2">{activePage.charAt(0).toUpperCase() + activePage.slice(1)}</h2>
+            <p>This module is currently under construction by the Goblins.</p>
+            <button onClick={() => setActivePage('home')} className="mt-6 text-green-500 hover:underline">Return Home</button>
+          </div>
         )}
       </main>
 
@@ -455,18 +451,4 @@ const App = () => {
   );
 };
 
-const container = document.getElementById('root');
-if (container) {
-  // Warning Suppression for React 18 legacy root deprecation
-  // This allows us to use the stable legacy render method without 
-  // cluttering the console or risking crashes from createRoot mismatches.
-  const originalError = console.error;
-  console.error = (...args) => {
-    if (/ReactDOM.render is no longer supported/.test(args[0])) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-
-  ReactDOM.render(<App />, container);
-}
+export default App;
