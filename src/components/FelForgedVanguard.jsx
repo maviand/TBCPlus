@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Shield, Users, Hammer, Map as MapIcon, Scroll, 
+import {
+  Shield, Users, Hammer, Map as MapIcon, Scroll,
   Crown, Sword, Layout, ArrowRight, Lock, Unlock,
   Tent, Landmark, Coins, Globe, Skull, Book, Feather,
   Crosshair, Anchor, Zap, Clock, Star, AlertTriangle,
@@ -27,19 +27,19 @@ const FelForgedVanguard = () => {
     if (!text) return null;
     const lines = text.split('\n');
     return lines.map((line, lineIndex) => {
-        const parts = line.split(/(\*\*.*?\*\*)/g);
-        const content = parts.map((part, partIndex) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-                return <strong key={partIndex} className="text-[#ffd100] font-bold">{part.slice(2, -2)}</strong>;
-            }
-            return part;
-        });
-        return (
-            <React.Fragment key={lineIndex}>
-                {content}
-                {lineIndex < lines.length - 1 && <br />}
-            </React.Fragment>
-        );
+      const parts = line.split(/(\*\*.*?\*\*)/g);
+      const content = parts.map((part, partIndex) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={partIndex} className="text-[#ffd100] font-bold">{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      });
+      return (
+        <React.Fragment key={lineIndex}>
+          {content}
+          {lineIndex < lines.length - 1 && <br />}
+        </React.Fragment>
+      );
     });
   };
 
@@ -323,26 +323,26 @@ const FelForgedVanguard = () => {
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
         <div className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onClick={onClose}></div>
-        <div 
+        <div
           className="relative w-full max-w-4xl bg-[#080808] border border-[#444] shadow-[0_0_60px_rgba(194,156,85,0.15)] rounded-lg animate-in fade-in zoom-in duration-300 flex flex-col max-h-[90vh] overflow-hidden"
           style={{ borderImage: 'linear-gradient(to bottom, #c29c55, #5a4a2d) 1' }}
         >
           <button onClick={onClose} className="absolute top-6 right-6 text-stone-400 hover:text-white transition-colors"><X className="w-8 h-8" /></button>
-          
+
           <div className="p-8 pb-6 border-b border-[#2f2f35] bg-[#0c0c0c] flex items-start gap-6">
-             <div className="w-20 h-20 bg-[#1a1c22] border border-[#c29c55] rounded flex items-center justify-center shrink-0">
-               {item.icon}
-             </div>
-             <div>
-                <h2 className="font-hero text-3xl text-[#f0e6d2] mb-2">{item.name}</h2>
-                <p className="text-[#aeb6bf] text-sm">{item.summary}</p>
-             </div>
+            <div className="w-20 h-20 bg-[#1a1c22] border border-[#c29c55] rounded flex items-center justify-center shrink-0">
+              {item.icon}
+            </div>
+            <div>
+              <h2 className="font-hero text-3xl text-[#f0e6d2] mb-2">{item.name}</h2>
+              <p className="text-[#aeb6bf] text-sm">{item.summary}</p>
+            </div>
           </div>
-          
+
           <div className="p-8 overflow-y-auto custom-scrollbar bg-[#0a0a0a]">
-             <div className="text-[#e0e0e0] text-sm leading-relaxed whitespace-pre-line font-sans">
-                {formatText(item.detail)}
-             </div>
+            <div className="text-[#e0e0e0] text-sm leading-relaxed whitespace-pre-line font-sans">
+              {formatText(item.detail)}
+            </div>
           </div>
         </div>
       </div>
@@ -362,30 +362,29 @@ const FelForgedVanguard = () => {
 
       {/* HERO */}
       <div className="relative h-[500px] flex items-center justify-center overflow-hidden">
-         <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-[#0b0d10]/30 via-[#0b0d10]/80 to-[#0b0d10] z-10"></div>
-            <div className="w-full h-full bg-[url('https://i.imgur.com/5xVSMcu.jpeg')] bg-cover bg-center opacity-40"></div>
-         </div>
-         <div className="relative z-20 text-center max-w-4xl px-4">
-            <h1 className="font-hero text-5xl md:text-7xl text-[#f0e6d2] drop-shadow-2xl mb-4 tracking-wider">FEL-FORGED VANGUARD</h1>
-            <div className="h-1 w-32 bg-[#c29c55] mx-auto mb-6"></div>
-            <p className="font-body text-[#aeb6bf] text-xl md:text-2xl leading-relaxed">
-               A comprehensive guide to the new systems defining the Burning Crusade Plus.
-            </p>
-         </div>
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0b0d10]/30 via-[#0b0d10]/80 to-[#0b0d10] z-10"></div>
+          <div className="w-full h-full bg-[url('https://i.imgur.com/5xVSMcu.jpeg')] bg-cover bg-center opacity-40"></div>
+        </div>
+        <div className="relative z-20 text-center max-w-4xl px-4">
+          <h1 className="font-hero text-5xl md:text-7xl text-[#f0e6d2] drop-shadow-2xl mb-4 tracking-wider">FEL-FORGED VANGUARD</h1>
+          <div className="h-1 w-32 bg-[#c29c55] mx-auto mb-6"></div>
+          <p className="font-body text-[#aeb6bf] text-xl md:text-2xl leading-relaxed">
+            A comprehensive guide to the new systems defining the Burning Crusade Plus.
+          </p>
+        </div>
       </div>
 
       {/* NAV */}
-      <div className={`sticky top-0 z-50 bg-[#0b0d10]/95 backdrop-blur border-y border-[#2f2f35] transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
+      <div className={`sticky top-20 z-50 bg-[#0b0d10]/95 backdrop-blur border-y border-[#2f2f35] transition-all duration-300 ${scrolled ? 'py-2' : 'py-4'}`}>
         <div className="container mx-auto px-4">
           <div className="flex justify-center gap-2 md:gap-8 mb-4">
             {Object.entries(categories).map(([key, cat]) => (
               <button
                 key={key}
                 onClick={() => { setActiveCategory(key); setActiveSubTab(subTabs[key][0].id); }}
-                className={`flex items-center gap-2 px-4 py-2 rounded font-hero text-sm tracking-widest transition-all ${
-                  activeCategory === key ? 'text-[#c29c55] bg-[#c29c55]/10 border border-[#c29c55]/30' : 'text-[#5c5c63] hover:text-[#e0e0e0]'
-                }`}
+                className={`flex items-center gap-2 px-4 py-2 rounded font-hero text-sm tracking-widest transition-all ${activeCategory === key ? 'text-[#c29c55] bg-[#c29c55]/10 border border-[#c29c55]/30' : 'text-[#5c5c63] hover:text-[#e0e0e0]'
+                  }`}
               >
                 {cat.icon} <span className="hidden md:inline">{cat.label}</span>
               </button>
@@ -396,9 +395,8 @@ const FelForgedVanguard = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveSubTab(tab.id)}
-                className={`font-body font-bold uppercase tracking-wider transition-colors relative pb-1 ${
-                  activeSubTab === tab.id ? 'text-white' : 'text-[#5c5c63] hover:text-[#aeb6bf]'
-                }`}
+                className={`font-body font-bold uppercase tracking-wider transition-colors relative pb-1 ${activeSubTab === tab.id ? 'text-white' : 'text-[#5c5c63] hover:text-[#aeb6bf]'
+                  }`}
               >
                 {tab.label}
                 {activeSubTab === tab.id && <span className="absolute bottom-[-5px] left-0 w-full h-[2px] bg-[#c29c55] shadow-[0_0_10px_#c29c55]"></span>}
@@ -413,27 +411,27 @@ const FelForgedVanguard = () => {
         {selectedEntry && <DetailModal item={selectedEntry} onClose={() => setSelectedEntry(null)} />}
 
         <div className="animate-fade-in">
-            <div className="text-center mb-12">
-              <h2 className="font-hero text-4xl text-[#c29c55] mb-6">{content[activeSubTab].title}</h2>
-              <p className="font-body text-[#aeb6bf] text-lg max-w-3xl mx-auto">{content[activeSubTab].desc}</p>
-            </div>
+          <div className="text-center mb-12">
+            <h2 className="font-hero text-4xl text-[#c29c55] mb-6">{content[activeSubTab].title}</h2>
+            <p className="font-body text-[#aeb6bf] text-lg max-w-3xl mx-auto">{content[activeSubTab].desc}</p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-               {content[activeSubTab].items.map((item, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => setSelectedEntry(item)}
-                    className="bg-[#15171e] border border-[#2f2f35] p-8 rounded shadow-lg hover:border-[#c29c55] hover:-translate-y-1 transition-all cursor-pointer group"
-                  >
-                    <div className="mb-6 p-4 bg-[#0b0d10] rounded-full w-16 h-16 flex items-center justify-center border border-[#2f2f35] group-hover:border-[#c29c55]">
-                       {item.icon}
-                    </div>
-                    <h3 className="font-hero text-xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">{item.name}</h3>
-                    <p className="font-body text-sm text-[#aeb6bf] leading-relaxed mb-6">{item.summary}</p>
-                    <span className="text-[#c29c55] text-xs uppercase tracking-widest font-bold flex items-center gap-2">Inspect <ArrowRight className="w-3 h-3"/></span>
-                  </div>
-               ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {content[activeSubTab].items.map((item, i) => (
+              <div
+                key={i}
+                onClick={() => setSelectedEntry(item)}
+                className="bg-[#15171e] border border-[#2f2f35] p-8 rounded shadow-lg hover:border-[#c29c55] hover:-translate-y-1 transition-all cursor-pointer group"
+              >
+                <div className="mb-6 p-4 bg-[#0b0d10] rounded-full w-16 h-16 flex items-center justify-center border border-[#2f2f35] group-hover:border-[#c29c55]">
+                  {item.icon}
+                </div>
+                <h3 className="font-hero text-xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">{item.name}</h3>
+                <p className="font-body text-sm text-[#aeb6bf] leading-relaxed mb-6">{item.summary}</p>
+                <span className="text-[#c29c55] text-xs uppercase tracking-widest font-bold flex items-center gap-2">Inspect <ArrowRight className="w-3 h-3" /></span>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>

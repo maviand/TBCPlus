@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Hammer, FlaskConical, Utensils, Zap, HeartPulse, Fish, 
+import {
+  Hammer, FlaskConical, Utensils, Zap, HeartPulse, Fish,
   Leaf, Scissors, Mountain, Star, Crown, PenTool, Gem, Wrench, Sword, Skull, BookOpen, Scroll, Feather, Shield, X
 } from 'lucide-react';
 
 const TheArtisansCodex = () => {
   const [activeProfession, setActiveProfession] = useState('alchemy');
   const [scrolled, setScrolled] = useState(false);
-  
+
   // --- INSPECTION STATE ---
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -25,26 +25,26 @@ const TheArtisansCodex = () => {
     if (!text) return null;
     const lines = text.split('\n');
     return lines.map((line, lineIndex) => {
-        const parts = line.split(/(\*\*.*?\*\*)/g);
-        const content = parts.map((part, partIndex) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-                return <strong key={partIndex} className="text-[#ffd100] font-bold">{part.slice(2, -2)}</strong>;
-            }
-            return part;
-        });
-        return (
-            <React.Fragment key={lineIndex}>
-                {content}
-                {lineIndex < lines.length - 1 && <br />}
-            </React.Fragment>
-        );
+      const parts = line.split(/(\*\*.*?\*\*)/g);
+      const content = parts.map((part, partIndex) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={partIndex} className="text-[#ffd100] font-bold">{part.slice(2, -2)}</strong>;
+        }
+        return part;
+      });
+      return (
+        <React.Fragment key={lineIndex}>
+          {content}
+          {lineIndex < lines.length - 1 && <br />}
+        </React.Fragment>
+      );
     });
   };
 
   // --- MODAL TOOLTIP COMPONENT ---
   const InspectionWindow = ({ item, onClose }) => {
     if (!item) return null;
-    
+
     const colors = {
       legendary: '#ff8000',
       epic: '#a335ee',
@@ -57,18 +57,18 @@ const TheArtisansCodex = () => {
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
         {/* Backdrop */}
-        <div 
-          className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" 
+        <div
+          className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
           onClick={onClose}
         ></div>
 
         {/* Tooltip Window */}
-        <div 
+        <div
           className="relative w-full max-w-md bg-[#080808] border border-[#444] shadow-[0_0_50px_rgba(0,0,0,1)] p-6 rounded-md animate-in fade-in zoom-in duration-200"
           style={{ borderImage: 'linear-gradient(to bottom, #444, #111) 1' }}
         >
           {/* Close Button */}
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-3 right-3 text-stone-500 hover:text-white transition-colors"
           >
@@ -105,17 +105,17 @@ const TheArtisansCodex = () => {
 
           {/* Requirements */}
           {(item.durability || item.reqLevel || item.req) && (
-             <div className="text-sm text-white mb-3 space-y-1">
-                {item.durability && <div>Durability {item.durability} / {item.durability}</div>}
-                {item.reqLevel && <div>Requires Level 70</div>}
-                {item.req && <div>{item.req}</div>}
-             </div>
+            <div className="text-sm text-white mb-3 space-y-1">
+              {item.durability && <div>Durability {item.durability} / {item.durability}</div>}
+              {item.reqLevel && <div>Requires Level 70</div>}
+              {item.req && <div>{item.req}</div>}
+            </div>
           )}
 
           {/* Effects (Green Text) */}
           <div className="text-[#1eff00] text-sm space-y-3 leading-relaxed">
             {item.effects && item.effects.map((effect, i) => (
-               <div key={i}>{effect}</div>
+              <div key={i}>{effect}</div>
             ))}
           </div>
 
@@ -123,7 +123,7 @@ const TheArtisansCodex = () => {
           {item.flavor && (
             <div className="text-[#ffd100] italic text-sm mt-6 opacity-90 text-center">"{item.flavor}"</div>
           )}
-          
+
           <div className="mt-6 text-[10px] text-stone-600 text-center uppercase tracking-widest">Click outside to close</div>
         </div>
       </div>
@@ -142,12 +142,12 @@ const TheArtisansCodex = () => {
     const q = qualityColors[item.quality] || qualityColors.epic;
 
     return (
-      <div 
+      <div
         onClick={() => setSelectedItem(item)}
         className={`bg-[#0b0d10] border border-[#2f2f35] p-4 rounded flex gap-4 items-start group hover:bg-[#15171e] transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] h-full ${q.glow}`}
       >
         <div className={`w-12 h-12 flex-shrink-0 bg-[#000] border-2 ${q.border} rounded flex items-center justify-center shadow-lg relative z-10 group-hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]`}>
-           {item.icon || <Star className={`w-6 h-6 ${q.text}`} />}
+          {item.icon || <Star className={`w-6 h-6 ${q.text}`} />}
         </div>
         <div className="relative z-10">
           <h5 className={`font-bold text-sm ${q.text} mb-1`}>{item.name}</h5>
@@ -181,9 +181,9 @@ const TheArtisansCodex = () => {
         { name: 'Phial of Attenuation', quality: 'epic', type: 'Deployable', desc: 'Allies can choose between Fire or Shadow Warder phials.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Choose your poison... or your cure.", effects: ["Use: Set out a rack of phials. Allies can interact with it to gain +150 Fire or Shadow Resistance for 15 sec. (5 Min Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Potion Mastery', 
-          title: 'Instant Reaction', 
+        {
+          name: 'Potion Mastery',
+          title: 'Instant Reaction',
           desc: '**Perk:** "Alchemical Salve" creates potions that cleanse magic/poison effects.',
           legendary: {
             name: 'The Vial of Endless Triage',
@@ -196,9 +196,9 @@ const TheArtisansCodex = () => {
             flavor: "It never seems to run dry, only to shimmer with liquid light."
           }
         },
-        { 
-          name: 'Elixir Mastery', 
-          title: 'Science of Enhancement', 
+        {
+          name: 'Elixir Mastery',
+          title: 'Science of Enhancement',
           desc: '**Perk:** "Master of the Cauldron" allows creation of raid-wide Flask Cauldrons.',
           legendary: {
             name: 'Flask of the Titan\'s Soul',
@@ -211,9 +211,9 @@ const TheArtisansCodex = () => {
             flavor: "A universe in a bottle."
           }
         },
-        { 
-          name: 'Transmutation', 
-          title: 'Secret of Matter', 
+        {
+          name: 'Transmutation',
+          title: 'Secret of Matter',
           desc: '**Perk:** "Primal Echoes" yields extra Motes.',
           legendary: {
             name: 'The Siren\'s Tear',
@@ -248,9 +248,9 @@ const TheArtisansCodex = () => {
         { name: 'Anvil of War', quality: 'epic', type: 'Deployable', desc: 'Allies interacting with it gain **+75 Fire Damage** to their next 3 attacks.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Strike while the iron is hot.", effects: ["Use: Places an Anvil of War for 20 sec. Allies can interact with it to temper their weapons. (5 Min Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Armorsmith', 
-          title: 'The Unbreakable Wall', 
+        {
+          name: 'Armorsmith',
+          title: 'The Unbreakable Wall',
           desc: '**Perk:** "Flawless Aegis" allows shields to proc an extra socket.',
           legendary: {
             name: 'Bulwark of the Adamant King',
@@ -266,9 +266,9 @@ const TheArtisansCodex = () => {
             flavor: "The King stood alone. Now, so do you."
           }
         },
-        { 
-          name: 'Weaponsmith', 
-          title: 'The Razor\'s Edge', 
+        {
+          name: 'Weaponsmith',
+          title: 'The Razor\'s Edge',
           desc: '**Perk:** "Serrated Edge" adds bleed effects to crafted blades.',
           legendary: {
             name: 'Drakefist Hammer, The Worldbreaker',
@@ -286,9 +286,9 @@ const TheArtisansCodex = () => {
             flavor: "Forged in Fel Fire."
           }
         },
-        { 
-          name: 'Metallurgy', 
-          title: 'Alchemist of Steel', 
+        {
+          name: 'Metallurgy',
+          title: 'Alchemist of Steel',
           desc: '**Perk:** "Soul of the Bellows" allows adding a socket to any weapon once.',
           legendary: {
             name: 'The Universal Socket',
@@ -323,9 +323,9 @@ const TheArtisansCodex = () => {
         { name: 'Rune of Disruption', quality: 'epic', type: 'Consumable', desc: 'Weapon Buff. The next interrupt cast by the target also silences all enemies in 10y.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Silence the chorus.", effects: ["Use: Etches a rune onto a weapon. The next successful interrupt also silences all enemies within 10 yds. (5 Min Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Soul Binding', 
-          title: 'Spirit & Vitality', 
+        {
+          name: 'Soul Binding',
+          title: 'Spirit & Vitality',
           desc: '**Perk:** "Soul Resonance" grants bonus off-stats.',
           legendary: {
             name: 'The Soul-Binder\'s Phylactery',
@@ -338,9 +338,9 @@ const TheArtisansCodex = () => {
             flavor: "A fair trade."
           }
         },
-        { 
-          name: 'Elemental Weaving', 
-          title: 'Primal Forces', 
+        {
+          name: 'Elemental Weaving',
+          title: 'Primal Forces',
           desc: '**Perk:** "Volatile Essence" increases proc rates.',
           legendary: {
             name: 'Prism of Chaotic Elements',
@@ -353,9 +353,9 @@ const TheArtisansCodex = () => {
             flavor: "Fire, Frost, and Fury."
           }
         },
-        { 
-          name: 'Prismatic Attunement', 
-          title: 'Light & Shadow', 
+        {
+          name: 'Prismatic Attunement',
+          title: 'Light & Shadow',
           desc: '**Perk:** "Prismatic Refraction" finds rare prisms in epic items.',
           legendary: {
             name: 'Signet of the Arch-Enchanter',
@@ -390,9 +390,9 @@ const TheArtisansCodex = () => {
         { name: 'Gnomish Gravity Well', quality: 'epic', type: 'Deployable', desc: 'Creates a localized gravity distortion.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Creates a gravity well that slows all enemies within 15 yards by 60% for 20 sec. (5 Min Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Goblin Engineering', 
-          title: 'Master of Explosives', 
+        {
+          name: 'Goblin Engineering',
+          title: 'Master of Explosives',
           desc: 'Focus on destruction and rocketry.',
           legendary: {
             name: 'The "Big One" Rocket Launcher',
@@ -409,9 +409,9 @@ const TheArtisansCodex = () => {
             flavor: "If brute force doesn't work, you aren't using enough."
           }
         },
-        { 
-          name: 'Gnomish Engineering', 
-          title: 'Gadgeteer', 
+        {
+          name: 'Gnomish Engineering',
+          title: 'Gadgeteer',
           desc: 'Focus on utility and devices.',
           legendary: {
             name: 'Chronal Displacer',
@@ -424,9 +424,9 @@ const TheArtisansCodex = () => {
             flavor: "Did that just happen? Or did it un-happen?"
           }
         },
-        { 
-          name: 'Aether-Tech', 
-          title: 'Energy Manipulation', 
+        {
+          name: 'Aether-Tech',
+          title: 'Energy Manipulation',
           desc: 'Focus on shielding and energy fields.',
           legendary: {
             name: 'Cognition-Enhancing Goggles v3.0',
@@ -463,9 +463,9 @@ const TheArtisansCodex = () => {
         { name: 'Brilliant Glass', quality: 'epic', type: 'Consumable', desc: 'Contains a random selection of gems.', ilvl: 70, slot: 'Item', stats: '', flavor: "A gamble in glass.", effects: ["Use: Shatter the glass to reveal the gems hidden within. (20 Hour Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Gem Mastery', 
-          title: 'The Perfect Cut', 
+        {
+          name: 'Gem Mastery',
+          title: 'The Perfect Cut',
           desc: 'Focus on stat gems.',
           legendary: {
             name: 'Prism of Infinite Facets',
@@ -478,9 +478,9 @@ const TheArtisansCodex = () => {
             flavor: "Perfection is a process, not a destination."
           }
         },
-        { 
-          name: 'Jewelry Crafting', 
-          title: 'Neck & Ring', 
+        {
+          name: 'Jewelry Crafting',
+          title: 'Neck & Ring',
           desc: 'Focus on wearable jewelry.',
           legendary: {
             name: 'The Amulet of Lost Kings',
@@ -493,9 +493,9 @@ const TheArtisansCodex = () => {
             flavor: "Heavy is the head, and the neck."
           }
         },
-        { 
-          name: 'Relic Hunter', 
-          title: 'Idols & Totems', 
+        {
+          name: 'Relic Hunter',
+          title: 'Idols & Totems',
           desc: 'Focus on class specific items.',
           legendary: {
             name: 'Focus of the Naaru',
@@ -530,9 +530,9 @@ const TheArtisansCodex = () => {
         { name: 'Banner of Swift Threads', quality: 'epic', type: 'Deployable', desc: 'Grants +5% Cast/Attack Speed to the raid.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Wind in your sails.", effects: ["Use: Places a banner that increases casting and attack speed by 5% for all party members within 30 yards. Lasts 15 sec. (5 Min Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Shadoweave', 
-          title: 'Void Master', 
+        {
+          name: 'Shadoweave',
+          title: 'Void Master',
           desc: '**Perk:** "Unraveling Presence" adds spell vulnerability to gear.',
           legendary: {
             name: 'Mantle of the Void-Touched',
@@ -547,9 +547,9 @@ const TheArtisansCodex = () => {
             flavor: "The darkness embraces you."
           }
         },
-        { 
-          name: 'Spellfire', 
-          title: 'Destruction', 
+        {
+          name: 'Spellfire',
+          title: 'Destruction',
           desc: '**Perk:** "Arcane Infusion" adds haste procs to chests.',
           legendary: {
             name: 'Sunfire Drape of the Phoenix',
@@ -564,9 +564,9 @@ const TheArtisansCodex = () => {
             flavor: "Burn brighter."
           }
         },
-        { 
-          name: 'Mooncloth', 
-          title: 'Celestial', 
+        {
+          name: 'Mooncloth',
+          title: 'Celestial',
           desc: '**Perk:** "Gift of Elune" reduces mana costs on gear.',
           legendary: {
             name: 'Cloak of the Lunar Eclipse',
@@ -603,9 +603,9 @@ const TheArtisansCodex = () => {
         { name: 'Rune of Warding', quality: 'epic', type: 'Deployable', desc: 'Reduces AoE magic damage taken by 15%.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Stand your ground.", effects: ["Use: Inscribes a rune on the ground. Allies standing inside take 15% less damage from Area of Effect spells. Lasts 20 sec. (5 Min Cooldown)"] }
       ],
       specs: [
-        { 
-          name: 'Runebinder', 
-          title: 'Shoulder & Weapon', 
+        {
+          name: 'Runebinder',
+          title: 'Shoulder & Weapon',
           desc: 'Focus on raw power.',
           legendary: {
             name: 'The Quill of the Guardian',
@@ -622,9 +622,9 @@ const TheArtisansCodex = () => {
             flavor: "The pen is mightier."
           }
         },
-        { 
-          name: 'Darkmoon Artiste', 
-          title: 'Fortune Teller', 
+        {
+          name: 'Darkmoon Artiste',
+          title: 'Fortune Teller',
           desc: 'Focus on Trinkets.',
           legendary: {
             name: 'The Deck of Fates',
@@ -637,9 +637,9 @@ const TheArtisansCodex = () => {
             flavor: "Pick a card. Any card."
           }
         },
-        { 
-          name: 'Calligrapher', 
-          title: 'Glyph Master', 
+        {
+          name: 'Calligrapher',
+          title: 'Glyph Master',
           desc: 'Focus on utility.',
           legendary: {
             name: 'Brush of Reality',
@@ -799,9 +799,9 @@ const TheArtisansCodex = () => {
         { name: 'Leather Tents', quality: 'rare', type: 'Deployable', desc: 'Grants "Rested" status anywhere.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Home is where you pitch it.", effects: ["Use: Deploys a tent. Players inside gain Rested status and can log out instantly."] }
       ],
       specs: [
-        { 
-          name: 'Dragonscale', 
-          title: 'Slayer\'s Armor', 
+        {
+          name: 'Dragonscale',
+          title: 'Slayer\'s Armor',
           desc: '**Perk:** "Scale Weaving" adds armor bonuses.',
           legendary: {
             name: 'Bindings of the Dragonflight',
@@ -816,9 +816,9 @@ const TheArtisansCodex = () => {
             flavor: "Hardened by fire."
           }
         },
-        { 
-          name: 'Elemental', 
-          title: 'Storm Weaver', 
+        {
+          name: 'Elemental',
+          title: 'Storm Weaver',
           desc: '**Perk:** "Storm\'s Fury" adds Nature damage procs.',
           legendary: {
             name: 'Storm-Caller\'s Grips',
@@ -833,9 +833,9 @@ const TheArtisansCodex = () => {
             flavor: "Ride the lightning."
           }
         },
-        { 
-          name: 'Tribal', 
-          title: 'Feral Spirit', 
+        {
+          name: 'Tribal',
+          title: 'Feral Spirit',
           desc: '**Perk:** "Heart of the Wild" extends buff durations.',
           legendary: {
             name: 'Bindings of the Primal Hunt',
@@ -965,7 +965,7 @@ const TheArtisansCodex = () => {
 
   return (
     <div className="min-h-screen bg-[#050403] text-[#e0e0e0] font-sans selection:bg-amber-900 selection:text-white overflow-x-hidden">
-      
+
       {/* --- STYLES & ANIMATIONS --- */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
@@ -994,22 +994,22 @@ const TheArtisansCodex = () => {
       `}</style>
 
       {/* --- HERO HEADER --- */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-500 border-b border-[#c29c55]/30 ${scrolled ? 'bg-[#050403]/95 py-3 shadow-2xl' : 'bg-transparent py-6'}`}>
+      <header className={`sticky top-20 z-40 transition-all duration-500 border-b border-[#c29c55]/30 ${scrolled ? 'bg-[#050403]/95 py-3 shadow-2xl' : 'bg-[#050403] py-6'}`}>
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-           {/* Artisan's Table Background */}
-           <img src="https://i.imgur.com/Nad4igB.jpeg" className="w-full h-[600px] object-cover opacity-40" style={{ transform: `translateY(-${scrolled ? 50 : 0}px)` }} />
-           <div className="absolute inset-0 bg-gradient-to-b from-[#050403]/60 via-[#050403]/90 to-[#050403]"></div>
+          {/* Artisan's Table Background */}
+          <img src="https://i.imgur.com/Nad4igB.jpeg" className="w-full h-[600px] object-cover opacity-40" style={{ transform: `translateY(-${scrolled ? 50 : 0}px)` }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#050403]/60 via-[#050403]/90 to-[#050403]"></div>
         </div>
 
         <div className="container mx-auto px-6 flex justify-between items-center relative z-10">
           <div className="flex items-center gap-4">
-             <div className="w-14 h-14 bg-[#1a1c22] border border-[#c29c55] rounded flex items-center justify-center shadow-[0_0_15px_rgba(194,156,85,0.2)]">
-               <BookOpen className="text-[#c29c55] w-8 h-8" />
-             </div>
-             <div>
-               <h1 className="font-hero text-2xl lg:text-3xl text-[#f0e6d2] tracking-[0.1em] drop-shadow-md">THE ARTISAN'S CODEX</h1>
-               <p className="text-xs text-[#8a7b62] font-body tracking-[0.3em] uppercase mt-1">Burning Crusade Plus</p>
-             </div>
+            <div className="w-14 h-14 bg-[#1a1c22] border border-[#c29c55] rounded flex items-center justify-center shadow-[0_0_15px_rgba(194,156,85,0.2)]">
+              <BookOpen className="text-[#c29c55] w-8 h-8" />
+            </div>
+            <div>
+              <h1 className="font-hero text-2xl lg:text-3xl text-[#f0e6d2] tracking-[0.1em] drop-shadow-md">THE ARTISAN'S CODEX</h1>
+              <p className="text-xs text-[#8a7b62] font-body tracking-[0.3em] uppercase mt-1">Burning Crusade Plus</p>
+            </div>
           </div>
         </div>
       </header>
@@ -1017,8 +1017,8 @@ const TheArtisansCodex = () => {
       {/* --- NAV SPACER --- */}
       <div className="h-[400px] flex items-center justify-center relative">
         <div className="text-center z-10 animate-fade-in-up">
-           <h2 className="font-hero text-5xl lg:text-7xl text-[#c29c55] mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">FORGE YOUR LEGACY</h2>
-           <p className="font-body text-[#aeb6bf] text-lg max-w-2xl mx-auto">The world has changed. The artisans of Outland have unlocked secrets long forgotten. Will you master the new crafts?</p>
+          <h2 className="font-hero text-5xl lg:text-7xl text-[#c29c55] mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">FORGE YOUR LEGACY</h2>
+          <p className="font-body text-[#aeb6bf] text-lg max-w-2xl mx-auto">The world has changed. The artisans of Outland have unlocked secrets long forgotten. Will you master the new crafts?</p>
         </div>
       </div>
 
@@ -1028,196 +1028,195 @@ const TheArtisansCodex = () => {
       )}
 
       <div className="container mx-auto px-4 py-8 min-h-screen">
-        
+
         <div className="flex flex-col lg:flex-row gap-12 animate-fade-in">
-            
-            {/* Sidebar Selector */}
-            <aside className="lg:w-1/4">
-              <div className="sticky top-28 parchment-texture border border-[#2f2f35] rounded p-1 shadow-2xl">
-                <div className="bg-[#050403]/80 p-4 rounded-sm">
-                  <h3 className="font-hero text-[#8a7b62] text-xs uppercase tracking-[0.2em] mb-6 text-center border-b border-[#2f2f35] pb-2">Select Discipline</h3>
-                  <div className="grid grid-cols-2 lg:grid-cols-1 gap-1">
-                    {Object.entries(professions).map(([key, prof]) => (
-                      <button
-                        key={key}
-                        onClick={() => setActiveProfession(key)}
-                        className={`flex items-center gap-4 p-3 rounded-sm transition-all border-l-2 ${
-                          activeProfession === key 
-                            ? `bg-[#1a1c22] border-[#c29c55] text-[#f0e6d2] shadow-inner` 
-                            : 'border-transparent hover:bg-[#1a1c22] text-[#5c5c63] hover:text-[#aeb6bf]'
+
+          {/* Sidebar Selector */}
+          <aside className="lg:w-1/4">
+            <div className="sticky top-52 parchment-texture border border-[#2f2f35] rounded p-1 shadow-2xl">
+              <div className="bg-[#050403]/80 p-4 rounded-sm">
+                <h3 className="font-hero text-[#8a7b62] text-xs uppercase tracking-[0.2em] mb-6 text-center border-b border-[#2f2f35] pb-2">Select Discipline</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-1 gap-1">
+                  {Object.entries(professions).map(([key, prof]) => (
+                    <button
+                      key={key}
+                      onClick={() => setActiveProfession(key)}
+                      className={`flex items-center gap-4 p-3 rounded-sm transition-all border-l-2 ${activeProfession === key
+                        ? `bg-[#1a1c22] border-[#c29c55] text-[#f0e6d2] shadow-inner`
+                        : 'border-transparent hover:bg-[#1a1c22] text-[#5c5c63] hover:text-[#aeb6bf]'
                         }`}
-                      >
-                        <div className={`${activeProfession === key ? 'text-[#c29c55]' : 'text-current'}`}>{prof.icon}</div>
-                        <span className="font-hero text-sm tracking-wide">{prof.name}</span>
-                      </button>
-                    ))}
-                  </div>
+                    >
+                      <div className={`${activeProfession === key ? 'text-[#c29c55]' : 'text-current'}`}>{prof.icon}</div>
+                      <span className="font-hero text-sm tracking-wide">{prof.name}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
-            </aside>
+            </div>
+          </aside>
 
-            {/* Content Area */}
-            <main className="lg:w-3/4">
-              {(() => {
-                const prof = professions[activeProfession];
-                return (
-                  <div className="space-y-10">
-                    
-                    {/* Hero Header Card */}
-                    <div className="relative rounded-sm overflow-hidden border border-[#c29c55] shadow-[0_0_30px_rgba(0,0,0,0.5)] bg-[#0b0d10] group min-h-[300px]">
-                      {/* Optional Artwork Background */}
-                      {prof.image && (
-                        <div className="absolute inset-0 z-0">
-                          <img 
-                            src={prof.image} 
-                            alt={`${prof.name} background`}
-                            className="w-full h-full object-cover opacity-60 transition-all duration-700" 
-                          />
-                          {/* Gradient overlay to ensure text pops */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent"></div>
-                        </div>
-                      )}
+          {/* Content Area */}
+          <main className="lg:w-3/4">
+            {(() => {
+              const prof = professions[activeProfession];
+              return (
+                <div className="space-y-10">
 
-                      <div className="relative z-10 p-8 md:p-12 max-w-2xl">
-                        <div className="flex items-center gap-4 mb-4">
-                           {React.cloneElement(prof.icon, { className: `w-8 h-8 text-[#c29c55]` })}
-                           <h2 className="font-hero text-4xl lg:text-5xl text-[#f0e6d2]">{prof.name}</h2>
-                        </div>
-                        <p className="font-hero text-sm text-[#c29c55] uppercase tracking-[0.25em] mb-6 border-l-2 border-[#c29c55] pl-3">{prof.title}</p>
-                        <p className="font-body text-[#aeb6bf] text-lg leading-relaxed mb-6">
-                          {formatText(prof.desc)}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Architect's Notes (Philosophy) */}
-                    {prof.philosophy && (
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div className="bg-[#1a1c22] border border-[#2f2f35] p-6 rounded-sm shadow-lg z-10 relative">
-                           <div className="flex items-center gap-3 mb-4 border-b border-[#2f2f35] pb-2">
-                              <Scroll className="text-[#5c5c63] w-5 h-5" />
-                              <h4 className="font-hero text-lg text-[#8a7b62]">Historical Context</h4>
-                           </div>
-                           <p className="font-body text-[#aeb6bf] text-sm leading-relaxed whitespace-pre-line">
-                              {formatText(prof.philosophy.tbc)}
-                           </p>
-                        </div>
-                        <div className="bg-[#0b0d10] border border-[#c29c55] p-6 rounded-sm shadow-lg relative overflow-hidden z-10">
-                           <div className="absolute top-0 right-0 p-4 opacity-10">
-                              <Feather className="w-24 h-24 text-[#c29c55]" />
-                           </div>
-                           <div className="flex items-center gap-3 mb-4 border-b border-[#c29c55]/30 pb-2 relative z-10">
-                              <PenTool className="text-[#c29c55] w-5 h-5" />
-                              <h4 className="font-hero text-lg text-[#c29c55]">Design Philosophy</h4>
-                           </div>
-                           <p className="font-body text-[#e0e0e0] text-sm leading-relaxed whitespace-pre-line relative z-10">
-                              {formatText(prof.philosophy.plus)}
-                           </p>
-                        </div>
+                  {/* Hero Header Card */}
+                  <div className="relative rounded-sm overflow-hidden border border-[#c29c55] shadow-[0_0_30px_rgba(0,0,0,0.5)] bg-[#0b0d10] group min-h-[300px]">
+                    {/* Optional Artwork Background */}
+                    {prof.image && (
+                      <div className="absolute inset-0 z-0">
+                        <img
+                          src={prof.image}
+                          alt={`${prof.name} background`}
+                          className="w-full h-full object-cover opacity-60 transition-all duration-700"
+                        />
+                        {/* Gradient overlay to ensure text pops */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent"></div>
                       </div>
                     )}
 
-                    {/* Core System */}
-                    <div className="parchment-texture border border-[#2f2f35] p-1 rounded-sm">
-                      <div className="bg-[#050403]/90 p-8 rounded-sm">
-                        <div className="flex items-center gap-3 mb-6 border-b border-[#2f2f35] pb-4">
-                          <Star className="text-[#c29c55] w-5 h-5" />
-                          <h3 className="font-hero text-xl text-[#f0e6d2] tracking-widest uppercase">Core System: <span className="text-[#c29c55]">{prof.coreSystem.title}</span></h3>
+                    <div className="relative z-10 p-8 md:p-12 max-w-2xl">
+                      <div className="flex items-center gap-4 mb-4">
+                        {React.cloneElement(prof.icon, { className: `w-8 h-8 text-[#c29c55]` })}
+                        <h2 className="font-hero text-4xl lg:text-5xl text-[#f0e6d2]">{prof.name}</h2>
+                      </div>
+                      <p className="font-hero text-sm text-[#c29c55] uppercase tracking-[0.25em] mb-6 border-l-2 border-[#c29c55] pl-3">{prof.title}</p>
+                      <p className="font-body text-[#aeb6bf] text-lg leading-relaxed mb-6">
+                        {formatText(prof.desc)}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Architect's Notes (Philosophy) */}
+                  {prof.philosophy && (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                      <div className="bg-[#1a1c22] border border-[#2f2f35] p-6 rounded-sm shadow-lg z-10 relative">
+                        <div className="flex items-center gap-3 mb-4 border-b border-[#2f2f35] pb-2">
+                          <Scroll className="text-[#5c5c63] w-5 h-5" />
+                          <h4 className="font-hero text-lg text-[#8a7b62]">Historical Context</h4>
                         </div>
-                        <p className="font-body text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
-                          {formatText(prof.coreSystem.desc)}
+                        <p className="font-body text-[#aeb6bf] text-sm leading-relaxed whitespace-pre-line">
+                          {formatText(prof.philosophy.tbc)}
                         </p>
-                        
-                        {/* WotLK Style Passive Bonus */}
-                        {prof.passiveBonus && (
-                          <div className="bg-[#1a1c22] border border-[#c29c55]/30 p-4 rounded flex items-start gap-4">
-                             <div className="p-2 bg-black rounded border border-[#c29c55] text-[#c29c55]">
-                                <Shield className="w-6 h-6" />
-                             </div>
-                             <div>
-                                <h5 className="font-hero text-[#c29c55] text-sm uppercase tracking-widest mb-1">Profession Passive: {prof.passiveBonus.name}</h5>
-                                <p className="text-[#aeb6bf] text-sm leading-relaxed">{formatText(prof.passiveBonus.desc)}</p>
-                             </div>
-                          </div>
-                        )}
+                      </div>
+                      <div className="bg-[#0b0d10] border border-[#c29c55] p-6 rounded-sm shadow-lg relative overflow-hidden z-10">
+                        <div className="absolute top-0 right-0 p-4 opacity-10">
+                          <Feather className="w-24 h-24 text-[#c29c55]" />
+                        </div>
+                        <div className="flex items-center gap-3 mb-4 border-b border-[#c29c55]/30 pb-2 relative z-10">
+                          <PenTool className="text-[#c29c55] w-5 h-5" />
+                          <h4 className="font-hero text-lg text-[#c29c55]">Design Philosophy</h4>
+                        </div>
+                        <p className="font-body text-[#e0e0e0] text-sm leading-relaxed whitespace-pre-line relative z-10">
+                          {formatText(prof.philosophy.plus)}
+                        </p>
                       </div>
                     </div>
+                  )}
 
-                     {/* Raid Utility */}
-                     <div className="bg-[#0b0d10] border border-[#2f2f35] p-6 rounded-sm relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-5">
-                          <Sword className="w-24 h-24" />
+                  {/* Core System */}
+                  <div className="parchment-texture border border-[#2f2f35] p-1 rounded-sm">
+                    <div className="bg-[#050403]/90 p-8 rounded-sm">
+                      <div className="flex items-center gap-3 mb-6 border-b border-[#2f2f35] pb-4">
+                        <Star className="text-[#c29c55] w-5 h-5" />
+                        <h3 className="font-hero text-xl text-[#f0e6d2] tracking-widest uppercase">Core System: <span className="text-[#c29c55]">{prof.coreSystem.title}</span></h3>
+                      </div>
+                      <p className="font-body text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
+                        {formatText(prof.coreSystem.desc)}
+                      </p>
+
+                      {/* WotLK Style Passive Bonus */}
+                      {prof.passiveBonus && (
+                        <div className="bg-[#1a1c22] border border-[#c29c55]/30 p-4 rounded flex items-start gap-4">
+                          <div className="p-2 bg-black rounded border border-[#c29c55] text-[#c29c55]">
+                            <Shield className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <h5 className="font-hero text-[#c29c55] text-sm uppercase tracking-widest mb-1">Profession Passive: {prof.passiveBonus.name}</h5>
+                            <p className="text-[#aeb6bf] text-sm leading-relaxed">{formatText(prof.passiveBonus.desc)}</p>
+                          </div>
                         </div>
-                        <h4 className="font-hero text-lg text-[#c29c55] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
-                          <Sword className="w-5 h-5" /> Raid Utility
-                        </h4>
-                        <div className="space-y-4">
-                          {prof.raidUtility.map((item, i) => (
-                            <WowItem key={i} item={item} />
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Raid Utility */}
+                  <div className="bg-[#0b0d10] border border-[#2f2f35] p-6 rounded-sm relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-4 opacity-5">
+                      <Sword className="w-24 h-24" />
+                    </div>
+                    <h4 className="font-hero text-lg text-[#c29c55] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
+                      <Sword className="w-5 h-5" /> Raid Utility
+                    </h4>
+                    <div className="space-y-4">
+                      {prof.raidUtility.map((item, i) => (
+                        <WowItem key={i} item={item} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Specializations & Legendaries */}
+                  <div>
+                    <h4 className="font-hero text-2xl text-[#f0e6d2] mb-6 flex items-center gap-2">
+                      <Crown className="w-6 h-6 text-[#ff8000]" /> Specializations & Masterworks
+                    </h4>
+
+                    {/* Rendering logic for Per-Spec vs Single Masterwork */}
+                    {prof.masterwork ? (
+                      // Single Masterwork Layout (Gathering/Secondary)
+                      <div className="space-y-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {prof.specs.map((spec, i) => (
+                            <div key={i} className="bg-[#1a1c22] border-t-2 border-[#2f2f35] p-6 rounded-sm shadow-lg">
+                              <h4 className="font-hero text-lg text-[#f0e6d2] mb-1">{spec.name}</h4>
+                              <span className="font-hero text-[10px] text-[#5c5c63] uppercase tracking-widest mb-4 block">{spec.title}</span>
+                              <p className="font-body text-xs text-[#aeb6bf] whitespace-pre-line leading-relaxed">
+                                {formatText(spec.desc)}
+                              </p>
+                            </div>
                           ))}
                         </div>
+                        <div className="bg-[#0b0d10] border border-[#ff8000]/30 p-6 rounded-sm relative overflow-hidden">
+                          <div className="absolute top-0 right-0 p-4 opacity-5">
+                            <Crown className="w-24 h-24 text-[#ff8000]" />
+                          </div>
+                          <h4 className="font-hero text-lg text-[#ff8000] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
+                            <Crown className="w-5 h-5" /> Grand Masterwork Reward
+                          </h4>
+                          <div className="max-w-2xl">
+                            <WowItem item={prof.masterwork} isLegendary={true} />
+                          </div>
+                        </div>
                       </div>
-
-                    {/* Specializations & Legendaries */}
-                    <div>
-                        <h4 className="font-hero text-2xl text-[#f0e6d2] mb-6 flex items-center gap-2">
-                            <Crown className="w-6 h-6 text-[#ff8000]" /> Specializations & Masterworks
-                        </h4>
-                        
-                        {/* Rendering logic for Per-Spec vs Single Masterwork */}
-                        {prof.masterwork ? (
-                          // Single Masterwork Layout (Gathering/Secondary)
-                          <div className="space-y-8">
-                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                {prof.specs.map((spec, i) => (
-                                  <div key={i} className="bg-[#1a1c22] border-t-2 border-[#2f2f35] p-6 rounded-sm shadow-lg">
-                                      <h4 className="font-hero text-lg text-[#f0e6d2] mb-1">{spec.name}</h4>
-                                      <span className="font-hero text-[10px] text-[#5c5c63] uppercase tracking-widest mb-4 block">{spec.title}</span>
-                                      <p className="font-body text-xs text-[#aeb6bf] whitespace-pre-line leading-relaxed">
-                                          {formatText(spec.desc)}
-                                      </p>
-                                  </div>
-                                ))}
-                             </div>
-                             <div className="bg-[#0b0d10] border border-[#ff8000]/30 p-6 rounded-sm relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-4 opacity-5">
-                                  <Crown className="w-24 h-24 text-[#ff8000]" />
-                                </div>
-                                <h4 className="font-hero text-lg text-[#ff8000] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
-                                  <Crown className="w-5 h-5" /> Grand Masterwork Reward
-                                </h4>
-                                <div className="max-w-2xl">
-                                   <WowItem item={prof.masterwork} isLegendary={true} />
-                                </div>
-                             </div>
+                    ) : (
+                      // Per-Spec Legendary Layout (Crafting)
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {prof.specs.map((spec, i) => (
+                          <div key={i} className="flex flex-col gap-4">
+                            <div className="bg-[#1a1c22] border-t-2 border-[#2f2f35] p-6 rounded-sm shadow-lg h-full flex flex-col">
+                              <h4 className="font-hero text-lg text-[#f0e6d2] mb-1">{spec.name}</h4>
+                              <span className="font-hero text-[10px] text-[#5c5c63] uppercase tracking-widest mb-4 block">{spec.title}</span>
+                              <p className="font-body text-xs text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
+                                {formatText(spec.desc)}
+                              </p>
+                              <div className="border-t border-[#2f2f35] pt-4 mt-auto">
+                                <span className="text-[10px] text-[#ff8000] font-hero uppercase tracking-widest block mb-2">Legendary Reward</span>
+                                <WowItem item={spec.legendary} isLegendary={true} />
+                              </div>
+                            </div>
                           </div>
-                        ) : (
-                          // Per-Spec Legendary Layout (Crafting)
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {prof.specs.map((spec, i) => (
-                                <div key={i} className="flex flex-col gap-4">
-                                    <div className="bg-[#1a1c22] border-t-2 border-[#2f2f35] p-6 rounded-sm shadow-lg h-full flex flex-col">
-                                        <h4 className="font-hero text-lg text-[#f0e6d2] mb-1">{spec.name}</h4>
-                                        <span className="font-hero text-[10px] text-[#5c5c63] uppercase tracking-widest mb-4 block">{spec.title}</span>
-                                        <p className="font-body text-xs text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
-                                            {formatText(spec.desc)}
-                                        </p>
-                                        <div className="border-t border-[#2f2f35] pt-4 mt-auto">
-                                            <span className="text-[10px] text-[#ff8000] font-hero uppercase tracking-widest block mb-2">Legendary Reward</span>
-                                            <WowItem item={spec.legendary} isLegendary={true} />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                          </div>
-                        )}
-                    </div>
-
+                        ))}
+                      </div>
+                    )}
                   </div>
-                );
-              })()}
-            </main>
-          </div>
+
+                </div>
+              );
+            })()}
+          </main>
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-  Sword, Shield, Zap, Crosshair, Heart, Skull, 
-  Activity, Moon, Sun, Droplet, Flame, Snowflake, 
+import {
+  Sword, Shield, Zap, Crosshair, Heart, Skull,
+  Activity, Moon, Sun, Droplet, Flame, Snowflake,
   Ghost, Hammer, BookOpen, ArrowLeft, Leaf
 } from 'lucide-react';
 
@@ -14,26 +14,26 @@ const HallOfLegends = () => {
     const lines = text.split('\n');
 
     return lines.map((line, lineIndex) => {
-        // 2. Process bolding (**) within each line
-        const parts = line.split(/(\*\*.*?\*\*)/g);
+      // 2. Process bolding (**) within each line
+      const parts = line.split(/(\*\*.*?\*\*)/g);
 
-        const content = parts.map((part, partIndex) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-                // If it's a bold part, strip ** and wrap in a bold span
-                const boldContent = part.slice(2, -2);
-                // Using a specific Tailwind class for keywords as per Blizzard style
-                return <strong key={partIndex} className="text-white font-bold">{boldContent}</strong>;
-            }
-            return part;
-        });
+      const content = parts.map((part, partIndex) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          // If it's a bold part, strip ** and wrap in a bold span
+          const boldContent = part.slice(2, -2);
+          // Using a specific Tailwind class for keywords as per Blizzard style
+          return <strong key={partIndex} className="text-white font-bold">{boldContent}</strong>;
+        }
+        return part;
+      });
 
-        // Add a <br> after every line except the last one
-        return (
-            <React.Fragment key={lineIndex}>
-                {content}
-                {lineIndex < lines.length - 1 && <br />}
-            </React.Fragment>
-        );
+      // Add a <br> after every line except the last one
+      return (
+        <React.Fragment key={lineIndex}>
+          {content}
+          {lineIndex < lines.length - 1 && <br />}
+        </React.Fragment>
+      );
     });
   };
 
@@ -168,7 +168,7 @@ const HallOfLegends = () => {
     warlock: {
       name: 'Warlock',
       title: 'The Dark Harvester',
-      icon: <Activity className="w-6 h-6" />, 
+      icon: <Activity className="w-6 h-6" />,
       color: 'text-purple-500',
       borderColor: 'border-purple-600',
       bgGradient: 'from-purple-900/80 to-black',
@@ -224,36 +224,35 @@ const HallOfLegends = () => {
       `}</style>
 
       {/* --- HEADER --- */}
-      <header className="py-8 border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-40">
+      <header className="py-8 border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-20 z-40">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <div className="flex items-center gap-3">
-             <button className="p-2 hover:bg-white/5 rounded-full transition-colors">
-               <ArrowLeft className="text-gray-400 w-6 h-6" />
-             </button>
-             <div>
-               <h1 className="font-hero text-2xl text-amber-500 tracking-widest">HALL OF LEGENDS</h1>
-               <p className="text-xs text-gray-500 font-body tracking-wider uppercase">Class Design Manifest</p>
-             </div>
+            <button className="p-2 hover:bg-white/5 rounded-full transition-colors">
+              <ArrowLeft className="text-gray-400 w-6 h-6" />
+            </button>
+            <div>
+              <h1 className="font-hero text-2xl text-amber-500 tracking-widest">HALL OF LEGENDS</h1>
+              <p className="text-xs text-gray-500 font-body tracking-wider uppercase">Class Design Manifest</p>
+            </div>
           </div>
         </div>
       </header>
 
       <div className="container mx-auto px-4 py-12 lg:flex gap-12">
-        
+
         {/* --- LEFT COLUMN: CLASS PICKER --- */}
         <aside className="lg:w-1/4 mb-12 lg:mb-0">
-          <div className="sticky top-32">
+          <div className="sticky top-52">
             <h3 className="font-hero text-gray-400 text-sm uppercase tracking-widest mb-6 text-center lg:text-left">Select Class</h3>
             <div className="grid grid-cols-3 lg:grid-cols-1 gap-4">
               {Object.entries(classes).map(([key, data]) => (
                 <button
                   key={key}
                   onClick={() => setActiveClass(key)}
-                  className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${
-                    activeClass === key 
-                      ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4` 
+                  className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${activeClass === key
+                      ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
                       : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
-                  }`}
+                    }`}
                 >
                   <div className={`p-2 rounded-md bg-black/50 ${activeClass === key ? data.color : 'text-gray-500 group-hover:text-gray-300'}`}>
                     {data.icon}
@@ -273,7 +272,7 @@ const HallOfLegends = () => {
           <div className={`relative rounded-xl overflow-hidden border ${activeData.borderColor} p-8 md:p-12 mb-12 rune-border`}>
             <div className={`absolute inset-0 bg-gradient-to-br ${activeData.bgGradient} opacity-20`}></div>
             <div className="absolute inset-0 paper-texture opacity-50 mix-blend-overlay"></div>
-            
+
             <div className="relative z-10">
               <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                 <div className={`p-6 rounded-full border-2 ${activeData.borderColor} bg-black/60 backdrop-blur-sm shadow-[0_0_30px_rgba(0,0,0,0.5)]`}>
@@ -302,7 +301,7 @@ const HallOfLegends = () => {
 
             <div className="bg-[#121212] border border-white/10 p-8 rounded-lg relative overflow-hidden">
               <div className={`absolute top-0 right-0 p-20 rounded-full bg-gradient-to-br ${activeData.bgGradient} blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2`}></div>
-              
+
               <div className="relative z-10">
                 <p className="font-body text-lg text-gray-300 leading-relaxed">
                   {formatText(activeData.masterwork.desc)}
@@ -328,10 +327,10 @@ const HallOfLegends = () => {
               {activeData.specs.map((spec, idx) => (
                 <div key={idx} className="group relative p-6 bg-[#121212] border border-white/10 rounded-lg hover:border-white/30 transition-colors">
                   <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${activeData.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
-                  
+
                   <h4 className="font-hero text-xl text-white mb-1">{spec.name}</h4>
                   <span className={`block font-hero text-xs ${activeData.color} uppercase tracking-wider mb-4`}>{spec.title}</span>
-                  
+
                   <p className="font-body text-sm text-gray-400 leading-relaxed">
                     {formatText(spec.desc)}
                   </p>

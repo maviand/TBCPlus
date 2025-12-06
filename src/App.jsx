@@ -24,14 +24,26 @@ import {
 } from 'lucide-react';
 
 // --- Components ---
+import HallOfLegends from './components/HallOfLegends';
+import TheNewBlood from './components/TheNewBlood';
+import TheAtlasOfOutland from './components/TheAtlasOfOutland';
+import FelForgedVanguard from './components/FelForgedVanguard';
+import VaultOfArtifacts from './components/VaultOfArtifacts';
+import TheArtisansCodex from './components/TheArtisansCodex';
+import Legendaries from './components/Legendaries';
+import Lore from './components/Lore';
+
 
 const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
   const navItems = [
     { id: 'home', label: 'Home' },
+    { id: 'lore', label: 'Lore' },
     { id: 'classes', label: 'Classes' },
-    { id: 'content', label: 'Content' },
     { id: 'races', label: 'Races' },
+    { id: 'professions', label: 'Professions' },
+    { id: 'content', label: 'Content' },
     { id: 'systems', label: 'Systems' },
+    { id: 'pinnacle', label: 'Pinnacle Quests' },
     { id: 'legendaries', label: 'Legendaries' },
   ];
 
@@ -48,21 +60,21 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
               </div>
             </div>
             <div>
-              <h1 className="text-2xl font-bold tracking-wider text-gray-100 font-serif group-hover:text-white transition-colors">TBC<span className="text-green-400 group-hover:text-green-300">+</span></h1>
-              <p className="text-[10px] text-green-500 tracking-[0.2em] uppercase group-hover:text-green-400">Reborn</p>
+              <h1 className="text-2xl font-bold tracking-wider text-gray-100 font-serif group-hover:text-white transition-colors">The Burning Crusade</h1>
+              <p className="text-[10px] text-green-500 tracking-[0.2em] uppercase group-hover:text-green-400">Plus</p>
             </div>
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+          <div className="hidden lg:block">
+            <div className="ml-4 flex items-baseline space-x-4">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => set(item.id)}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${active === item.id
-                      ? 'text-green-400 bg-green-900/20 shadow-[0_0_10px_rgba(74,222,128,0.1)]'
-                      : 'text-gray-300 hover:text-white hover:bg-slate-800'
+                  className={`px-3 py-2 rounded-md text-xs font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${active === item.id
+                    ? 'text-green-400 bg-green-900/20 shadow-[0_0_10px_rgba(74,222,128,0.1)]'
+                    : 'text-gray-300 hover:text-white hover:bg-slate-800'
                     }`}
                 >
                   <span className="relative z-10">{item.label}</span>
@@ -172,8 +184,8 @@ const ReforgingSummary = () => {
               key={key}
               onClick={() => setActiveTab(key)}
               className={`flex items-center gap-3 px-4 py-4 rounded-lg text-left transition-all duration-300 group ${activeTab === key
-                  ? 'bg-green-900/30 text-green-400 border border-green-700/50 shadow-[0_0_15px_rgba(74,222,128,0.1)]'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                ? 'bg-green-900/30 text-green-400 border border-green-700/50 shadow-[0_0_15px_rgba(74,222,128,0.1)]'
+                : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                 }`}
             >
               <div className={`${activeTab === key ? 'scale-110 text-green-400' : 'opacity-70 group-hover:text-white'} transition-all duration-300`}>
@@ -435,15 +447,16 @@ const App = () => {
             <Features />
           </>
         )}
-        {/* Placeholders for other pages */}
-        {activePage !== 'home' && (
-          <div className="h-[600px] flex items-center justify-center flex-col text-slate-500 animate-in fade-in duration-300">
-            <Scroll size={48} className="mb-4 opacity-50" />
-            <h2 className="text-2xl font-serif text-slate-400 mb-2">{activePage.charAt(0).toUpperCase() + activePage.slice(1)}</h2>
-            <p>This module is currently under construction by the Goblins.</p>
-            <button onClick={() => setActivePage('home')} className="mt-6 text-green-500 hover:underline">Return Home</button>
-          </div>
-        )}
+        {/* Page Routing */}
+        {activePage === 'lore' && <Lore />}
+        {activePage === 'classes' && <HallOfLegends />}
+        {activePage === 'races' && <TheNewBlood />}
+        {activePage === 'professions' && <TheArtisansCodex />}
+        {activePage === 'content' && <TheAtlasOfOutland />}
+        {activePage === 'systems' && <FelForgedVanguard />}
+        {activePage === 'pinnacle' && <VaultOfArtifacts />}
+        {activePage === 'legendaries' && <Legendaries />}
+
       </main>
 
       <Footer />

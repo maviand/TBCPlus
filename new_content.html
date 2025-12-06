@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Lost Legacies</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to evoke the TBC aesthetic */
+        body {
+            background-color: #0a0806;
+            background-image: url('https://i.imgur.com/iQl5r5G.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Roboto', sans-serif;
+            color: #c7b377;
+        }
+        
+        .font-wow {
+            font-family: 'Cinzel', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .main-container {
+            background-color: rgba(10, 8, 6, 0.9);
+            border: 2px solid #4a4130;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+        }
+        
+        .nav-button {
+            background-color: #2a2115;
+            border: 1px solid #6a6150;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
+        
+        .nav-button:hover {
+            background-color: #3a3125;
+            border-color: #f8b700;
+        }
+        
+        .nav-button.active {
+            background-color: #4a4130;
+            border-color: #f8b700;
+            color: #f8b700;
+            box-shadow: 0 0 8px #f8b700;
+        }
+
+        .mechanic-box {
+            background-color: rgba(20, 10, 0, 0.3);
+            border: 1px solid #5a5140;
+        }
+        
+        .boss-card {
+            background-color: rgba(0,0,0,0.2);
+            border-left: 3px solid #6a6150;
+        }
+
+        .cot-tab {
+            border-bottom: 2px solid #4a4130;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .cot-tab:hover {
+            border-color: #f8b700;
+            color: #f8b700;
+        }
+        .cot-tab.active {
+            border-color: #f8b700;
+            color: #f8b700;
+            background-color: rgba(248, 183, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="main-container max-w-7xl mx-auto rounded-lg p-4 sm:p-8">
+        <header class="text-center mb-8">
+            <h1 class="font-wow text-4xl sm:text-5xl lg:text-6xl text-yellow-400 tracking-wider">Project: Lost Legacies</h1>
+        </header>
+
+        <div class="mb-10 p-4 text-center">
+             <h2 class="font-wow text-2xl text-yellow-500 mb-4">New Dungeons & Raids</h2>
+            <p class="text-lg max-w-4xl mx-auto leading-relaxed text-gray-300">
+                The war against the Burning Legion is not fought on a single front. New threats and forgotten battlegrounds demand the attention of Azeroth's heroes. This guide details new instances woven into the fabric of the world, offering fresh challenges, unique stories, and powerful rewards.
+            </p>
+        </div>
+
+        <nav id="main-navigation" class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-10">
+            </nav>
+
+        <main id="main-content" class="min-h-[500px]">
+             <div id="default-message" class="flex items-center justify-center h-full">
+                <p class="font-wow text-2xl text-gray-500">Select a new adventure to explore.</p>
+            </div>
+            <div id="content-display" class="hidden">
+                </div>
+        </main>
+    </div>
+
+    <script>
+        // --- DATA STORE ---
+        const lostLegaciesData = {
+            hallsOfDamnation: {
+                name: "Halls of Damnation",
+                type: 'dungeon',
+                subtitle: 'Stratholme / T5 Dungeon',
+                headerImage: 'https://i.imgur.com/OmkgFJZ.png',
+                content: {
+                    lore: `A cabal of surviving dreadlords, led by the cunning Lord Valerius, has returned to Stratholme. They are using the city's potent necromantic energy to tear open a permanent gateway to the Twisting Nether. Kael'thas, seeking to curry favor with Kil'jaeden, has dispatched Magister Astromancer Vexil to aid them.`,
+                    atmosphere: `The dungeon is a journey through descending layers of corruption. The first wing is a twisted mockery of the Scarlet Crusade's fallen bastion, draped in shadow with fel-green energy searing through the cobblestones. Deeper within, the architecture warps into the distinct, elegant style of the blood elves, but corrupted and desecrated.`,
+                    bosses: [
+                        { name: 'Commander Malor the Zealous', description: 'A wrathful spirit retaining his holy abilities, but twisted by shadow. His `Consecration` is now `Desecration`, and he summons a `Wall of Spectral Crusaders` that players must navigate.' },
+                        { name: 'Magister Astromancer Vexil', description: 'Kael\'thas\'s envoy, who assaults the party with fel fire and summons `Mana Constructs`. His signature ability is `Mana Bomb`, a debuff that forces the targeted player to run away from the group before it detonates.' },
+                        { name: 'Lord Valerius', description: 'A classic dreadlord encounter focused on `Sleep`, `Carrion Swarm`, and `Mind Control`. Players must use `Braziers of Holy Fire` to disrupt his `Vampiric Aura`, creating windows of vulnerability.' }
+                    ]
+                }
+            },
+            siegeOfQuelDanil: {
+                name: "Siege of Quel'Danil",
+                type: 'raid',
+                subtitle: 'The Hinterlands / T5 10-Player Raid',
+                headerImage: 'https://i.imgur.com/idqhh9N.png',
+                content: {
+                    lore: `With the Sunwell being prepared for Kil'jaeden, Kael'thas moves to eliminate all rival claimants to elven magical lore. He dispatches Warlord Salaris to eradicate the high elves of Quel'Danil Lodge and seize their ancient runestones. Allied with the Wildhammer dwarves, players must defend the besieged lodge as fel-fire rains from the sky.`,
+                    atmosphere: `The raid environment is a dynamic battlefield. Players fight through the courtyards and halls of a beautiful elven lodge under heavy assault, with fel-fire raining from the sky and the sounds of battle echoing from all sides.`,
+                    bosses: [
+                        { name: 'The Fel-Siege', description: 'A two-front battle where players use `Wildhammer Cannons` to destroy incoming `Fel-Reaver Prototypes` while a ground crew fends off `Sunfury Sappers`.' },
+                        { name: 'Grand Magister Lyandra', description: 'A blood mage corrupting a `Great Runestone`. Players must use `Runic Conduits` to siphon fel energy, preventing the stone from shattering while managing a stacking DoT on themselves.' },
+                        { name: 'The Twin Sentinels: Lyra & Loros', description: 'A classic "twin" encounter. Lyra (ranger) and Loros (spell-breaker) must be tanked apart to break their defensive bond and defeated simultaneously.' },
+                        { name: 'Warlord Salaris', description: 'A two-phase fight. Players first defeat his massive felboar mount, "Gorefang". Once dismounted, Salaris becomes a furious melee combatant, utilizing a `Mortal Strike` and a spell-reflecting `Fel-Charged Bladestorm`.' }
+                    ]
+                }
+            },
+            cavernsOfTime: {
+                name: "Caverns of Time",
+                type: 'cot_wing',
+                subtitle: 'Tanaris / T6 Dungeons',
+                headerImage: 'https://i.imgur.com/650cehd.png',
+                content: {
+                    lore: 'The Infinite Dragonflight has intensified its efforts to shatter the timeline. Their agents, once content to observe, now actively sabotage key moments in history. Chromie, sensing a catastrophic divergence, recruits heroes for three critical missions to preserve the one true timeline. This wing unlocks alongside the Tier 6 content patch.',
+                    dungeons: {
+                        sundering: {
+                            name: "The Sundering of Draenor",
+                            description: 'You are sent back to the final, apocalyptic moments of Draenor. The sky is a maelstrom of chaotic energies, the ground groans and splits apart, and the air crackles with raw power. Ner\'zhul, atop the Black Temple, is recklessly tearing open rifts to other worlds. The Infinite Dragonflight is not here to stop him, but to amplify the cataclysm, hoping the temporal backlash will unravel the very fabric of reality. Your mission is to navigate this planetary death rattle, ensure the timeline proceeds as it must, and survive.',
+                            bosses: [
+                                { name: 'Chronomancer Anachronos', description: 'This powerful Infinite Dragonkin commander is actively corrupting Ner\'zhul\'s portals. He must be engaged on a rapidly deteriorating platform. The fight involves interrupting his `Temporal Overload` cast, which accelerates the platform\'s collapse, while avoiding `Chrono-Rifts` that spawn on the ground, creating zones of slowed time and heavy damage. On Heroic, he will also cast `Time Stop`, freezing a random player who must be dispelled by a healer.' },
+                                { name: 'Grom Hellscream & The Warsong Vanguard', description: 'This is not a boss fight, but a desperate survival encounter. As you approach the Dark Portal, you are caught in the path of Grom Hellscream\'s frantic charge to safety. You cannot harm Grom, who is an unstoppable force of nature, periodically charging across the battlefield. Instead, you must defeat his two lieutenants while fending off waves of enraged Warsong grunts and warlocks. Success is not about victory, but enduring the unbridled fury of the Horde at its most desperate hour.' },
+                                { name: 'Echo of Ner\'zhul', description: 'The final confrontation occurs before the Dark Portal itself. Ner\'zhul, wreathed in chaotic magic, is protected by an impenetrable `Planar Shield`. To lower it, players must close the unstable portals he rips open to other worlds. Each closed portal, however, unleashes a wave of powerful spirits tied to that world—orcish ancestors, twisted elementals, even spectral echoes of creatures from Azeroth. The party must balance closing portals to create damage windows with managing the increasingly dangerous waves of adds before the entire world comes apart.' }
+                            ]
+                        },
+                        wardensPrison: {
+                            name: "The Wardens' Prison",
+                            description: 'You are transported to the Barrow Deeps, years before the Third War. This is the fabled prison of Illidan Stormrage, a place of cold stone, magical wards, and absolute silence. That silence has been broken. A younger, more zealous Maiev Shadowsong is facing a prison-wide uprising. The Infinite Dragonflight has infiltrated the prison, seeking to shatter Illidan\'s magical wards and free him prematurely. Such an event would prevent the entire Third War as we know it. You must assist Maiev and her Wardens in quelling the revolt and preserving the timeline.',
+                             bosses: [
+                                { name: 'The Unchained', description: 'A chaotic council fight against three of the prison\'s most dangerous inmates, freed by the Infinite Dragonflight: a powerful Satyr Trickster who creates illusions of himself, a cunning Naga Sea Witch who uses frost and fork lightning, and a hulking Magnataur Brute who shatters the ground. They share a loose health pool and must be defeated within a short time of each other, testing the group\'s ability to handle multiple threats at once.' },
+                                { name: 'Infinite Corruptor', description: 'A powerful dragonkin agent found at the heart of the prison\'s power grid. He is attempting to overload the magical conduits that keep the prison secure. Players must deactivate the conduits in the correct sequence (like a game of Simon Says) to lower his defenses, all while he assaults them with bronze-fire breath and disorienting `Time Lapses` that briefly send players a few seconds into the past, forcing them to re-orient themselves quickly.' },
+                                { name: 'Manifestation of the Betrayer', description: 'The Infinite Dragonflight\'s spell has partially succeeded, pulling a being of pure, contained rage from Illidan\'s subconscious. It cannot be moved or taunted. It attacks with volleys of `Shadow Blasts` and periodically summons spectral `Glaives of Azzinoth` that spin around the room. Players must use Maiev\'s `Warden\'s Chains`, which she throws onto the ground, to temporarily bind the Manifestation, making it vulnerable to damage for a short time.' }
+                            ]
+                        },
+                        siegeOfDalaran: {
+                            name: "The Siege of Dalaran",
+                            description: 'Experience the desperate flight of the last blood elves from the ruins of Dalaran, as depicted in the Warcraft III bonus campaign. The city is a smoldering ruin, with Scourge forces pouring through the streets. You will fight alongside Prince Kael\'thas and his new, mysterious ally, Lady Vashj, as they battle not only the undead but also the vengeful human forces of Grand Marshal Garithos, who sees all elves as traitors. It is a running battle through a city tearing itself apart.',
+                             bosses: [
+                                { name: 'Jailor Kassan', description: 'A powerful undead jailor who blocks the exit from Dalaran\'s dungeons. He periodically locks a player in a `Runic Prison`, which must be destroyed by the other party members before it suffocates them. He also summons `Chains of the Damned` that root players in place until the chains are killed.' },
+                                { name: 'Garithos\'s Lieutenant', description: 'A human knight leading the assault on Kael\'thas\'s forces at the city\'s edge. He is a straightforward but powerful warrior, supported by waves of riflemen and mortar teams on the cliffs above that players must deal with. Kael\'thas will assist by casting `Flamestrike` on marked areas, which players can use to their advantage.' },
+                                { name: 'The Abomination of the Sewers', description: 'As the elves escape through the sewers, they are ambushed by a massive, multi-headed Abomination. It has three heads, each with a different ability (Poison, Disease, Frost). The party must focus damage on one head at a time to disable its corresponding ability, but the Abomination will periodically regrow a destroyed head, forcing the party to adapt their strategy throughout the fight.' }
+                            ]
+                        }
+                    }
+                }
+            },
+            throneOfTheElements: {
+                name: "Throne of the Elements",
+                type: 'elemental_raid',
+                subtitle: 'Nagrand / T6.5 10-Player Raid',
+                headerImage: 'https://i.imgur.com/cGiBnIG.jpeg',
+                content: {
+                    lore: `The immense fel energies radiating from the Black Temple have thrown the elemental spirits of Outland into chaos. The four Elemental Lords of Draenor, once balanced, are now in a state of constant rage, threatening to unravel the very fabric of the planet. Players must enter a swirling vortex atop the Elemental Plateau to subdue them before their combined fury creates an unstoppable cataclysm.`,
+                    lords: [
+                        { name: 'Gordawg, the Stone-Lord', description: 'An earth elemental fight focused on mitigating his raid-wide `Tremor` by hiding behind stone pillars he raises from the ground.' },
+                        { name: 'Aeros, the Storm-Lord', description: 'A nimble air elemental who teleports around the platform. He summons cyclones that must be dodged and casts `Chain Lightning`.' },
+                        { name: 'Karsius, the Flame-Lord', description: 'A fire elemental who leaves a trail of fire in his wake, shrinking the arena, while summoning `Living Flames` that fixate on players.' },
+                        { name: 'Tidalor, the Water-Lord', description: 'A water elemental who creates deadly whirlpools and encases players in a `Watery Tomb` that must be destroyed.' }
+                    ],
+                    finalBoss: {
+                        name: 'The Primal Heart',
+                        description: 'After defeating the four lords, their essences merge into a chaotic being of pure elemental energy. The fight has four phases, each themed after one of the lords, with the Primal Heart using a more powerful version of their signature abilities. The raid must survive all four phases to claim victory.'
+                    }
+                }
+            },
+            netherwingMines: {
+                name: "Netherwing Mines",
+                type: 'dungeon',
+                subtitle: 'Shadowmoon Valley / T6 Heroic-Only Dungeon',
+                headerImage: 'https://i.imgur.com/MZj8ZVR.png',
+                content: {
+                    lore: `The Dragonmaw orcs' cruelty knows no bounds. Allied with the Netherwing faction, players are tasked with infiltrating the crystal mines beneath Netherwing Ledge to sabotage their operations from within, free enslaved drakes, and eliminate the Dragonmaw leadership.`,
+                    atmosphere: `The atmosphere is oppressive, with the sounds of cracking whips, goblin machinery, and the sorrowful cries of enslaved Nether Drakes echoing through crystalline caverns.`,
+                    bosses: [
+                        { name: 'Taskmaster Varkule', description: 'A brutal orc overseer who uses a `Nether-whip` to enrage nearby enslaved drakes, forcing players to CC the adds while focusing on the boss.' },
+                        { name: 'Chief Engineer Razgor', description: 'A goblin engineer piloting a massive, unstable `Crystal-Mining Shredder`. The fight involves avoiding the shredder\'s drill charges and using explosive charges found in the mine to temporarily disable it.' },
+                        { name: 'Corrupted Nether-Stalker', description: 'A powerful Nether Drake that has been twisted by fel magic. It breathes shadowflame and drops pools of corrosive acid on the ground.' },
+                        { name: 'Overlord Mor\'ghor', description: 'The leader of the Dragonmaw on the ledge. He fights alongside his personal Nether Drake mount. Mor\'ghor will enrage if his mount is killed first, and the mount will rain fire on the raid if he is killed first.' }
+                    ]
+                }
+            }
+        };
+
+        const mainNav = document.getElementById('main-navigation');
+        const contentDisplay = document.getElementById('content-display');
+        const defaultMessage = document.getElementById('default-message');
+        let activeNav = null;
+
+        function renderStandardInstance(data) {
+            let bossHTML = '';
+            data.content.bosses.forEach(boss => {
+                bossHTML += `
+                    <div class="boss-card p-4 rounded-lg">
+                        <h4 class="font-wow text-xl text-yellow-500">${boss.name}</h4>
+                        <p class="text-sm">${boss.description.replace(/`([^`]+)`/g, '<code class="text-green-400 bg-black/20 px-1 rounded">\$1</code>')}</p>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="text-center mb-6">
+                    <img src="${data.headerImage}" class="h-24 mx-auto mb-2 rounded-lg border-2 border-yellow-800/50 object-cover">
+                    <h2 class="font-wow text-4xl text-yellow-400">${data.name}</h2>
+                    <p class="font-wow text-lg text-yellow-600">${data.subtitle}</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-1 space-y-4">
+                        <div class="mechanic-box p-4 rounded-lg">
+                            <h3 class="font-wow text-2xl text-yellow-500 mb-2">Lore</h3>
+                            <p class="text-sm leading-relaxed">${data.content.lore}</p>
+                        </div>
+                        <div class="mechanic-box p-4 rounded-lg">
+                            <h3 class="font-wow text-2xl text-yellow-500 mb-2">Atmosphere</h3>
+                            <p class="text-sm leading-relaxed">${data.content.atmosphere}</p>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 space-y-4">
+                        ${bossHTML}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderElementalRaid(data) {
+            let lordHTML = '';
+            data.content.lords.forEach(lord => {
+                lordHTML += `
+                     <div class="boss-card p-4 rounded-lg">
+                        <h4 class="font-wow text-xl text-yellow-500">${lord.name}</h4>
+                        <p class="text-sm">${lord.description.replace(/`([^`]+)`/g, '<code class="text-green-400 bg-black/20 px-1 rounded">\$1</code>')}</p>
+                    </div>
+                `;
+            });
+
+            return `
+                <div class="text-center mb-6">
+                    <img src="${data.headerImage}" class="h-24 mx-auto mb-2 rounded-lg border-2 border-yellow-800/50 object-cover">
+                    <h2 class="font-wow text-4xl text-yellow-400">${data.name}</h2>
+                    <p class="font-wow text-lg text-yellow-600">${data.subtitle}</p>
+                </div>
+                <div class="mechanic-box p-4 rounded-lg mb-6">
+                    <h3 class="font-wow text-2xl text-yellow-500 mb-2">Lore</h3>
+                    <p class="text-sm leading-relaxed">${data.content.lore}</p>
+                </div>
+                <h3 class="font-wow text-2xl text-center text-yellow-500 my-4">The Elemental Lords</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    ${lordHTML}
+                </div>
+                <h3 class="font-wow text-2xl text-center text-yellow-500 my-4">Final Encounter</h3>
+                 <div class="boss-card p-4 rounded-lg">
+                    <h4 class="font-wow text-xl text-yellow-500">${data.content.finalBoss.name}</h4>
+                    <p class="text-sm">${data.content.finalBoss.description}</p>
+                </div>
+            `;
+        }
+        
+        function renderCoT(data) {
+            let cotHTML = `
+                <div class="text-center mb-6">
+                    <img src="${data.headerImage}" class="h-24 mx-auto mb-2 rounded-lg border-2 border-yellow-800/50 object-cover">
+                    <h2 class="font-wow text-4xl text-yellow-400">${data.name}</h2>
+                    <p class="font-wow text-lg text-yellow-600">${data.subtitle}</p>
+                </div>
+                <div class="mechanic-box p-4 rounded-lg mb-6">
+                     <p class="text-sm leading-relaxed">${data.content.lore}</p>
+                </div>
+                <div class="flex border-b-2 border-yellow-800/30 mb-4">
+            `;
+            
+            Object.keys(data.content.dungeons).forEach((key, index) => {
+                cotHTML += `<button class="cot-tab font-wow flex-1 py-2 px-4 ${index === 0 ? 'active' : ''}" data-cot-key="${key}">${data.content.dungeons[key].name}</button>`;
+            });
+
+            cotHTML += `</div><div id="cot-content"></div>`;
+            return cotHTML;
+        }
+
+        function renderCoTContent(dungeonData) {
+            let bossHTML = '';
+            dungeonData.bosses.forEach(boss => {
+                 bossHTML += `
+                    <div class="boss-card p-4 rounded-lg">
+                        <h4 class="font-wow text-xl text-yellow-500">${boss.name}</h4>
+                        <p class="text-sm">${boss.description.replace(/`([^`]+)`/g, '<code class="text-green-400 bg-black/20 px-1 rounded">\$1</code>')}</p>
+                    </div>
+                `;
+            });
+            const cotContentContainer = document.getElementById('cot-content');
+            cotContentContainer.innerHTML = `
+                <p class="mb-4 italic">${dungeonData.description}</p>
+                <div class="space-y-4">${bossHTML}</div>
+            `;
+        }
+
+        function handleNavClick(key, element) {
+            if (activeNav === key) return;
+            activeNav = key;
+
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            const data = lostLegaciesData[key];
+            
+            let contentHTML = '';
+            switch (data.type) {
+                case 'dungeon':
+                case 'raid':
+                    contentHTML = renderStandardInstance(data);
+                    break;
+                case 'elemental_raid':
+                    contentHTML = renderElementalRaid(data);
+                    break;
+                case 'cot_wing':
+                    contentHTML = renderCoT(data);
+                    break;
+            }
+            contentDisplay.innerHTML = contentHTML;
+
+            if (data.type === 'cot_wing') {
+                const firstDungeonKey = Object.keys(data.content.dungeons)[0];
+                renderCoTContent(data.content.dungeons[firstDungeonKey]);
+                
+                document.querySelectorAll('.cot-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        document.querySelectorAll('.cot-tab').forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                        const dungeonKey = e.target.dataset.cotKey;
+                        renderCoTContent(data.content.dungeons[dungeonKey]);
+                    });
+                });
+            }
+
+            defaultMessage.classList.add('hidden');
+            contentDisplay.classList.remove('hidden');
+        }
+
+        function renderNav() {
+            for(const key in lostLegaciesData) {
+                const data = lostLegaciesData[key];
+                const button = document.createElement('button');
+                button.className = 'nav-button font-wow px-4 py-2 rounded-md';
+                button.innerHTML = `<span class="text-lg">${data.name}</span><br><span class="text-xs text-yellow-600">${data.subtitle}</span>`;
+                button.dataset.key = key;
+                button.addEventListener('click', () => handleNavClick(key, button));
+                mainNav.appendChild(button);
+            }
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNav();
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Shattered Forge - TBC Profession Redesign</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Core Wowhead/TBC Theming --- */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212; /* Darker charcoal base */
+            background-image: url('https://wow.zamimg.com/images/layout/bg-tbc.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: top center;
+            background-size: cover;
+            color: #f0f0f0;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+        }
+        .wowhead-container {
+            background-color: rgba(28, 29, 32, 0.95); /* Semi-transparent dark container */
+            border: 1px solid #3e3e3e;
+            border-image: linear-gradient(to bottom, #4d4d4d, #2b2b2b) 1;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+        }
+        .main-header {
+            position: relative;
+            background-image: url('https://i.imgur.com/ybErPEN.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0,0,0,0.6);
+            border-radius: inherit;
+        }
+        .main-header > * {
+            position: relative;
+            z-index: 1;
+        }
+        .header-title {
+            font-family: 'Cinzel', serif; /* Classic, epic font like Wowhead's */
+            color: #ffc900; /* Wowhead Gold */
+            text-shadow: 0 0 10px rgba(255, 201, 0, 0.5), 0 0 5px rgba(0,0,0,0.8);
+        }
+        .header-subtitle {
+            color: #00b4ff; /* Wowhead Blue */
+            text-shadow: 0 0 5px rgba(0, 180, 255, 0.3);
+        }
+        .nav-link {
+            color: #a3b3ce;
+            transition: all 0.2s ease-in-out;
+            padding: 10px 16px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #fff;
+            background-color: rgba(0, 123, 255, 0.15);
+            border-color: #007bff;
+            text-shadow: 0 0 5px #007bff;
+        }
+        .profession-icon-container {
+            transition: all 0.2s ease;
+            border: 2px solid #3e3e3e;
+            background: linear-gradient(145deg, #2a2a2e, #212124);
+        }
+        .profession-icon-container:hover, .profession-icon-container.active {
+            transform: translateY(-5px) scale(1.05);
+            border-color: #ffc900;
+            box-shadow: 0 5px 20px rgba(255, 201, 0, 0.2);
+        }
+        .profession-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: fixed; /* Changed for cursor following */
+            background-color: #111;
+            border: 1px solid #ffc900;
+            box-shadow: 0 0 15px rgba(255, 201, 0, 0.5);
+            font-size: 14px;
+            z-index: 100;
+            padding: 12px;
+            border-radius: 4px;
+            width: 256px;
+            pointer-events: none; /* Prevents tooltip from blocking mouse events */
+            transition: opacity 0.2s linear;
+        }
+        .talent-tree {
+            position: relative;
+            background: rgba(0,0,0,0.4) url('https://wow.zamimg.com/images/tools/talent-calc/background.jpg') center center;
+            border: 1px solid #333;
+            padding: 20px;
+        }
+        .talent-node {
+            position: relative;
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer;
+            z-index: 2; /* Ensure nodes are above the connector line */
+        }
+        .talent-node:hover {
+            transform: scale(1.1);
+            z-index: 10;
+        }
+        .talent-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            border: 2px solid #555;
+            transition: border-color 0.2s ease;
+            object-fit: cover;
+            background-color: #1c1d20;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .talent-node:hover .talent-icon {
+            border-color: #ffc900;
+        }
+        .talent-connector {
+            position: relative;
+        }
+        /* Single vertical line for the entire talent column */
+        .talent-connector::before {
+            content: "";
+            position: absolute;
+            top: 4rem;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            background-color: #4a4a4a;
+            border: 1px solid #222;
+            z-index: 1;
+        }
+
+        /* TBC Quality Colors */
+        .q, .q0 { font-weight: bold; color: #9d9d9d; } /* Poor */
+        .q1 { font-weight: bold; color: #ffffff; } /* Common */
+        .q2 { font-weight: bold; color: #1eff00; } /* Uncommon */
+        .q3 { font-weight: bold; color: #0070dd; } /* Rare */
+        .q4 { font-weight: bold; color: #a335ee; } /* Epic */
+        .q5 { font-weight: bold; color: #ff8000; } /* Legendary */
+
+        .chart-container {
+            position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px;
+        }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+
+        /* TBC Spirit additions */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 8px #00ff96; opacity: 0.7; }
+            50% { box-shadow: 0 0 16px #00ff96, 0 0 10px #00ff96; opacity: 1; }
+        }
+        .section-title {
+            border-bottom: 2px solid #3a3a3a;
+            padding-bottom: 12px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00ff96, transparent);
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+        .btn-back {
+            background: linear-gradient(145deg, #3a3f4a, #2c3038);
+            border: 1px solid #5a616e;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .btn-back:hover {
+            background: linear-gradient(145deg, #4a505c, #3c414a);
+            border-color: #7a818e;
+            color: #ffc900;
+        }
+
+        /* Glyph Section Interactivity */
+        .glyph-filter-btn {
+            transition: all 0.2s ease;
+            border: 1px solid #444;
+            background-color: rgba(0,0,0,0.2);
+        }
+        .glyph-filter-btn img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+        .glyph-filter-btn:hover {
+            border-color: #ffc900;
+            color: #ffc900;
+        }
+        .glyph-filter-btn.active {
+            background-color: rgba(255, 201, 0, 0.15);
+            border-color: #ffc900;
+            color: #ffc900;
+            box-shadow: 0 0 10px rgba(255, 201, 0, 0.3);
+        }
+        .glyph-card {
+            background-color: rgba(40, 41, 44, 0.7);
+            border: 1px solid #333;
+            transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
+        }
+        .glyph-card:hover {
+            background-color: rgba(50, 51, 54, 0.8);
+            border-color: #555;
+            transform: translateY(-3px);
+        }
+        .glyph-card img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+        
+        /* Page Load Animation */
+        .page-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .page-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body class="bg-[#121212]">
+
+    <div id="app" class="container mx-auto p-4 md:p-6">
+        
+        <header class="text-center mb-8 md:mb-10 wowhead-container rounded-lg p-6 main-header">
+            <h1 class="text-4xl md:text-5xl font-bold header-title">⚔️ The Shattered Forge ⚔️</h1>
+            <p class="text-lg md:text-xl header-subtitle mt-2">A Burning Crusade Profession Redesign Proposal</p>
+        </header>
+
+        <nav class="flex justify-center flex-wrap gap-2 mb-8 md:mb-10 wowhead-container rounded-lg p-3">
+            <a href="#philosophy" class="nav-link text-base md:text-lg active">Design Philosophy</a>
+            <a href="#professions" class="nav-link text-base md:text-lg">Professions Hub</a>
+            <a href="#glyphs" class="nav-link text-base md:text-lg">Appendix: Glyphs</a>
+        </nav>
+
+        <main>
+            <!-- Design Philosophy Section -->
+            <section id="philosophy" class="page-section mb-12">
+                <div class="wowhead-container rounded-lg p-6 md:p-8">
+                    <h2 class="section-title text-2xl md:text-3xl text-center mb-6 header-title">🗺️ Forging a New Path 🗺️</h2>
+                    <p class="text-center text-lg max-w-4xl mx-auto mb-8 text-gray-300">
+                        This redesign enhances the "Spirit of TBC" by focusing on three core principles: fostering deeper <span class="q3">Player Interdependence</span>, creating more <span class="q2">Meaningful Choices</span> beyond a single "meta," and establishing <span class="q4">Enduring Progression</span> that makes your craft relevant throughout the entire expansion. We draw inspiration from the deep specialization of Path of Exile, the horizontal utility of Guild Wars 2, and the impactful choices of KotoR.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="philosophyChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Professions Hub Section -->
+            <section id="professions" class="page-section mb-12">
+                <div class="wowhead-container rounded-lg p-6 md:p-8">
+                    <h2 class="section-title text-2xl md:text-3xl text-center mb-6 header-title">🛠️ Professions Hub 🛠️</h2>
+                     <p class="text-center text-lg max-w-4xl mx-auto mb-8 text-gray-300">
+                        Explore the complete redesign for every TBC profession. Each craft offers unique utility, diverse specializations, and powerful rewards. Select a profession to delve into its new Artisan's Workshop.
+                    </p>
+                    <div id="professionsGrid">
+                        <!-- JS will populate this area -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Artisan's Workshop Section (Dynamically populated) -->
+            <section id="workshop" class="page-section mb-12 hidden">
+                 <div class="wowhead-container rounded-lg p-6 md:p-8">
+                    <button id="backToHub" class="btn-back mb-6 text-blue-400 hover:text-blue-300 transition-colors duration-300 text-lg">
+                        &larr; Back to Professions Hub
+                    </button>
+                    <div id="workshopContent">
+                        <!-- JS will populate this -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appendix: Glyphs Section -->
+            <section id="glyphs" class="page-section">
+                 <div class="wowhead-container rounded-lg p-6 md:p-8">
+                    <h2 class="section-title text-2xl md:text-3xl text-center mb-6 header-title">✒️ Appendix: Major Glyphs ✒️</h2>
+                    <p class="text-center text-lg max-w-4xl mx-auto mb-8 text-gray-300">
+                        As a core product of Inscription, Major Glyphs offer minor combat modifications to existing abilities, allowing for a new layer of character customization without disrupting class balance. Select a class to filter the glyphs.
+                    </p>
+                    <div id="glyphFilterContainer" class="flex flex-wrap justify-center gap-2 mb-8">
+                        <!-- JS will populate filters -->
+                    </div>
+                    <div id="glyphListContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- JS will populate glyphs -->
+                    </div>
+                 </div>
+            </section>
+        </main>
+        
+        <div id="dynamic-tooltip" class="tooltip"></div>
+
+    </div>
+
+    <script>
+        // --- DATA STORE ---
+        const professionImageUrls = {
+            alchemy: "https://skycoach.gg/storage/uploads/products/alchemy1721984368_picture_item_small.png",
+            herbalism: "https://skycoach.gg/storage/uploads/products/herbalism1721993273_picture_item_small.png",
+            blacksmithing: "https://skycoach.gg/storage/uploads/products/blacksmithing1721994097_picture_item_small.png",
+            jewelcrafting: "https://skycoach.gg/storage/uploads/products/jewelcrafting1721994769_picture_item_small.png",
+            leatherworking: "https://skycoach.gg/storage/uploads/products/leatherworking1721996465_picture_item_small.png",
+            enchanting: "https://skycoach.gg/storage/uploads/products/enchanting1721996998_picture_item_small.png",
+            engineering: "https://skycoach.gg/storage/uploads/products/engineering1721997239_picture_item_small.png",
+            inscription: "https://skycoach.gg/storage/uploads/products/inscription1721997594_picture_item_small.png",
+            skinning: "https://skycoach.gg/storage/uploads/products/skinning1721997854_picture_item_small.png",
+            mining: "https://skycoach.gg/storage/uploads/products/mining1721998565_picture_item_small.png",
+            cooking: "https://skycoach.gg/storage/uploads/products/cooking1721998921_picture_item_small.png",
+            fishing: "https://skycoach.gg/storage/uploads/products/fishing1722000171_picture_item_small.png",
+            tailoring: "https://skycoach.gg/storage/uploads/products/tailoring1721996734_picture_item_small.png",
+            firstaid: "https://static.wikia.nocookie.net/wowpedia/images/e/e7/First_Aid_Kit_HS.jpg"
+        };
+        
+        const professionData = {
+            blacksmithing: { isPrimary: true, name: "Blacksmithing", description: "Blacksmithing is broadened to provide enduring utility and diverse paths. The binary choice is now a flexible tree with a third path for tradeable goods and raid utility.", trees: [ { name: "Protector", nodes: [ { name: "Aegis Mastery", desc: "Unlocks <span class='q4'>epic</span>, soulbound shield patterns with unique defensive procs.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_shield_05.jpg" }, { name: "Imbued Wards", desc: "Crafted armor has a chance to gain bonus elemental resistance.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_spellwarding.jpg" }, { name: "Bulwark of Kings", desc: "CAPSTONE: Unlocks a quest to forge a BiS tanking chest, competitive with T6 drops.", art: "https://i.imgur.com/ZgjWEfF.png" } ]}, { name: "Blademaster", nodes: [ { name: "Honed Edges", desc: "Crafted weapons may gain bonus <span class='q2'>Expertise</span>.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_sword_27.jpg" }, { name: "Arcane Tempering", desc: "Unlocks patterns for weapons with unique spell-based procs.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_soulburn.jpg" }, { name: "Master of Arms", desc: "CAPSTONE: Unlocks recipes to upgrade <span class='q3'>Phase 1</span> crafted weapons with T5/T6 materials.", art: "https://i.imgur.com/dt0gd9N.png" } ]}, { name: "Artificer", nodes: [ { name: "Socket Punching", desc: "Unlocks a consumable that adds a <span class='q1'>prismatic socket</span> to bracers, gloves, or belts.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelcrafting_gem_35.jpg" }, { name: "Masterwork Repair", desc: "Your repair bots can now sell common reagents and access the user's bank.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_gizmo_02.jpg" }, { name: "Forgemaster's Bell", desc: "CAPSTONE: Creates a party-wide buff item that grants temporary <span class='q2'>Armor Penetration</span>.", art: "https://i.imgur.com/if0Tvw3.png" } ]} ] },
+            leatherworking: { isPrimary: true, name: "Leatherworking", description: "The 'drum meta' is addressed with a shared 'Tinnitus' cooldown and new situational drums. This makes gear-crafting paths not just viable, but desirable.", trees: [ { name: "Rhythm Weaver", nodes: [ { name: "Greater Drums", desc: "Unlocks Drums of Battle/War. The source of the meta, now one of many choices.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_drum_07.jpg" }, { name: "Enduring Rhythm", desc: "Drum buffs you apply last 25% longer.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_blessingofstamina.jpg" }, { name: "Drums of the Wild", desc: "CAPSTONE: Unlocks recipes for new drums (<span class='q2'>Crit</span>, <span class='q2'>AP</span>, <span class='q2'>SP</span>) that all share the Tinnitus debuff.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_spiritwolf.jpg" } ]}, { name: "Primal Hide", nodes: [ { name: "Elemental Mastery", desc: "Improves the stats and set bonuses of the Primal Netherstrike set.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_elemental_primal_nether.jpg" }, { name: "Primal Reinforcements", desc: "Unlocks powerful, soulbound leg armor kits that provide unique hybrid stats.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_armorkit_27.jpg" }, { name: "Living Garments", desc: "CAPSTONE: Unlocks recipes for <span class='q4'>soulbound, BiS armor</span> pieces for specific specs.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_rejuvenation.jpg" } ]}, { name: "Dragonscale", nodes: [ { name: "Netheric Scales", desc: "Unlocks Ebon Netherscale set patterns earlier and improves their stats.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterscales_15.jpg" }, { name: "Aspect of the Dragon", desc: "Crafted mail armor has a chance to be created with bonus elemental resistance.", art: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aspectoftheviper.jpg" }, { name: "Beastmaster's Horn", desc: "CAPSTONE: Creates an item that summons a spirit beast to assist the party with a minor crit aura.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_horn_02.jpg" } ]} ] },
+            alchemy: { isPrimary: true, name: "Alchemy", description: "Alchemy specializations are deepened to provide unique, powerful benefits beyond a simple increase in crafting procs, making each choice impactful.", trees: [ { name: "Elixir Master", nodes: [ { name: "Enduring Flasks", desc: "Your flasks last 4 hours and persist through death. You are the raid's foundation.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_potion_41.jpg" }, { name: "Mixology", desc: "You can benefit from two Elixirs (one Battle, one Guardian) simultaneously with your Flask.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_potion_154.jpg" }, { name: "Alchemical Genius", desc: "CAPSTONE: Unlock a recipe for a <span class='q4'>bottomless flask</span> that provides a slightly weaker, but permanent, stat buff.", art: "https://i.imgur.com/8q9jizj.png" } ]}, { name: "Potion Master", nodes: [ { name: "Expedited Potions", desc: "Reduces the cooldown of all potions you use by 15 seconds. More throughput, more survival.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_potion_21.jpg" }, { name: "Triage Potions", desc: "Your healing and mana potions also affect a nearby party member for 20% of the effect.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_potion_93.jpg" }, { name: "Potion of Ultimate Power", desc: "CAPSTONE: Craft a powerful potion combining Haste, SP, and AP. Shares a cooldown with other damage potions.", art: "https://i.imgur.com/ITsdcXB.png" } ]}, { name: "Transmutation Master", nodes: [ { name: "Primal Efficiency", desc: "Chance to create an extra Primal when transmuting. The engine of the server economy.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_elementaldevastation.jpg" }, { name: "Gem Perfecting", desc: "Discover a new transmute that can <span class='q3'>upgrade</span> a rare quality gem into its epic version.", art: "https://i.imgur.com/UxweHEu.png" }, { name: "Nether Vortex", desc: "CAPSTONE: Unlock the ability to transmute a large quantity of Primals and a Primal Nether into a <span class='q4'>Nether Vortex</span>.", art: "https://i.imgur.com/nXAXXTk.png" } ]} ] },
+            enchanting: { isPrimary: true, name: "Enchanting", description: "Enchanting moves beyond a simple service profession, offering powerful, soulbound benefits and unique consumables that make the Enchanter a vital raid member.", trees: [ { name: "Weapon Lord", nodes: [ { name: "Superior Oils", desc: "Craft soulbound weapon oils that are superior to their tradeable counterparts.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_potion_50.jpg" }, { name: "Elemental Potency", desc: "Increases the proc rate and damage of your applied weapon enchants like Mongoose or Executioner.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_elementalshields.jpg" }, { name: "Nexus Enchant", desc: "CAPSTONE: A unique, soulbound weapon enchant that grants a stacking primary stat buff on spell or melee hit.", art: "https://i.imgur.com/SPnjtJu.png" } ]}, { name: "Armor Warden", nodes: [ { name: "Personalized Wards", desc: "Your own chest, bracer, and glove enchants provide 10% more stats.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_enchant_formulaepic_01.jpg" }, { name: "Shield Harmonics", desc: "Unlock powerful, unique shield enchants focusing on threat or mitigation.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordshield.jpg" }, { name: "Runic Fortification", desc: "CAPSTONE: Apply a <span class='q4'>soulbound enchant</span> to your leg armor that provides a massive stamina and defense boost.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_rune_06.jpg" } ]}, { name: "Arcane Artificer", nodes: [ { name: "Focus of Power", desc: "Craft superior wands and off-hands. Your wands are a viable source of damage early on.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_wand_01.jpg" }, { name: "Disenchanting Mastery", desc: "Gain more materials when disenchanting items, and a small chance to find epic gems.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_enchant_disenchant.jpg" }, { name: "Prismatic Sphere", desc: "CAPSTONE: Craft a consumable that grants the entire party a significant boost to all resistances for a short time.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_massdispel.jpg" } ]} ] },
+            engineering: { isPrimary: true, name: "Engineering", description: "Engineering's identity is solidified. Goblins get bigger booms, Gnomes get better utility, and a new path focuses on making tradeable, high-tech components.", trees: [ { name: "Goblin Engineer", nodes: [ { name: "Bigger Booms", desc: "Increases the radius and damage of all your explosives. The undisputed AoE king.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_fire_selfdestruct.jpg" }, { name: "The Big One", desc: "Unlocks a powerful, long-cooldown bomb with a stun effect. Usable in raids.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bomb_06.jpg" }, { name: "Rocket Barrage", desc: "CAPSTONE: Your <span class='q4'>Goblin Rocket Launcher</span> trinket now fires a volley of 3 rockets.", art: "https://i.imgur.com/DqvaKkk.jpeg" } ]}, { name: "Gnomish Engineer", nodes: [ { name: "Master Control", desc: "Reduces the chance of your devices backfiring. Your utility is now reliable.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_mindsteal.jpg" }, { name: "Embiggening Ray", desc: "Your shrink ray can now be used on allies to grant a small stamina buff.", art: "https://i.imgur.com/6YKQRzh.png" }, { name: "World Enlarger", desc: "CAPSTONE: Unlocks the recipe for a raid-deployable teleporter to Shattrath.", art: "https://i.imgur.com/zJqRgvn.jpeg" } ]}, { name: "Pragmatic Engineer", nodes: [ { name: "Superior Scopes", desc: "Craft soulbound, BiS scopes for your own ranged weapons.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_spyglass_02.jpg" }, { name: "Modular Plating", desc: "Craft powerful, tradeable armor plates that can be applied to gear, similar to armor kits.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_enggizmos_20.jpg" }, { name: "Epic Goggles", desc: "CAPSTONE: Specialization grants bonus stats to the epic engineering goggles, keeping them relevant longer.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_helmet_49.jpg" } ]} ] },
+            jewelcrafting: { isPrimary: true, name: "Jewelcrafting", description: "Jewelcrafting offers more than just cutting gems. Paths focus on creating unique soulbound gems, powerful jewelry, and manipulating the gem market.", trees: [ { name: "Gemcutting", nodes: [ { name: "Flawless Cuts", desc: "All gems you cut have a chance to become 'Flawless', granting slightly higher stats.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelcrafting_nobletopaz_02.jpg" }, { name: "Unique Cuts", desc: "Unlock soulbound gem cuts with unique stat combinations (e.g., Stamina and Spell Hit).", art: "https://i.imgur.com/5Xwkgtz.png" }, { name: "Prismatic Mastery", desc: "CAPSTONE: Learn to cut a <span class='q4'>soulbound Prismatic Gem</span> that provides a large boost to all stats.", art: "https://i.imgur.com/I82PtRS.png" } ]}, { name: "Jewelry Crafting", nodes: [ { name: "Figurine Mastery", desc: "Reduces the cooldown and improves the stats of your jewelcrafting trinkets.", art: "https://i.imgur.com/3zDWDqD.png" }, { name: "Set Bonus Crafting", desc: "Craft necklaces and rings that provide a 2-piece set bonus (e.g., +35 healing).", art: "https://i.imgur.com/UD0WucB.png" }, { name: "Sunwell Designs", desc: "CAPSTONE: Unlocks recipes for <span class='q4'>BiS epic necklaces and rings</span> that require materials from Sunwell Plateau.", art: "https://i.imgur.com/onYfJUh.png" } ]}, { name: "Prospecting", nodes: [ { name: "Mass Prospecting", desc: "Prospect 20 ore at once, saving time and increasing efficiency.", art: "https://wow.zamimg.com/images/wow/icons/large/trade_mining.jpg" }, { name: "Adamantite Refining", desc: "Discover a method to turn Adamantite Powder into a random uncommon gem.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_dust_02.jpg" }, { name: "Gemstone Sifting", desc: "CAPSTONE: A daily cooldown that allows you to sift through a stack of ore for a guaranteed <span class='q3'>rare</span> or <span class='q4'>epic</span> gem.", art: "https://i.imgur.com/BUhXUct.png" } ]} ] },
+            tailoring: { isPrimary: true, name: "Tailoring", description: "The three cloth specializations are now true paths, each with unique perks beyond just crafting their respective sets, plus a new path for tradeable goods.", trees: [ { name: "Spellfire", nodes: [ { name: "Scorching Weave", desc: "Increases the fire and arcane damage bonus from your Spellfire set.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_cloth_spellfire_01.jpg" }, { name: "Efficient Weaving", desc: "Reduces the cooldown on creating Spellcloth by 12 hours.", art: "https://i.imgur.com/qC19kkG.png" }, { name: "Inferno Weave", desc: "CAPSTONE: A new <span class='q4'>soulbound enchant</span> for your cloak that has a chance to proc a powerful fire damage effect.", art: "https://i.imgur.com/c7NQq8m.png" } ]}, { name: "Shadoweave", nodes: [ { name: "Embrace of Shadows", desc: "Increases the shadow and frost damage bonus from your Shadoweave set.", art: "https://i.imgur.com/QFClunJ.png" }, { name: "Efficient Weaving", desc: "Reduces the cooldown on creating Shadowcloth by 12 hours.", art: "https://i.imgur.com/qC19kkG.png" }, { name: "Void Threads", desc: "CAPSTONE: A new <span class='q4'>soulbound enchant</span> for your chest that provides a massive spirit and mana-per-5 boost.", art: "https://i.imgur.com/LqWVcKt.png" } ]}, { name: "Primal Mooncloth", nodes: [ { name: "Lunar Blessing", desc: "Increases the healing bonus from your Primal Mooncloth set.", art: "https://i.imgur.com/497e547b-ef05-4429-b305-d9552c55c8ae.png" }, { name: "Efficient Weaving", desc: "Reduces the cooldown on creating Primal Mooncloth by 12 hours.", art: "https://i.imgur.com/qC19kkG.png" }, { name: "Sanctified Weave", desc: "CAPSTONE: Your Mooncloth bags now have a dedicated 'Hearthstone' slot and <span class='q3'>reduce your Hearthstone cooldown</span> by 10 minutes.", art: "https://i.imgur.com/5IypNcI.png" } ]} ] },
+            inscription: { isPrimary: true, name: "Inscription", description: "Inscription is a natural fit for TBC, providing a valuable herb sink and a new layer of character customization through Glyphs, Scrolls, and powerful Shoulder Inscriptions.", trees: [ { name: "Glyphcarver", nodes: [ { name: "Milling Mastery", desc: "Yield more pigments when milling herbs, and a chance to find <span class='q3'>rare pigments</span>.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_herb_15.jpg" }, { name: "Glyphic Discovery", desc: "Chance to discover new glyph recipes while crafting any Inscription item.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_scroll_03.jpg" }, { name: "Arch-Glyphs", desc: "CAPSTONE: Learn to craft unique, spec-defining <span class='q4'>Arch-Glyphs</span> that offer more significant ability modifications.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_inscription_majorinscription.jpg" } ]}, { name: "Loremaster", nodes: [ { name: "Scroll Savant", desc: "Your crafted scrolls have 15% increased effect and duration.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_scroll_07.jpg" }, { name: "Tome Binding", desc: "Craft powerful soulbound off-hand tomes and staves, competitive with Karazhan-level loot.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_book_09.jpg" }, { name: "Shoulder Inscriptions", desc: "CAPSTONE: Create <span class='q4'>soulbound shoulder enchants</span> slightly weaker than Aldor/Scryer, but available without reputation.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_inscription_scrollofstrength.jpg" } ]}, { name: "Cartographer", nodes: [ { name: "Contract Crafting", desc: "Craft 'Contracts' that increase reputation gain with a chosen TBC faction by 10% for one hour.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_ticket_tarot_honor_01.jpg" }, { name: "Darkmoon Sage", desc: "Discover how to craft entire Darkmoon Card decks, including a chance at the coveted <span class='q4'>Darkmoon Card: Crusade</span>.", art: "https://i.imgur.com/0729c097-8b47-45f0-a46e-07705f83df8d.png" }, { name: "Treasure Maps", desc: "CAPSTONE: Assemble map fragments found via milling into a <span class='q3'>Treasure Map</span>, revealing a location with rare materials or gems.", art: "https://i.imgur.com/yVIfNoS.png" } ]} ] },
+            herbalism: { isPrimary: false, name: "Herbalism", description: "Herbalism becomes more than just picking flowers, with specializations focusing on efficiency, finding rare herbs, or gaining unique combat buffs.", trees: [{ name: "Botanist", nodes: [ { name: "Cultivation", desc: "Chance to gather an extra herb from any node. Your Lifeblood ability also restores a small amount of mana.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingtouch.jpg" }, { name: "Fel-Tainted Herbs", desc: "Chance to find <span class='q3'>Fel Lotus</span> when gathering any Outland herb.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_herb_felblossom.jpg" }, { name: "Master of the Garden", desc: "CAPSTONE: Lifeblood now also grants a small amount of Haste for a short duration.", art: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_giftofthewild.jpg" } ]}] },
+            skinning: { isPrimary: false, name: "Skinning", description: "Skinning specializations allow you to become a master of hides, scales, or leathers, increasing your yield and finding rare components.", trees: [{ name: "Anatomist", nodes: [ { name: "Tanning Master", desc: "Chance to gather extra leather from beasts. Your Master of Anatomy passive provides a higher crit rating.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_pelt_wolf_01.jpg" }, { name: "Scale Collector", desc: "Greatly increases the chance to find <span class='q3'>Nether Dragonscales</span> or <span class='q3'>Wind Scales</span> from appropriate creatures.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterscales_07.jpg" }, { name: "Trophy Hunter", desc: "CAPSTONE: Chance to skin a <span class='q4'>Pristine Hide</span> from raid bosses, a valuable epic crafting material.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_pelt_bear_ruin.jpg" } ]}] },
+            mining: { isPrimary: false, name: "Mining", description: "Mining is no longer just about hitting rocks. Specializations focus on prospecting on-the-fly, smelting efficiency, and finding rare materials.", trees: [{ name: "Geologist", nodes: [ { name: "Prospector's Eye", desc: "Chance to find uncommon or rare gems directly from mining nodes. Your Toughness passive provides a higher stamina bonus.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_gem_01.jpg" }, { name: "Smelting Efficiency", desc: "Reduces the amount of ore required to smelt bars.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_ingot_04.jpg" }, { name: "Quarrymaster", desc: "CAPSTONE: Chance to discover a <span class='q4'>Rich Adamantite Deposit</span> after mining any Adamantite Vein.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_ore_adamantite_02.jpg" } ]}] },
+            cooking: { isPrimary: false, name: "Cooking", description: "Cooking evolves beyond simple stat food, offering paths that provide unique buffs and valuable trade goods that support the entire raid.", trees: [{ name: "Way of the Spice", nodes: [ { name: "Feast Crafter", desc: "Learn to create Raid Feasts that offer a well-fed buff to up to 10 people at once.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_food_70.jpg" }, { name: "Spicy Concoctions", desc: "Discover recipes for food that grant unique, short-term buffs like threat reduction or movement speed.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_food_112.jpg" }, { name: "Master of the Banquet", desc: "CAPSTONE: Your Raid Feasts are larger, feeding up to 25 people, and provide a slightly stronger well-fed buff.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_food_110.jpg" } ]}] },
+            fishing: { isPrimary: false, name: "Fishing", description: "Fishing becomes an engaging mini-game with specializations focusing on catching rare fish, finding sunken treasure, or providing valuable crafting materials.", trees: [{ name: "Master Angler", nodes: [ { name: "Bait Specialist", desc: "Learn to craft your own lures that significantly increase the chance to catch specific rare fish.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_fish_22.jpg" }, { name: "Treasure Hunter", desc: "Chance to fish up locked chests containing valuable crafting materials, gems, or even BoE items.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_box_03.jpg" }, { name: "Mr. Pinchy's Pal", desc: "CAPSTONE: Greatly increases the chance to fish up <span class='q4'>Mr. Pinchy</span>, and grants you an extra wish.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterhead_04.jpg" } ]}] },
+            firstaid: { isPrimary: false, name: "First Aid", description: "First Aid becomes a crucial support skill, with specializations that make bandages faster, more potent, and capable of providing tactical advantages.", trees: [{ name: "Trauma Care", nodes: [ { name: "Swift Bandaging", desc: "The bandages you create restore 20% more health and apply their heal-over-time effect 50% faster.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_bandage_15.jpg" }, { name: "Field Medic", desc: "Learn to craft powerful Anti-Venom and Anti-Disease potions that can be used on friendly targets.", art: "https://wow.zamimg.com/images/wow/icons/large/inv_potion_19.jpg" }, { name: "Combat Surgeon", desc: "CAPSTONE: While a player is affected by one of your bandages, they also gain 5% increased armor for 15 seconds.", art: "https://i.imgur.com/2022c609-2858-41b4-99a9-68d9d430e36f.png" } ]}] },
+        };
+        
+        const glyphData = {
+            "Warrior": [
+                { name: "Glyph of Sundering", spec: "Protection (Warrior)", desc: "Your Sunder Armor has a 10% chance to apply two stacks." },
+                { name: "Glyph of Heroic Strike", spec: "Fury", desc: "Reduces the rage cost of your Heroic Strike by 3." },
+                { name: "Glyph of Mortal Strike", spec: "Arms", desc: "Increases the damage of your Mortal Strike by 5%." }
+            ],
+            "Paladin": [
+                { name: "Glyph of Holy Light", spec: "Holy (Paladin)", desc: "Your Holy Light refunds 10% of its mana cost if it critically heals." },
+                { name: "Glyph of Consecration", spec: "Protection (Paladin)", desc: "Increases the duration and reduces the mana cost of Consecration." },
+                { name: "Glyph of Sealing", spec: "Retribution", desc: "Your Judgement of the Crusader also increases your movement speed by 10% for 5 sec." }
+            ],
+            "Hunter": [
+                { name: "Glyph of the Viper", spec: "Survival", desc: "Aspect of the Viper regenerates mana 10% faster, but the damage penalty is increased." },
+                { name: "Glyph of Aimed Shot", spec: "Marksmanship", desc: "Reduces Aimed Shot cast time by 0.2 sec, but increases its cooldown by 1 sec." },
+                { name: "Glyph of Bestial Wrath", spec: "Beast Mastery", desc: "Increases the duration of Bestial Wrath by 3 sec." }
+            ],
+            "Rogue": [
+                { name: "Glyph of Rupture", spec: "Assassination", desc: "Increases the duration of your Rupture by 3 sec." },
+                { name: "Glyph of Blade Flurry", spec: "Combat", desc: "Reduces the energy cost of Blade Flurry by 10." },
+                { name: "Glyph of Ambush", spec: "Subtlety", desc: "Your Ambush has a 20% increased critical strike chance on targets at full health." }
+            ],
+            "Priest": [
+                { name: "Glyph of Prayer of Healing", spec: "Holy (Priest)", desc: "Your Prayer of Healing also applies a small Heal-over-Time effect to targets." },
+                { name: "Glyph of Shadow Word: Pain", spec: "Shadow", desc: "Increases the duration of Shadow Word: Pain by 6 sec." },
+                { name: "Glyph of Power Word: Shield", spec: "Discipline", desc: "Increases the damage absorbed by your Power Word: Shield by 10%, but it no longer prevents spell pushback." }
+            ],
+            "Shaman": [
+                { name: "Glyph of Healing Wave", spec: "Restoration (Shaman)", desc: "Your Healing Wave also heals you for 10% of the amount healed." },
+                { name: "Glyph of Stormstrike", spec: "Enhancement", desc: "Your Stormstrike also increases the damage of your next 2 Earth Shocks by 10%." },
+                { name: "Glyph of Lightning Bolt", spec: "Elemental", desc: "Reduces the cast time of your Lightning Bolt by 0.1 sec." }
+            ],
+            "Mage": [
+                { name: "Glyph of Evocation", spec: "Arcane", desc: "Your Evocation also restores 10% of your party's maximum mana over its duration." },
+                { name: "Glyph of Scorch", spec: "Fire", desc: "Your Scorch spell increases the duration of your Ignite effect on the target by 1 second." },
+                { name: "Glyph of Ice Barrier", spec: "Frost", desc: "Increases the amount of damage absorbed by your Ice Barrier by 10%." }
+            ],
+            "Warlock": [
+                { name: "Glyph of Corruption", spec: "Affliction", desc: "Your Corruption has a 5% chance to generate a Soul Shard on tick." },
+                { name: "Glyph of Immolate", spec: "Destruction", desc: "Increases the periodic damage of your Immolate by 10%." },
+                { name: "Glyph of Health Funnel", spec: "Demonology", desc: "Reduces the pushback suffered from damaging attacks while channeling Health Funnel by 50%." }
+            ],
+            "Druid": [
+                { name: "Glyph of Rejuvenation", spec: "Restoration (Druid)", desc: "If Rejuvenation heals a target below 50% health, its duration is refreshed." },
+                { name: "Glyph of Mangle", spec: "Feral", desc: "Increases the threat generated by your Mangle (Bear) ability by 10%." },
+                { name: "Glyph of Shred", spec: "Feral", desc: "Reduces the energy cost of Shred by 5." },
+                { name: "Glyph of Starfire", spec: "Balance", desc: "Your Starfire has a 10% chance to make your next Wrath instant cast." }
+            ]
+        };
+
+        const specIcons = {
+            'Balance': 'https://i.imgur.com/wHraXbQ.png',
+            'Feral': 'https://i.imgur.com/oWELe27.jpeg',
+            'Restoration (Druid)': 'https://i.imgur.com/FhEdYpH.png',
+            'Beast Mastery': 'https://i.imgur.com/hLuzV5r.png',
+            'Marksmanship': 'https://i.imgur.com/CXUdnI7.png',
+            'Survival': 'https://i.imgur.com/xHx9U5j.jpeg',
+            'Arcane': 'https://i.imgur.com/ijQ7G6n.png',
+            'Fire': 'https://i.imgur.com/O5wd77P.png',
+            'Frost': 'https://i.imgur.com/VQuz025.png',
+            'Holy (Paladin)': 'https://i.imgur.com/h4YMa7d.jpeg',
+            'Protection (Paladin)': 'https://i.imgur.com/clEh6QJ.png',
+            'Retribution': 'https://i.imgur.com/g1SClHq.png',
+            'Discipline': 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordshield.jpg', // Fallback
+            'Holy (Priest)': 'https://i.imgur.com/DL98NFV.png',
+            'Shadow': 'https://i.imgur.com/YSxxv36.png',
+            'Elemental': 'https://i.imgur.com/4CSwh2K.png',
+            'Enhancement': 'https://i.imgur.com/Ny6OaiV.png',
+            'Restoration (Shaman)': 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavelesser.jpg', // Fallback
+            'Affliction': 'https://i.imgur.com/i9Hoc6U.jpeg',
+            'Demonology': 'https://i.imgur.com/CFMzPX3.png',
+            'Destruction': 'https://i.imgur.com/67hJXkU.png',
+            'Arms': 'https://i.imgur.com/KeuDjfw.png',
+            'Fury': 'https://i.imgur.com/hMfM0QB.png',
+            'Protection (Warrior)': 'https://i.imgur.com/zxSAsX0.png',
+            'Combat': 'https://wow.zamimg.com/images/wow/icons/large/ability_backstab.jpg', // Fallback
+            'Subtlety': 'https://wow.zamimg.com/images/wow/icons/large/ability_stealth.jpg', // Fallback
+            'Assassination': 'https://wow.zamimg.com/images/wow/icons/large/ability_rogue_deadlybrew.jpg', // Fallback
+            'All': 'https://wow.zamimg.com/images/wow/icons/large/spell_holy_prayerofhealing.jpg' // Fallback
+        };
+
+        const classIcons = {
+            "All": "🌟", 
+            "Warrior": "https://i.imgur.com/zxSAsX0.png",
+            "Paladin": "https://i.imgur.com/clEh6QJ.png",
+            "Hunter": "https://i.imgur.com/hLuzV5r.png",
+            "Rogue": "https://wow.zamimg.com/images/wow/icons/large/classicon_rogue.jpg",
+            "Priest": "https://i.imgur.com/DL98NFV.png",
+            "Shaman": "https://i.imgur.com/4CSwh2K.png",
+            "Mage": "https://i.imgur.com/ijQ7G6n.png",
+            "Warlock": "https://i.imgur.com/CFMzPX3.png",
+            "Druid": "https://i.imgur.com/oWELe27.jpeg"
+        };
+
+
+        // --- SCRIPT LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Element Selectors ---
+            const sections = document.querySelectorAll('.page-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const professionsGrid = document.getElementById('professionsGrid');
+            const workshopSection = document.getElementById('workshop');
+            const workshopContent = document.getElementById('workshopContent');
+            const hubSection = document.getElementById('professions');
+            const backToHubButton = document.getElementById('backToHub');
+            const glyphFilterContainer = document.getElementById('glyphFilterContainer');
+            const glyphListContainer = document.getElementById('glyphListContainer');
+            const dynamicTooltip = document.getElementById('dynamic-tooltip');
+
+            // --- Initial Rendering ---
+            renderPhilosophyChart();
+            renderProfessions();
+            renderGlyphFilters();
+            renderGlyphs('All');
+            setupDynamicTooltip();
+
+            // --- Render Functions ---
+            function renderPhilosophyChart() {
+                const ctx = document.getElementById('philosophyChart').getContext('2d');
+                new Chart(ctx, { type: 'radar', data: { labels: ['Meaningful Choice', 'Enduring Progression', 'Player Interdependence', 'Raid Utility', 'Gold Making', 'Personal Power'], datasets: [{ label: 'Original TBC Focus', data: [3, 4, 6, 8, 7, 8], backgroundColor: 'rgba(255, 99, 132, 0.2)', borderColor: 'rgba(255, 99, 132, 1)', borderWidth: 2 }, { label: 'Shattered Forge Goal', data: [8, 8, 9, 7, 6, 7], backgroundColor: 'rgba(0, 180, 255, 0.2)', borderColor: 'rgba(0, 180, 255, 1)', borderWidth: 2 }] }, options: { maintainAspectRatio: false, scales: { r: { angleLines: { color: 'rgba(240, 240, 240, 0.2)' }, grid: { color: 'rgba(240, 240, 240, 0.2)' }, pointLabels: { font: { size: 12, family: 'Roboto' }, color: '#f0f0f0' }, ticks: { backdropColor: 'rgba(28, 28, 28, 0.8)', color: '#f0f0f0', stepSize: 2 }}}, plugins: { legend: { labels: { color: '#f0f0f0', font: { size: 14, family: 'Roboto' }}}, tooltip: { callbacks: { label: (c) => `${c.dataset.label||''}: ${c.raw}/10` }}} }});
+            }
+            
+            function renderProfessions() {
+                professionsGrid.innerHTML = '';
+                const primaryTitle = document.createElement('h3');
+                primaryTitle.className = 'text-xl md:text-2xl header-subtitle col-span-full mb-4 mt-2';
+                primaryTitle.textContent = 'Primary Professions';
+                professionsGrid.appendChild(primaryTitle);
+                const primaryContainer = document.createElement('div');
+                primaryContainer.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 col-span-full';
+                professionsGrid.appendChild(primaryContainer);
+                const secondaryTitle = document.createElement('h3');
+                secondaryTitle.className = 'text-xl md:text-2xl header-subtitle col-span-full mb-4 mt-8';
+                secondaryTitle.textContent = 'Secondary Professions';
+                professionsGrid.appendChild(secondaryTitle);
+                const secondaryContainer = document.createElement('div');
+                secondaryContainer.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 col-span-full';
+                professionsGrid.appendChild(secondaryContainer);
+
+                Object.keys(professionData).forEach(key => {
+                    const prof = professionData[key];
+                    const container = prof.isPrimary ? primaryContainer : secondaryContainer;
+                    const div = document.createElement('div');
+                    div.className = 'profession-icon-container wowhead-container rounded-lg p-4 text-center cursor-pointer';
+                    div.dataset.prof = key;
+                    div.innerHTML = `<img src="${professionImageUrls[key]}" alt="${prof.name}" class="profession-icon mx-auto mb-2"><h4 class="text-lg text-gray-200">${prof.name}</h4>`;
+                    div.addEventListener('click', () => showWorkshop(key));
+                    container.appendChild(div);
+                });
+            }
+
+            function renderGlyphFilters() {
+                glyphFilterContainer.innerHTML = '';
+                Object.keys(classIcons).forEach(className => {
+                    const button = document.createElement('button');
+                    button.className = 'glyph-filter-btn p-2 px-4 rounded-md flex items-center gap-2';
+                    if (className === 'All') {
+                        button.classList.add('active');
+                        button.innerHTML = `<span>${classIcons[className]}</span> ${className}`;
+                    } else {
+                        button.innerHTML = `<img src="${classIcons[className]}" alt="${className} icon"> ${className}`;
+                    }
+                    button.dataset.filter = className;
+                    button.addEventListener('click', () => {
+                        document.querySelectorAll('.glyph-filter-btn').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        renderGlyphs(className);
+                    });
+                    glyphFilterContainer.appendChild(button);
+                });
+            }
+            
+            function renderGlyphs(filter) {
+                glyphListContainer.innerHTML = '';
+                const classesToRender = filter === 'All' ? Object.keys(glyphData) : [filter];
+
+                classesToRender.forEach(className => {
+                    glyphData[className].forEach(glyph => {
+                        const card = document.createElement('div');
+                        card.className = 'glyph-card p-4 rounded-lg';
+                        const iconSrc = specIcons[glyph.spec] || specIcons['All'];
+                        card.innerHTML = `
+                            <div class="flex items-center gap-3">
+                                <img src="${iconSrc}" alt="${glyph.spec} icon">
+                                <div>
+                                    <h4 class="font-bold text-lg text-yellow-400">${glyph.name}</h4>
+                                    <p class="text-sm text-gray-400">${className} - ${glyph.spec}</p>
+                                </div>
+                            </div>
+                            <p class="mt-3 text-gray-300">${glyph.desc}</p>
+                        `;
+                        glyphListContainer.appendChild(card);
+                    });
+                });
+            }
+
+            // --- Core Functions ---
+            function showWorkshop(profKey) {
+                const prof = professionData[profKey];
+                let treeHtml = '<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">';
+                prof.trees.forEach(tree => {
+                    treeHtml += `<div class="bg-gray-800/50 rounded-lg p-4"><h4 class="text-xl text-center mb-4 text-blue-300">${tree.name}</h4><div class="talent-tree talent-connector h-96 rounded p-4 flex flex-col justify-around items-center">
+                        ${tree.nodes.map(node => `<div class="talent-node" data-tooltip-content="<strong class='font-bold text-yellow-400'>${node.name}</strong><p class='text-gray-300 mt-1'>${node.desc}</p>">
+                                <div class="flex flex-col items-center gap-2 p-1 rounded" style="background-color: rgba(28, 29, 32, 1);">
+                                    <img src="${node.art}" class="talent-icon" alt="Talent Icon" onerror="this.onerror=null;this.src='https://placehold.co/48x48/1c1d20/ffc900?text=ICON';">
+                                    <div class="w-full bg-gray-900 border-2 border-gray-600 rounded-md p-2 text-center text-sm hover:border-yellow-400 transition-colors duration-200">
+                                        <span class="text-gray-200">${node.name}</span>
+                                    </div>
+                                </div>
+                            </div>`).join('')}
+                    </div></div>`;
+                });
+                treeHtml += '</div>';
+
+                workshopContent.innerHTML = `<h2 class="section-title text-3xl text-center mb-4 header-title">${prof.name}</h2><p class="text-center text-lg max-w-3xl mx-auto mb-8 text-gray-300">${prof.description}</p>${treeHtml}`;
+                hubSection.classList.add('hidden');
+                workshopSection.classList.remove('hidden');
+                window.scrollTo({ top: workshopSection.offsetTop - 80, behavior: 'smooth' });
+                
+                document.querySelectorAll('.profession-icon-container').forEach(i => i.classList.remove('active'));
+                document.querySelector(`.profession-icon-container[data-prof="${profKey}"]`).classList.add('active');
+            }
+            
+            function setupDynamicTooltip() {
+                document.body.addEventListener('mouseover', (e) => {
+                    const target = e.target.closest('[data-tooltip-content]');
+                    if (target) {
+                        dynamicTooltip.innerHTML = target.dataset.tooltipContent;
+                        dynamicTooltip.style.visibility = 'visible';
+                        dynamicTooltip.style.opacity = '1';
+                    }
+                });
+
+                document.body.addEventListener('mouseout', (e) => {
+                    const target = e.target.closest('[data-tooltip-content]');
+                    if (target) {
+                        dynamicTooltip.style.visibility = 'hidden';
+                        dynamicTooltip.style.opacity = '0';
+                    }
+                });
+
+                document.body.addEventListener('mousemove', (e) => {
+                    if (dynamicTooltip.style.visibility === 'visible') {
+                        dynamicTooltip.style.left = `${e.clientX + 15}px`;
+                        dynamicTooltip.style.top = `${e.clientY + 15}px`;
+                    }
+                });
+            }
+
+            // --- Event Listeners ---
+            backToHubButton.addEventListener('click', () => {
+                workshopSection.classList.add('hidden');
+                hubSection.classList.remove('hidden');
+                window.scrollTo({ top: hubSection.offsetTop - 80, behavior: 'smooth' });
+                document.querySelectorAll('.profession-icon-container').forEach(i => i.classList.remove('active'));
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetElement = document.querySelector(this.getAttribute('href'));
+                    if (targetElement) {
+                         window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                        });
+                    }
+                });
+            }, { rootMargin: '-40% 0px -60% 0px', threshold: 0.1 });
+            sections.forEach(section => observer.observe(section));
+        });
+    </script>
+</body>
+</html>

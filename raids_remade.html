@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeons and Raids: Remade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles to evoke the TBC aesthetic */
+        body {
+            background-color: #0a0806;
+            background-image: url('https://i.imgur.com/WVCcZLM.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Roboto', sans-serif;
+            color: #c7b377;
+        }
+        
+        .font-wow {
+            font-family: 'Cinzel', serif;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        .main-container {
+            background-color: rgba(10, 8, 6, 0.9);
+            border: 2px solid #4a4130;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+        }
+        
+        .nav-button {
+            background-color: #2a2115;
+            border: 1px solid #6a6150;
+            transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        }
+        
+        .nav-button:hover {
+            background-color: #3a3125;
+            border-color: #f8b700;
+        }
+        
+        .nav-button.active {
+            background-color: #4a4130;
+            border-color: #f8b700;
+            color: #f8b700;
+            box-shadow: 0 0 8px #f8b700;
+        }
+
+        .instance-icon {
+            transition: transform 0.2s ease, filter 0.2s ease;
+            border: 2px solid #4a4130;
+            background-color: #1a150f;
+        }
+
+        .instance-icon:hover {
+            transform: scale(1.05);
+            border-color: #f8b700;
+        }
+
+        .instance-icon.active {
+            border-color: #f8b700;
+            box-shadow: 0 0 10px #f8b700;
+            transform: scale(1.05);
+        }
+
+        .content-section {
+            background-color: rgba(0,0,0,0.2);
+            border-left: 3px solid #6a6150;
+        }
+
+        .mechanic-box {
+            background-color: rgba(20, 10, 0, 0.3);
+            border: 1px solid #5a5140;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="main-container max-w-7xl mx-auto rounded-lg p-4 sm:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="font-wow text-4xl sm:text-5xl lg:text-6xl text-yellow-400 tracking-wider">Dungeons and Raids: Remade</h1>
+        </header>
+
+        <!-- Introduction -->
+        <div class="mb-10 p-4 border-y-2 border-yellow-800/30">
+            <h2 class="font-wow text-2xl text-center text-yellow-500 mb-4">Guiding Philosophy</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-gray-300">
+                <div>
+                    <h3 class="font-wow text-xl text-yellow-400">Meaningful Challenge</h3>
+                    <p class="text-sm leading-relaxed">Refining encounters to test skill and coordination over gear and attrition. Every boss fight should be a deadly dance.</p>
+                </div>
+                <div>
+                    <h3 class="font-wow text-xl text-yellow-400">Sustained Relevance</h3>
+                    <p class="text-sm leading-relaxed">Creating an ecosystem where all content remains engaging throughout the expansion, providing multiple paths for progression.</p>
+                </div>
+                <div>
+                    <h3 class="font-wow text-xl text-yellow-400">Preservation of Spirit</h3>
+                    <p class="text-sm leading-relaxed">Honoring the epic scale and sense of accomplishment of TBC while surgically addressing known frustrations.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tier Navigation -->
+        <nav id="tier-navigation" class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6">
+            <!-- Tier buttons will be injected here -->
+        </nav>
+
+        <!-- Instance Selection -->
+        <div id="instance-selection-container" class="mb-10 min-h-[80px] flex flex-wrap justify-center items-center gap-4">
+            <!-- Instance icons will be injected here -->
+        </div>
+
+        <!-- Main Content Display -->
+        <main id="main-content" class="min-h-[400px]">
+             <div id="default-message" class="flex items-center justify-center h-full">
+                <p class="font-wow text-2xl text-gray-500">Select a content tier to explore the proposed changes.</p>
+            </div>
+            <div id="content-display" class="hidden">
+                <!-- Content will be injected here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- DATA STORE ---
+        const reforgedData = {
+            dungeons: {
+                name: "Dungeons",
+                instances: {
+                    all: {
+                        name: "All Dungeons",
+                        icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_key_11.jpg',
+                        content: `
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="font-wow text-3xl text-yellow-400 mb-2">Heroic+ Difficulty</h3>
+                                    <p class="mb-4 text-gray-300">Upon the release of Tier 5, a new difficulty unlocks: Heroic+. This mode is the ultimate 5-man challenge, featuring new mechanics on every boss, forcing players to relearn familiar encounters.</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="mechanic-box p-4 rounded-lg">
+                                            <h4 class="font-wow text-lg text-yellow-500">Hellfire Citadel</h4>
+                                            <p class="text-sm">Kargath Bladefist will periodically Blade Dance. Keli'dan the Breaker will ignite the fel channels on the floor.</p>
+                                        </div>
+                                        <div class="mechanic-box p-4 rounded-lg">
+                                            <h4 class="font-wow text-lg text-yellow-500">Coilfang Reservoir</h4>
+                                            <p class="text-sm">Hungarfen spawns a fixating Volatile Bog-Lord. Hydromancer Thespia's elementals split upon death.</p>
+                                        </div>
+                                        <div class="mechanic-box p-4 rounded-lg">
+                                            <h4 class="font-wow text-lg text-yellow-500">Auchindoun</h4>
+                                            <p class="text-sm">Murmur's Sonic Boom hits two players. Talon King Ikiss summons Arcane Clones.</p>
+                                        </div>
+                                        <div class="mechanic-box p-4 rounded-lg">
+                                            <h4 class="font-wow text-lg text-yellow-500">Tempest Keep</h4>
+                                            <p class="text-sm">High Botanist Freywinn summons a Volatile Sapling. Harbinger Skyriss summons lesser versions of other instance bosses.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-wow text-3xl text-yellow-400 mb-2">Rewards & Badges</h3>
+                                    <p class="mb-4 text-gray-300">Heroic+ offers a new tier of epic gear (ilvl 128), increased reputation, and a daily quest for 3 Badges of Justice. The Badge vendor's inventory will expand with each content phase, eventually including Tier 4 and Tier 5 set pieces to provide a clear catch-up path.</p>
+                                </div>
+                            </div>
+                        `
+                    }
+                }
+            },
+            tier4: {
+                name: "Tier 4 Raids",
+                instances: {
+                    karazhan: {
+                        name: "Karazhan",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-nefarian.png',
+                        content: `
+                            <h3 class="font-wow text-3xl text-yellow-400 mb-2">Karazhan (10-Man)</h3>
+                            <p class="mb-4 text-gray-300">A masterpiece of 10-man design, Karazhan remains largely untouched in its base form. A new Heroic Mode unlocks with Tier 6, introducing new challenges and rewards.</p>
+                            <div class="space-y-4">
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Heroic Mode Mechanics</h4>
+                                    <p class="text-sm">Moroes's guests gain new abilities. The Curator's Evocation summons hostile Astral Flares. Attumen and Midnight combine abilities mid-fight. Nightbane's skeletons leave behind pools of fire.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">The Forgotten Crypt</h4>
+                                    <p class="text-sm">A new, optional T6-level boss, the 'Lich-King's Forgotten General', is accessible in the Karazhan Crypts on Heroic difficulty after defeating Nightbane, offering loot on par with Hyjal Summit.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    gruul: {
+                        name: "Gruul's Lair",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-gruul-the-dragonkiller.png',
+                        content: `
+                            <h3 class="font-wow text-3xl text-yellow-400 mb-2">Gruul's Lair (25-Man)</h3>
+                            <p class="mb-4 text-gray-300">This raid remains a 25-man encounter, now featuring an optional Hard Mode activation for greater challenge and reward.</p>
+                            <div class="space-y-4">
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Hard Mode Activation</h4>
+                                    <p class="text-sm">To activate, High King Maulgar's council must be defeated in a specific, non-obvious order, with the final member slain within 15 seconds of the third. This causes Maulgar's spirit to empower Gruul.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Gruul (Hard Mode)</h4>
+                                    <p class="text-sm">Gruul gains Maulgar's Whirlwind ability and will periodically reanimate a random Gronn Lord's corpse for 30 seconds to rejoin the fight.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Hard Mode Rewards</h4>
+                                    <p class="text-sm">Guarantees an extra piece of loot from a special table, including Tier 5-equivalent necklaces, rings, and cloaks.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    magtheridon: {
+                        name: "Magtheridon's Lair",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-magtheridon.png',
+                        content: `
+                            <h3 class="font-wow text-3xl text-yellow-400 mb-2">Magtheridon's Lair (25-Man)</h3>
+                            <p class="mb-4 text-gray-300">This raid remains a 25-man encounter, now featuring an optional Hard Mode activation for greater challenge and reward.</p>
+                            <div class="space-y-4">
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Hard Mode Activation</h4>
+                                    <p class="text-sm">To activate, the raid must click all five Manticron Cubes within a 5-second window, causing a feedback loop of chaotic energy to surge into Magtheridon.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Magtheridon (Hard Mode)</h4>
+                                    <p class="text-sm">Magtheridon permanently retains the abilities of his channelers (Shadow Bolt Volley, Summon Burning Abyssal) after they are banished, drastically increasing raid damage and the need for control.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Hard Mode Rewards</h4>
+                                    <p class="text-sm">Guarantees an extra piece of loot from a special table, including Tier 5-equivalent necklaces, rings, and cloaks.</p>
+                                </div>
+                            </div>
+                        `
+                    }
+                }
+            },
+            tier5: {
+                name: "Tier 5 Raids",
+                instances: {
+                    ssc: {
+                        name: "Serpentshrine Cavern",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-lady-vashj.png',
+                        content: `
+                            <h3 class="font-wow text-3xl text-yellow-400 mb-2">Serpentshrine Cavern (25-Man)</h3>
+                            <p class="mb-4 text-gray-300">The journey through SSC is streamlined with trash refinements, and a Heroic mode unlocks with the Sunwell patch.</p>
+                            <div class="space-y-4">
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Trash Refinement</h4>
+                                    <p class="text-sm">The density of non-elite trash is reduced, and key patrol respawn timers are increased from 2 to 4 hours to reduce frustration.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Lady Vashj (Heroic)</h4>
+                                    <p class="text-sm">Tainted Cores despawn faster and require a specific debuff to carry. Sporebats are tougher. Phase 3 features two additional elite naga who must be CC'd.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Attunement Streamlining</h4>
+                                    <p class="text-sm">Once Tier 6 is released, players Revered with the Sha'tar can complete a quest from Khadgar to bypass the attunement chain.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    tk: {
+                        name: "Tempest Keep",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-kaelthas-sunstrider.png',
+                        content: `
+                             <h3 class="font-wow text-3xl text-yellow-400 mb-2">Tempest Keep: The Eye (25-Man)</h3>
+                            <p class="mb-4 text-gray-300">The Eye is streamlined with trash refinements, and a Heroic mode unlocks with the Sunwell patch.</p>
+                            <div class="space-y-4">
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Trash Refinement</h4>
+                                    <p class="text-sm">The density of non-elite trash is reduced, and key patrol respawn timers are increased from 2 to 4 hours to reduce frustration.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Kael'thas Sunstrider (Heroic)</h4>
+                                    <p class="text-sm">Legendary Weapons have new abilities. Phoenixes drop two eggs instead of one. In Phase 5, Kael'thas summons Nether Vapors that explode violently on death.</p>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Attunement Streamlining</h4>
+                                    <p class="text-sm">Once Tier 6 is released, players Revered with the Sha'tar can complete a quest from Khadgar to bypass the attunement chain.</p>
+                                </div>
+                            </div>
+                        `
+                    }
+                }
+            },
+            tier6: {
+                name: "Tier 6 Raids",
+                instances: {
+                    hyjal: {
+                        name: "Hyjal Summit",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-archimonde.png',
+                        content: `
+                            <h2 class="font-wow text-4xl text-yellow-400 mb-2">Hyjal Summit: The Dynamic Battlefield</h2>
+                            <p class="mb-6 text-gray-300 leading-relaxed">The Battle for Mount Hyjal is reborn. The monotonous 8-wave gauntlet is replaced by 4 shorter, more intense waves preceding each boss, each with unique objectives that directly impact the subsequent boss fight. This transforms the instance from a test of endurance into a dynamic, strategic defense where every action matters. The environment itself evolves with your victories, showing the tangible impact of your efforts against the Legion.</p>
+                            
+                            <div class="content-section p-4 rounded-lg mb-6">
+                                <h3 class="font-wow text-2xl text-yellow-500 mb-2">Dynamic Waves & Environmental Evolution</h3>
+                                <p class="text-sm mb-4">Instead of simple kill quotas, waves now feature interactive objectives. For example, before Rage Winterchill, raids might be tasked with defending Horde Sappers as they plant charges on Scourge Bone Shrines. Success grants the raid a frost resistance buff for the boss, while failure causes the shrines to pulse slowing effects. After Winterchill's defeat, the frozen lake thaws, revealing new pathways. Before Anetheron, waves include powerful Fel-casters who must be interrupted lest they summon \`Felfire Totems\` that empower the boss. Defeating Anetheron visibly cleanses the fel corruption from the Alliance base, causing ancient trees to bloom once more.</p>
+                                <p class="text-sm">During these waves, elite <strong>Legion Mini-Bosses</strong> will spawn, such as a \`Doomguard Commander\` who grants nearby demons a defensive aura, or a \`Shadow-caller Acolyte\` who must be focused down before completing a powerful summoning ritual. These mini-bosses require coordinated target swaps and create priority targets within the chaos of battle.</p>
+                            </div>
+
+                            <div class="content-section p-4 rounded-lg mb-6">
+                                <h3 class="font-wow text-2xl text-yellow-500 mb-2">Active NPC Commanders</h3>
+                                <p class="text-sm">Jaina, Thrall, and Tyrande are no longer passive observers but active commanders who aid the raid. <strong>Jaina Proudmoore</strong> will periodically create large \`Frost Nova Barriers\` that can be used as cover from archer volleys or to freeze entire groups of ghouls. <strong>Thrall</strong> will call down a powerful \`Chain Lightning\` on the largest group of enemies every 45 seconds, and his Farseers will drop totems that offer temporary buffs. <strong>Tyrande Whisperwind</strong>'s role is crucial in the final encounter.</p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-rage-winterchill.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">Rage Winterchill</h4>
+                                        <p class="text-sm">The fight now has distinct phases. At 75%, he casts \`Ice Barrier\`, a massive absorbing shield, and summons Ice Elementals that must be killed to damage it. At 40%, he enters a \`Berserk\` phase. In the final 20%, he attempts to cast \`Absolute Zero\`, a raid-wiping freeze that can only be avoided by standing in \`Thaw Zones\` created by Jaina's fire spells.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-anetheron.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">Anetheron</h4>
+                                        <p class="text-sm">He links two players with a \`Corruption Bond\`, dealing heavy damage until they run 40 yards apart. He summons \`Fel Hounds\` that bypass tanks and charge directly for healers. His \`Fel Nova\` is a much larger AoE that forces all melee to retreat to environmental cover.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-kazrogal.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">Kaz'rogal</h4>
+                                        <p class="text-sm">His \`Mark of Kaz'rogal\` mana drain is more potent and now chains to nearby players, forcing strict social distancing. Thrall will periodically create a \`Grounding Totem\` that can absorb the effect for any players standing near it, creating a key positioning challenge.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-archimonde.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">Archimonde</h4>
+                                        <p class="text-sm">A new mid-phase is introduced at 50% health where he channels \`Drain Nordrassil\`. He takes 99% reduced damage while \`Corrupted Roots\` spawn and summon adds. The raid must kill these adds to break his channel. Tyrande's \`Tears of Elune\` are now more interactive; players can click them to not only survive Air Burst but also to gain a short-duration, high-powered jump to quickly reposition or avoid his massive \`Doomfire\` lines.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `
+                    },
+                    bt: {
+                        name: "Black Temple",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-illidan-stormrage.png',
+                        content: `
+                            <h2 class="font-wow text-4xl text-yellow-400 mb-2">The Black Temple (25-Man)</h2>
+                            <p class="mb-6 text-gray-300 leading-relaxed">The Betrayer's sanctum is the heart of Tier 6, and its encounters are being elevated to match their legendary status. The initial bosses are no longer simple gear checks but intricate tactical challenges, setting the stage for the epic confrontations deeper within. A full Heroic mode unlocks 8 weeks after release.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-high-warlord-najentus.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">High Warlord Naj'entus (Heroic)</h4>
+                                        <p class="text-sm">The sewer guardian becomes a frantic, multi-faceted encounter. His \`Impaling Spine\` now targets 3 players, requiring faster reactions. More importantly, he will now periodically submerge, causing \`Geysers\` to erupt from the grates in the room. Players must avoid these while killing high-priority \`Coilfang Ambushers\` that emerge from the water to attack healers.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-supremus.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">Supremus (Heroic)</h4>
+                                        <p class="text-sm">The courtyard becomes a true inferno. His \`Molten Fel-fire\` pools no longer despawn, creating an increasingly shrinking arena. During his kiting phase, he will now fixate on a random player and hurl a \`Volcanic Boulder\`, which must be dodged. At 30% health, he enrages, gaining attack speed and periodically pulsing fire damage to the entire raid.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 mechanic-box p-4 rounded-lg">
+                                    <img src="https://wow.zamimg.com/images/wow/journal/ui-ej-boss-shade-of-akama.png" class="h-20 w-20 rounded-md border-2 border-gray-600">
+                                    <div>
+                                        <h4 class="font-wow text-xl text-yellow-500">Shade of Akama (Heroic)</h4>
+                                        <p class="text-sm">This is no longer a simple add-control fight. The \`Ashtongue Defenders\` now have a health pool and can be killed. If one dies, the Shade of Akama gains a stacking damage buff. \`Channelers\` will now shield themselves, requiring a spellsteal or purge. The Shade himself will periodically \`Vanish\` and reappear behind a random player for a devastating \`Backstab\`, forcing the raid to stay grouped.</p>
+                                    </div>
+                                </div>
+                                 <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Later Bosses (Heroic)</h4>
+                                    <ul class="list-disc list-inside text-sm space-y-1">
+                                        <li><strong>Teron Gorefiend:</strong> More ghosts spawn, and the \`Crushing Shadows\` debuff ticks faster.</li>
+                                        <li><strong>Reliquary of Souls:</strong> Spirit Shock applies a stacking healing absorption debuff.</li>
+                                        <li><strong>Illidan Stormrage:</strong> Flames of Azzinoth have more health and a pulsing aura. Illidan gains a 'Demonic Shear' frontal cone attack and his parasites also drain mana.</li>
+                                    </ul>
+                                </div>
+                                <div class="mechanic-box p-4 rounded-lg">
+                                    <h4 class="font-wow text-lg text-yellow-500">Attunement Streamlining</h4>
+                                    <p class="text-sm">The attunement is removed once Sunwell Plateau is released. Players Exalted with the Ashtongue Deathsworn can speak to Akama for direct access.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    za: {
+                        name: "Zul'Aman",
+                        icon: 'https://wow.zamimg.com/uploads/screenshots/normal/1054749.png',
+                        content: `
+                            <h3 class="font-wow text-3xl text-yellow-400 mb-2">Zul'Aman (10-Man)</h3>
+                            <p class="text-gray-300">Zul'Aman is considered perfectly tuned. Its timed-run mechanic serves as its own brilliant "Hard Mode," a precursor to modern systems like Mythic+. <strong>No changes are proposed;</strong> it serves its role as a catch-up and execution-test raid flawlessly.</p>
+                        `
+                    },
+                    sunwell: {
+                        name: "Sunwell Plateau",
+                        icon: 'https://wow.zamimg.com/images/wow/journal/ui-ej-boss-kiljaeden.png',
+                        content: `
+                            <h3 class="font-wow text-3xl text-yellow-400 mb-2">Sunwell Plateau (25-Man)</h3>
+                            <p class="text-gray-300">This is the ultimate challenge of The Burning Crusade. The difficulty of Sunwell Plateau is its identity. It is the final, brutal test of a guild's skill, dedication, and endurance. To preserve its legacy and prestige, <strong>no Heroic mode will be added.</strong> It stands as the singular pinnacle of PvE achievement in the expansion.</p>
+                        `
+                    }
+                }
+            }
+        };
+
+        // --- DOM ELEMENTS ---
+        const tierNav = document.getElementById('tier-navigation');
+        const instanceContainer = document.getElementById('instance-selection-container');
+        const contentDisplay = document.getElementById('content-display');
+        const defaultMessage = document.getElementById('default-message');
+
+        let activeTier = null;
+        let activeInstance = null;
+        
+        // --- RENDER FUNCTIONS ---
+        
+        function renderTierNav() {
+            tierNav.innerHTML = '';
+            for (const tierKey in reforgedData) {
+                const tierData = reforgedData[tierKey];
+                const button = document.createElement('button');
+                button.className = 'nav-button font-wow px-4 py-2 rounded-md text-lg';
+                button.textContent = tierData.name;
+                button.dataset.tierKey = tierKey;
+                button.addEventListener('click', () => handleTierClick(tierKey, button));
+                tierNav.appendChild(button);
+            }
+        }
+
+        function renderInstanceIcons(tierKey) {
+            instanceContainer.innerHTML = '';
+            const instances = reforgedData[tierKey].instances;
+            for (const instanceKey in instances) {
+                const instanceData = instances[instanceKey];
+                const icon = document.createElement('img');
+                icon.src = instanceData.icon;
+                icon.alt = instanceData.name;
+                icon.title = instanceData.name;
+                icon.className = 'instance-icon h-20 w-20 rounded-lg cursor-pointer object-cover';
+                icon.dataset.tierKey = tierKey;
+                icon.dataset.instanceKey = instanceKey;
+                icon.addEventListener('click', () => handleInstanceClick(tierKey, instanceKey, icon));
+                instanceContainer.appendChild(icon);
+            }
+        }
+
+        function renderContent(tierKey, instanceKey) {
+            const instanceData = reforgedData[tierKey].instances[instanceKey];
+            contentDisplay.innerHTML = instanceData.content;
+            
+            defaultMessage.classList.add('hidden');
+            contentDisplay.classList.remove('hidden');
+        }
+
+        // --- EVENT HANDLERS ---
+        
+        function handleTierClick(tierKey, element) {
+            if (activeTier === tierKey) return;
+            activeTier = tierKey;
+            activeInstance = null;
+
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            renderInstanceIcons(tierKey);
+            
+            // If a tier only has one "instance" (like Dungeons), select it automatically
+            const instances = reforgedData[tierKey].instances;
+            if (Object.keys(instances).length === 1) {
+                const firstInstanceKey = Object.keys(instances)[0];
+                // We need to wait a moment for the icon to be in the DOM to click it
+                setTimeout(() => {
+                    instanceContainer.querySelector('.instance-icon').click();
+                }, 0);
+            } else {
+                 contentDisplay.classList.add('hidden');
+                 defaultMessage.classList.remove('hidden');
+                 defaultMessage.querySelector('p').textContent = `Select an instance from ${reforgedData[tierKey].name}.`;
+            }
+        }
+
+        function handleInstanceClick(tierKey, instanceKey, element) {
+            if (activeInstance === instanceKey) return;
+            activeInstance = instanceKey;
+            
+            document.querySelectorAll('.instance-icon').forEach(icon => icon.classList.remove('active'));
+            element.classList.add('active');
+
+            renderContent(tierKey, instanceKey);
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTierNav();
+        });
+
+    </script>
+</body>
+</html>

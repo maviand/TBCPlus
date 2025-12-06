@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Echoes of Azeroth</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Dark Portal -->
+    <!-- Application Structure Plan: A tab-based dashboard design. A sticky header provides navigation to four main content panels, each corresponding to a project pillar. This non-linear structure allows users to explore content in any order. Pillar 1 uses a dynamic selector to update raid details and a donut chart for reward visualization, plus a bar chart for gear progression. Pillar 2 uses diagrams and columns to explain systems. Pillar 3 uses nested, clickable tabs within cards to manage dense information. Pillar 4 uses a grid layout with icons for a clean presentation of class quests. This structure prioritizes user-driven exploration and breaks down complex information into manageable, interactive chunks. -->
+    <!-- Visualization & Content Choices: Raid loot is visualized with a Chart.js Donut Chart to show part-to-whole relationships (Goal: Compare). World Invasion phases are shown with an HTML/CSS diagram (Goal: Organize). Paragon/Profession rewards use interactive tabbed cards (Goal: Organize) to handle nested information cleanly. A Chart.js Bar Chart compares item levels (Goal: Compare) to provide crucial progression context. All interactions (tab clicks, raid selections) are handled with vanilla JS to update content dynamically, making the page feel responsive and alive. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1814;
+            background-image: url('https://i.imgur.com/e5wE7xi.png');
+            background-size: cover;
+            background-attachment: fixed;
+            color: #EAE0D5;
+        }
+        .blizzard-title {
+            font-family: 'Marcellus', serif;
+            color: #F8B700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+        .nav-button {
+            font-family: 'Marcellus', serif;
+            transition: all 0.3s ease;
+            color: #EAE0D5;
+            border-bottom: 4px solid transparent;
+            position: relative;
+        }
+        .nav-button:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #F8B700;
+            transition: width 0.3s ease;
+        }
+        .nav-button.active, .nav-button:hover {
+            color: #F8B700;
+        }
+        .nav-button.active:after, .nav-button:hover:after {
+            width: 80%;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .ui-panel {
+            background-color: rgba(26, 24, 20, 0.88);
+            border: 1px solid #4a3c2c;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .raid-selector-item {
+            transition: all 0.2s ease-in-out;
+            border-left: 4px solid transparent;
+            background-color: rgba(0,0,0,0.2);
+            color: #c7bba8;
+        }
+        .raid-selector-item.active {
+            background-color: rgba(248, 183, 0, 0.1);
+            border-left-color: #F8B700;
+            color: #F8B700;
+        }
+        .faction-tab { color: #c7bba8; transition: all 0.2s ease; }
+        .faction-tab.active {
+            background-color: #F8B700;
+            color: #1a1814;
+        }
+        .chart-container, .bar-chart-container {
+            position: relative;
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+        .chart-container { max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        .bar-chart-container { max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 450px; }
+        
+        .artwork-placeholder {
+            background-color: #111;
+            border: 1px dashed #4a3c2c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .artwork-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .interactive-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(248, 183, 0, 0.1);
+        }
+        strong {
+            color: #F8B700;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-8">
+            <h1 class="blizzard-title text-4xl md:text-6xl font-bold tracking-wider">Project: Echoes of Azeroth</h1>
+            <p class="text-lg text-gray-400 mt-2">A proposal to revitalize the classic world as a relevant, challenging, and rewarding endgame frontier.</p>
+        </header>
+
+        <nav id="main-nav" class="sticky top-0 bg-[#1a1814]/90 backdrop-blur-sm z-10 shadow-lg rounded-lg mb-8 flex flex-wrap justify-center p-2 border-b-2 border-t-2 border-[#4a3c2c]">
+            <button data-tab="pillar1" class="nav-button active text-sm md:text-lg font-bold py-3 px-4 md:px-6">Legends Reimagined</button>
+            <button data-tab="pillar2" class="nav-button text-sm md:text-lg font-bold py-3 px-4 md:px-6">A Realm Reborn</button>
+            <button data-tab="pillar3" class="nav-button text-sm md:text-lg font-bold py-3 px-4 md:px-6">Paragon & Professions</button>
+            <button data-tab="pillar4" class="nav-button text-sm md:text-lg font-bold py-3 px-4 md:px-6">Class Heritage</button>
+        </nav>
+
+        <main id="main-content">
+            <!-- Pillar 1: Heroic Azerothian Raiding -->
+            <section id="pillar1" class="tab-content active ui-panel p-4 md:p-6">
+                <h2 class="blizzard-title text-3xl font-bold mb-6 text-center">Pillar 1: Heroic Azerothian Raiding</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-1 bg-black/20 rounded-lg p-4">
+                        <h3 class="blizzard-title text-xl mb-4">Select a Timelocked Raid:</h3>
+                        <ul id="raid-selector" class="space-y-2">
+                            <li><button data-raid="mc" class="raid-selector-item active w-full text-left p-3 rounded-md font-semibold">Molten Core (10-Player)</button></li>
+                            <li><button data-raid="bwl" class="raid-selector-item w-full text-left p-3 rounded-md font-semibold">Blackwing Lair (25-Player)</button></li>
+                            <li><button data-raid="aq" class="raid-selector-item w-full text-left p-3 rounded-md font-semibold">Temple of Ahn'Qiraj (25-Player)</button></li>
+                            <li><button data-raid="naxx" class="raid-selector-item w-full text-left p-3 rounded-md font-semibold">Naxxramas (25-Player)</button></li>
+                        </ul>
+                    </div>
+                    <div id="raid-details" class="lg:col-span-2 bg-black/20 rounded-lg p-6">
+                        <!-- Raid details will be rendered here -->
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t-2 border-[#4a3c2c]">
+                    <h3 class="blizzard-title text-2xl mb-4 text-center">Item Level Progression</h3>
+                    <p class="text-center mb-6 max-w-3xl mx-auto text-gray-400">Heroic Azerothian raid gear provides a meaningful progression path, sitting just below the equivalent Outland tier to maintain the primacy of the expansion's content while offering powerful alternatives.</p>
+                    <div class="bar-chart-container">
+                        <canvas id="ilvlProgressionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pillar 2: Dynamic World Systems -->
+            <section id="pillar2" class="tab-content ui-panel p-4 md:p-6">
+                 <h2 class="blizzard-title text-3xl font-bold mb-6 text-center">Pillar 2: A Realm Reborn</h2>
+                 <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-black/20 rounded-lg p-6 flex flex-col">
+                        <h3 class="blizzard-title text-2xl mb-4">World Invasions</h3>
+                        <p class="mb-4 text-gray-400">Multi-stage, server-wide assaults on classic zones.</p>
+                        <div class="space-y-4 flex-grow">
+                            <div class="flex items-center gap-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-red-900/50 text-red-300 font-bold text-xl border border-red-500">1</span><div><h4 class="font-bold text-yellow-300">Phase 1: Infiltration</h4><p class="text-sm text-gray-400">Demonic or Scourge lieutenants appear, empowering local mobs.</p></div></div>
+                            <div class="flex items-center gap-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-red-900/50 text-red-300 font-bold text-xl border border-red-500">2</span><div><h4 class="font-bold text-yellow-300">Phase 2: Siege</h4><p class="text-sm text-gray-400">A world boss appears, protected by event chains.</p></div></div>
+                            <div class="flex items-center gap-4"><span class="flex items-center justify-center w-12 h-12 rounded-full bg-red-900/50 text-red-300 font-bold text-xl border border-red-500">3</span><div><h4 class="font-bold text-yellow-300">Phase 3: Aftermath</h4><p class="text-sm text-gray-400">The zone is suffused with energy, granting access to unique nodes and quests.</p></div></div>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-dashed border-gray-600">
+                             <h4 class="font-bold mb-2 text-yellow-300">Expanded Rewards:</h4>
+                             <ul class="text-sm text-gray-400 list-disc list-inside space-y-1">
+                                <li>Honor Points and Timeworn Badges.</li>
+                                <li>Unique outdoor PvP gear sets with thematic bonuses.</li>
+                                <li>Consumables providing temporary buffs against specific enemy types.</li>
+                             </ul>
+                        </div>
+                    </div>
+                    <div class="bg-black/20 rounded-lg p-6 flex flex-col">
+                        <h3 class="blizzard-title text-2xl mb-4">The Chronicle of Azeroth</h3>
+                        <p class="mb-4 text-gray-400">A new UI table in Shattrath for old-world endgame activities.</p>
+                        <div class="flex-grow">
+                            <h4 class="font-bold mb-2 text-yellow-300">Weekly Azerothian Tour</h4>
+                            <p class="text-sm mb-4 text-gray-400">Complete 5 Heroic Classic dungeons with challenging weekly affixes.</p>
+                            <div class="space-y-3 text-sm p-4 bg-black/30 rounded-md border border-gray-700">
+                                <p><strong>Example Affixes:</strong></p>
+                                <p><strong class="text-yellow-400">Timelocked:</strong> Enemies move and attack 15% faster.</p>
+                                <p><strong class="text-yellow-400">Vengeful:</strong> Non-boss enemies leave a spirit which pursues players.</p>
+                                <p><strong class="text-yellow-400">Explosive:</strong> Enemies can summon an Explosive Orb that must be destroyed.</p>
+                            </div>
+                        </div>
+                         <div class="mt-6 pt-4 border-t border-dashed border-gray-600">
+                             <h4 class="font-bold mb-2 text-yellow-300">Expanded Rewards:</h4>
+                             <p class="text-sm text-gray-400">A "Cache of Timeless Treasures" with guaranteed ilvl 138 gear, Timeworn Badges, and a chance at rare mounts.</p>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Pillar 3: Paragon & Professions -->
+            <section id="pillar3" class="tab-content ui-panel p-4 md:p-6">
+                <h2 class="blizzard-title text-3xl font-bold mb-6 text-center">Pillar 3: Paragon & Professions</h2>
+                <div class="bg-black/20 rounded-lg p-6 mb-8">
+                    <h3 class="blizzard-title text-2xl mb-4">Paragon of the Past</h3>
+                    <p class="mb-4 text-gray-400">For every 10,000 reputation earned past Exalted, receive a Paragon Cache with unique themed rewards.</p>
+                    <div id="paragon-factions">
+                        <div class="flex flex-wrap border border-gray-700 rounded-md mb-4 bg-black/20">
+                            <button data-faction="ad" class="faction-tab active flex-grow p-2 text-sm font-semibold">🛡️ Argent Dawn</button>
+                            <button data-faction="tb" class="faction-tab flex-grow p-2 text-sm font-semibold">⚒️ Thorium Brotherhood</button>
+                            <button data-faction="zt" class="faction-tab flex-grow p-2 text-sm font-semibold">🗿 Zandalar Tribe</button>
+                            <button data-faction="cc" class="faction-tab flex-grow p-2 text-sm font-semibold">🌳 Cenarion Circle</button>
+                            <button data-faction="hw" class="faction-tab flex-grow p-2 text-sm font-semibold">💧 Hydraxian Waterlords</button>
+                            <button data-faction="th" class="faction-tab flex-grow p-2 text-sm font-semibold">🐾 Timbermaw Hold</button>
+                        </div>
+                        <div id="paragon-rewards" class="p-4 bg-black/30 rounded-md min-h-[140px] border border-gray-700"></div>
+                    </div>
+                </div>
+                <div class="bg-black/20 rounded-lg p-6">
+                    <h3 class="blizzard-title text-2xl mb-4">Master-Tier Professions</h3>
+                    <p class="mb-6 text-gray-400">Unlock a "Master-Tier" for professions via a quest chain through Heroic Azerothian content, using new materials found within.</p>
+                    <div id="professions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Professions Rendered Here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pillar 4: Class Heritage -->
+            <section id="pillar4" class="tab-content ui-panel p-4 md:p-6">
+                <h2 class="blizzard-title text-3xl font-bold mb-6 text-center">Pillar 4: Class Heritage & Lore</h2>
+                <p class="text-center mb-8 max-w-3xl mx-auto text-gray-400">Deepen your connection to your character through new, class-specific questlines that honor the legacy of your class in Azeroth, starting from your original class trainer.</p>
+                <div id="class-heritage-grid" class="grid md:grid-cols-3 gap-6">
+                    <!-- Class cards will be rendered here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const app = {
+            state: { activeTab: 'pillar1', activeRaid: 'mc', activeFaction: 'ad' },
+            ui: {
+                navButtons: document.querySelectorAll('#main-nav .nav-button'),
+                tabs: document.querySelectorAll('.tab-content'),
+                raidSelector: document.getElementById('raid-selector'),
+                raidDetailsContainer: document.getElementById('raid-details'),
+                factionTabs: document.querySelectorAll('#paragon-factions .faction-tab'),
+                paragonRewardsContainer: document.getElementById('paragon-rewards'),
+                classGrid: document.getElementById('class-heritage-grid'),
+                professionsGrid: document.getElementById('professions-grid'),
+                ilvlChartCanvas: document.getElementById('ilvlProgressionChart'),
+            },
+            data: {
+                raids: {
+                    mc: { title: 'Molten Core (10p)', iLvl: 110, bannerUrl: 'https://static.wikia.nocookie.net/wowpedia/images/4/4d/WoWBlog_MC_Banner.jpg/revision/latest?cb=20211008221056', mechanics: ["<strong>Ragnaros:</strong> Features a 'Living Meteor' phase, spawning adds that must be killed in specific locations to prevent the floor from erupting.", "<strong>Majordomo Executus:</strong> Lieutenants cycle through powerful elemental shields that must be shattered with corresponding damage types."], loot: [65, 25, 10] },
+                    bwl: { title: 'Blackwing Lair (25p)', iLvl: 125, bannerUrl: 'https://www.wowisclassic.com/media/CACHE/images/chromaggusart/dba1fa8c482feaa9072309e3defe5e2a.jpg', mechanics: ["<strong>Vaelastrasz:</strong> Upon death, players explode and leave a void zone that reanimates as a hostile 'Burning Spirit', requiring CC.", "<strong>Nefarian:</strong> 'Empowered Class Calls' are more punishing, requiring mid-fight crafting or unique solutions."], loot: [70, 20, 10] },
+                    aq: { title: 'Ahn\'Qiraj (25p)', iLvl: 138, bannerUrl: 'https://bnetcmsus-a.akamaihd.net/cms/blog_header/z2/Z2FM9RJPNCBK1595866413168.jpg', mechanics: ["<strong>C'Thun:</strong> The Dark Glare is now a sustained, sweeping beam. Devoured players face corrosive debuffs and new dangers.", "<strong>Twin Emperors:</strong> Share a health pool but also periodically share buffs, requiring tanks to coordinate swaps perfectly."], loot: [70, 25, 5] },
+                    naxx: { title: 'Naxxramas (25p)', iLvl: 148, bannerUrl: 'https://wow.zamimg.com/uploads/blog/images/21794-official-wow-classic-naxxramas-key-art-and-trailer-shadow-of-the-necropolis.jpg', mechanics: ["<strong>The Four Horsemen:</strong> Marks stack faster and leave permanent 'Spectral Resonance' fields, punishing poor positioning.", "<strong>Kel'Thuzad:</strong> Summons 'Echoes of the Fallen' – spectral images of dead raid members who use their class's signature abilities."], loot: [60, 30, 10] }
+                },
+                paragon: {
+                    ad: { emoji: '🛡️', title: 'Argent Dawn Cache', rewards: "Chance at the coveted <strong>Spectral Charger/Warhorse</strong> mount. Contains epic patterns for sought-after <strong>Stamina & Shadow Resistance</strong> armor kits, and powerful consumables like <strong>Scourgebane Oil</strong> that deal extra damage to Undead." },
+                    tb: { emoji: '⚒️', title: 'Thorium Brotherhood Cache', rewards: "Chance to find the schematics for a non-combat <strong>'Forge Whelp'</strong> pet. Contains epic patterns for top-tier <strong>Fire Resistance</strong> gear, and plans for a deployable <strong>Master Repair Bot</strong> with guild bank access." },
+                    zt: { emoji: '🗿', title: 'Zandalar Tribe Cache', rewards: "Contains the exclusive patterns needed to craft cosmetic replicas of the iconic ZG armor sets. Also includes recipes for powerful and unique feasts like the <strong>'Great Zandalari Feast'</strong>." },
+                    cc: { emoji: '🌳', title: 'Cenarion Circle Cache', rewards: "Chance at unique cosmetic appearances for Druid forms. Contains epic patterns for <strong>Nature Resistance</strong> gear, and a chance to find a non-combat <strong>'Wisp'</strong> pet that follows you." },
+                    hw: { emoji: '💧', title: 'Hydraxian Waterlords Cache', rewards: "Contains rare recipes for permanent <strong>Frost & Nature Resistance</strong> enchants for head/leg slots. Has a very small chance to drop the reins of an <strong>'Aqueous Surfer'</strong>, a water-walking mount." },
+                    th: { emoji: '🐾', title: 'Timbermaw Hold Cache', rewards: "Contains schematics for a craftable toy that summons a friendly Furbolg bodyguard for 10 minutes. Includes unique food recipes that grant potent Well Fed buffs with extra stamina." }
+                },
+                classes: [
+                    { name: 'Warrior', iconUrl: 'https://i.imgur.com/seZs5WM.png', quest: 'Forge a new weapon from a fallen fragment of the Thunderfury, imbuing it with the power of Heroic Ragnaros.', reward: '<strong>[Echo of the Windseeker]</strong>: A cosmetic 1H Sword with a lightning effect. Unlocks a glyph that gives Charge a visual trail of crackling electricity.' },
+                    { name: 'Paladin', iconUrl: 'https://i.imgur.com/tbPW0IM.png', quest: 'Cleanse the lingering corruption in Stratholme by reliving the culling with the Bronze Dragonflight, facing a twisted version of Arthas.', reward: '<strong>[Glyph of the Silver Hand]</strong>: Changes Consecration\'s visual to a golden, runic circle. Unlocks the cosmetic <strong>[Renovated Tabard of the Silver Hand]</strong>.' },
+                    { name: 'Hunter', iconUrl: 'https://i.imgur.com/En31Y4t.png', quest: 'Tame a legendary beast from deep within a Heroic raid, like a Core Hound Matriarch or a Chromatic Drake, proving your mastery.', reward: '<strong>[Beastmaster\'s Bond]</strong>: Unlocks the ability to tame a new family of exotic beasts (e.g., Core Hounds). Grants the <strong>[Timeworn Fletcher\'s Quiver]</strong>, a cosmetic back slot item.' },
+                    { name: 'Rogue', iconUrl: 'https://i.imgur.com/kQJfCCO.png', quest: 'Hunt a traitor selling secrets to the Syndicate in a masterclass of stealth, culminating in a solo dungeon experience in the Undercity sewers.', reward: '<strong>[Shadow-Stitched Dagger Set]</strong>: A pair of cosmetic daggers that sheath on the back. Unlocks the <strong>[Tabard of the Unseen]</strong>, which has a minor, smoky visual effect when in stealth.' },
+                    { name: 'Priest', iconUrl: 'https://i.imgur.com/aj1CVrE.png', quest: 'Uncover a lost chapter of the Light from the Scarlet Monastery\'s forbidden library, then confront a shadow entity born of your own doubts.', reward: '<strong>[Glyph of Duality]</strong>: A cosmetic glyph that gives Power Word: Shield a golden (Discipline/Holy) or shadowy (Shadow) shattered glass appearance on break.' },
+                    { name: 'Shaman', iconUrl: 'https://i.imgur.com/OaLY1Ck.png', quest: 'Re-attune the elemental totems of Azeroth by visiting the thrones of the Elemental Lords in Heroic Molten Core and Ahn\'Qiraj.', reward: '<strong>[Elemental Infusion]</strong>: Unlocks unique, more detailed cosmetic appearances for your Fire, Earth, Water, and Air totems, themed after the Elemental Lords.' },
+                    { name: 'Mage', iconUrl: 'https://i.imgur.com/qn2djXW.png', quest: 'Reassemble the lost staff of a Kirin Tor archmage, with pieces guarded by magical constructs in Heroic Karazhan and Naxxramas.', reward: '<strong>[Archmage\'s Whimsy]</strong>: A glyph to change Polymorph into a variety of different creatures (e.g., a pig, a penguin, a tiny basilisk). Grants the <strong>[Kirin Tor Journeyman\'s Satchel]</strong> cosmetic back item.' },
+                    { name: 'Warlock', iconUrl: 'https://i.imgur.com/MHcMLJx.png', quest: 'Re-establish shattered demonic pacts by traveling to Felwood and Heroic Shadowfang Keep to subdue powerful demons.', reward: '<strong>[Glyph of Subjugation]</strong>: A cosmetic glyph to alter your Imp or Voidwalker\'s appearance to a more modern, higher-fidelity model with new idle animations.' },
+                    { name: 'Druid', iconUrl: 'https://i.imgur.com/t9FOweo.png', quest: 'Commune with the spirits of the original Druids by gathering pristine essences from Heroic Wailing Caverns and Zul\'Gurub.', reward: '<strong>[Blessing of the Ancients]</strong>: Unlocks a cosmetic "Ancient Treant Form" to replace the standard one, and new high-resolution textures for Cat and Bear forms inspired by the Emerald Dream.' }
+                ],
+                professions: [
+                    { name: 'Alchemy', iconUrl: 'https://static.wikia.nocookie.net/wowpedia/images/d/d6/The_Alchemist_HS.jpg/revision/latest/scale-to-width-down/1000?cb=20230130184322', description: 'Create "Timeworn Flasks" that combine Outland and Azerothian herbs for powerful, hybrid effects (e.g., Flask of Timeworn Power: +Spell Damage and +MP5). Discover recipes for potions that are extra effective within Heroic Azerothian raids.' },
+                    { name: 'Blacksmithing', iconUrl: 'https://static.wikia.nocookie.net/wowpedia/images/f/f3/ProfIcons_blacksmithing.png/revision/latest/scale-to-width-down/40?cb=20190327212133', description: 'Use "Timeworn Bars" (smelted from Heroic raid materials) to craft ilvl 120-135 weapons with classic models. Can also add a "Timeworn Socket" to TBC gear, accepting unique hybrid-stat gems.' },
+                    { name: 'Enchanting', iconUrl: 'https://static.wikia.nocookie.net/wowpedia/images/3/3e/Enchanted_Cauldron_HS.jpg/revision/latest?cb=20230130194241', description: 'Unlock cosmetic enchants like "Flames of Ragnaros" or "Icy Chill of Naxxramas". Can disenchant Heroic gear into "Timeworn Crystals," used for top-tier TBC enchants and the new cosmetic recipes.' },
+                    { name: 'Engineering', iconUrl: 'https://static.wikia.nocookie.net/wowpedia/images/5/57/Glowstone_Technician_HS.jpg/revision/latest?cb=20230130193840', description: 'Schematics for Master-Tier goggles with unique on-use effects (e.g., a short-duration stealth field). Craft a "Temporal Beacon" allowing temporary access to the Chronicle of Azeroth table from anywhere.' },
+                    { name: 'Leatherworking', iconUrl: 'https://static.wikia.nocookie.net/wowpedia/images/0/01/Leatherworking_Kit_full.jpg/revision/latest?cb=20230130190140', description: 'Craft "Infusion Kits" that add small, unique bonuses to armor (e.g., "Essence of the Core" adds a minor fire damage shield). Can also craft cosmetic replica sets of dungeon and raid gear using Timeworn Badges and new cloth/leather.' },
+                    { name: 'Tailoring', iconUrl: 'https://static.wikia.nocookie.net/wowpedia/images/5/51/Charles_Worth_TCG.jpg/revision/latest/scale-to-width-down/1000?cb=20160123195651', description: 'Weave "Timeworn Cloth" into powerful new armor sets with unique procs. Can also craft cosmetic replica sets of iconic vanilla robes and vestments using Timeworn Badges.' },
+                ],
+                charts: { raidLootChart: null, ilvlProgressionChart: null }
+            },
+            
+            init() {
+                this.addEventListeners();
+                this.renderClassHeritage();
+                this.renderProfessions();
+                this.render();
+            },
+
+            addEventListeners() {
+                this.ui.navButtons.forEach(button => button.addEventListener('click', () => { this.state.activeTab = button.dataset.tab; this.render(); }));
+                this.ui.raidSelector.addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') { this.state.activeRaid = e.target.dataset.raid; this.render(); } });
+                this.ui.factionTabs.forEach(button => button.addEventListener('click', () => { this.state.activeFaction = button.dataset.faction; this.render(); }));
+            },
+            
+            renderRaidDetails() {
+                const raidData = this.data.raids[this.state.activeRaid];
+                if (!raidData) return;
+                const mechanicsHtml = raidData.mechanics.map(mech => `<li class="text-sm text-gray-400">${mech}</li>`).join('');
+                this.ui.raidDetailsContainer.innerHTML = `
+                    <div class="artwork-placeholder h-48 mb-4"><img src="${raidData.bannerUrl}" alt="${raidData.title} Banner" onerror="this.onerror=null;this.src='https://placehold.co/800x300/111/4a3c2c?text=Image+Not+Found';"></div>
+                    <h3 class="blizzard-title text-2xl mb-2">${raidData.title}</h3>
+                    <p class="text-gray-400 mb-4">Drops gear at an average item level of <strong>${raidData.iLvl}</strong>.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div>
+                            <h4 class="font-bold mb-2 text-yellow-300">Rethought Mechanics:</h4>
+                            <ul class="space-y-2 list-disc list-inside">${mechanicsHtml}</ul>
+                        </div>
+                        <div class="chart-container"><canvas id="raidLootChart"></canvas></div>
+                    </div>`;
+                this.createRaidLootChart(raidData.loot, ['Epic Gear', 'Timeworn Badges', 'Rare Blueprints']);
+            },
+
+            createRaidLootChart(data, labels) {
+                if(this.data.charts.raidLootChart) this.data.charts.raidLootChart.destroy();
+                const ctx = document.getElementById('raidLootChart').getContext('2d');
+                this.data.charts.raidLootChart = new Chart(ctx, {
+                    type: 'doughnut', data: { labels: labels, datasets: [{ data: data, backgroundColor: ['#a335ee', '#F8B700', '#1eff00'], borderColor: '#1a1814', borderWidth: 3 }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 }, color: '#c7bba8' } }, tooltip: { callbacks: { label: (c) => `${c.label}: ${c.parsed}%` } } } }
+                });
+            },
+            
+            createItemLevelChart() {
+                if(this.data.charts.ilvlProgressionChart) {
+                    this.data.charts.ilvlProgressionChart.destroy();
+                }
+                const ctx = this.ui.ilvlChartCanvas.getContext('2d');
+                Chart.defaults.color = '#c7bba8';
+                this.data.charts.ilvlProgressionChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Heroic MC', 'Karazhan', 'Heroic BWL', 'SSC/TK', 'Heroic AQ', 'Hyjal/BT', 'Heroic Naxx', 'Sunwell'],
+                        datasets: [
+                            { label: 'Outland Raids', data: [null, 115, null, 128, null, 141, null, 154], backgroundColor: '#8c2b13' },
+                            { label: 'Heroic Azeroth', data: [110, null, 125, null, 138, null, 148, null], backgroundColor: '#1C8B8B' }
+                        ]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        scales: { 
+                            x: { stacked: false, grid: { color: '#4a3c2c' }, title: { display: true, text: 'Raid Tier'} }, 
+                            y: { stacked: false, grid: { color: '#4a3c2c' }, title: { display: true, text: 'Item Level'} } 
+                        },
+                        plugins: { legend: { position: 'top' }, title: { display: true, text: 'Gear Item Level Progression' } }
+                    }
+                });
+            },
+
+            renderParagonRewards() {
+                const factionData = this.data.paragon[this.state.activeFaction];
+                if (!factionData) return;
+                this.ui.paragonRewardsContainer.innerHTML = `<h4 class="font-bold mb-2 text-yellow-300">${factionData.emoji} ${factionData.title}</h4><p class="text-sm text-gray-400">${factionData.rewards}</p>`;
+            },
+
+            renderClassHeritage() {
+                this.ui.classGrid.innerHTML = this.data.classes.map(c => `
+                    <div class="bg-black/20 rounded-lg p-6 text-center flex flex-col border border-gray-700 interactive-card">
+                        <div class="artwork-placeholder w-20 h-20 mx-auto mb-4 rounded-full"><img src="${c.iconUrl}" alt="${c.name} Icon" onerror="this.onerror=null;this.src='https://placehold.co/80x80/111/4a3c2c?text=?';"></div>
+                        <h3 class="blizzard-title text-2xl mb-2">${c.name}</h3>
+                        <p class="text-sm flex-grow text-gray-400">${c.quest}</p>
+                        <div class="mt-4 text-left text-xs bg-black/30 p-2 rounded">${c.reward}</div>
+                    </div>
+                `).join('');
+            },
+            
+            renderProfessions() {
+                this.ui.professionsGrid.innerHTML = this.data.professions.map(p => `
+                    <div class="bg-black/30 rounded-lg p-4 text-center flex flex-col border border-gray-700 interactive-card">
+                        <div class="artwork-placeholder h-24 mb-4"><img src="${p.iconUrl}" alt="${p.name} Artwork" onerror="this.onerror=null;this.src='https://placehold.co/200x100/111/4a3c2c?text=Image+Not+Found';"></div>
+                        <h4 class="blizzard-title text-xl mb-2">${p.name}</h4>
+                        <p class="text-sm flex-grow text-gray-400">${p.description}</p>
+                    </div>
+                `).join('');
+            },
+
+            render() {
+                this.ui.tabs.forEach(tab => tab.classList.toggle('active', tab.id === this.state.activeTab));
+                this.ui.navButtons.forEach(button => button.classList.toggle('active', button.dataset.tab === this.state.activeTab));
+                
+                if (this.state.activeTab === 'pillar1') {
+                    document.querySelectorAll('.raid-selector-item').forEach(item => item.classList.toggle('active', item.dataset.raid === this.state.activeRaid));
+                    this.renderRaidDetails();
+                    this.createItemLevelChart();
+                }
+
+                if (this.state.activeTab === 'pillar3') {
+                     this.ui.factionTabs.forEach(button => button.classList.toggle('active', button.dataset.faction === this.state.activeFaction));
+                    this.renderParagonRewards();
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
