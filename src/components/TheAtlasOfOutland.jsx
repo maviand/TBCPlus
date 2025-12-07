@@ -225,7 +225,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Throne of the Elements',
         type: '10-Man Raid (Tier 6.5)',
-        image: 'https://i.imgur.com/cGiBnIG.jpeg',
+        image: 'https://i.imgur.com/cOsLrHP.jpeg',
         lore: "**Nagrand / Elemental Plateau** \nThe immense fel energies radiating from the Black Temple have thrown the elemental spirits of Outland into chaos. The four Elemental Lords of Draenor, once balanced, are now in a state of constant rage, threatening to unravel the very fabric of the planet. Players must enter a swirling vortex atop the Elemental Plateau to subdue them before their combined fury creates an unstoppable cataclysm.",
         geography: "**The Lay of the Land:** \nA swirling vortex atop the Elemental Plateau. The arena changes element based on the active lord.",
         philosophy: {
@@ -353,7 +353,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Netherwing Mines',
         type: '5-Man Heroic Only',
-        image: 'https://i.imgur.com/MZj8ZVR.png',
+        image: 'https://i.imgur.com/mZEhEU0.jpeg',
         lore: "**Shadowmoon Valley** \nThe Dragonmaw orcs' cruelty knows no bounds. Allied with the Netherwing faction, players are tasked with infiltrating the crystal mines beneath Netherwing Ledge to sabotage their operations from within, free enslaved drakes, and eliminate the Dragonmaw leadership.",
         geography: "**The Lay of the Land:** \nThe atmosphere is oppressive, with the sounds of cracking whips, goblin machinery, and the sorrowful cries of enslaved Nether Drakes echoing through crystalline caverns.",
         philosophy: {
@@ -601,14 +601,44 @@ const TheAtlasOfOutland = () => {
     // --- OLD WORLD ---
     oldworld_zone: [
       {
-        name: 'Heroic Azeroth Raids',
-        type: 'Scalable Content',
-        image: 'https://static.wikia.nocookie.net/wowpedia/images/4/4d/WoWBlog_MC_Banner.jpg/revision/latest?cb=20211008221056',
-        lore: "**Timelocked Raiding** \nMolten Core (10-Man), BWL (25-Man), AQ40, and Naxxramas are scaled up to Level 70. They drop loot just below current TBC tier ilvl.",
-        geography: "**Progression:** \nMC = ilvl 110. BWL = ilvl 125. Naxx = ilvl 148 (T6 equivalent).",
-        philosophy: { tbc: "Old raids died.", plus: "They offer alternative gearing paths and trinkets." },
-        bosses: ["**Ragnaros:** Living Meteor Phase.", "**Vaelastrasz:** Exploding players leave void zones."],
-        mechanics: "**Loot:** \nUnique 'Timeworn' items and Tier 2 recolors."
+        name: 'Molten Core (Timelocked)',
+        type: '10-Man Raid (Scaled)',
+        image: 'https://i.imgur.com/hJQk1yU.jpeg',
+        lore: "**The Firelord Returns** \nRagnaros has been unbanished by the Dark Iron dwarves, his power scaling to meet level 70 heroes. The Core serves as the first step into Heroic Azerothian raiding.",
+        geography: "**Progression:** \nDrops **ilvl 110** Epic Gear (Tier 4 equivalent). \nSituated between Heroic Dungeons and Karazhan.",
+        philosophy: { tbc: "MC was obsolete at 70.", plus: "Reforged as a 10-man accessible raid for catch-up gear and alternate progression." },
+        bosses: ["**Ragnaros:** Living Meteor Phase.", "**Majordomo:** Lieutenants cycle elemental shields."],
+        mechanics: "**Loot:** \n**65%** Epic Gear, **25%** Timeworn Badges, **10%** Rare Blueprints."
+      },
+      {
+        name: 'Blackwing Lair (Timelocked)',
+        type: '25-Man Raid (Scaled)',
+        image: 'https://www.wowisclassic.com/media/CACHE/images/chromaggusart/dba1fa8c482feaa9072309e3defe5e2a.jpg',
+        lore: "**The Black Dragonflight** \nNefarian's experiments continue. Scaled to level 70, BWL offers a significant challenge for organized 25-man guilds.",
+        geography: "**Progression:** \nDrops **ilvl 125** Epic Gear (Tier 5 Equivalent). \n sits alongside SSC/TK as an alternative tier.",
+        philosophy: { tbc: "BWL was ignored.", plus: "A challenging 25-man raid that offers specific trinkets and set bonuses relevant to T5." },
+        bosses: ["**Vaelastrasz:** Bomb Spirit leaves void zones.", "**Nefarian:** Enhanced Class Calls requiring mid-fight crafting."],
+        mechanics: "**Loot:** \n**70%** Epic Gear, **20%** Timeworn Badges, **10%** Rare Blueprints."
+      },
+      {
+        name: 'Ahn\'Qiraj (Timelocked)',
+        type: '25-Man Raid (Scaled)',
+        image: 'https://bnetcmsus-a.akamaihd.net/cms/blog_header/z2/Z2FM9RJPNCBK1595866413168.jpg',
+        lore: "**The Old God Stirs** \nC'Thun's influence spreads again. This raid is retuned for high-end guilds seeking powerful side-grades to Tier 6.",
+        geography: "**Progression:** \nDrops **ilvl 138** Epic Gear (Tier 6 Equivalent). \nComparable difficulty to Hyjal/Black Temple.",
+        philosophy: { tbc: "AQ40 gear didn't scale well.", plus: "Revitalized stats making AQ items BIS for specific specs." },
+        bosses: ["**C'Thun:** Dark Glare is a sustained beam.", "**Twin Emperors:** Variable health pools requiring swap coordination."],
+        mechanics: "**Loot:** \n**70%** Epic Gear, **25%** Timeworn Badges, **5%** Rare Blueprints."
+      },
+      {
+        name: 'Naxxramas (Timelocked)',
+        type: '25-Man Raid (Scaled)',
+        image: 'https://wow.zamimg.com/uploads/blog/images/21794-official-wow-classic-naxxramas-key-art-and-trailer-shadow-of-the-necropolis.jpg',
+        lore: "**The Necropolis** \nThe ultimate challenge of the Old World. Kel'Thuzad waits for only the strongest champions.",
+        geography: "**Progression:** \nDrops **ilvl 148** Epic Gear (Sunwell Equivalent). \nThe hardest content outside of the Sunwell itself.",
+        philosophy: { tbc: "Moved to Northrend in Wrath.", plus: "Kept in Plaguelands as the pinnacle of Classic+ raiding." },
+        bosses: ["**Four Horsemen:** Permanent Spectral Resonance fields.", "**Kel'Thuzad:** Summons Echoes of dead raiders."],
+        mechanics: "**Loot:** \n**60%** Epic Gear, **30%** Timeworn Badges, **10%** Rare Blueprints."
       },
       {
         name: 'World Invasions',
