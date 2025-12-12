@@ -9,7 +9,7 @@ const Lore = () => {
         {
             title: "The Divergence",
             icon: <Clock className="w-6 h-6 text-amber-500" />,
-            image: "/images/art/lore_divergence.png",
+            image: import.meta.env.BASE_URL + "images/art/lore_divergence.png",
             content: `The timeline changed the moment the Dark Portal opened. In the original timeline, we were conquerors. In this one, we are survivors. 
             
             Kael'thas Sunstrider did not betray his people for the Legion; he betrayed the Legion for his people, using Fel technology to rebuild Silvermoon as a floating fortress. Illidan Stormrage is not the villain of the Black Temple, but its warden, holding back a void incursion from the depths of Shadowmoon Valley. 
@@ -19,13 +19,13 @@ const Lore = () => {
         {
             title: "The Fel Horde",
             icon: <Skull className="w-6 h-6 text-red-500" />,
-            image: "/images/art/lore_fel_horde.png",
+            image: import.meta.env.BASE_URL + "images/art/lore_fel_horde.png",
             content: `Under Warchief Kargath Bladefist, the Fel Horde has evolved into a disciplined, industrial war machine. They have fortified Hellfire Citadel not just with stone, but with captured Legion technology. They are not mindless berserkers; they are soldiers fighting a war of attrition against both the Alliance/Horde expedition and the Burning Legion itself, refusing to bow to either.`
         },
         {
             title: "The Void Incursion",
             icon: <Ghost className="w-6 h-6 text-purple-500" />,
-            image: "/images/art/lore_void_incursion.png",
+            image: import.meta.env.BASE_URL + "images/art/lore_void_incursion.png",
             content: `While existing threats remain, a new danger rises from the nether-storm lashed rocks of Netherstorm and the crypts of Auchindoun. The Void Lords have sensed the instability of Outland. Dimensius the All-Devouring was only a scout. The Ethereals have split into two factions: the Consortium, who seek profit, and the Ethereum, who seek to collapse Outland into the Void.`
         }
     ];
