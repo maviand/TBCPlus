@@ -1,0 +1,221 @@
+
+> temp_app@0.0.0 lint
+> eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0
+
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\App.jsx
+    1:27  error  'useEffect' is defined but never used                            no-unused-vars
+    5:3   error  'Shield' is defined but never used                               no-unused-vars
+    6:3   error  'Scroll' is defined but never used                               no-unused-vars
+    9:3   error  'Download' is defined but never used                             no-unused-vars
+   16:3   error  'Server' is defined but never used                               no-unused-vars
+   18:3   error  'BookOpen' is defined but never used                             no-unused-vars
+   20:3   error  'Hammer' is defined but never used                               no-unused-vars
+   21:3   error  'Skull' is defined but never used                                no-unused-vars
+   22:3   error  'Wind' is defined but never used                                 no-unused-vars
+   37:19  error  'active' is missing in props validation                          react/prop-types
+   37:27  error  'set' is missing in props validation                             react/prop-types
+   37:32  error  'mobileOpen' is missing in props validation                      react/prop-types
+   37:44  error  'setMobileOpen' is missing in props validation                   react/prop-types
+  253:17  error  'setPage' is missing in props validation                         react/prop-types
+  253:17  error  'setPage' is defined but never used                              no-unused-vars
+  315:59  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  348:24  error  'icon' is missing in props validation                            react/prop-types
+  348:30  error  'title' is missing in props validation                           react/prop-types
+  348:37  error  'desc' is missing in props validation                            react/prop-types
+  348:43  error  'detail' is missing in props validation                          react/prop-types
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\FelForgedVanguard.jsx
+    3:42  error  'Scroll' is defined but never used             no-unused-vars
+    4:17  error  'Layout' is defined but never used             no-unused-vars
+    5:9   error  'Landmark' is defined but never used           no-unused-vars
+    6:14  error  'Anchor' is defined but never used             no-unused-vars
+    7:17  error  'Eye' is defined but never used                no-unused-vars
+    7:48  error  'Heart' is defined but never used              no-unused-vars
+  340:26  error  'item' is missing in props validation          react/prop-types
+  340:32  error  'onClose' is missing in props validation       react/prop-types
+  353:21  error  'item.icon' is missing in props validation     react/prop-types
+  356:76  error  'item.name' is missing in props validation     react/prop-types
+  357:59  error  'item.summary' is missing in props validation  react/prop-types
+  363:32  error  'item.detail' is missing in props validation   react/prop-types
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\HallOfLegends.jsx
+  3:34  error  'Heart' is defined but never used      no-unused-vars
+  4:13  error  'Moon' is defined but never used       no-unused-vars
+  4:19  error  'Sun' is defined but never used        no-unused-vars
+  4:24  error  'Droplet' is defined but never used    no-unused-vars
+  4:40  error  'Snowflake' is defined but never used  no-unused-vars
+  5:10  error  'Hammer' is defined but never used     no-unused-vars
+  5:18  error  'BookOpen' is defined but never used   no-unused-vars
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\Legendaries.jsx
+    2:27   error  'Gem' is defined but never used                                  no-unused-vars
+    2:39   error  'Ghost' is defined but never used                                no-unused-vars
+    2:46   error  'Zap' is defined but never used                                  no-unused-vars
+    2:51   error  'Leaf' is defined but never used                                 no-unused-vars
+    2:57   error  'Shield' is defined but never used                               no-unused-vars
+    2:72   error  'Skull' is defined but never used                                no-unused-vars
+    2:90   error  'Flame' is defined but never used                                no-unused-vars
+   29:27   error  'item' is missing in props validation                            react/prop-types
+   29:33   error  'phaseLabel' is missing in props validation                      react/prop-types
+   30:35   error  'item.quality' is missing in props validation                    react/prop-types
+   37:31   error  'item.name' is missing in props validation                       react/prop-types
+   41:73   error  'item.ilvl' is missing in props validation                       react/prop-types
+   43:23   error  'item.unique' is missing in props validation                     react/prop-types
+   44:23   error  'item.slot' is missing in props validation                       react/prop-types
+   46:37   error  'item.slot' is missing in props validation                       react/prop-types
+   47:31   error  'item.type' is missing in props validation                       react/prop-types
+   47:51   error  'item.type' is missing in props validation                       react/prop-types
+   50:23   error  'item.damage' is missing in props validation                     react/prop-types
+   52:37   error  'item.damage' is missing in props validation                     react/prop-types
+   53:43   error  'item.speed' is missing in props validation                      react/prop-types
+   56:23   error  'item.dps' is missing in props validation                        react/prop-types
+   56:61   error  'item.dps' is missing in props validation                        react/prop-types
+   57:23   error  'item.stats' is missing in props validation                      react/prop-types
+   57:37   error  'item.stats' is missing in props validation                      react/prop-types
+   57:43   error  'item.stats.map' is missing in props validation                  react/prop-types
+   60:23   error  'item.durability' is missing in props validation                 react/prop-types
+   60:78   error  'item.durability' is missing in props validation                 react/prop-types
+   60:98   error  'item.durability' is missing in props validation                 react/prop-types
+   61:23   error  'item.classes' is missing in props validation                    react/prop-types
+   62:89   error  'item.classes' is missing in props validation                    react/prop-types
+   66:27   error  'item.effects' is missing in props validation                    react/prop-types
+   66:43   error  'item.effects' is missing in props validation                    react/prop-types
+   66:51   error  'item.effects.map' is missing in props validation                react/prop-types
+   72:122  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   72:149  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   97:23   error  'item.sellPrice' is missing in props validation                  react/prop-types
+  100:96   error  'item.sellPrice' is missing in props validation                  react/prop-types
+  100:106  error  'item.sellPrice.g' is missing in props validation                react/prop-types
+  101:96   error  'item.sellPrice' is missing in props validation                  react/prop-types
+  101:106  error  'item.sellPrice.s' is missing in props validation                react/prop-types
+  102:96   error  'item.sellPrice' is missing in props validation                  react/prop-types
+  102:106  error  'item.sellPrice.c' is missing in props validation                react/prop-types
+  352:175  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+  354:45   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  354:72   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\Lore.jsx
+    2:20   error  'Scroll' is defined but never used                               no-unused-vars
+    2:28   error  'Map' is defined but never used                                  no-unused-vars
+    2:33   error  'Crown' is defined but never used                                no-unused-vars
+    2:55   error  'Flame' is defined but never used                                no-unused-vars
+    2:76   error  'Anchor' is defined but never used                               no-unused-vars
+    2:97   error  'Target' is defined but never used                               no-unused-vars
+    2:111  error  'Zap' is defined but never used                                  no-unused-vars
+    5:12   error  'scrolled' is assigned a value but never used                    no-unused-vars
+  124:25   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  124:164  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\TheArtisansCodex.jsx
+    45:31   error  'item' is missing in props validation                            react/prop-types
+    45:37   error  'onClose' is missing in props validation                         react/prop-types
+    55:35   error  'item.quality' is missing in props validation                    react/prop-types
+    79:101  error  'item.name' is missing in props validation                       react/prop-types
+    80:17   error  'item.quality' is missing in props validation                    react/prop-types
+    80:48   error  'item.ilvl' is missing in props validation                       react/prop-types
+    80:123  error  'item.ilvl' is missing in props validation                       react/prop-types
+    82:17   error  'item.unique' is missing in props validation                     react/prop-types
+    86:25   error  'item.slot' is missing in props validation                       react/prop-types
+    87:25   error  'item.armorType' is missing in props validation                  react/prop-types
+    92:19   error  'item.armor' is missing in props validation                      react/prop-types
+    92:70   error  'item.armor' is missing in props validation                      react/prop-types
+    93:19   error  'item.damage' is missing in props validation                     react/prop-types
+    95:29   error  'item.damage' is missing in props validation                     react/prop-types
+    96:35   error  'item.speed' is missing in props validation                      react/prop-types
+    99:19   error  'item.dps' is missing in props validation                        react/prop-types
+    99:74   error  'item.dps' is missing in props validation                        react/prop-types
+   101:19   error  'item.stats' is missing in props validation                      react/prop-types
+   101:33   error  'item.stats' is missing in props validation                      react/prop-types
+   101:39   error  'item.stats.split' is missing in props validation                react/prop-types
+   107:18   error  'item.durability' is missing in props validation                 react/prop-types
+   107:37   error  'item.reqLevel' is missing in props validation                   react/prop-types
+   107:54   error  'item.req' is missing in props validation                        react/prop-types
+   109:21   error  'item.durability' is missing in props validation                 react/prop-types
+   109:57   error  'item.durability' is missing in props validation                 react/prop-types
+   109:77   error  'item.durability' is missing in props validation                 react/prop-types
+   110:21   error  'item.reqLevel' is missing in props validation                   react/prop-types
+   111:21   error  'item.req' is missing in props validation                        react/prop-types
+   111:39   error  'item.req' is missing in props validation                        react/prop-types
+   117:19   error  'item.effects' is missing in props validation                    react/prop-types
+   117:35   error  'item.effects' is missing in props validation                    react/prop-types
+   117:43   error  'item.effects.map' is missing in props validation                react/prop-types
+   123:17   error  'item.flavor' is missing in props validation                     react/prop-types
+   124:88   error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   124:95   error  'item.flavor' is missing in props validation                     react/prop-types
+   124:102  error  `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+   134:22   error  'item' is missing in props validation                            react/prop-types
+   134:28   error  'isLegendary' is missing in props validation                     react/prop-types
+   142:34   error  'item.quality' is missing in props validation                    react/prop-types
+   150:17   error  'item.icon' is missing in props validation                       react/prop-types
+   153:68   error  'item.name' is missing in props validation                       react/prop-types
+   154:135  error  'item.type' is missing in props validation                       react/prop-types
+   155:112  error  'item.desc' is missing in props validation                       react/prop-types
+  1018:120  error  `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`  react/no-unescaped-entities
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\TheAtlasOfOutland.jsx
+  1324:13  error  Parsing error: Adjacent JSX elements must be wrapped in an enclosing tag
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\TheNewBlood.jsx
+    3:3   error  'Users' is defined but never used          no-unused-vars
+    3:41  error  'Heart' is defined but never used          no-unused-vars
+    4:13  error  'Moon' is defined but never used           no-unused-vars
+    4:19  error  'Sun' is defined but never used            no-unused-vars
+    4:24  error  'Droplet' is defined but never used        no-unused-vars
+    4:33  error  'Flame' is defined but never used          no-unused-vars
+    4:40  error  'Snowflake' is defined but never used      no-unused-vars
+    5:28  error  'ArrowLeft' is defined but never used      no-unused-vars
+    6:25  error  'Eye' is defined but never used            no-unused-vars
+    6:44  error  'Hand' is defined but never used           no-unused-vars
+    7:3   error  'Scroll' is defined but never used         no-unused-vars
+    7:20  error  'Axe' is defined but never used            no-unused-vars
+    7:25  error  'GraduationCap' is defined but never used  no-unused-vars
+  438:24  error  'id' is missing in props validation        react/prop-types
+  438:28  error  'label' is missing in props validation     react/prop-types
+  438:35  error  'icon' is missing in props validation      react/prop-types
+
+C:\Users\mario\OneDrive\Desktop\tbc-plus - Copy\src\components\VaultOfArtifacts.jsx
+    3:41   error    'Heart' is defined but never used                                                                                                   no-unused-vars
+    4:10   error    'Droplet' is defined but never used                                                                                                 no-unused-vars
+    4:19   error    'Star' is defined but never used                                                                                                    no-unused-vars
+    4:25   error    'Crown' is defined but never used                                                                                                   no-unused-vars
+    4:37   error    'ChevronRight' is defined but never used                                                                                            no-unused-vars
+    5:3    error    'BookOpen' is defined but never used                                                                                                no-unused-vars
+    5:13   error    'Medal' is defined but never used                                                                                                   no-unused-vars
+    5:20   error    'Play' is defined but never used                                                                                                    no-unused-vars
+    5:26   error    'Eye' is defined but never used                                                                                                     no-unused-vars
+    5:31   error    'ChevronDown' is defined but never used                                                                                             no-unused-vars
+    6:3    error    'Hammer' is defined but never used                                                                                                  no-unused-vars
+    6:11   error    'Feather' is defined but never used                                                                                                 no-unused-vars
+    6:20   error    'Scissors' is defined but never used                                                                                                no-unused-vars
+    6:36   error    'Axe' is defined but never used                                                                                                     no-unused-vars
+    6:41   error    'PawPrint' is defined but never used                                                                                                no-unused-vars
+   36:25   error    'item' is missing in props validation                                                                                               react/prop-types
+   36:31   error    'phaseLabel' is missing in props validation                                                                                         react/prop-types
+   37:31   error    'item.quality' is missing in props validation                                                                                       react/prop-types
+   44:19   error    'item.name' is missing in props validation                                                                                          react/prop-types
+   48:65   error    'item.ilvl' is missing in props validation                                                                                          react/prop-types
+   50:15   error    'item.unique' is missing in props validation                                                                                        react/prop-types
+   51:15   error    'item.slot' is missing in props validation                                                                                          react/prop-types
+   53:25   error    'item.slot' is missing in props validation                                                                                          react/prop-types
+   54:19   error    'item.type' is missing in props validation                                                                                          react/prop-types
+   54:39   error    'item.type' is missing in props validation                                                                                          react/prop-types
+   57:15   error    'item.damage' is missing in props validation                                                                                        react/prop-types
+   59:25   error    'item.damage' is missing in props validation                                                                                        react/prop-types
+   60:31   error    'item.speed' is missing in props validation                                                                                         react/prop-types
+   63:15   error    'item.dps' is missing in props validation                                                                                           react/prop-types
+   63:53   error    'item.dps' is missing in props validation                                                                                           react/prop-types
+   64:15   error    'item.stats' is missing in props validation                                                                                         react/prop-types
+   64:29   error    'item.stats' is missing in props validation                                                                                         react/prop-types
+   64:35   error    'item.stats.map' is missing in props validation                                                                                     react/prop-types
+   67:15   error    'item.classes' is missing in props validation                                                                                       react/prop-types
+   68:79   error    'item.classes' is missing in props validation                                                                                       react/prop-types
+   72:17   error    'item.effects' is missing in props validation                                                                                       react/prop-types
+   72:33   error    'item.effects' is missing in props validation                                                                                       react/prop-types
+   72:41   error    'item.effects.map' is missing in props validation                                                                                   react/prop-types
+   78:110  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                     react/no-unescaped-entities
+   78:137  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`                                                                     react/no-unescaped-entities
+  700:6    warning  React Hook useEffect has missing dependencies: 'activeSpec' and 'pinnacleData'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 196 problems (195 errors, 1 warning)
+

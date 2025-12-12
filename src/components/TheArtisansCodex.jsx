@@ -1,29 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Hammer, FlaskConical, Utensils, Zap, HeartPulse, Fish,
   Leaf, Scissors, Mountain, Star, Crown, PenTool, Gem, Wrench, Sword, Skull, BookOpen, Scroll, Feather, Shield, X
 } from 'lucide-react';
+import UnifiedHeader from './UnifiedHeader';
 
 const TheArtisansCodex = () => {
-  const [activeProfession, setActiveProfession] = useState('alchemy');
-  const [scrolled, setScrolled] = useState(false);
+  const [activeProfession, setActiveProfession] = useState('overview');
 
   // --- INSPECTION STATE ---
   const [selectedItem, setSelectedItem] = useState(null);
 
-  // Handle scroll for sticky header
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   // Helper to parse bold text
   const formatText = (text) => {
     if (!text) return null;
-    const lines = text.split('\n');
+    // Handle both literal newlines and escaped newlines (from JSON data)
+    const lines = text.split(/\\n|\n/);
     return lines.map((line, lineIndex) => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const content = parts.map((part, partIndex) => {
@@ -41,90 +33,79 @@ const TheArtisansCodex = () => {
     });
   };
 
+  // --- WOW TOOLTIP COMPONENT ---
+  const WowTooltip = ({ item }) => {
+    if (!item) return null;
+    const qualityColors = {
+      legendary: { text: 'text-[#ff8000]', border: 'border-[#ff8000]' },
+      epic: { text: 'text-[#a335ee]', border: 'border-[#a335ee]' },
+      rare: { text: 'text-[#0070dd]', border: 'border-[#0070dd]' },
+      uncommon: { text: 'text-[#1eff00]', border: 'border-[#1eff00]' },
+      common: { text: 'text-white', border: 'border-[#444]' }
+    };
+    const q = qualityColors[item.quality] || qualityColors.common;
+
+    return (
+      <div className={`bg-[#070710] border ${q.border} rounded-[4px] p-4 shadow-2xl max-w-[350px] w-full font-body text-[13px] leading-snug relative text-white border-opacity-60`}>
+        {/* Header */}
+        <div className={`font-bold text-[15px] mb-1 tracking-wide ${q.text}`}>{item.name}</div>
+        {item.quality !== 'artifact' && item.ilvl && <div className="text-[#ffd100] font-bold">Item Level {item.ilvl}</div>}
+        <div className="text-white">Binds when picked up</div>
+        {item.unique && <div className="text-white">Unique-Equipped</div>}
+
+        {/* Slot & Type */}
+        <div className="flex justify-between text-white mt-1">
+          <span>{item.slot}</span>
+          <span>{item.armorType}</span>
+        </div>
+
+        {/* Stats */}
+        <div className="my-2 space-y-0.5">
+          {item.armor && <div className="text-white">{item.armor} Armor</div>}
+          {item.damage && (
+            <div className="flex justify-between text-white font-medium gap-4">
+              <span>{item.damage} Damage</span>
+              <span>Speed {item.speed}</span>
+            </div>
+          )}
+          {item.dps && <div className="text-white mb-1">({item.dps} damage per second)</div>}
+          {item.stats && (typeof item.stats === 'string' ? item.stats.split('\n') : item.stats).map((stat, i) => (
+            <div key={i} className="text-white">{stat.startsWith('+') ? stat : `+ ${stat}`}</div>
+          ))}
+        </div>
+
+        {/* Requirements */}
+        <div className="mt-2 space-y-0.5">
+          {item.durability && <div className="text-white">Durability {item.durability} / {item.durability}</div>}
+          <div className="text-white">Requires Level 70</div>
+          {item.req && <div className="text-white">{item.req}</div>}
+        </div>
+
+        {/* Effects (Green Text) */}
+        <div className="text-[#1eff00] mt-3 space-y-2">
+          {item.effects && item.effects.map((effect, i) => (
+            <div key={i}>{effect}</div>
+          ))}
+        </div>
+
+        {/* Flavor Text */}
+        {item.flavor && (
+          <div className="text-[#ffd100]/80 italic mt-4 text-center">"{item.flavor}"</div>
+        )}
+      </div>
+    );
+  };
+
   // --- MODAL TOOLTIP COMPONENT ---
   const InspectionWindow = ({ item, onClose }) => {
     if (!item) return null;
 
-    const colors = {
-      legendary: '#ff8000',
-      epic: '#a335ee',
-      rare: '#0070dd',
-      uncommon: '#1eff00',
-      common: '#ffffff'
-    };
-    const nameColor = colors[item.quality] || colors.common;
-
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
-        {/* Backdrop */}
-        <div
-          className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
-          onClick={onClose}
-        ></div>
-
-        {/* Tooltip Window */}
-        <div
-          className="relative w-full max-w-md bg-[#080808] border border-[#444] shadow-[0_0_50px_rgba(0,0,0,1)] p-6 rounded-md animate-in fade-in zoom-in duration-200"
-          style={{ borderImage: 'linear-gradient(to bottom, #444, #111) 1' }}
-        >
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 text-stone-500 hover:text-white transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
-
-          {/* Header */}
-          <div className="font-bold text-2xl mb-1 tracking-wide" style={{ color: nameColor }}>{item.name}</div>
-          {item.quality !== 'artifact' && item.ilvl && <div className="text-[#ffd100] text-sm font-bold">Item Level {item.ilvl}</div>}
-          <div className="text-white text-sm">Binds when picked up</div>
-          {item.unique && <div className="text-white text-sm">Unique-Equipped</div>}
-
-          {/* Slots & Type */}
-          <div className="flex justify-between text-white text-sm mt-3 border-t border-[#333] pt-3">
-            <span>{item.slot || "Trinket"}</span>
-            <span>{item.armorType || ""}</span>
-          </div>
-
-          {/* Stats Block */}
-          <div className="my-3">
-            {item.armor && <div className="text-white text-sm">{item.armor} Armor</div>}
-            {item.damage && (
-              <div className="flex justify-between text-white text-sm font-medium">
-                <span>{item.damage} Damage</span>
-                <span>Speed {item.speed}</span>
-              </div>
-            )}
-            {item.dps && <div className="text-white text-sm mb-2">({item.dps} damage per second)</div>}
-
-            {item.stats && item.stats.split('\n').map((stat, i) => (
-              <div key={i} className="text-white text-sm font-medium">{stat.startsWith('+') ? stat : `+ ${stat}`}</div>
-            ))}
-          </div>
-
-          {/* Requirements */}
-          {(item.durability || item.reqLevel || item.req) && (
-            <div className="text-sm text-white mb-3 space-y-1">
-              {item.durability && <div>Durability {item.durability} / {item.durability}</div>}
-              {item.reqLevel && <div>Requires Level 70</div>}
-              {item.req && <div>{item.req}</div>}
-            </div>
-          )}
-
-          {/* Effects (Green Text) */}
-          <div className="text-[#1eff00] text-sm space-y-3 leading-relaxed">
-            {item.effects && item.effects.map((effect, i) => (
-              <div key={i}>{effect}</div>
-            ))}
-          </div>
-
-          {/* Flavor Text */}
-          {item.flavor && (
-            <div className="text-[#ffd100] italic text-sm mt-6 opacity-90 text-center">"{item.flavor}"</div>
-          )}
-
-          <div className="mt-6 text-[10px] text-stone-600 text-center uppercase tracking-widest">Click outside to close</div>
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
+        <div className="relative animate-in fade-in zoom-in duration-200">
+          <button onClick={onClose} className="absolute -top-12 right-0 text-white/50 hover:text-white transition-colors"><X className="w-8 h-8" /></button>
+          <WowTooltip item={item} />
         </div>
       </div>
     );
@@ -161,6 +142,31 @@ const TheArtisansCodex = () => {
 
   // --- DATA: PROFESSIONS ---
   const professions = {
+    overview: {
+      id: 'overview',
+      name: 'The Mission',
+      title: 'Hands of the Hero',
+      icon: <BookOpen className="w-6 h-6" />,
+      desc: '**Philosophy:** In The Burning Crusade, a character’s profession is not merely a revenue stream or a spreadsheet of passive stats; it is a pillar of their identity within the world. A Master Blacksmith should feel different from a Grand Master Alchemist in the heat of battle.\n\nOur mission is to shift professions from **Obligation** to **Opportunity**.',
+      philosophy: {
+        tbc: "**The 2007 Landscape:** \nProfessions were often binary: you either had the 'bis' profession (Drums/Ring Enchants) or you were playing sub-optimally. Gathering professions were purely economic, and secondary professions were chores.",
+        plus: "**The Vision for Plus:** \nWe created three pillars for the overhaul:\n\n1. **Situational Power (On-Use):** Every profession gains specialized 'Oh Sh*t' buttons. Tailors weave nets; Blacksmiths sunder armor; Engineers interrupt.\n2. **Gathering Viability:** Gathering is no longer passive. Miners and Herbalists gain combat cooldowns and utility.\n3. **Social Interdependence:** High-level crafting requires a web of social connections, revitalizing the guild economy."
+      },
+      coreSystem: {
+        title: 'The Bridge: Smoothing the 1-300 Curve',
+        desc: 'The "Vanilla Gap" is the biggest barrier to entry for new alts. We are introducing **"Apprenticeship Projects"** to fix the material drought.\n\n**The "Bulk Commission" System:**\nInstead of crafting 40 Bracers that get vendor-trashed, players now craft "Supply Crates".\n\n**Mechanic:** Players purchase "Crate Blueprints" from trainers (Levels 75, 150, 225, 300).\n**Efficiency:** Crates consume 3x materials but grant 5 guaranteed skill points and reputation.'
+      },
+      raidUtility: [
+        { name: 'Blacksmithing: Weighted Stones', quality: 'uncommon', type: 'Leveling Item', desc: 'Consumes Rough Stone x10. Grants skill up to 75.', ilvl: 1, slot: 'Consumable', stats: '', flavor: "Sharpens weapons.", effects: ["Removes the need to craft 500 copper bracers."] },
+        { name: 'Leatherworking: Tanning Sludge', quality: 'uncommon', type: 'Leveling Item', desc: 'Consumes Ruined Leather Scraps.', ilvl: 1, slot: 'Consumable', stats: '', flavor: "Smells awful, works wonders.", effects: ["Converts scraps into Light Leather at a 3:1 ratio (Inefficient but grants skill)."] },
+        { name: 'Enchanting: Vellum of the Apprentice', quality: 'uncommon', type: 'Leveling Item', desc: 'Allows low-level enchants to be placed on paper.', ilvl: 1, slot: 'Consumable', stats: '', flavor: "Practice makes perfect.", effects: ["Finally allows low-level enchanters to sell their work on the AH."] }
+      ],
+      specs: [
+        { name: 'Situational Power', title: 'Tactical Agency', desc: '**Goal:** Every profession gains "buttons to press" that change the tide of battle, rewarding game knowledge over raw spreadsheet throughput.' },
+        { name: 'Gathering Viability', title: 'Active Gameplay', desc: '**Goal:** Miners, Herbalists, and Skinners gain combat cooldowns and passive stat scaling to make them competitive with crafting professions.' },
+        { name: 'Social Economy', title: 'Interdependence', desc: '**Goal:** High-level crafting requires a web of social connections. No artisan is an island; the guild economy is revitalized.' }
+      ]
+    },
     alchemy: {
       id: 'alchemy',
       name: 'Alchemy',
@@ -174,11 +180,25 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Volatility & Perfection',
-        desc: 'The act of brewing is now a gamble based on **Methodology**.\n\n**Volatile (iLvl +3):** Unstable but potent. Might polymorph the user for 2s.\n**Perfected (iLvl +7):** Flawless. Grants additional secondary stats.'
+        desc: 'The laboratory is no longer a safe haven; it is a crucible of volatility. Masters of the craft risk their very forms to achieve perfection. \n\n**Volatile (iLvl +3):** Unstable but potent. These brews thrum with chaotic energy, granting immense power but carrying a 5% risk of polymorphing the user into a harmless critter for 2s.\n**Perfected (iLvl +7):** Flawless clarity. These rare creations represent the pinnacle of alchemy, granting additional secondary stats without the instability.'
+      },
+      legacyMastery: {
+        title: 'Legacy Mastery: Timeworn Knowledge',
+        desc: 'We are re-enabling Old World recipes with "Timeworn" scaling. These items require original Azeroth materials (Black Lotus, Dreamfoil) but produce Level 70 equivalents, keeping the old world economy alive.',
+        items: [
+          '**Timeworn Flask of Titans:** Now grants +500 Health (Scaling up from 400). Requires Black Lotus.',
+          '**Timeworn Supreme Power:** The budget option for raiders. Requires Dreamfoil.'
+        ]
       },
       raidUtility: [
-        { name: 'Cauldron of Fortification', quality: 'epic', type: 'Deployable', desc: 'Raid members receive a "Cauldron-Brewed Healing Potion" that does not consume their personal stock.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Bubbling with vitality.", effects: ["Use: Creates a cauldron that raid members can use to gain a Cauldron-Brewed Healing Potion. Lasts 3 min. (5 Min Cooldown)"] },
-        { name: 'Phial of Attenuation', quality: 'epic', type: 'Deployable', desc: 'Allies can choose between Fire or Shadow Warder phials.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Choose your poison... or your cure.", effects: ["Use: Set out a rack of phials. Allies can interact with it to gain +150 Fire or Shadow Resistance for 15 sec. (5 Min Cooldown)"] }
+        { name: 'Cauldron of Fortification', quality: 'epic', type: 'Deployable', desc: 'Creates a bubbling cauldron that raid members can use to gain the "Fortified Spirits" buff, increasing all stats by 30 and restoring health and mana. The cauldron has 25 charges and persists for 3 minutes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Bubbling with vitality.", effects: ["Use: Place a Cauldron of Fortification. Party members can use it to gain a flask-like buff."], icon: <img src="https://i.imgur.com/6ya2UAF.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Phial of Attenuation', quality: 'epic', type: 'Deployable', desc: 'Sets out a rack of unstable compounds. Allies can choose to imbibe a "Fire Warder" or "Shadow Warder" draught, granting significant resistance to that school of magic for a short duration.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Choose your poison... or your cure.", effects: ["Use: Set out a rack of phials. Allies can interact with it to gain +150 Fire or Shadow Resistance for 15 sec. (5 Min Cooldown)"], icon: <img src="https://i.imgur.com/Wcde0xN.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Potion of the Mad Alchemist', quality: 'rare', type: 'Consumable', desc: 'A volatile brew that grants a random, powerful benefit (Haste, Critical Strike, or Mastery) for 15 seconds. However, the chaotic nature of the mix causes side effects ranging from hallucinations to temporary size alteration.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Trust the science.", effects: ["Use: Drink to gain a random benefit. Side effects may include mild insanity."], icon: <img src="https://i.imgur.com/HiCsMiH.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Volatile Potion of the Cheetah', quality: 'uncommon', type: 'Consumable', desc: 'Increases movement speed by 60% for 15 seconds. Warning: The chemical reaction is unstable; taking damage while under this effect will cause a backlash, dazing the consumer for 5 seconds.', ilvl: 65, slot: 'Consumable', stats: '', flavor: "Run like the wind.", effects: ["Use: Increases run speed by 60% for 15 sec."], icon: <img src="https://i.imgur.com/awPbqSd.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Transmutation: Lead to Gold', quality: 'rare', type: 'Ability', desc: 'Uses the Philosopher\'s Stone to rearrange the atomic structure of worthless grey items, transmuting them into a small amount of gold. The process is taxing and can only be performed once per day.', ilvl: 70, slot: 'Spell', stats: '', flavor: "Fools gold?", effects: ["Use: Transmutes a stack of grey items into gold. (20 Hour Cooldown)"], icon: <img src="https://i.imgur.com/IdlSVhh.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Oil of Immolation v2', quality: 'rare', type: 'Consumable', desc: 'Coats the user in a volatile oil that combusts on contact with air. Deals 150 Fire damage every 3 seconds to all enemies within 5 yards. Lasts 15 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Burn, baby, burn.", effects: ["Use: Radiate fire damage for 15 seconds. (2 Min Cooldown)"], icon: <img src="https://i.imgur.com/ckwf3BK.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Elixir of Giant\'s Growth', quality: 'rare', type: 'Consumable', desc: 'Induces rapid cellular mitosis, increasing the user\'s size by 50% and granting +30 Strength. The strain on the body limits the duration to 2 minutes.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Fee Fi Fo Fum.", effects: ["Use: Grow large and gain +30 Strength for 2 min."], icon: <img src="https://i.imgur.com/z5vvIU7.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Philter of Unending Breath', quality: 'uncommon', type: 'Consumable', desc: 'Saturates the blood with oxygen, allowing for underwater breathing. Additionally, the user\'s movements become fluid, increasing swim speed by 20%. Lasts 1 hour.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Deep dive.", effects: ["Use: Water breathing and +20% swim speed for 1 hour."], icon: <img src="https://i.imgur.com/aN1Vt3n.jpeg" className="w-full h-full object-cover" alt="icon" /> }
       ],
       specs: [
         {
@@ -241,11 +261,16 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'The War Within the Forge',
-        desc: 'Your **Mettle** stat determines gear quality.\n\n**Masterwork (iLvl +3):** Enhanced base armor/damage.\n**Flawless (iLvl +7):** The pinnacle. Possesses unique visual glows and the highest possible stat budget.'
+        desc: 'To forge is to impart a piece of one\'s soul into the steel. The hammer\'s rhythm dictates the weapon\'s destiny, fueled by your **Mettle**.\n\n**Masterwork (iLvl +3):** A blade that sings when swung. Enhanced base weapon damage and armor values.\n**Flawless (iLvl +7):** The smith\'s magnum opus. These items possess unique visual glows, the highest possible stat budget, and are worthy of legends.'
       },
       raidUtility: [
-        { name: 'Forgemaster\'s Bell', quality: 'epic', type: 'Consumable', desc: 'Sound the bell to grant all party members **+150 Armor Penetration** for 12s.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "For whom the bell tolls...", effects: ["Use: Sound the bell to grant all party members within 30 yards 150 Armor Penetration for 12 sec. (5 Min Cooldown)"] },
-        { name: 'Anvil of War', quality: 'epic', type: 'Deployable', desc: 'Allies interacting with it gain **+75 Fire Damage** to their next 3 attacks.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Strike while the iron is hot.", effects: ["Use: Places an Anvil of War for 20 sec. Allies can interact with it to temper their weapons. (5 Min Cooldown)"] }
+        { name: 'Forgemaster\'s Bell', quality: 'epic', type: 'Consumable', desc: 'Places a resonant brass bell on the ground. When struck by an ally, it emits a tone that inspires bravery, granting all party members within 30 yards **+150 Armor Penetration** for 12 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "For whom the bell tolls...", effects: ["Use: Place a bell that grants Armor Penetration."], icon: <img src="https://i.imgur.com/IKt6jgK.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Anvil of War', quality: 'epic', type: 'Deployable', desc: 'Deploys a portable anvil infused with elemental fire. Allies who interact with the anvil temper their weapons, adding **+75 Fire Damage** to their next 3 melee or ranged attacks.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Strike while the iron is hot.", effects: ["Use: Place an Anvil of War. Interaction grants Fire Damage to weapons."], icon: <img src="https://i.imgur.com/h5j6h6T.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Shield Spike Launcher', quality: 'rare', type: 'Consumable', desc: 'Mounts a spring-loaded mechanism to your shield. When activated, it launches a Mithril Spike at the target, dealing 500 Physical damage and causing them to bleed for 200 damage over 10 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Pointy end goes there.", effects: ["Use: Shoot a spike dealing damage and bleeding the target."], icon: <img src="https://i.imgur.com/CRLaC4n.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Weapon Chain: Adamantite', quality: 'rare', type: 'Item Enhancement', desc: 'Attaches a reinforced adamantite chain to your weapon, rendering you immune to Disarm effects. Additionally, the improved balance increases your Parry rating by 15.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Never let go.", effects: ["Use: Immune to Disarm and +15 Parry Rating."], icon: <img src="https://i.imgur.com/MnW4uaO.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Sharpening Wheel', quality: 'rare', type: 'Deployable', desc: 'Sets up a heavy grinding wheel. Party members can sharpen their blades, increasing weapon damage by 12 for 1 hour. Valid for both bladed and blunt weapons.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Keep it keen.", effects: ["Use: Place a Sharpening Wheel. Grants +12 Weapon Damage."], icon: <img src="https://i.imgur.com/CWEBBkw.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Shatter-Proof Barding', quality: 'rare', type: 'Consumable', desc: 'Equips your mount with lightweight but durable plating. While mounted, you cannot be dazed by enemy attacks. The structural integrity lasts for 2 hours.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Ride hard.", effects: ["Use: Prevents daze while mounted."], icon: <img src="https://i.imgur.com/8RwcuOx.png" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Calcified Whetstone', quality: 'uncommon', type: 'Consumable', desc: 'A porous stone treated with chemical hardeners. sharpening a weapon with this stone increases Attack Power by 20 for 30 minutes.', ilvl: 65, slot: 'Consumable', stats: '', flavor: "Simple but effective.", effects: ["Use: +20 Attack Power for 30 min."], icon: <img src="https://i.imgur.com/Zt0G4SR.jpeg" className="w-full h-full object-cover" alt="icon" /> }
       ],
       specs: [
         {
@@ -277,9 +302,9 @@ const TheArtisansCodex = () => {
             slot: 'Two-Hand',
             unique: true,
             armorType: 'Mace',
-            damage: '380 - 571',
+            damage: '480 - 720',
             speed: '3.80',
-            dps: '125.1',
+            dps: '157.9',
             durability: 120,
             stats: '+65 Strength\n+50 Stamina',
             effects: ['Equip: Increases critical strike rating by 45.', 'Chance on Hit: Shatters the target\'s armor, reducing it by 500. Stacks up to 3 times.'],
@@ -316,11 +341,15 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'The Prismatic Soulforge',
-        desc: 'Your **Focus** stat determines quality.\n**Brilliant (iLvl +3):** Enhanced stats and visual effects.\n**Flawless (iLvl +7):** Perfect binding with highest stats.'
+        desc: 'Enchanters no longer just apply stats; they weave reality itself. Your **Focus** allows you to tap into the ley lines of Outland.\n\n**Brilliant (iLvl +3):** The glow is visibly brighter, the magic more potent. Enhanced stats and distinct particle effects.\n**Flawless (iLvl +7):** A perfect binding of magic and matter. These enchants provide the highest stats and cause the weapon to drip with liquid essence.'
       },
       raidUtility: [
-        { name: 'Rune of Soul-Binding', quality: 'epic', type: 'Consumable', desc: 'Weapon Buff. The next time the target dies, they are instantly resurrected at 30% HP.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Death is but a delay.", effects: ["Use: Etches a rune onto a weapon. If the bearer dies within 10 min, they are instantly resurrected at 30% HP. (5 Min Cooldown)"] },
-        { name: 'Rune of Disruption', quality: 'epic', type: 'Consumable', desc: 'Weapon Buff. The next interrupt cast by the target also silences all enemies in 10y.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Silence the chorus.", effects: ["Use: Etches a rune onto a weapon. The next successful interrupt also silences all enemies within 10 yds. (5 Min Cooldown)"] }
+        { name: 'Rune of Soul-Binding', quality: 'epic', type: 'Consumable', desc: 'Inscribes a weapon with a soul-link rune. If the bearer dies within 10 minutes, their soul is anchored to the mortal coil, resurrecting them instantly with 30% health and mana.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Death is but a delay for the prepared.", effects: ["Use: Etches a rune onto a weapon. Resurrection on death (30% HP/Mana). (5 Min Cooldown)"] },
+        { name: 'Rune of Disruption', quality: 'epic', type: 'Consumable', desc: 'Etches a discordant rune onto the weapon. The next successful interrupt cast by the bearer releases a shockwave of silence, preventing all enemies within 10 yards from casting spells for 4 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Silence the chorus.", effects: ["Use: Etches a rune. Next interrupt silences AoE for 4 sec. (5 Min Cooldown)"] },
+        { name: 'Dust of Levitation', quality: 'uncommon', type: 'Consumable', desc: 'A pinch of enchanted dust that alters gravity. Reduces falling speed for 15 seconds. Use carefully near strong winds.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Light as a feather.", effects: ["Use: Slows falling speed for 15 sec. (1 Min Cooldown)"] },
+        { name: 'Shard of Potential', quality: 'rare', type: 'Consumable', desc: 'A crystallized fragment of raw arcane potential. Consuming it grants a flux of power, increasing a random primary stat by 30 for 1 hour. Persists through death.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Anything is possible.", effects: ["Use: +30 to a random primary stat for 1 hour."] },
+        { name: 'Sigil of the Kirin Tor', quality: 'epic', type: 'Consumable', desc: 'An intricate violet sigil that warps space. Activating it instantly teleports the caster 15 yards forward.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Blink and you'll miss it.", effects: ["Use: Teleport forward 15 yards. (3 Min Cooldown)"] },
+        { name: 'Enchanted Broom', quality: 'rare', type: 'Pet', desc: 'Unleashes an animated broom from your bag. It busily sweeps the ground behind you, keeping your conscience—and your boots—clean.', ilvl: 1, slot: 'Companion', stats: '', flavor: "Sweeps up loot.", effects: ["Use: Summons an Enchanted Broom companion."] }
       ],
       specs: [
         {
@@ -383,11 +412,16 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Schematic Iteration',
-        desc: 'Crafting fails can now result in **"Eureka!"** moments, granting temporary buffs or new schematic fragments. \n**Overcharge:** Most gadgets can be overcharged for double effect but risk a catastrophic malfunction.'
+        desc: 'Innovation requires failure. Crafting attempts now generate **"Eureka!"** moments—flashes of brilliance that grant temporary intelligence buffs or unlock fragments of lost schematics from the Netherstorm.\n\n**Overcharge:** Most gadgets can now be "Overcharged" via a toggle, doubling their effectiveness but risking a catastrophic malfunction that could stun the user or leak radiation.'
       },
       raidUtility: [
-        { name: 'Field Repair Bot 110G', quality: 'epic', type: 'Deployable', desc: 'A robot that repairs gear and sells reagents.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Authorized reseller.", effects: ["Use: Unfolds into a Field Repair Bot that can repair items and purchase loot. Lasts 10 min."] },
-        { name: 'Gnomish Gravity Well', quality: 'epic', type: 'Deployable', desc: 'Creates a localized gravity distortion.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Creates a gravity well that slows all enemies within 15 yards by 60% for 20 sec. (5 Min Cooldown)"] }
+        { name: 'Field Repair Bot 110G', quality: 'epic', type: 'Deployable', desc: 'Deploys a Field Repair Bot 110G. This rugged unit can repair armor and purchase unwanted items. Utilizing Gnomish efficiency, it remains active for 10 minutes before its fuel cell depletes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Authorized reseller.", effects: ["Use: Deploys a vendor/repair bot for 10 min. (1 Hour Cooldown)"] },
+        { name: 'Gnomish Gravity Well', quality: 'epic', type: 'Deployable', desc: 'Deploys an experimental gravity generator. It creates a localized distortion field that reduces the movement speed of all enemies within 15 yards by 60%. Warning: May cause nausea.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Creates a gravity well slowing enemies by 60% for 20 sec. (5 Min Cooldown)"] },
+        { name: 'Rocket Boots Xtreme Lite', quality: 'rare', type: 'Consumable', desc: 'Engages solid-fuel thrusters to increase movement speed by 300% for 5 seconds. This "Lite" version has reduced mass but retains the 10% chance of catastrophic fuel leak dealing Fire damage to the wearer.', ilvl: 115, slot: 'Feet', stats: '', flavor: "Void warranty if used indoors.", effects: ["Use: +300% Speed for 5 sec. 10% malfunction chance. (3 Min Cooldown)"] },
+        { name: 'Target Dummy MKII', quality: 'rare', type: 'Deployable', desc: 'Deploys an advanced mechanical decoy. This rugged dummy taunts all nearby enemies, forcing them to attack it for 10 seconds or until it is destroyed. Constructed with reinforced plating.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Hit me!", effects: ["Use: Taunts nearby enemies for 10 sec. (3 Min Cooldown)"] },
+        { name: 'Portable Mailbox', quality: 'rare', type: 'Deployable', desc: 'Deploys a MOLL-E (Mobile Otherspace Letter Launcher - Experimental) unit, allowing access to the mailbox for 5 minutes. The spacetime connection requires 1 hour to recharge.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "You've got mail.", effects: ["Use: Access mail for 5 min. (1 Hour Cooldown)"] },
+        { name: 'Goblin Jumper Cables XL', quality: 'rare', type: 'Trinket', desc: 'A set of heavy-duty jumper cables. Allows a skilled Engineer to shock a dead ally back to life with 30% health and mana. 50% success rate. Side effects include singing hair and mild tremors.', ilvl: 60, slot: 'Trinket', stats: '', flavor: "Clear!", effects: ["Use: 50% chance to resurrect ally. (10 Min Cooldown)"] },
+        { name: 'Holo-Projector', quality: 'uncommon', type: 'Deployable', desc: 'Projects a convincing holographic decoy at the target location. Enemies are distracted by the glimmering image for 5 seconds, reducing their detection range and aggression.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Look over there!", effects: ["Use: Distracts enemies for 5 sec. (2 Min Cooldown)"] }
       ],
       specs: [
         {
@@ -401,9 +435,9 @@ const TheArtisansCodex = () => {
             slot: 'Ranged',
             unique: true,
             armorType: 'Gun',
-            damage: '280 - 410',
+            damage: '340 - 510',
             speed: '2.90',
-            dps: '119.0',
+            dps: '146.6',
             stats: '+25 Agility',
             effects: ['Equip: Increases attack power by 40.', 'Use: Fire a tactical nuke at the target area. Deals 3000 to 4000 Fire damage to all enemies in 10 yds. (10 Min Cooldown)'],
             flavor: "If brute force doesn't work, you aren't using enough."
@@ -456,11 +490,16 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Facet Perfection',
-        desc: 'Cutting gems now has a mini-game component. A **Perfect Cut** yields a gem with slightly higher stats than the standard version. \n**Prisms:** New trinkets that can refract light to deal damage or heal.'
+        desc: 'Cutting a gem is a conversation with different facets of light. We have introduced a **Precision Cutting** mini-game during the crafting process. \n\nTiming your strikes perfectly results in a **"Perfect Cut"**, yielding a gem with bonus stats. Furthermore, Jewelcrafters can now craft **Prisms**, trinkets that refract ambient light to deal holy damage or cauterize wounds.'
       },
       raidUtility: [
-        { name: 'Consortium Focusing Lens', quality: 'epic', type: 'Deployable', desc: 'Refracts light to reveal hidden enemies.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Nowhere to hide.", effects: ["Use: Places a lens that emits a beam of light, revealing all stealth and invisible units within 30 yds. (5 Min Cooldown)"] },
-        { name: 'Brilliant Glass', quality: 'epic', type: 'Consumable', desc: 'Contains a random selection of gems.', ilvl: 70, slot: 'Item', stats: '', flavor: "A gamble in glass.", effects: ["Use: Shatter the glass to reveal the gems hidden within. (20 Hour Cooldown)"] }
+        { name: 'Consortium Focusing Lens', quality: 'epic', type: 'Deployable', desc: 'Deploys a finely cut crystal lens on the ground. It refracts ambient light to reveal all stealth, invisible, and camouflaged units within 30 yards. The lens is fragile and lasts for 1 minute.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Nowhere to hide.", effects: ["Use: Reveals stealth within 30 yds for 1 min. (5 Min Cooldown)"] },
+        { name: 'Brilliant Glass', quality: 'epic', type: 'Consumable', desc: 'A rough cluster of fused glass that hums with potential. Shattering it carefully has a chance to reveal rare or epic gems hidden within the structure.', ilvl: 70, slot: 'Item', stats: '', flavor: "A gamble in glass.", effects: ["Use: Create gems. (20 Hour Cooldown)"] },
+        { name: 'Dust of Disappearance', quality: 'rare', type: 'Reagent', desc: 'A pouch of crushed prism shards. Throwing it on the ground creates a refractive cloud, granting invisibility for 3 seconds. Use to escape combat or confound enemies.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Now you see me...", effects: ["Use: Vanish for 3 seconds. (10 Min Cooldown)"] },
+        { name: 'Statue of the Ruby Hare', quality: 'rare', type: 'Trinket', desc: 'A meticulously carved ruby figurine. Rubbing the statue grants a burst of kinetic energy, increasing Movement Speed by 40% for 10 seconds.', ilvl: 70, slot: 'Trinket', stats: '', flavor: "The hare is always faster.", effects: ["Use: +40% Speed for 10 sec. (2 Min Cooldown)"] },
+        { name: 'Emerald Owl', quality: 'rare', type: 'Trinket', desc: 'Releases a scout constructed from living wood and emeralds. The owl flies to the target area, providing vision and detection of hidden enemies for 30 seconds.', ilvl: 70, slot: 'Trinket', stats: '', flavor: "Silent watcher.", effects: ["Use: Summon owl scout. (5 Min Cooldown)"] },
+        { name: 'Diamond Ward', quality: 'epic', type: 'Consumable', desc: 'Crushes a diamond to create a protective prism around the user. The next hostile spell cast against you is reflected back at the caster. Lasts 5 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Return to sender.", effects: ["Use: Reflect next spell. (5 Min Cooldown)"] },
+        { name: 'Rough Hewn Statue', quality: 'uncommon', type: 'Deployable', desc: 'Places a crude stone statue that pulses with soothing earth energy. Heals all party members within 10 yards for 50 health every 3 seconds. Lasts 30 seconds.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Simple comfort.", effects: ["Use: Pulse AoE heal. (3 Min Cooldown)"] }
       ],
       specs: [
         {
@@ -523,11 +562,16 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'The Arcane Loom',
-        desc: 'Crafting quality relies on **Finesse**.\n**Masterwork (iLvl +3):** Enhanced stats.\n**Flawless (iLvl +7):** Shimmers with latent energy. Highest stats.'
+        desc: 'The Loom is where magic meets form. Crafting quality relies on **Finesse**, the ability to weave spells into thread.\n\n**Masterwork (iLvl +3):** The fabric feels lighter, yet stronger. Enhanced stats.\n**Flawless (iLvl +7):** Shimmers with latent energy, as if the cloth itself is alive. Grants the highest possible stats and unique visual auras.'
       },
       raidUtility: [
-        { name: 'Banner of Arcane Warding', quality: 'epic', type: 'Deployable', desc: 'Grants +100 All Resist to the raid.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "A shield of silk.", effects: ["Use: Places a banner that increases All Resistance by 100 for all party members within 30 yards. Lasts 15 sec. (5 Min Cooldown)"] },
-        { name: 'Banner of Swift Threads', quality: 'epic', type: 'Deployable', desc: 'Grants +5% Cast/Attack Speed to the raid.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Wind in your sails.", effects: ["Use: Places a banner that increases casting and attack speed by 5% for all party members within 30 yards. Lasts 15 sec. (5 Min Cooldown)"] }
+        { name: 'Banner of Arcane Warding', quality: 'epic', type: 'Deployable', desc: 'Unfurls a shimmering silk banner inscribed with abjuration runes. It pulses with protective energy, granting +100 All Resistances to all raid members within 30 yards for 15 seconds. Essential for surviving magical storms.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "A shield of silk.", effects: ["Use: Place a banner. +100 All Resist for 15 sec. (5 Min Cooldown)"] },
+        { name: 'Banner of Swift Threads', quality: 'epic', type: 'Deployable', desc: 'Plants a banner woven from wind-infused cloth. It whips violently in the air, inspiring allies and increasing attack and casting speed by 5% for all raid members within 30 yards. Lasts 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Wind in your sails.", effects: ["Use: Place a banner. +5% Haste for 15 sec. (5 Min Cooldown)"] },
+        { name: 'Manaweave Net', quality: 'rare', type: 'Throwable', desc: 'Hurls a net woven from solidified mana at the target. It roots the enemy for 4 seconds and siphons 500 mana, transferring it to the caster.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Stick around.", effects: ["Use: Net target. Root 4s, Drain 500 Mana. (2 Min Cooldown)"] },
+        { name: 'Magic Carpet', quality: 'epic', type: 'Mount', desc: 'Unrolls a luxurious, enchanted carpet capable of flight. It responds to the rider\'s mental commands, offering a smooth and stylish journey through the skies of Outland.', ilvl: 70, slot: 'Mount', stats: '', flavor: "A whole new world.", effects: ["Use: Summons a flying magic carpet. Requires Artisan Riding."] },
+        { name: 'Bag of Endless Pockets', quality: 'epic', type: 'Container', desc: 'A deceptively small bag that utilizes non-Euclidean geometry to hold more items than should physically be possible. Contains 28 slots.', ilvl: 70, slot: 'Bag', stats: '', flavor: "It's bigger on the inside.", effects: ["Unique-Equipped."] },
+        { name: 'Silk Glider', quality: 'rare', type: 'Back', desc: 'Equips a lightweight cloak reinforced with glider wings. Allows the wearer to fall slowly from great heights, turning a lethal plummet into a controlled descent. Lasts 30 seconds.', ilvl: 60, slot: 'Back', stats: '', flavor: "Catch the wind.", effects: ["Use: Reduces falling speed for 30 sec. (5 Min Cooldown)"] },
+        { name: 'Bandage of the Void', quality: 'rare', type: 'Consumable', desc: 'A bandage infused with void energy. When applied, it shrouds the user in stealth and regenerates 2000 health over 8 seconds. Taking damage breaks the stealth.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Unseen mending.", effects: ["Use: Stealth and heal 2000 HP over 8 sec. (5 Min Cooldown)"] }
       ],
       specs: [
         {
@@ -596,11 +640,16 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'The Scribe\'s Study',
-        desc: 'Scribes manipulate magic through **Ink Quality**. \n**Glyph Resonance:** Glyphs have tiers (Standard, Ancient, Primordial).'
+        desc: 'Scribes manipulate magic through the purity of their ink and the steadiness of their hand. \n\n**Glyph Resonance:** Glyphs now come in three tiers of potency—**Standard**, **Ancient**, and **Primordial**. Higher tiers unlock new visual effects or deeper mechanical changes to spells, allowing for true customization of your class fantasy.'
       },
       raidUtility: [
-        { name: 'Scroll of Heroic Tales', quality: 'epic', type: 'Deployable', desc: 'Inspires the raid, granting a "Battle Shout" buff.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Legends never die.", effects: ["Use: Inspires all party members, increasing Attack Power by 300 and Spell Power by 150. Lasts 5 min. (5 Min Cooldown)"] },
-        { name: 'Rune of Warding', quality: 'epic', type: 'Deployable', desc: 'Reduces AoE magic damage taken by 15%.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Stand your ground.", effects: ["Use: Inscribes a rune on the ground. Allies standing inside take 15% less damage from Area of Effect spells. Lasts 20 sec. (5 Min Cooldown)"] }
+        { name: 'Scroll of Heroic Tales', quality: 'epic', type: 'Deployable', desc: 'Unfurls a scroll detailing the legendary deeds of ancient heroes. Reading it aloud inspires 20 raid members, granting the "Battle Shout" effect (+305 Attack Power) for 2 minutes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Legends never die.", effects: ["Use: Inspires raid. +305 Attack Power. (5 Min Cooldown)"] },
+        { name: 'Rune of Warding', quality: 'epic', type: 'Deployable', desc: 'Draws a complex rune of protection on the ground. Allies standing within the rune take 15% reduced damage from Area of Effect spells. The rune fades after 20 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Stand your ground.", effects: ["Use: Place rune. -15% AoE Damage taken. (5 Min Cooldown)"] },
+        { name: 'Scroll of Recall', quality: 'uncommon', type: 'Consumable', desc: 'A single-use parchment inscribed with teleportation sigils. Reading it instantly transports the caster to their bound Hearthstone location.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "There and back again.", effects: ["Use: Teleport to Hearthstone location. (20 Min Cooldown)"] },
+        { name: 'Scroll of Unlocking', quality: 'uncommon', type: 'Consumable', desc: 'A magically charged scroll capable of manipulating tumblers and wards. Unlocks any door or chest requiring up to 375 Lockpicking skill.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Knock knock.", effects: ["Use: Opens locked objects."] },
+        { name: 'Contract of Vitality', quality: 'rare', type: 'Consumable', desc: 'A binding contract signed in blood. Instantly sacrifices 20% of the user\'s maximum health to conjure a pittance of gold coins.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Sign here.", effects: ["Use: Sacrifice 20% Life for Gold. (1 Hour Cooldown)"] },
+        { name: 'Forged Documents', quality: 'rare', type: 'Item', desc: 'Expertly falsified papers that appear legitimate to even the most scrutiny. Turn in to a faction quartermaster to gain 500 Reputation.', ilvl: 70, slot: 'Item', stats: '', flavor: "Looks legit.", effects: ["Use: Grant 500 Reputation."] },
+        { name: 'Glyph of Shadow', quality: 'minor', type: 'Glyph', desc: 'A cosmetic glyph that alters the user\'s connection to the Void. Your Shadowform now appears as a swirling voidwalker-like entity.', ilvl: 1, slot: 'Glyph', stats: '', flavor: "Embrace the dark.", effects: ["Use: Changes Shadowform appearance."] }
       ],
       specs: [
         {
@@ -616,9 +665,10 @@ const TheArtisansCodex = () => {
             armorType: 'Staff',
             damage: '150 - 290',
             speed: '2.40',
+
             dps: '91.6',
-            stats: '+60 Intellect\n+55 Stamina',
-            effects: ['Equip: Increases spell power by 250.', 'Equip: Your spells have a chance to duplicate themselves at 50% effectiveness.', 'Use: Scribble a rune of power on the air, increasing damage done by 15% for 20 sec. (3 Min Cooldown)'],
+            stats: '+60 Intellect\n+55 Stamina\n+45 Haste Rating',
+            effects: ['Equip: Increases spell power by 290.', 'Equip: Your spells have a chance to duplicate themselves at 50% effectiveness.', 'Use: Scribble a rune of power on the air, increasing damage done by 15% for 20 sec. (3 Min Cooldown)'],
             flavor: "The pen is mightier."
           }
         },
@@ -652,7 +702,7 @@ const TheArtisansCodex = () => {
             speed: '1.80',
             dps: '79.2',
             stats: '+40 Stamina\n+40 Intellect',
-            effects: ['Equip: Increases healing done by up to 400.', 'Equip: Your Glyphs are 10% more effective.', 'Use: Rewrite an enemy\'s fate, dispelling all magical buffs on them. (1 Min Cooldown)'],
+            effects: ['Equip: Increases healing done by up to 550.', 'Equip: Your Glyphs are 10% more effective.', 'Use: Rewrite an enemy\'s fate, dispelling all magical buffs on them. (1 Min Cooldown)'],
             flavor: "Art is subjective."
           }
         }
@@ -671,15 +721,19 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Geological Properties',
-        desc: 'Veins have traits: **Rich**, **Jewel-Encrusted**, or **Element-Infused**.\n**Surveyor\'s Map:** Triangulate rare nodes.'
+        desc: 'The earth speaks to those who listen. Veins now possess unique **Geological Properties** visible only to skilled miners:\n\n**Rich:** High yield.\n**Jewel-Encrusted:** Chance to drop raw gems.\n**Element-Infused:** Explodes with elemental motes when mined.\n\nMiners also gain the **Surveyor\'s Map**, allowing them to triangulate the position of these rare nodes from great distances.'
       },
       passiveBonus: {
         name: "Toughness",
         desc: "Your hardened skin and tireless endurance grant you **+60 Stamina**."
       },
       raidUtility: [
-        { name: 'Earthen Barricade', quality: 'epic', type: 'Deployable', desc: 'Summons a wall of rock that blocks LoS.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Hold the line.", effects: ["Use: Summons a destructible wall of rock that blocks line of sight. Lasts 20 sec. (5 Min Cooldown)"] },
-        { name: 'Smelting Brazier', quality: 'epic', type: 'Deployable', desc: 'Gain +100 Attack Power for 15s.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Fresh from the forge.", effects: ["Use: Places a brazier. Allies can interact to gain +100 Attack Power for 15 sec. (5 Min Cooldown)"] }
+        { name: 'Earthen Barricade', quality: 'epic', type: 'Deployable', desc: 'Conjures a massive, destructible wall of stone from the ground. It completely blocks line of sight, providing critical cover for the raid. Lasts 20 seconds or until destroyed.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Hold the line.", effects: ["Use: Summons a LoS-blocking wall. (5 Min Cooldown)"] },
+        { name: 'Smelting Brazier', quality: 'epic', type: 'Deployable', desc: 'Deploys a portable forge burning with intense heat. Nearby allies can interact with the brazier to temper their weapons, gaining +100 Attack Power for 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Fresh from the forge.", effects: ["Use: Place brazier. Interaction grants +100 AP. (5 Min Cooldown)"] },
+        { name: 'Seismic Charge', quality: 'rare', type: 'Explosive', desc: 'Plants a shaped charge that detonates with a controlled seismic shock. The blast instantly clears all Fear and Stun effects from the user.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Ground shaking.", effects: ["Use: Break Fear and Stun. (5 Min Cooldown)"] },
+        { name: 'Miner\'s Canary', quality: 'uncommon', type: 'Deployable', desc: 'Deploys a small cage containing a sensitive canary. The bird chirps frantically if any stealthed or invisible enemies venture within 20 yards.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Chirp chirp.", effects: ["Use: Detect Stealth nearby."] },
+        { name: 'Thermal Vent', quality: 'rare', type: 'Deployable', desc: 'Drills a bore-hole into a subterranean steam pocket. The venting steam knocks the first enemy to cross it high into the air, disrupting their movement.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Place a knock-up trap. (2 Min Cooldown)"] },
+        { name: 'Rock Elemental Geode', quality: 'ref', type: 'Consumable', desc: 'Crushes a rare geode to release a bound Rock Elemental. This sturdy guardian taunts nearby enemies and fights for the miner for 1 minute.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "A loyal friend.", effects: ["Use: Summon Rock Elemental Guardian. (10 Min Cooldown)"] }
       ],
       masterwork: {
         name: 'The Core-Hound\'s Toothpick',
@@ -714,15 +768,19 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Trophies & Tissues',
-        desc: 'Harvest **Pristine Hides**, **Beast Trophies**, and **Anatomical Samples**.'
+        desc: 'It is not enough to kill; one must know **how** to harvest. \n\n**Pristine Hides:** Perfect cuts yield hides required for Masterwork leather armor.\n**Beast Trophies:** Rare elites drop unique organs (e.g., "Heart of the Void Wolf") used in Alchemy and Enchanting.\n**Anatomical Samples:** Can be turned in for reputation or gold.'
       },
       passiveBonus: {
         name: "Master of Anatomy",
         desc: "Your knowledge of critical weak points grants you **+40 Critical Strike Rating**."
       },
       raidUtility: [
-        { name: 'War Horn of the Wilds', quality: 'epic', type: 'Deployable', desc: 'Sound the horn to grant +5% Phys Crit to raid.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "The hunt begins.", effects: ["Use: Places a War Horn. Allies can sound it to gain +5% Physical Critical Strike chance for 15 sec. (5 Min Cooldown)"] },
-        { name: 'Pheromone Marker', quality: 'epic', type: 'Throwable', desc: 'Marks a target, increasing Physical damage taken by 5%.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "They can't hide.", effects: ["Use: Marks a target, increasing Physical damage taken by 5% for 20 sec. (5 Min Cooldown)"] }
+        { name: 'War Horn of the Wilds', quality: 'epic', type: 'Deployable', desc: 'Places a resonant primal horn on the battlefield. When sounded by an ally, it unleashes a guttural roar that inspires bloodlust, granting +5% Physical Critical Strike chance to the party for 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "The hunt begins.", effects: ["Use: Place War Horn. Interaction grants +5% Phys Crit. (5 Min Cooldown)"] },
+        { name: 'Pheromone Marker', quality: 'epic', type: 'Throwable', desc: 'Hurls a vial of concentrated pheromones at the target. The scent marks them as prey, increasing all Physical damage taken by the target by 5% for 20 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "They can't hide.", effects: ["Use: Mark target. Enemies take +5% Phys Damage. (5 Min Cooldown)"] },
+        { name: 'Hide of the Beast', quality: 'rare', type: 'Consumable', desc: 'Drapes a magically treated hide over the user, engaging a powerful camouflage to reduce detection radius. Persists for 10 minutes or until an aggressive action is taken.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Blend in.", effects: ["Use: Greatly reduce aggro radius. (10 Min Cooldown)"] },
+        { name: 'Beast Lure', quality: 'uncommon', type: 'Deployable', desc: 'Sets up a musk-scented lure that attracts all neutral and aggressive beasts within 50 yards. Useful for pulling specific camps or creating a distraction.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Here kitty kitty.", effects: ["Use: Attracts nearby beasts. (5 Min Cooldown)"] },
+        { name: 'Scent Mask', quality: 'rare', type: 'Consumable', desc: 'Applies a pungent paste that masks the user\'s natural scent. Reduces the range at which enemies can detect you for 10 minutes. Persists through water.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "You smell like nothing.", effects: ["Use: Reduce enemy detection range."] },
+        { name: 'Trap Kit', quality: 'uncommon', type: 'Consumable', desc: 'Deploys a concealed bear trap. The first enemy to step on it is snapped in jagged steel, taking physical damage and being rooted for 5 seconds.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Snap!", effects: ["Use: Place rooting trap."] }
       ],
       masterwork: {
         name: 'Ak\'tar\'s Primal Heart',
@@ -753,15 +811,19 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Node Properties',
-        desc: 'Herbs have traits: **Verdant**, **Sun-Kissed**, **Shadow-touched**.'
+        desc: 'Flora in Outland has adapted to the chaotic energies of the Nether. Herbs now display unique traits:\n\n**Verdant:** Pulses with life, healing the gatherer.\n**Sun-Kissed:** imbued with solar energy, granting a haste buff.\n**Shadow-Touched:** Dangerous to touch, but yields materials for shadow resistance gear.'
       },
       passiveBonus: {
         name: "Lifeblood",
         desc: "Your connection to nature grants **+2000 Health Regeneration** over 5 sec (Passive) and **+40 Healing/Spell Power**."
       },
       raidUtility: [
-        { name: 'Field of Cleansing Moss', quality: 'epic', type: 'Deployable', desc: 'Cleanses poisons/diseases from allies.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Pure ground.", effects: ["Use: Grows a patch of moss. Allies standing on it are cleansed of 1 Poison and 1 Disease every 2 sec. Lasts 15 sec. (5 Min Cooldown)"] },
-        { name: 'Thicket of Obscuring Growth', quality: 'epic', type: 'Deployable', desc: 'Reduces threat for allies inside.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Fade into the green.", effects: ["Use: Grows a dense thicket. Allies inside have their threat reduced by 10% per second. Lasts 10 sec. (5 Min Cooldown)"] }
+        { name: 'Field of Cleansing Moss', quality: 'epic', type: 'Deployable', desc: 'Rapidly grows a patch of purified moss. Allies standing within the area are cleansed of one Poison and one Disease effect every 2 seconds. Lasts 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Pure ground.", effects: ["Use: Grow moss. Cleanses Poison/Disease AoE. (5 Min Cooldown)"] },
+        { name: 'Thicket of Obscuring Growth', quality: 'epic', type: 'Deployable', desc: 'Seeds a dense, magical thicket that instantly obscures vision. Allies standing inside have their threat reduced by 10% per second. Lasts 10 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Fade into the green.", effects: ["Use: Grow thicket. Reduces threat/aggro. (5 Min Cooldown)"] },
+        { name: 'Sun-Touched Petal', quality: 'rare', type: 'Consumable', desc: 'Consumes a petal infused with solar energy. The rush of warmth increases movement speed by 20% for 10 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Photosynthesis.", effects: ["Use: +20% Speed for 10 sec. (2 Min Cooldown)"] },
+        { name: 'Spore Cloud', quality: 'rare', type: 'Throwable', desc: 'Hurls a volatile mushroom that ruptures on impact. The releasing cloud disorients all enemies within 5 yards for 3 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Choke on it.", effects: ["Use: Disorient enemies in 5 yds. (2 Min Cooldown)"] },
+        { name: 'Dreamfoil Essence', quality: 'rare', type: 'Consumable', desc: 'Drags the essence from a Dreamfoil leaf. Drinking it creates a lucid state, restoring 1500 mana over 10 seconds. Effect is broken by damage.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Liquid dreams.", effects: ["Use: Restore 1500 Mana. (2 Min Cooldown)"] },
+        { name: 'Root Trap', quality: 'uncommon', type: 'Deployable', desc: 'Plants a dormant seed that sprouts instantly when triggered. Entangles the first enemy to step on it, rooting them in place for 8 seconds.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Watch your feet.", effects: ["Use: Plant a rooting seed. (1 Min Cooldown)"] }
       ],
       masterwork: {
         name: 'Verdant Keeper\'s Charm',
@@ -792,11 +854,14 @@ const TheArtisansCodex = () => {
       },
       coreSystem: {
         title: 'Primal Rhythms',
-        desc: 'You can only attune to ONE Rhythm at a time. \n**Drums of the Primal Hunt:** Raid-wide Haste. \n**Drums of the Earth Warder:** Raid-wide Armor/Stamina. \n**Drums of the Serpent:** Raid-wide Mana/Spirit.'
+        desc: 'The beat of the drum echoes the heartbeat of the land. You can only attune your soul to **ONE** Rhythm at a time, defining your role in the raid:\n\n**Drums of the Primal Hunt:** A frantic beat that drives allies to attack with blinding speed (Haste).\n**Drums of the Earth Warder:** A deep, slow rhythm that hardens skin and resolve (Armor/Stamina).\n**Drums of the Serpent:** A flowing, liquid rhythm that refreshes the mind (Mana/Spirit).'
       },
       raidUtility: [
-        { name: 'Primal Rhythms', quality: 'epic', type: 'Ability', desc: 'The core raid cooldowns (Haste, Defense, or Mana).', ilvl: 70, slot: 'Ability', stats: '', flavor: "The beat of war.", effects: ["Use: Grants a powerful raid-wide buff (Haste, Armor, or Mana) based on your specialization. (5 Min Cooldown)"] },
-        { name: 'Leather Tents', quality: 'rare', type: 'Deployable', desc: 'Grants "Rested" status anywhere.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Home is where you pitch it.", effects: ["Use: Deploys a tent. Players inside gain Rested status and can log out instantly."] }
+        { name: 'Primal Rhythms', quality: 'epic', type: 'Ability', desc: 'Grants access to the Primal Rhythms. Activating this ability applies a raid-wide buff determined by your specialization (Haste, Armor, or Mana).', ilvl: 70, slot: 'Ability', stats: '', flavor: "The beat of war.", effects: ["Use: Grants a powerful raid-wide buff. (5 Min Cooldown)"] },
+        { name: 'Leather Tents', quality: 'rare', type: 'Deployable', desc: 'Deploys a finely stitched leather tent. Allies resting inside gain the "Rested" status immediately, allowing for rapid logouts and health regeneration.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Home is where you pitch it.", effects: ["Use: Deploys a tent. Grant Rested + HP Regen."] },
+        { name: 'Drums of Panic', quality: 'rare', type: 'Consumable', desc: 'Beats a terrifying rhythm on drums of flayed skin. The sound induces primal fear in up to 5 nearby enemies, causing them to flee for 2 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Run away!", effects: ["Use: AoE Fear (5 targets) for 2 sec. (5 Min Cooldown)"] },
+        { name: 'Saddlebags', quality: 'uncommon', type: 'Item Enhancement', desc: 'Crafts a set of durable saddlebags. When attached to leg armor, they increase mounted movement speed by 4%. Does not stack with other speed effects.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Pack mule.", effects: ["Use: Attach to pants. +4% Mount Speed."] },
+        { name: 'Reinforced Barding', quality: 'rare', type: 'Consumable', desc: 'Fits a mount with heavy leather barding. The rider becomes immune to being dazed while mounted for 1 hour.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Ride steady.", effects: ["Use: Prevents daze while mounted for 1 hour."] }
       ],
       specs: [
         {
@@ -858,18 +923,19 @@ const TheArtisansCodex = () => {
       title: 'The Angler\'s Almanac',
       icon: <Fish className="w-6 h-6" />,
       image: 'https://i.imgur.com/gqzTA4j.jpeg',
-      desc: 'Fishing is now an active sport with a "Fighting Fish" mini-game and deep-sea leviathans.',
+      desc: 'Fishing is now an active sport with a "Fighting Fish" mini-game and deep-sea leviathans. It offers **Environmental Manipulation** mechanics to stealth past enemies or save allies.',
       philosophy: {
         tbc: "**The 2007 Landscape:** \nFishing was the ultimate patience test. It was necessary for buff food but the gameplay was non-existent. It was a second-screen activity where you clicked a bobber every 20 seconds.\n",
-        plus: "**The Vision for Plus:** \nWe gamified Fishing. It is now a sport. \n\n1. **The Mini-Game:** Hooking a rare fish triggers a tension-management mini-game. You have to fight the fish, managing line tension against its stamina. This makes catching a 'Titan-Eater' feel like a boss fight.\n2. **Raid Utility:** Fishermen provide 'Chum Buckets' (Threat Drops) and 'Fonts of Clarity' (Mana Regen). This makes them useful in raids beyond just providing raw food materials.\n3. **Harpooner Spec:** We added a combat-focused spec. The *Harpooner* can drag enemies around the battlefield with a gun, giving Fishing a unique crowd-control niche."
+        plus: "**The Vision for Plus:** \nWe gamified Fishing. It is now a sport. \n\n1. **The Mini-Game:** Hooking a rare fish triggers a tension-management mini-game. You have to fight the fish, managing line tension against its stamina.\n2. **Utility:** Fishermen provide 'Chum Buckets' (Threat Drops) and 'Fonts of Clarity' (Mana Regen). The *Hook of the Master Angler* allows you to physically pull friends to safety.\n3. **Harpooner Spec:** We added a combat-focused spec that can drag enemies around the battlefield."
       },
       coreSystem: {
         title: 'The Fighting Fish',
-        desc: 'Hooking a rare fish triggers a mini-game. You must manage line tension against the fish\'s stamina.'
+        desc: 'Fishing is a battle of wills. Hooking a rare fish triggers the **"Fighting Fish"** system. \n\nA tension bar appears—you must reel when the line is slack and give slack when the fish runs. Successfully exhausting the fish\'s stamina yields "Titan-Class" catches used for the highest tier of buffs.'
       },
       raidUtility: [
-        { name: 'Chum Bucket', quality: 'epic', type: 'Deployable', desc: 'Distracts non-boss enemies.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Smells awful.", effects: ["Use: Distracts all non-boss enemies in 20 yards, reducing their threat generation by 50% for 20 sec. (5 Min Cooldown)"] },
-        { name: 'Font of Clarity', quality: 'epic', type: 'Deployable', desc: 'Allies can drink to restore mana.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Clear water, clear mind.", effects: ["Use: Places a font. Allies can drink from it to restore 4000 mana over 10 sec. (5 Min Cooldown)"] }
+        { name: 'Lure of the Deep', quality: 'epic', type: 'Deployable', desc: 'Casts a bioluminescent lure that bobs hypnotically. It distracts non-boss enemies within 20 yards, reducing their aggression radius by 50% for 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Shiny...", effects: ["Use: Reduce aggro radius of nearby mobs. (10 Min Cooldown)"] },
+        { name: 'Slickscale Oil', quality: 'epic', type: 'Consumable', desc: 'Coats the user in a layer of viscous oil harvested from deep-sea aberrations. Grants immunity to all movement impairing effects for 3 seconds. Caution: Highly flammable.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Slippery.", effects: ["Use: Immune to slows/roots for 3 sec."] },
+        { name: 'Hook of the Master Angler', quality: 'legendary', type: 'Off-hand', desc: 'A legendary hook forged from Arcanite. It grips the target\'s gear without harming them, allowing you to pull a friendly target to your location.', ilvl: 141, slot: 'Held In Off-hand', stats: '+50 Fishing Skill', flavor: "Get over here!", effects: ["Passive: Water Walking.", "Use: Grip a friendly target to your location."] }
       ],
       masterwork: {
         name: 'Nat Pagle\'s Master Angler\'s Rod',
@@ -897,18 +963,19 @@ const TheArtisansCodex = () => {
       title: 'Combat Medic\'s Codex',
       icon: <HeartPulse className="w-6 h-6" />,
       image: 'https://i.imgur.com/NUZb092.jpeg',
-      desc: 'First Aid is no longer just bandages. It is a tactical support profession involving triage and combat stims.',
+      desc: 'First Aid is no longer just bandages. It is **Battlefield Triage**. We have introduced "Active Trauma Management" with effects that are usable in combat and by non-healers.',
       philosophy: {
-        tbc: "**The 2007 Landscape:** \nFirst Aid was mandatory but boring. Everyone had it. Everyone used Heavy Netherweave Bandages. It was a binary system: either you had a bandage debuff or you didn't. It was purely reactive and uniform across all classes.\n",
-        plus: "**The Vision for Plus:** \nWe are upgrading First Aid to 'Combat Medicine'. It is now a support role. \n\n1. **Triage Mechanic:** You can now 'Perform Triage' on corpses to harvest biological samples. This links the profession to the world in a grisly but thematic way. \n2. **Battlefield Resurrection:** The *Field Defibrillator* (Anatomist spec) gives non-healer classes a battle-res option, albeit a risky one. This changes the dynamics of 5-man and 10-man content significantly.\n3. **Buffs and Stims:** *Adrenaline Shots* and *Immunization Serums* allow a Medic to buff their allies proactively, preventing damage rather than just healing it."
+        tbc: "**The 2007 Landscape:** \nFirst Aid was a channeled heal, broken by damage. It was useless for active tanks or anyone under direct fire. It was purely reactive and often ignored in high-end play.\n",
+        plus: "**The Vision for Plus:** \nWe are upgrading First Aid to 'Combat Medicine'. \n\n1. **Burst Survival:** The *Adrenaline-Soaked Bandage* acts as a desperate heal—instantly restoring HP but causing a bleed. It's for when you are about to die *right now*.\n2. **Area Support:** The *Field Triage Kit* allows a DPS player to heal their entire party during downtime or heavy AoE, taking pressure off the healers.\n3. **Utility:** *Anti-Venom Suture* doesn't just clear poisons; it heals for the damage prevented."
       },
       coreSystem: {
-        title: 'Anatomical Harvest',
-        desc: 'Use "Perform Triage" on corpses to harvest samples like **Sterile Sinew** or **Potent Venom Glands**.'
+        title: 'Trauma Management',
+        desc: 'A medic must make hard choices. \n\n**Triage:** Use the "Perform Triage" ability on enemy corpses to harvest supplies.\n**Field Surgery:** You can now craft "Suture Kits" that allow you to stitch wounds mid-fight. These are instant-cast but apply a "Recent Surgery" debuff preventing further aid for 1 minute.'
       },
       raidUtility: [
-        { name: 'Field Triage Kit', quality: 'epic', type: 'Deployable', desc: 'Allies can grab a "Field Dressing".', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Patch 'em up.", effects: ["Use: Deploys a kit. Allies can loot a Field Dressing, a one-time use powerful self-heal bandage. (5 Min Cooldown)"] },
-        { name: 'Adrenaline Shot', quality: 'epic', type: 'Consumable', desc: 'Injects an ally, granting speed and immunity.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Don't pass out.", effects: ["Use: Injects an ally. Increases run speed by 30% and grants immunity to Fear for 10 sec. (5 Min Cooldown)"] }
+        { name: 'Adrenaline-Soaked Bandage', quality: 'rare', type: 'Consumable', desc: 'Slaps a chemical-drenched bandage onto the wound. Instantly heals the target for 2000 health, but the caustic chemicals deal 500 Nature damage over 10 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "This is gonna sting.", effects: ["Use: Heal 2000. Take 500 Dmg over 10s. (3 Min Cooldown)"] },
+        { name: 'Field Triage Kit', quality: 'epic', type: 'Deployable', desc: 'Unpacks a sterile field kit. Creates a 5-yard zone where the medic rapidly bandages all allies, healing them for 500 every 2 seconds. Channeling must be maintained.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Hold still!", effects: ["Use: Channel AoE heal zone. (5 Min Cooldown)"] },
+        { name: 'Anti-Venom Suture', quality: 'rare', type: 'Consumable', desc: 'Uses a chemically treated thread to stitch a poisoned wound. Instantly removes 1 Poison effect and heals the target for the amount of damage that poison would have caused.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Suck it out.", effects: ["Use: Remove Poison and Heal."] }
       ],
       masterwork: {
         name: 'The First-Ponder\'s Brooch',
@@ -932,18 +999,19 @@ const TheArtisansCodex = () => {
       title: 'The Gourmand\'s Lexicon',
       icon: <Utensils className="w-6 h-6" />,
       image: 'https://i.imgur.com/fJYnwk5.jpeg',
-      desc: 'Cooking becomes a social pillar. Flavor profiles and interactive feasts transform the kitchen into a laboratory.',
+      desc: 'Cooking becomes a social pillar. **"The Hearth\'s Morale"** encourages social interaction with deployed feasts and interactive buff sharing.',
       philosophy: {
-        tbc: "**The 2007 Landscape:** \nTBC introduced Daily Cooking Quests, which were great, but the food itself was just a stat stick you ate before a pull. The most social aspect was dropping a Basic Campfire.\n",
-        plus: "**The Vision for Plus:** \nCooking is now the social heart of the guild. \n\n1. **Interactive Feasts:** The *Stone-Soup Cauldron* requires raid members to click and contribute meat to finish the stew. This builds camaraderie (and clears bags). \n2. **Flavor Profiles:** We added a discovery system. Combining 'Fiery' spices with 'Savory' meats yields different results than 'Aromatic' spices. It makes recipe discovery a puzzle game. \n3. **Brewer Spec:** Finally, a reason to be a Brewmaster. Alcohol now provides combat stats for *Brewers*, turning a roleplay element into a viable raiding niche."
+        tbc: "**The 2007 Landscape:** \nPassive stat buff food only. You ate it, got 20 Stamina, and forgot about it.",
+        plus: "**The Vision for Plus:** \nWe want Cooking to feel like you are feeding an army. \n\n1. **Combat Rations:** *Fel-Seared Jerky* restores Health/Mana instantly in combat. It tastes like sulfur but saves lives.\n2. **Deployed Feasts:** *Distilled Spore-Soup* creates a physical pot that players gather around. It can even be kicked over by enemies in PvP!\n3. **Seasoning:** *Gourmet's Flash Powder* allows cooks to 'season' Mage Tables, buffing the mana regen of summoned water."
       },
       coreSystem: {
         title: 'Flavor Profiles',
-        desc: 'Ingredients have quality levels. **Flavor Profiles:** Spices are categorized (Fiery, Savory, Aromatic).'
+        desc: 'Cooking is the synthesis of art and alchemy. \n\n**Flavor Profiles:** Ingredients now have tags (**Fiery**, **Savory**, **Aromatic**, **Bitter**). Combining these correctly in the pot unlocks hidden buffs. For example, a "Fiery" + "Savory" combo might grant Attack Power, while "Aromatic" + "Bitter" grants Mana Regen.'
       },
       raidUtility: [
-        { name: 'Stone-Soup Cauldron', quality: 'epic', type: 'Deployable', desc: 'Raid members contribute meat to the pot.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Needs more salt.", effects: ["Use: Raid members can click to contribute meat. Once full, grants a massive HoT to the entire raid. (5 Min Cooldown)"] },
-        { name: 'Spice Diffuser', quality: 'epic', type: 'Deployable', desc: 'Increases resource regeneration.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Smells like victory.", effects: ["Use: Places a diffuser. Increases Mana, Energy, and Rage regeneration for all nearby allies for 20 sec. (5 Min Cooldown)"] }
+        { name: 'Ration: Fel-Seared Jerky', quality: 'uncommon', type: 'Consumable', desc: 'A strip of cured meat seared in Fel fire. Chewing it rapidly restores 15% Health and Mana over 3 seconds, even while in combat.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Tastes like sulfur, kicks like a mule.", effects: ["Use: Combat Regen 15% HP/Mana. (2 Min Cooldown)"] },
+        { name: 'Distilled Spore-Soup', quality: 'epic', type: 'Deployable', desc: 'Places a steaming cauldron of Zangarmarsh mushroom soup. Party members can help themselves to gain the "Well Fed" buff instantly. The pot is fragile.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Don't ask what's floating in it.", effects: ["Use: Place a Feast. Click for Well Fed."] },
+        { name: 'Gourmet\'s Flash Powder', quality: 'rare', type: 'Reagent', desc: 'A pouch of volatile spices. When applied to a Mage\'s Table or Soulwell, it "seasons" the conjured items, increasing their restoration rate by 20%.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "BAM!", effects: ["Use: Upgrade Mage Table/Soulwell."] }
       ],
       masterwork: {
         name: 'The High Chef\'s Spoon',
@@ -993,26 +1061,15 @@ const TheArtisansCodex = () => {
         }
       `}</style>
 
-      {/* --- HERO HEADER --- */}
-      <header className={`sticky top-20 z-40 transition-all duration-500 border-b border-[#c29c55]/30 ${scrolled ? 'bg-[#050403]/95 py-3 shadow-2xl' : 'bg-[#050403] py-6'}`}>
-        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-          {/* Artisan's Table Background */}
-          <img src="https://i.imgur.com/Nad4igB.jpeg" className="w-full h-[600px] object-cover opacity-40" style={{ transform: `translateY(-${scrolled ? 50 : 0}px)` }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#050403]/60 via-[#050403]/90 to-[#050403]"></div>
-        </div>
-
-        <div className="container mx-auto px-6 flex justify-between items-center relative z-10">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-[#1a1c22] border border-[#c29c55] rounded flex items-center justify-center shadow-[0_0_15px_rgba(194,156,85,0.2)]">
-              <BookOpen className="text-[#c29c55] w-8 h-8" />
-            </div>
-            <div>
-              <h1 className="font-hero text-2xl lg:text-3xl text-[#f0e6d2] tracking-[0.1em] drop-shadow-md">THE ARTISAN'S CODEX</h1>
-              <p className="text-xs text-[#8a7b62] font-body tracking-[0.3em] uppercase mt-1">Burning Crusade Plus</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* --- UNIFIED HEADER --- */}
+      <UnifiedHeader
+        icon="https://i.imgur.com/wgME57L.jpeg"
+        background="https://i.imgur.com/3nlvCpa.jpeg"
+        section="Burning Crusade Plus"
+        sub="Profession Overhaul"
+        title="The Artisan's Codex"
+        quote="The hammer, the quill, and the vial. Tools of creation in a world of destruction."
+      />
 
       {/* --- NAV SPACER --- */}
       <div className="h-[400px] flex items-center justify-center relative">
@@ -1036,18 +1093,20 @@ const TheArtisansCodex = () => {
             <div className="sticky top-52 parchment-texture border border-[#2f2f35] rounded p-1 shadow-2xl">
               <div className="bg-[#050403]/80 p-4 rounded-sm">
                 <h3 className="font-hero text-[#8a7b62] text-xs uppercase tracking-[0.2em] mb-6 text-center border-b border-[#2f2f35] pb-2">Select Discipline</h3>
-                <div className="grid grid-cols-2 lg:grid-cols-1 gap-1">
+                <div className="space-y-1">
                   {Object.entries(professions).map(([key, prof]) => (
                     <button
                       key={key}
-                      onClick={() => setActiveProfession(key)}
-                      className={`flex items-center gap-4 p-3 rounded-sm transition-all border-l-2 ${activeProfession === key
-                        ? `bg-[#1a1c22] border-[#c29c55] text-[#f0e6d2] shadow-inner`
-                        : 'border-transparent hover:bg-[#1a1c22] text-[#5c5c63] hover:text-[#aeb6bf]'
+                      onClick={() => { setActiveProfession(key); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 flex items-center gap-3 border-l-2 group ${activeProfession === key
+                        ? 'bg-[#c29c55]/10 border-[#c29c55] text-[#f0e6d2]'
+                        : 'border-transparent hover:bg-[#1a1c22] text-[#8a7b62] hover:text-[#c29c55] hover:border-[#c29c55]/50'
                         }`}
                     >
-                      <div className={`${activeProfession === key ? 'text-[#c29c55]' : 'text-current'}`}>{prof.icon}</div>
-                      <span className="font-hero text-sm tracking-wide">{prof.name}</span>
+                      <span className={`transition-colors ${activeProfession === key ? 'text-[#c29c55]' : 'text-[#5c5c63] group-hover:text-[#c29c55]'}`}>
+                        {React.cloneElement(prof.icon, { size: 18 })}
+                      </span>
+                      <span className="font-hero text-sm tracking-wide uppercase">{prof.name}</span>
                     </button>
                   ))}
                 </div>
@@ -1202,8 +1261,12 @@ const TheArtisansCodex = () => {
                                 {formatText(spec.desc)}
                               </p>
                               <div className="border-t border-[#2f2f35] pt-4 mt-auto">
-                                <span className="text-[10px] text-[#ff8000] font-hero uppercase tracking-widest block mb-2">Legendary Reward</span>
-                                <WowItem item={spec.legendary} isLegendary={true} />
+                                {spec.legendary && (
+                                  <>
+                                    <span className="text-[10px] text-[#ff8000] font-hero uppercase tracking-widest block mb-2">Legendary Reward</span>
+                                    <WowItem item={spec.legendary} isLegendary={true} />
+                                  </>
+                                )}
                               </div>
                             </div>
                           </div>

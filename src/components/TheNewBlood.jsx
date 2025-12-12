@@ -6,6 +6,7 @@ import {
   Coins, Crown, Anchor, Eye, Map, Feather, Hand,
   Scroll, Compass, Axe, GraduationCap
 } from 'lucide-react';
+import UnifiedHeader from './UnifiedHeader';
 
 const TheNewBlood = () => {
   const [activeRace, setActiveRace] = useState('goblins');
@@ -42,10 +43,10 @@ const TheNewBlood = () => {
 
   const raceGroups = {
     neutral: {
-      title: 'Neutral Factions',
+      title: 'Neutral Start',
       color: 'text-[#f8b700]', // Blizzard Gold
       borderColor: 'border-[#f8b700]/30',
-      races: ['goblins', 'elves']
+      races: ['elves', 'goblins']
     },
     horde: {
       title: 'The Horde',
@@ -66,16 +67,17 @@ const TheNewBlood = () => {
       id: 'goblins',
       name: 'Goblins',
       tagline: 'Profit is the New Prophet',
-      faction: 'Neutral (Steamwheedle Cartel)',
+      faction: 'Neutral / Contractual Alignment',
+      leader: 'Trade Prince Gallywix',
       heroImage: 'https://imgur.com/nCr9SJ1.jpeg',
       icon: <Coins className="w-6 h-6" />,
       themeColor: '#00FF00', // Fel/Money Green
       accentColor: 'text-green-400',
 
       overview: {
-        fantasy: 'The **Opportunistic Capitalist**. While the Horde and Alliance squabble over territory and honor, the Steamwheedle Cartel sees the reopening of the Dark Portal as the single greatest investment opportunity in Azerothian history. You are not a "hero"—that word doesn\'t pay the rent. You are a **"Freelance Contractor"** (read: highly expendable asset with a liability waiver) sent to strip-mine Outland before the competition does. \n\n**The Undermine Protocol:** Trade Prince Steamwheedle has officially authorized "aggressive expansion" into the Twisting Nether. This isn\'t exploration; it\'s a hostile corporate takeover. Your motivation is purely transactional. You don\'t fight for the Light or the Horde; you fight because the loot drops in Outland are currently trending 200% above market value on the Undermine Futures Exchange. The Ethereals of the Consortium are your direct competitors—stuffy, energy-based elitists who hoard technology. You intend to drive them into bankruptcy, preferably with high-explosives.',
+        fantasy: 'The **Opportunistic Capitalist**. The Goblins of the Steamwheedle Cartel care for profit, not politics. You start as a **Neutral Agent**, a freelancer looking for the biggest payout. At Level 10, you must sign a **Binding Contract**:\n\n*   **The Alliance:** Wealth through trade and stability.\n*   **The Horde:** Wealth through conquest and industry.\n*   **Remain Neutral:** The "Lone Shark" path. You become **Hostile** to both factions, able to kill (and loot) anyone, but banned from all faction cities. You rely strictly on neutral hubs like Gadgetzan and Area 52.\n\n**The Undermine Protocol:** Trade Prince Gallywix has authorized "aggressive expansion" into the Twisting Nether. The Ethereals of the Consortium are your direct competitors—stuffy, energy-based elitists who hoard technology. You intend to drive them into bankruptcy, preferably with high-explosives.',
         systemName: 'Corporate Warfare',
-        systemDesc: 'At Level 20, you unlock the **"Ledger of Conflict,"** a UI that replaces your reputation pane. Instead of gaining favor, you gain **"Credit Rating."** \n\n**Mercenary Contracts:** You can accept "Contracts" from opposing factions. Sabotage a blood elf mana-forge? Pays in gold. Defend a Draenei caravan? Pays in rare gems. You can effectively work for both sides, but getting caught (dying during a contract) lowers your Credit Rating. \n\n**The Black Market:** Access to a unique Auction House in Area 52 that ignores faction restrictions but charges a brutal 20% "Cartel Tax" on all transactions. \n\n**Hostile Takeover (PvP):** A dynamic world-PvP mechanic where Goblin guilds can "buy out" (capture) resource nodes in Nagrand (Mines, Gas Clouds). Holding a node generates passive gold for the guild, but flips the local guards to be hostile to rival Goblin cartels.'
+        systemDesc: 'At Level 20, you unlock the **"Ledger of Conflict,"** a UI that replaces your reputation pane. Instead of gaining favor, you gain **"Credit Rating."** \n\n**Mercenary Contracts:** You can accept "Contracts" from Horde leadership. Sabotage a blood elf mana-forge? Pays in gold. Defend a Mag\'har caravan? Pays in rare gems. \n\n**The Black Market:** Access to a unique Auction House in Area 52 that ignores faction restrictions but charges a brutal 20% "Cartel Tax" on all transactions. \n\n**Hostile Takeover (PvP):** A dynamic world-PvP mechanic where Goblin guilds can "buy out" (capture) resource nodes in Nagrand (Mines, Gas Clouds). Holding a node generates passive gold for the guild.'
       },
 
       classFantasies: [
@@ -87,12 +89,12 @@ const TheNewBlood = () => {
         {
           class: 'Rogue',
           title: 'Corporate Fixer',
-          desc: 'Specializes in "Hostile Takeovers" and industrial espionage. Your poisons are re-purposed industrial waste and toxic sludge. Pickpocket yields 10% more gold (embezzlement). Your Stealth is less about magic and more about a high-tech cloaking field that sometimes sparks and sputters when you take damage.'
+          desc: 'Specializes in "Hostile Takeovers" and industrial espionage. Your poisons are re-purposed industrial waste and toxic sludge. Pickpocket yields 10% more gold (embezzlement). Your Stealth is less about magic and more about a high-tech cloaking field that sometimes sparks and sputters.'
         },
         {
           class: 'Hunter',
           title: 'Big Game Poacher',
-          desc: 'Pets are investments, not friends. You don\'t "tame" beasts; you "break" them with shock collars. Uses a pneumatic "Net-Gun" instead of traps. Exotic munitions leave glowing radioactive residue. You treat rare spawns as "high-value assets" to be captured and sold to the highest bidder.'
+          desc: 'Pets are investments, not friends. You don\'t "tame" beasts; you "break" them with shock collars. Uses a pneumatic "Net-Gun" instead of traps. Exotic munitions leave glowing radioactive residue. You treat rare spawns as "high-value assets" to be captured and sold.'
         },
         {
           class: 'Mage',
@@ -122,7 +124,7 @@ const TheNewBlood = () => {
 
       locations: {
         start: '**Starting Zone: "The Profit-Margin"**\nA massive, instanced Goblin transport barge adrift in the Twisting Nether. The ship has suffered a catastrophic "liquidity crisis" (reactor explosion). The starting quests involve fixing the Kaja\'Cola-fueled engine, fighting off void creatures leaking into the hull, and "negotiating" (i.e., looting) escape pod parts from rival contractors who didn\'t read the fine print.',
-        hub: '**Capital Hub: "Gadgetzan Exports" (Nagrand)**\nA rapidly expanding strip-mine operation that evolves visually as the server completes daily quests. It starts as a few tents and grows into a neon-lit, smog-choked city that rivals Shattrath. It features the "Black Market Auction House," the "Corporate Lounge" inn (VIP only), and a statue of Trade Prince Steamwheedle made of solid gold.',
+        hub: '**Capital Hub: "Gadgetzan Exports" (Nagrand)**\nA rapidly expanding strip-mine operation that evolves visually as the server completes daily quests. It starts as a few tents and grows into a neon-lit, smog-choked city that rivals Shattrath. It features the "Black Market Auction House," the "Corporate Lounge" inn (VIP only), and a statue of Trade Prince Gallywix made of solid gold.',
         outpost: '**Outpost: "Area 52 Annex" (Netherstorm)**\nA hostile takeover of the eastern side of Area 52. Questlines here involve corporate espionage against the Ethereals, stealing their eco-dome tech to patent it, and sabotaging Mana-Forges to drive up the price of mana crystals.',
         dungeons: '**Dungeon Ties:**\n**The Mana-Tombs:** The Cartel hires you to "liquidate" the Ethereal competition and steal their trade secrets.\n**The Mechanar:** A salvage operation. You are sent to strip the Tempest Keep structures for raw parts and sell them back to the Sha\'tar at a markup.'
       }
@@ -132,14 +134,15 @@ const TheNewBlood = () => {
       id: 'elves',
       name: 'High & Blood Elves',
       tagline: 'The Divided Soul',
-      faction: 'Neutral Start -> Choice at L20',
+      faction: 'Choice at L20',
+      leader: 'Alleria Windrunner (A) / Lor\'themar Theron (H)',
       heroImage: 'https://imgur.com/cuuCVtS.jpeg',
       icon: <Crown className="w-6 h-6" />,
       themeColor: '#FFD700', // Gold/Sunwell
       accentColor: 'text-amber-300',
 
       overview: {
-        fantasy: 'An identity forged in tragedy. You are a survivor of the Scourge invasion of Quel\'Thalas, defined by how you cope with the loss of the Sunwell. Do you seek to **Restore** it through discipline and ancient tradition (High Elf), or **Devour** power from other sources to survive the magical famine (Blood Elf)?\n\nThis race is about **Duality**. You start together in the Ghostlands, united by survival, but are slowly torn apart by ideology until you must make a permanent choice at Level 20. This choice is irreversible; it changes your racials, your capital city, your faction allegiance, and your character\'s eye color forever.',
+        fantasy: 'An identity forged in tragedy. You are a survivor of the Scourge invasion of Quel\'Thalas, defined by how you cope with the loss of the Sunwell. Do you seek to **Restore** it through discipline and ancient tradition (High Elf), or **Devour** power from other sources to survive the magical famine (Blood Elf)?\n\nThis race is about **Duality**. You start together in the Ghostlands, united by survival, but are slowly torn apart by ideology until you must make a permanent choice at Level 20. High Elves formally join the Alliance under Alleria Windrunner, seeking redemption. Blood Elves remain with the Horde, embracing the power of the Sin\'dorei.',
         systemName: 'The Crucible of Choice',
         systemDesc: 'A mandatory solo scenario at Level 20. You confront an Echo of the Sunwell in a dream-state, assaulted by visions of your past leaders.\n\n**Alliance Path:** Reject the hunger. Choose discipline. Your eyes glow blue. You gain **"Grace of the Sunwell"** (Passive Mana Regen) and **"Spellbreaker"** (Reflect Chance). You reject Kael\'thas\'s teachings.\n**Horde Path:** Embrace the hunger. Dominate the energy. Your eyes glow green. You gain **"Arcane Torrent"** (AoE Silence/Restore) and **"Siphon Magic"**. You embrace the path of the Sin\'dorei.'
       },
@@ -198,13 +201,14 @@ const TheNewBlood = () => {
       name: 'Ogres',
       tagline: 'The Reclaimed Legacy',
       faction: 'Horde (Stonemaul Clan)',
+      leader: 'Rexxar',
       heroImage: 'https://imgur.com/b4F4qBk.jpeg',
       icon: <Hammer className="w-6 h-6" />,
       themeColor: '#ea580c', // Rust/Orange
       accentColor: 'text-orange-500',
 
       overview: {
-        fantasy: 'For too long, Ogres have been reduced to brutes and punchlines. The Stonemaul Clan remembers the **Gorian Empire**—a time when Ogres were sorcerer-kings who ruled Draenor with iron and arcane fire. You are here to prove that Ogres are the true heirs of the planet, possessing both earth-shattering strength and terrifying intellect.\n\nThis is a race of **Scale and Weight**. You are larger than Tauren. You feel heavy. When you walk, the camera shakes slightly. You are the "tank" race, physically imposing and culturally proud. You view the Orcs as "little brothers" who lost their way, and the Gronn as false gods who must be toppled.',
+        fantasy: 'For too long, Ogres have been reduced to brutes and punchlines. The Stonemaul Clan remembers the **Gorian Empire**—a time when Ogres were sorcerer-kings who ruled Draenor with iron and arcane fire. Under the leadership of **Rexxar**, Champion of the Horde, you are here to prove that Ogres are the true heirs of the planet, possessing both earth-shattering strength and terrifying intellect.\n\nThis is a race of **Scale and Weight**. You are larger than Tauren. You feel heavy. When you walk, the camera shakes slightly. You are the "tank" race, physically imposing and culturally proud. You view the Orcs as "little brothers" who lost their way, and the Gronn as false gods who must be toppled.',
         systemName: 'Two-Headed Magi',
         systemDesc: '**Mage/Warlock Only:** Your character model has two heads. You can customize both names (e.g., "Cho" and "Gall") and facial features. \n\n**The Second Head:** Acts as a built-in "announcer" for your gameplay. It alerts you to procs in /say ("Burn them, idiot!"), auto-responds to whispers with insults, and grants a passive resistance to Silence effects (one head keeps chanting while the other is gagged). The heads will bicker when you are idle.'
       },
@@ -258,6 +262,7 @@ const TheNewBlood = () => {
       name: 'Saberon',
       tagline: 'The Primal Hunter',
       faction: 'Horde (Primal Pact)',
+      leader: 'The Golden Alpha',
       heroImage: 'https://imgur.com/lR8vivT.jpeg',
       icon: <Crosshair className="w-6 h-6" />,
       themeColor: '#CA8A04', // Feral Gold
@@ -317,13 +322,14 @@ const TheNewBlood = () => {
       name: 'The Broken',
       tagline: 'The Redeemed Shadow',
       faction: 'Alliance (Ashtongue Redeemers)',
+      leader: 'Akama',
       heroImage: 'https://imgur.com/jH31cAZ.jpeg',
       icon: <Ghost className="w-6 h-6" />,
       themeColor: '#14b8a6', // Teal/Nether
       accentColor: 'text-teal-400',
 
       overview: {
-        fantasy: 'Cut off from the Light, twisted by Fel, but not broken in spirit. You are the **Survivors**. The Draenei look at you with pity; the Orcs with disgust. But you possess a power neither understands: the ability to walk in both the Light and the Void without being consumed by either. You are the bridge between the Naaru and the darker truths of Outland.\n\nYour aesthetic is **Ragged Nobility**. Tattered cloaks, cracked crystal staves, and glowing, weeping sores of fel energy. You fight not for glory, but for a home. You are led by Akama, who plays a dangerous double-game with Illidan.',
+        fantasy: 'Cut off from the Light, twisted by Fel, but not broken in spirit. You are the **Survivors**. The Draenei look at you with pity; the Orcs with disgust. But you possess a power neither understands: the ability to walk in both the Light and the Void without being consumed by either. You are the bridge between the Naaru and the darker truths of Outland.\n\nYour aesthetic is **Ragged Nobility**. Tattered cloaks, cracked crystal staves, and glowing, weeping sores of fel energy. You fight not for glory, but for a home. You are led by **Akama**, the Elder Sage, who plays a dangerous double-game with Illidan to secure your freedom.',
         systemName: 'Vengeance & Atonement',
         systemDesc: 'A unique resource bar. \n**Vengeance:** Fills as you take damage. Can be spent to boost Shadow damage. Represents giving in to the despair. \n**Atonement:** Fills as you heal or deal Holy damage. Can be spent on a powerful self-sustain HoT. Represents holding onto the Light.\nMastering the Broken means balancing your inner turmoil—lean too far into Vengeance and you risk becoming a Lost One (visual debuff).'
       },
@@ -376,6 +382,7 @@ const TheNewBlood = () => {
       name: 'Wildhammer Dwarves',
       tagline: 'The Sky-Reaver',
       faction: 'Alliance (Wildhammer Clan)',
+      leader: 'Kurdran Wildhammer',
       heroImage: 'https://imgur.com/NmluyOP.jpeg',
       icon: <Feather className="w-6 h-6" />,
       themeColor: '#0ea5e9', // Sky Blue
@@ -474,6 +481,15 @@ const TheNewBlood = () => {
         }
       `}</style>
 
+      <UnifiedHeader
+        icon="https://i.imgur.com/9G9klET.jpeg"
+        background="https://i.imgur.com/ZH7k1Zi.jpeg"
+        section="Races"
+        sub="Allies of the Outland"
+        title="The New Blood"
+        quote="From the depths of the mines to the peaks of the Aerie."
+      />
+
       {/* --- HERO SECTION WITH PARALLAX --- */}
       <div className="relative w-full h-[60vh] overflow-hidden border-b-4 border-[#1a1a1a]">
         {/* Dynamic Background */}
@@ -495,6 +511,13 @@ const TheNewBlood = () => {
           <h1 className="font-hero text-5xl md:text-7xl font-black text-white mb-2 tracking-tighter shadow-black drop-shadow-lg">
             {activeData.name}
           </h1>
+          {/* LEADER INFO ADDED HERE */}
+          {activeData.leader && (
+            <div className="flex items-center gap-2 mb-2">
+              <Crown className="w-4 h-4 text-[#ffd100]" />
+              <span className="font-hero text-sm text-[#ffd100] tracking-widest uppercase">Leader: {activeData.leader}</span>
+            </div>
+          )}
           <p className={`font-hero text-lg md:text-xl ${activeData.accentColor} tracking-[0.3em] uppercase opacity-90`}>
             {activeData.tagline}
           </p>
@@ -517,8 +540,8 @@ const TheNewBlood = () => {
                       key={raceKey}
                       onClick={() => setActiveRace(raceKey)}
                       className={`relative w-16 h-16 rounded border transition-all duration-300 overflow-hidden group ${isActive
-                          ? `border-${r.accentColor.split('-')[1]}-500 ring-2 ring-${r.accentColor.split('-')[1]}-500/50 scale-110`
-                          : 'border-white/10 hover:border-white/30 hover:scale-105'
+                        ? `border-${r.accentColor.split('-')[1]}-500 ring-2 ring-${r.accentColor.split('-')[1]}-500/50 scale-110`
+                        : 'border-white/10 hover:border-white/30 hover:scale-105'
                         }`}
                     >
                       <img src={r.heroImage} alt={r.name} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />

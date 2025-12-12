@@ -2,32 +2,28 @@ import React, { useState } from 'react';
 import {
   Sword, Shield, Zap, Crosshair, Heart, Skull,
   Activity, Moon, Sun, Droplet, Flame, Snowflake,
-  Ghost, Hammer, BookOpen, ArrowLeft, Leaf
+  Ghost, Hammer, BookOpen, ArrowLeft, Leaf, Crown
 } from 'lucide-react';
+import UnifiedHeader from './UnifiedHeader';
 
 const HallOfLegends = () => {
   const [activeClass, setActiveClass] = useState('druid');
 
   // Helper function to convert markdown bold (**) and newlines (\n) to JSX elements
   const formatText = (text) => {
-    // 1. Split by newline to handle <br>
+    if (!text) return null;
     const lines = text.split('\n');
 
     return lines.map((line, lineIndex) => {
-      // 2. Process bolding (**) within each line
       const parts = line.split(/(\*\*.*?\*\*)/g);
 
       const content = parts.map((part, partIndex) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          // If it's a bold part, strip ** and wrap in a bold span
-          const boldContent = part.slice(2, -2);
-          // Using a specific Tailwind class for keywords as per Blizzard style
-          return <strong key={partIndex} className="text-white font-bold">{boldContent}</strong>;
+          return <strong key={partIndex} className="text-white font-bold">{part.slice(2, -2)}</strong>;
         }
         return part;
       });
 
-      // Add a <br> after every line except the last one
       return (
         <React.Fragment key={lineIndex}>
           {content}
@@ -37,12 +33,13 @@ const HallOfLegends = () => {
     });
   };
 
-  // --- CLASS DATA (Expanded Content Extracted from PDF) ---
+  // --- CLASS DATA ---
   const classes = {
     druid: {
       name: 'Druid',
       title: 'The Wild Heart Reforged',
       icon: <Leaf className="w-6 h-6" />,
+      crest: "https://i.imgur.com/t9FOweo.png",
       color: 'text-orange-400',
       borderColor: 'border-orange-500',
       bgGradient: 'from-orange-900/80 to-black',
@@ -61,6 +58,7 @@ const HallOfLegends = () => {
       name: 'Hunter',
       title: 'The Patient Predator',
       icon: <Crosshair className="w-6 h-6" />,
+      crest: "https://i.imgur.com/En31Y4t.png",
       color: 'text-green-400',
       borderColor: 'border-green-500',
       bgGradient: 'from-green-900/80 to-black',
@@ -79,6 +77,7 @@ const HallOfLegends = () => {
       name: 'Mage',
       title: 'The Volatile Artificer',
       icon: <Flame className="w-6 h-6" />,
+      crest: "https://i.imgur.com/qn2djXW.png",
       color: 'text-blue-400',
       borderColor: 'border-blue-500',
       bgGradient: 'from-blue-900/80 to-black',
@@ -89,14 +88,15 @@ const HallOfLegends = () => {
       },
       specs: [
         { name: 'Arcane', title: 'Temporal Weaver', desc: '**Core Problem Solved:** The rigid, "1-button Arcane Blast" turret gameplay. \n\n**Rotation & Abilities:** \n**Arcane Barrage (Baseline):** An **instant-cast** blast that **resets your Arcane Blast stacks**, providing crucial mobile damage and rotational flexibility. \n**Temporal Shield (1.5m CD):** A powerful defensive cooldown. All damage taken during the shield\'s 6-second duration is **healed back** over the next 6 seconds, rewarding foresight against massive boss mechanics. \n**Temporal Flux:** Mechanically rewards the "burn-and-conserve" cycle, granting **10% spell haste** during your conserve phase and **10% crit** during your burn phase.' },
-        { name: 'Fire', title: 'Explosive Pyromancer', desc: '**Core Problem Solved:** The fundamentally broken and damage-losing **Ignite munching** mechanic. \n\n**Core Fixes:** \n**Ignite (Reworked):** The crit damage is now **"banked"** and delivered instantly on the next non-crit hit, guaranteeing every crit\'s value lands. \n**Living Bomb (Baseline):** A critical DoT that explodes for AoE damage and can trigger **Hot Streak**. \n\n**New Abilities:** \n**Combustion (Reworked):** Consumes active Fire DoTs (Living Bomb, Pyro DoT) and combines their remaining damage into a single **"Super-Ignite"** DoT, and **doubles the chance to trigger Hot Streak** for 10 seconds. \n**Pinnacle Talent - Meteor (1m CD):** Calls down a meteor that deals **massive AoE damage** and stuns all enemies hit.' },
+        { name: 'Fire', title: 'Explosive Pyromancer', desc: '**Core Problem Solved:** The fundamentally broken and damage-losing **Ignite munching** mechanic. \n\n**Core Fixes:** \n**Ignite (Reworked):** The crit damage is now **"banked"** and delivered instantly on the next non-crit hit, guaranteeing every crit\'s value lands. \n**Living Bomb (Baseline):** A critical DoT that explodes for AoE damage and can trigger **Hot Streak**. \n**New Abilities:** \n**Combustion (Reworked):** Consumes active Fire DoTs (Living Bomb, Pyro DoT) and combines their remaining damage into a single **"Super-Ignite"** DoT, and **doubles the chance to trigger Hot Streak** for 10 seconds. \n**Pinnacle Talent - Meteor (1m CD):** Calls down a meteor that deals **massive AoE damage** and stuns all enemies hit.' },
         { name: 'Frost', title: 'Glacial Controller', desc: '**Core Problem Solved:** A "PvP-only" spec with zero raid viability due to bosses being immune to freeze. \n\n**Core Fixes:** \n**Fingers of Frost (FoF):** Now stacks up to 3 times (via Masterwork system). \n**Ice Lance (Buffed):** Now deals **TRIPLE damage** (up from double) to targets consuming an FoF charge. \n\n**New Abilities:** \n**Deep Freeze (51-pt):** This is the PvE solution. It is usable on stun-immune bosses and deals **massive nuke damage** (shattering the very air around the target). \n**Frozen Orb (1m CD):** Launches an orb of ice that slows, damages, and acts as a **proc battery** by generating multiple Fingers of Frost charges. \n**Glacial Bastion:** Casting Ice Barrier grants a small **damage-absorption shield** to nearby party members, giving Frost unique defensive raid utility.' }
       ]
     },
     paladin: {
       name: 'Paladin',
       title: 'The Silver Hand\'s Resolve',
-      icon: <Shield className="w-6 h-6" />,
+      icon: <Hammer className="w-6 h-6" />,
+      crest: "https://i.imgur.com/tbPW0IM.png",
       color: 'text-pink-400',
       borderColor: 'border-pink-500',
       bgGradient: 'from-pink-900/80 to-black',
@@ -114,7 +114,8 @@ const HallOfLegends = () => {
     priest: {
       name: 'Priest',
       title: 'The Duality of Faith',
-      icon: <Ghost className="w-6 h-6" />,
+      icon: <BookOpen className="w-6 h-6" />,
+      crest: "https://i.imgur.com/aj1CVrE.png",
       color: 'text-white',
       borderColor: 'border-gray-400',
       bgGradient: 'from-gray-800/80 to-black',
@@ -132,7 +133,8 @@ const HallOfLegends = () => {
     rogue: {
       name: 'Rogue',
       title: 'The Unseen Blade',
-      icon: <Skull className="w-6 h-6" />,
+      icon: <Sword className="w-6 h-6" />,
+      crest: "https://i.imgur.com/kQJfCCO.png",
       color: 'text-yellow-400',
       borderColor: 'border-yellow-600',
       bgGradient: 'from-yellow-900/80 to-black',
@@ -151,6 +153,7 @@ const HallOfLegends = () => {
       name: 'Shaman',
       title: 'The Primal Conduit',
       icon: <Zap className="w-6 h-6" />,
+      crest: "https://i.imgur.com/OaLY1Ck.png",
       color: 'text-blue-600',
       borderColor: 'border-blue-600',
       bgGradient: 'from-blue-900/80 to-black',
@@ -168,7 +171,8 @@ const HallOfLegends = () => {
     warlock: {
       name: 'Warlock',
       title: 'The Dark Harvester',
-      icon: <Activity className="w-6 h-6" />,
+      icon: <Skull className="w-6 h-6" />,
+      crest: "https://i.imgur.com/MHcMLJx.png",
       color: 'text-purple-500',
       borderColor: 'border-purple-600',
       bgGradient: 'from-purple-900/80 to-black',
@@ -186,7 +190,8 @@ const HallOfLegends = () => {
     warrior: {
       name: 'Warrior',
       title: 'The Unbroken',
-      icon: <Sword className="w-6 h-6" />,
+      icon: <Shield className="w-6 h-6" />,
+      crest: "https://i.imgur.com/seZs5WM.png",
       color: 'text-red-600',
       borderColor: 'border-red-700',
       bgGradient: 'from-red-900/80 to-black',
@@ -214,7 +219,7 @@ const HallOfLegends = () => {
         
         .paper-texture {
           background-color: #1a1a1a;
-          background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23262626' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+          background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 2.24 5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23262626' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
         .rune-border {
@@ -223,39 +228,38 @@ const HallOfLegends = () => {
         }
       `}</style>
 
-      {/* --- HEADER --- */}
-      <header className="py-8 border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-20 z-40">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <button className="p-2 hover:bg-white/5 rounded-full transition-colors">
-              <ArrowLeft className="text-gray-400 w-6 h-6" />
-            </button>
-            <div>
-              <h1 className="font-hero text-2xl text-amber-500 tracking-widest">HALL OF LEGENDS</h1>
-              <p className="text-xs text-gray-500 font-body tracking-wider uppercase">Class Design Manifest</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      {/* --- UNIFIED HEADER --- */}
+      <UnifiedHeader
+        icon="https://i.imgur.com/yRtAtam.jpeg"
+        background="https://i.imgur.com/X2D1sO5.jpeg"
+        section="Class Design Manifest"
+        sub="The Heroes of Azeroth"
+        title="Hall of Legends"
+        quote="New powers awakened. Ancient weaknesses forged into strength."
+      />
 
       <div className="container mx-auto px-4 py-12 lg:flex gap-12">
 
         {/* --- LEFT COLUMN: CLASS PICKER --- */}
         <aside className="lg:w-1/4 mb-12 lg:mb-0">
           <div className="sticky top-52">
-            <h3 className="font-hero text-gray-400 text-sm uppercase tracking-widest mb-6 text-center lg:text-left">Select Class</h3>
+            <h3 className="font-hero text-gray-400 text-sm uppercase tracking-widest mb-6 text-center lg:text-left selection:bg-none">Select Your Hero Class
+              {/* TRACER TEXT FOR DEPLOYMENT VERIFICATION */}
+              <span className="hidden">.</span>
+            </h3>
             <div className="grid grid-cols-3 lg:grid-cols-1 gap-4">
               {Object.entries(classes).map(([key, data]) => (
                 <button
                   key={key}
                   onClick={() => setActiveClass(key)}
                   className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${activeClass === key
-                      ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
-                      : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
+                    ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
+                    : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
                     }`}
                 >
                   <div className={`p-2 rounded-md bg-black/50 ${activeClass === key ? data.color : 'text-gray-500 group-hover:text-gray-300'}`}>
-                    {data.icon}
+                    {/* Render Class Crest Artwork in Sidebar */}
+                    <img src={data.crest} alt={data.name} className="w-8 h-8 object-contain" />
                   </div>
                   <span className={`font-hero tracking-wide hidden md:block ${activeClass === key ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>
                     {data.name}
@@ -268,15 +272,20 @@ const HallOfLegends = () => {
 
         {/* --- RIGHT COLUMN: CLASS CONTENT --- */}
         <main className="lg:w-3/4 animate-fade-in">
-          {/* Hero Banner */}
+          {/* Hero Banner with Crest */}
           <div className={`relative rounded-xl overflow-hidden border ${activeData.borderColor} p-8 md:p-12 mb-12 rune-border`}>
             <div className={`absolute inset-0 bg-gradient-to-br ${activeData.bgGradient} opacity-20`}></div>
             <div className="absolute inset-0 paper-texture opacity-50 mix-blend-overlay"></div>
 
             <div className="relative z-10">
               <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
-                <div className={`p-6 rounded-full border-2 ${activeData.borderColor} bg-black/60 backdrop-blur-sm shadow-[0_0_30px_rgba(0,0,0,0.5)]`}>
-                  {React.cloneElement(activeData.icon, { className: `w-16 h-16 ${activeData.color}` })}
+                {/* Large Crest Display */}
+                <div className={`rounded-full border-2 ${activeData.borderColor} bg-black/60 backdrop-blur-sm shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden`}>
+                  <img
+                    src={activeData.crest}
+                    alt={`${activeData.name} Crest`}
+                    className="w-32 h-32 object-contain p-2"
+                  />
                 </div>
                 <div>
                   <h2 className={`font-hero text-5xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg`}>
@@ -316,26 +325,96 @@ const HallOfLegends = () => {
             </div>
           </div>
 
-          {/* Specializations Grid */}
+          {/* Specializations Grid - Enhanced Presentation */}
           <div>
             <div className="flex items-center gap-4 mb-6">
               <div className={`h-8 w-1 ${activeData.color.replace('text-', 'bg-')}`}></div>
               <h3 className="font-hero text-2xl text-white tracking-widest">Specialization Deep Dives</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {activeData.specs.map((spec, idx) => (
-                <div key={idx} className="group relative p-6 bg-[#121212] border border-white/10 rounded-lg hover:border-white/30 transition-colors">
-                  <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${activeData.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity`}></div>
+            <div className="grid grid-cols-1 gap-8">
+              {activeData.specs.map((spec, idx) => {
+                // PARSING LOGIC FOR BETTER PRESENTATION
+                const parts = spec.desc.split('\n\n');
+                const problemPart = parts.find(p => p.startsWith('**Core Problem Solved:**'));
+                const otherParts = parts.filter(p => p !== problemPart);
 
-                  <h4 className="font-hero text-xl text-white mb-1">{spec.name}</h4>
-                  <span className={`block font-hero text-xs ${activeData.color} uppercase tracking-wider mb-4`}>{spec.title}</span>
+                return (
+                  <div key={idx} className="group relative p-8 bg-[#121212] border border-white/10 rounded-lg hover:border-white/20 transition-all">
+                    <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${activeData.bgGradient} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
 
-                  <p className="font-body text-sm text-gray-400 leading-relaxed">
-                    {formatText(spec.desc)}
-                  </p>
-                </div>
-              ))}
+                    {/* Header */}
+                    <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4">
+                      <div>
+                        <h4 className="font-hero text-2xl text-white mb-1 flex items-center gap-3">
+                          {spec.name}
+                        </h4>
+                        <span className={`font-hero text-xs ${activeData.color} uppercase tracking-wider`}>{spec.title}</span>
+                      </div>
+                    </div>
+
+                    {/* Core Problem Alert */}
+                    {problemPart && (
+                      <div className="mb-8 p-4 bg-red-900/10 border border-red-900/30 rounded flex gap-4 items-start">
+                        <div className="mt-1 shrink-0 text-red-500">
+                          <Skull className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h5 className="font-hero text-red-500 text-xs uppercase tracking-widest mb-1">Core Issue Resolved</h5>
+                          <p className="font-body text-gray-300 text-sm">
+                            {formatText(problemPart.replace('**Core Problem Solved:**', ''))}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Features Grid */}
+                    <div className="grid md:grid-cols-2 gap-8">
+                      {otherParts.map((part, pIdx) => {
+                        const lines = part.split('\n');
+                        const titleLine = lines[0];
+                        const contentLines = lines.slice(1);
+
+                        // Check if it's a section header
+                        const isHeader = titleLine.startsWith('**') && titleLine.includes(':');
+                        const sectionTitle = isHeader ? titleLine.replace(/\*\*/g, '').split(':')[0] : null;
+
+                        return (
+                          <div key={pIdx} className="space-y-3">
+                            {sectionTitle ? (
+                              <h5 className={`font-hero text-sm ${activeData.color} border-b border-white/5 pb-2 mb-2 flex items-center gap-2`}>
+                                {sectionTitle === "Core Fixes" && <Shield className="w-3 h-3" />}
+                                {sectionTitle === "New Abilities" && <Zap className="w-3 h-3" />}
+                                {sectionTitle === "Raid Utility" && <Crown className="w-3 h-3" />}
+                                {sectionTitle.toUpperCase()}
+                              </h5>
+                            ) : (
+                              <p className="font-body text-gray-300 mb-2">{formatText(titleLine)}</p>
+                            )}
+
+                            <ul className="space-y-3">
+                              {contentLines.map((line, lIdx) => {
+                                // Parse for **Ability Name:** Description
+                                const abilityMatch = line.match(/^\*\*(.*?):\*\*\s*(.*)/);
+                                if (abilityMatch) {
+                                  return (
+                                    <li key={lIdx} className="text-sm leading-relaxed text-gray-400 pl-4 border-l-2 border-white/5 hover:border-white/20 transition-colors">
+                                      <strong className="text-gray-200 block mb-0.5">{abilityMatch[1]}</strong>
+                                      {formatText(abilityMatch[2])}
+                                    </li>
+                                  );
+                                }
+                                return <li key={lIdx} className="text-sm text-gray-400">{formatText(line)}</li>;
+                              })}
+                            </ul>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                  </div>
+                );
+              })}
             </div>
           </div>
 

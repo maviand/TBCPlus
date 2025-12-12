@@ -5,6 +5,7 @@ import {
   BookOpen, Medal, Play, Eye, ChevronDown, Ghost,
   Hammer, Feather, Scissors, Leaf, Axe, PawPrint
 } from 'lucide-react';
+import UnifiedHeader from './UnifiedHeader';
 
 const VaultOfArtifacts = () => {
   const [activeClass, setActiveClass] = useState('warrior');
@@ -98,7 +99,7 @@ const VaultOfArtifacts = () => {
   const pinnacleData = {
     warrior: {
       name: 'Warrior',
-      icon: <Sword className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/seZs5WM.png" className="w-5 h-5 object-contain" alt="Warrior" />,
       specs: {
         arms: {
           name: 'Arms',
@@ -164,7 +165,7 @@ const VaultOfArtifacts = () => {
     },
     paladin: {
       name: 'Paladin',
-      icon: <Shield className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/tbPW0IM.png" className="w-5 h-5 object-contain" alt="Paladin" />,
       specs: {
         holy: {
           name: 'Holy',
@@ -230,7 +231,7 @@ const VaultOfArtifacts = () => {
     },
     hunter: {
       name: 'Hunter',
-      icon: <Crosshair className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/En31Y4t.png" className="w-5 h-5 object-contain" alt="Hunter" />,
       specs: {
         bm: {
           name: 'Beast Mastery',
@@ -296,7 +297,7 @@ const VaultOfArtifacts = () => {
     },
     rogue: {
       name: 'Rogue',
-      icon: <Skull className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/kQJfCCO.png" className="w-5 h-5 object-contain" alt="Rogue" />,
       specs: {
         ass: {
           name: 'Assassination',
@@ -362,7 +363,7 @@ const VaultOfArtifacts = () => {
     },
     priest: {
       name: 'Priest',
-      icon: <Ghost className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/aj1CVrE.png" className="w-5 h-5 object-contain" alt="Priest" />,
       specs: {
         disc: {
           name: 'Discipline',
@@ -428,7 +429,7 @@ const VaultOfArtifacts = () => {
     },
     shaman: {
       name: 'Shaman',
-      icon: <Zap className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/OaLY1Ck.png" className="w-5 h-5 object-contain" alt="Shaman" />,
       specs: {
         ele: {
           name: 'Elemental',
@@ -494,7 +495,7 @@ const VaultOfArtifacts = () => {
     },
     mage: {
       name: 'Mage',
-      icon: <Flame className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/qn2djXW.png" className="w-5 h-5 object-contain" alt="Mage" />,
       specs: {
         arcane: {
           name: 'Arcane',
@@ -560,7 +561,7 @@ const VaultOfArtifacts = () => {
     },
     warlock: {
       name: 'Warlock',
-      icon: <Skull className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/MHcMLJx.png" className="w-5 h-5 object-contain" alt="Warlock" />,
       specs: {
         aff: {
           name: 'Affliction',
@@ -626,7 +627,7 @@ const VaultOfArtifacts = () => {
     },
     druid: {
       name: 'Druid',
-      icon: <Leaf className="w-5 h-5" />,
+      icon: <img src="https://i.imgur.com/t9FOweo.png" className="w-5 h-5 object-contain" alt="Druid" />,
       specs: {
         balance: {
           name: 'Balance',
@@ -720,19 +721,14 @@ const VaultOfArtifacts = () => {
       `}</style>
 
       {/* --- HEADER --- */}
-      <header className="py-10 border-b border-amber-900/50 bg-[#050505] sticky top-20 z-50 shadow-2xl">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-amber-900/20 border border-amber-600 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.3)]">
-              <Gem className="text-amber-500 w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="font-cinzel text-3xl text-amber-500 tracking-[0.15em] drop-shadow-md">PINNACLE QUESTS</h1>
-              <p className="text-xs text-stone-500 font-body tracking-[0.3em] uppercase">The Path of the Master</p>
-            </div>
-          </div>
-        </div>
-      </header>
+      <UnifiedHeader
+        icon="https://i.imgur.com/1oJTl0R.jpeg"
+        background="https://i.imgur.com/NECUWJJ.jpeg"
+        section="Pinnacle Quests"
+        sub="The Path of the Master"
+        title="Class Artifacts"
+        quote="Undertake a class-specific Pinnacle Quest to unlock a Soul-Sigil."
+      />
 
       <div className="container mx-auto px-4 py-12 min-h-screen">
         <div className="animate-fade-in">
