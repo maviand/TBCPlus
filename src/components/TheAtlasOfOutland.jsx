@@ -148,6 +148,80 @@ const TheAtlasOfOutland = () => {
     ]
   };
 
+  // --- ZONE INTEL DATA (NEW) ---
+  const zoneIntel = {
+    hellfire: {
+      hubs: [
+        { name: "The Overlook", faction: "Alliance", desc: "A forward command post on the floating rocks above the Path of Glory." },
+        { name: "Mag'har Post", faction: "Horde", desc: "A hidden bunker beneath the Citadel walls, used by the uncorrupted orcs." }
+      ],
+      travel: {
+        title: "Aerial Bombing Runs",
+        desc: "Players can rent wyverns/gryphons to perform bombing runs on the Legion Front, earning rapid reputation."
+      }
+    },
+    zangar: {
+      hubs: [
+        { name: "Sporeggar Grove", faction: "Neutral", desc: "Now a fully fledged town with an Inn, Bank, and Herb Garden." },
+        { name: "Watcher's Nook", faction: "Cenarion", desc: "A druidic outpost atop the giant mushrooms." }
+      ],
+      travel: {
+        title: "Marsh Walkers",
+        desc: "Giant water-strider mounts are available for rent, allowing high-speed water travel across the marsh."
+      }
+    },
+    terokkar: {
+      hubs: [
+        { name: "Shattered Reach", faction: "Neutral", desc: "A refugee camp for Broken Draenei and Orcs, featuring the Son of Lothar blacksmith." },
+        { name: "Skettis Lowlands", faction: "Neutral", desc: "A forward assault camp for the Skyguard." }
+      ],
+      travel: {
+        title: "Spirit Towers Network",
+        desc: "Controlling the PVP towers now activates instant teleporters between Stonebreaker Hold and Allerian Stronghold."
+      }
+    },
+    nagrand: {
+      hubs: [
+        { name: "The Elemental Plateau", faction: "Neutral", desc: "A sanctuary for Shamans and Engineers harnessing the storms." },
+        { name: "Laughing Skull Ruins", faction: "Horde", desc: "Reclaimed ruins serving as a gladiatorial training ground." }
+      ],
+      travel: {
+        title: "Glider Roosts",
+        desc: "Goblin Gliders can be rented from high peaks to traverse the zone rapidly without a flying mount."
+      }
+    },
+    blades: {
+      hubs: [
+        { name: "Skyguard Basecamp", faction: "Neutral", desc: "The main staging ground for the Ogri'la bombing campaigns." },
+        { name: "Wyrmcult Denise", faction: "Hostile", desc: "A quest hub that requires a disguise to enter." }
+      ],
+      travel: {
+        title: "Vertical Jump Pads",
+        desc: "Gnomish gravity-pads are installed at key valleys, launching players to the upper plateaus instantly."
+      }
+    },
+    nether: {
+      hubs: [
+        { name: "Protectorate Staging", faction: "Neutral", desc: "A massive Ethereal ship docked at Area 52, selling exotic goods." },
+        { name: "Kirintor Village", faction: "Alliance", desc: "A magical bubble protected by the Violet Eye." }
+      ],
+      travel: {
+        title: "Teleporter Array",
+        desc: "The Mana Forges are linked by teleporters. Controlling them allows instant travel across the zone."
+      }
+    },
+    shadow: {
+      hubs: [
+        { name: "Warden's Cage", faction: "Neutral", desc: "A high-security prison block run by Maiev's forces." },
+        { name: "Dragonmaw Port", faction: "Horde", desc: "A captured dock used to launch attacks on the Black Temple." }
+      ],
+      travel: {
+        title: "Nether Drake Taxi",
+        desc: "Friendly Nether Drakes will carry players through the fel-lava tubes, avoiding the dangerous surface."
+      }
+    }
+  };
+
   // --- CONTENT DATA ---
   const contentData = {
     // --- OUTLAND ---
@@ -1744,6 +1818,46 @@ const TheAtlasOfOutland = () => {
       {/* CONTENT GRID */}
       <div className="container mx-auto px-4 pb-24 min-h-screen">
         {selectedEntry && <DetailModal item={selectedEntry} onClose={() => setSelectedEntry(null)} />}
+
+        {/* --- ZONE INTEL SECTION (NEW) --- */}
+        {zoneIntel[activeZone] && (
+          <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+            {/* Hubs Card */}
+            <div className="md:col-span-2 bg-[#121212] border border-white/10 rounded-lg p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-16 bg-blue-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+              <h3 className="font-hero text-lg text-blue-400 mb-4 flex items-center gap-2">
+                <Anchor className="w-4 h-4" /> Strategic Hubs
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {zoneIntel[activeZone].hubs.map((hub, idx) => (
+                  <div key={idx} className="bg-black/40 p-3 rounded border border-white/5">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-gray-200 font-bold">{hub.name}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded ${hub.faction === 'Alliance' ? 'bg-blue-900/50 text-blue-200' :
+                          hub.faction === 'Horde' ? 'bg-red-900/50 text-red-200' :
+                            hub.faction === 'Neutral' ? 'bg-yellow-900/50 text-yellow-200' :
+                              'bg-red-900/80 text-white'
+                        }`}>{hub.faction}</span>
+                    </div>
+                    <p className="text-gray-400 text-xs italic">{hub.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Travel Card */}
+            <div className="bg-[#121212] border border-white/10 rounded-lg p-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-16 bg-green-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+              <h3 className="font-hero text-lg text-green-400 mb-4 flex items-center gap-2">
+                <Compass className="w-4 h-4" /> Travel Logistics
+              </h3>
+              <div>
+                <h4 className="text-gray-200 font-bold mb-1">{zoneIntel[activeZone].travel.title}</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">{zoneIntel[activeZone].travel.desc}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
           {contentData[activeZone] ? (

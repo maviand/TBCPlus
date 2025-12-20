@@ -7,7 +7,9 @@ import {
 import UnifiedHeader from './UnifiedHeader';
 
 const HallOfLegends = () => {
+  const [activeTab, setActiveTab] = useState('classes'); // 'classes' | 'artifacts'
   const [activeClass, setActiveClass] = useState('druid');
+  const [activeArtifact, setActiveArtifact] = useState('ashbringer');
 
   // Helper function to convert markdown bold (**) and newlines (\n) to JSX elements
   const formatText = (text) => {
@@ -208,7 +210,76 @@ const HallOfLegends = () => {
     },
   };
 
-  const activeData = classes[activeClass];
+  // --- ARTIFACT DATA ---
+  const artifacts = {
+    ashbringer: {
+      name: 'The Ashbringer',
+      title: 'Blade of the Scarlet Highlord',
+      icon: <Sword className="w-6 h-6" />,
+      crest: "https://i.imgur.com/bX9I5zR.png",
+      color: 'text-amber-500',
+      borderColor: 'border-amber-600',
+      bgGradient: 'from-amber-900/80 to-black',
+      lore: "The blade that shattered the Frostmourne. Legends say it was forged from a dark crystal purified by the Holy Light. Its original wielder, Alexandros Mograine, was betrayed and murdered by his own son, Renault, in the ruins of Stratholme. Now, the corrupted blade rests in Naxxramas, but its light is not extinguished. It waits for a champion to redeem it.",
+      stats: {
+        damage: "350 - 520",
+        speed: "3.60",
+        dps: "120.8",
+        effects: [
+          "Chance on hit: Blasts the target with Holy Fire for 700 damage.",
+          "Equip: Increases Attack Power by 180.",
+          "Equip: Increases Critical Strike Rating by 45.",
+          "Use: 'Wake of Ashes' - Stuns all Undead and Demons in a 12 yd cone for 6 sec. (2 Min Cooldown)"
+        ]
+      },
+      questline: {
+        title: "The Corrupted Heart",
+        desc: "A journey across time and space to redeem the most powerful weapon ever forged.",
+        phases: [
+          {
+            name: "Phase 0: The Drop (Classic)",
+            steps: [
+              { name: "Naxxramas (60)", desc: "Loot the 'Corrupted Ashbringer' from the Four Horsemen chest." },
+              { name: "Scarlet Monastery", desc: "Equip the blade and enter the Monastery. The Crusaders will kneel. Speak to Commander Mograine to hear the tragedy." }
+            ]
+          },
+          {
+            name: "Phase 1: The Whisper (T4)",
+            steps: [
+              { name: "Hellfire Peninsula", desc: "The blade whispers to you. It hungers for demons. Slay 100 Legion enemies to feed its thirst." },
+              { name: "A'dal", desc: "Show the blade to A'dal in Shattrath. He refuses to touch it, but points you to a blacksmith who walks the line between Light and Void." }
+            ]
+          },
+          {
+            name: "Phase 2: The Smith (T5)",
+            steps: [
+              { name: "Shattered Reach", desc: "Find 'Kurdran's Smith', a Son of Lothar living in the neutral hub on the edge of Terokkar." },
+              { name: "Materials", desc: "He demands payment: 20 Primal Nethers, 10 Fel Steel Bars, and the 'Hammer of the Naaru' (Drop from Gruul)." },
+              { name: "The Reforging", desc: "The smith shatters the corrupted crystal, but cannot purify it. He forges a new housing: 'The Empty Shell'." }
+            ]
+          },
+          {
+            name: "Phase 3: The Light (T6)",
+            steps: [
+              { name: "Mount Hyjal", desc: "Take the shell to the summit of Hyjal during the Archimonde encounter." },
+              { name: "The World Tree", desc: "Soak the blade in the waters of the Well of Eternity right after Archimonde falls." },
+              { name: "Infusion", desc: "The blade begins to glow, but the soul inside is still screaming." }
+            ]
+          },
+          {
+            name: "Phase 4: Redemption (Sunwell/Naxx 70)",
+            steps: [
+              { name: "Sunwell Plateau", desc: "Defeat M'uru. Use the 'Empty Shell' to absorb his essence as he shifts from Void to Light." },
+              { name: "Naxxramas (Timelocked)", desc: "Enter Naxxramas 70. Defeat the Four Horsemen again. The ghost of Alexandros appears." },
+              { name: "The Choice", desc: "Give the blade to Alexandros to free his soul. He blesses it and returns it to you. You are now the Highlord." }
+            ]
+          }
+        ]
+      }
+    }
+  };
+
+  const activeData = activeTab === 'classes' ? classes[activeClass] : artifacts[activeArtifact];
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-gray-200 font-sans selection:bg-amber-900 selection:text-amber-100">
@@ -243,29 +314,67 @@ const HallOfLegends = () => {
         {/* --- LEFT COLUMN: CLASS PICKER --- */}
         <aside className="lg:w-1/4 mb-12 lg:mb-0">
           <div className="sticky top-52">
-            <h3 className="font-hero text-gray-400 text-sm uppercase tracking-widest mb-6 text-center lg:text-left selection:bg-none">Select Your Hero Class
-              {/* TRACER TEXT FOR DEPLOYMENT VERIFICATION */}
-              <span className="hidden">.</span>
+
+            {/* TAB SWITCHER */}
+            <div className="flex border border-white/10 rounded mb-6 overflow-hidden">
+              <button
+                onClick={() => setActiveTab('classes')}
+                className={`flex-1 py-3 text-xs font-hero uppercase tracking-widest ${activeTab === 'classes' ? 'bg-[#c29c55] text-black' : 'bg-black/40 text-gray-500 hover:bg-white/5'}`}
+              >
+                Heroes
+              </button>
+              <button
+                onClick={() => setActiveTab('artifacts')}
+                className={`flex-1 py-3 text-xs font-hero uppercase tracking-widest ${activeTab === 'artifacts' ? 'bg-[#c29c55] text-black' : 'bg-black/40 text-gray-500 hover:bg-white/5'}`}
+              >
+                Relics
+              </button>
+            </div>
+
+            <h3 className="font-hero text-gray-400 text-sm uppercase tracking-widest mb-6 text-center lg:text-left">
+              {activeTab === 'classes' ? 'Select Your Hero Class' : 'Legendary Artifacts'}
             </h3>
+
             <div className="grid grid-cols-3 lg:grid-cols-1 gap-4">
-              {Object.entries(classes).map(([key, data]) => (
-                <button
-                  key={key}
-                  onClick={() => setActiveClass(key)}
-                  className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${activeClass === key
-                    ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
-                    : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
-                    }`}
-                >
-                  <div className={`p-2 rounded-md bg-black/50 ${activeClass === key ? data.color : 'text-gray-500 group-hover:text-gray-300'}`}>
-                    {/* Render Class Crest Artwork in Sidebar */}
-                    <img src={data.crest} alt={data.name} className="w-8 h-8 object-contain" />
-                  </div>
-                  <span className={`font-hero tracking-wide hidden md:block ${activeClass === key ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>
-                    {data.name}
-                  </span>
-                </button>
-              ))}
+              {activeTab === 'classes' ? (
+                // CLASS LIST
+                Object.entries(classes).map(([key, data]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveClass(key)}
+                    className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${activeClass === key
+                      ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
+                      : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
+                      }`}
+                  >
+                    <div className={`p-2 rounded-md bg-black/50 ${activeClass === key ? data.color : 'text-gray-500 group-hover:text-gray-300'}`}>
+                      <img src={data.crest} alt={data.name} className="w-8 h-8 object-contain" />
+                    </div>
+                    <span className={`font-hero tracking-wide hidden md:block ${activeClass === key ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>
+                      {data.name}
+                    </span>
+                  </button>
+                ))
+              ) : (
+                // ARTIFACT LIST
+                Object.entries(artifacts).map(([key, data]) => (
+                  <button
+                    key={key}
+                    onClick={() => setActiveArtifact(key)}
+                    className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${activeArtifact === key
+                      ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
+                      : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
+                      }`}
+                  >
+                    <div className={`p-2 rounded-md bg-black/50 ${activeArtifact === key ? data.color : 'text-gray-500 group-hover:text-gray-300'}`}>
+                      {data.icon}
+                    </div>
+                    <span className={`font-hero tracking-wide hidden md:block ${activeArtifact === key ? 'text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>
+                      {data.name}
+                    </span>
+                  </button>
+                ))
+              )}
             </div>
           </div>
         </aside>
@@ -299,124 +408,202 @@ const HallOfLegends = () => {
             </div>
           </div>
 
-          {/* Masterwork System Card */}
-          <div className="mb-12">
-            <div className="flex items-center gap-4 mb-6">
-              <div className={`h-8 w-1 ${activeData.color.replace('text-', 'bg-')}`}></div>
-              <h3 className="font-hero text-2xl text-white tracking-widest">
-                Masterwork System: <span className={activeData.color}>{activeData.masterwork.name}</span>
-              </h3>
-            </div>
+          {activeTab === 'classes' ? (
+            <>
+              {/* Masterwork System Card */}
+              <div className="mb-12">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`h-8 w-1 ${activeData.color.replace('text-', 'bg-')}`}></div>
+                  <h3 className="font-hero text-2xl text-white tracking-widest">
+                    Masterwork System: <span className={activeData.color}>{activeData.masterwork.name}</span>
+                  </h3>
+                </div>
 
-            <div className="bg-[#121212] border border-white/10 p-8 rounded-lg relative overflow-hidden">
-              <div className={`absolute top-0 right-0 p-20 rounded-full bg-gradient-to-br ${activeData.bgGradient} blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2`}></div>
+                <div className="bg-[#121212] border border-white/10 p-8 rounded-lg relative overflow-hidden">
+                  <div className={`absolute top-0 right-0 p-20 rounded-full bg-gradient-to-br ${activeData.bgGradient} blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2`}></div>
 
-              <div className="relative z-10">
-                <p className="font-body text-lg text-gray-300 leading-relaxed">
-                  {formatText(activeData.masterwork.desc)}
-                </p>
-                <div className="bg-black/40 p-6 border-l-2 border-gray-600 rounded-r-lg">
-                  <span className="block font-hero text-xs text-gray-500 uppercase tracking-widest mb-2">Core Mechanic & Examples</span>
-                  <p className="font-body text-gray-400 italic">
-                    {formatText(activeData.masterwork.mechanic)}
-                  </p>
+                  <div className="relative z-10">
+                    <p className="font-body text-lg text-gray-300 leading-relaxed">
+                      {formatText(activeData.masterwork.desc)}
+                    </p>
+                    <div className="bg-black/40 p-6 border-l-2 border-gray-600 rounded-r-lg">
+                      <span className="block font-hero text-xs text-gray-500 uppercase tracking-widest mb-2">Core Mechanic & Examples</span>
+                      <p className="font-body text-gray-400 italic">
+                        {formatText(activeData.masterwork.mechanic)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Specializations Grid - Enhanced Presentation */}
-          <div>
-            <div className="flex items-center gap-4 mb-6">
-              <div className={`h-8 w-1 ${activeData.color.replace('text-', 'bg-')}`}></div>
-              <h3 className="font-hero text-2xl text-white tracking-widest">Specialization Deep Dives</h3>
-            </div>
+              {/* Specializations Grid */}
+              <div>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`h-8 w-1 ${activeData.color.replace('text-', 'bg-')}`}></div>
+                  <h3 className="font-hero text-2xl text-white tracking-widest">Specialization Deep Dives</h3>
+                </div>
 
-            <div className="grid grid-cols-1 gap-8">
-              {activeData.specs.map((spec, idx) => {
-                // PARSING LOGIC FOR BETTER PRESENTATION
-                const parts = spec.desc.split('\n\n');
-                const problemPart = parts.find(p => p.startsWith('**Core Problem Solved:**'));
-                const otherParts = parts.filter(p => p !== problemPart);
+                <div className="grid grid-cols-1 gap-8">
+                  {activeData.specs.map((spec, idx) => {
+                    const parts = spec.desc.split('\n\n');
+                    const problemPart = parts.find(p => p.startsWith('**Core Problem Solved:**'));
+                    const otherParts = parts.filter(p => p !== problemPart);
 
-                return (
-                  <div key={idx} className="group relative p-8 bg-[#121212] border border-white/10 rounded-lg hover:border-white/20 transition-all">
-                    <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${activeData.bgGradient} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
+                    return (
+                      <div key={idx} className="group relative p-8 bg-[#121212] border border-white/10 rounded-lg hover:border-white/20 transition-all">
+                        <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${activeData.bgGradient} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
 
-                    {/* Header */}
-                    <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4">
-                      <div>
-                        <h4 className="font-hero text-2xl text-white mb-1 flex items-center gap-3">
-                          {spec.name}
-                        </h4>
-                        <span className={`font-hero text-xs ${activeData.color} uppercase tracking-wider`}>{spec.title}</span>
-                      </div>
-                    </div>
-
-                    {/* Core Problem Alert */}
-                    {problemPart && (
-                      <div className="mb-8 p-4 bg-red-900/10 border border-red-900/30 rounded flex gap-4 items-start">
-                        <div className="mt-1 shrink-0 text-red-500">
-                          <Skull className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h5 className="font-hero text-red-500 text-xs uppercase tracking-widest mb-1">Core Issue Resolved</h5>
-                          <p className="font-body text-gray-300 text-sm">
-                            {formatText(problemPart.replace('**Core Problem Solved:**', ''))}
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Features Grid */}
-                    <div className="grid md:grid-cols-2 gap-8">
-                      {otherParts.map((part, pIdx) => {
-                        const lines = part.split('\n');
-                        const titleLine = lines[0];
-                        const contentLines = lines.slice(1);
-
-                        // Check if it's a section header
-                        const isHeader = titleLine.startsWith('**') && titleLine.includes(':');
-                        const sectionTitle = isHeader ? titleLine.replace(/\*\*/g, '').split(':')[0] : null;
-
-                        return (
-                          <div key={pIdx} className="space-y-3">
-                            {sectionTitle ? (
-                              <h5 className={`font-hero text-sm ${activeData.color} border-b border-white/5 pb-2 mb-2 flex items-center gap-2`}>
-                                {sectionTitle === "Core Fixes" && <Shield className="w-3 h-3" />}
-                                {sectionTitle === "New Abilities" && <Zap className="w-3 h-3" />}
-                                {sectionTitle === "Raid Utility" && <Crown className="w-3 h-3" />}
-                                {sectionTitle.toUpperCase()}
-                              </h5>
-                            ) : (
-                              <p className="font-body text-gray-300 mb-2">{formatText(titleLine)}</p>
-                            )}
-
-                            <ul className="space-y-3">
-                              {contentLines.map((line, lIdx) => {
-                                // Parse for **Ability Name:** Description
-                                const abilityMatch = line.match(/^\*\*(.*?):\*\*\s*(.*)/);
-                                if (abilityMatch) {
-                                  return (
-                                    <li key={lIdx} className="text-sm leading-relaxed text-gray-400 pl-4 border-l-2 border-white/5 hover:border-white/20 transition-colors">
-                                      <strong className="text-gray-200 block mb-0.5">{abilityMatch[1]}</strong>
-                                      {formatText(abilityMatch[2])}
-                                    </li>
-                                  );
-                                }
-                                return <li key={lIdx} className="text-sm text-gray-400">{formatText(line)}</li>;
-                              })}
-                            </ul>
+                        <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4">
+                          <div>
+                            <h4 className="font-hero text-2xl text-white mb-1 flex items-center gap-3">
+                              {spec.name}
+                            </h4>
+                            <span className={`font-hero text-xs ${activeData.color} uppercase tracking-wider`}>{spec.title}</span>
                           </div>
-                        );
-                      })}
-                    </div>
+                        </div>
 
+                        {problemPart && (
+                          <div className="mb-8 p-4 bg-red-900/10 border border-red-900/30 rounded flex gap-4 items-start">
+                            <div className="mt-1 shrink-0 text-red-500">
+                              <Skull className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <h5 className="font-hero text-red-500 text-xs uppercase tracking-widest mb-1">Core Issue Resolved</h5>
+                              <p className="font-body text-gray-300 text-sm">
+                                {formatText(problemPart.replace('**Core Problem Solved:**', ''))}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="grid md:grid-cols-2 gap-8">
+                          {otherParts.map((part, pIdx) => {
+                            const lines = part.split('\n');
+                            const titleLine = lines[0];
+                            const contentLines = lines.slice(1);
+                            const isHeader = titleLine.startsWith('**') && titleLine.includes(':');
+                            const sectionTitle = isHeader ? titleLine.replace(/\*\*/g, '').split(':')[0] : null;
+
+                            return (
+                              <div key={pIdx} className="space-y-3">
+                                {sectionTitle ? (
+                                  <h5 className={`font-hero text-sm ${activeData.color} border-b border-white/5 pb-2 mb-2 flex items-center gap-2`}>
+                                    {sectionTitle === "Core Fixes" && <Shield className="w-3 h-3" />}
+                                    {sectionTitle === "New Abilities" && <Zap className="w-3 h-3" />}
+                                    {sectionTitle === "Raid Utility" && <Crown className="w-3 h-3" />}
+                                    {sectionTitle.toUpperCase()}
+                                  </h5>
+                                ) : (
+                                  <p className="font-body text-gray-300 mb-2">{formatText(titleLine)}</p>
+                                )}
+                                <ul className="space-y-3">
+                                  {contentLines.map((line, lIdx) => {
+                                    const abilityMatch = line.match(/^\*\*(.*?):\*\*\s*(.*)/);
+                                    if (abilityMatch) {
+                                      return (
+                                        <li key={lIdx} className="text-sm leading-relaxed text-gray-400 pl-4 border-l-2 border-white/5 hover:border-white/20 transition-colors">
+                                          <strong className="text-gray-200 block mb-0.5">{abilityMatch[1]}</strong>
+                                          {formatText(abilityMatch[2])}
+                                        </li>
+                                      );
+                                    }
+                                    return <li key={lIdx} className="text-sm text-gray-400">{formatText(line)}</li>;
+                                  })}
+                                </ul>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="animate-fade-in space-y-12">
+              {/* Lore Card */}
+              <div className="bg-[#121212] border border-white/10 p-8 rounded-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-24 bg-amber-500/10 blur-3xl rounded-full"></div>
+                <h3 className="font-hero text-2xl text-amber-500 mb-4 flex items-center gap-3">
+                  <BookOpen className="w-6 h-6" /> Legend of the Blade
+                </h3>
+                <p className="font-body text-lg text-gray-300 leading-relaxed italic border-l-4 border-amber-900 pl-6">
+                  "{activeData.lore}"
+                </p>
+              </div>
+
+              {/* Stats Card */}
+              <div className="bg-[#0c0c0c] border border-amber-900/40 p-6 rounded-lg shadow-2xl relative">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  {/* Tooltip-style Stats */}
+                  <div className="w-full md:w-1/3 space-y-1 text-sm font-sans text-gray-300">
+                    <div className="flex justify-between text-white font-bold text-base border-b border-gray-700 pb-2 mb-2">
+                      <span>{activeData.name}</span>
+                      <span className="text-orange-500">Legendary</span>
+                    </div>
+                    <div className="flex justify-between"><span>Two-Hand</span> <span>Sword</span></div>
+                    <div className="flex justify-between"><span>{activeData.stats.damage} Damage</span> <span>Speed {activeData.stats.speed}</span></div>
+                    <div className="text-white">({activeData.stats.dps} damage per second)</div>
+
+                    <div className="pt-4 space-y-2 text-green-400">
+                      {activeData.stats.effects.map((effect, idx) => (
+                        <p key={idx} className="leading-tight">{effect}</p>
+                      ))}
+                    </div>
+                    <div className="pt-4 text-amber-500 italic text-xs">
+                      "The hand of the Highlord guides every strike."
+                    </div>
                   </div>
-                );
-              })}
+
+                  {/* Visual/Theme box */}
+                  <div className="w-full md:w-2/3 bg-amber-900/10 rounded-lg p-6 border border-amber-500/20 flex items-center justify-center">
+                    <div className="text-center">
+                      <Sword className="w-16 h-16 text-amber-500 mx-auto mb-4 opacity-80" />
+                      <h4 className="font-hero text-amber-100 uppercase tracking-widest text-sm">Forged in Light</h4>
+                      <p className="text-amber-500/60 text-xs mt-2">Only the pure may wield it.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Questline Timeline */}
+              <div>
+                <h3 className="font-hero text-2xl text-white tracking-widest mb-8 border-b border-white/10 pb-4">
+                  The Path of Redemption
+                </h3>
+                <div className="space-y-4 relative">
+                  {/* Vertical Line */}
+                  <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-amber-500/50 to-transparent"></div>
+
+                  {activeData.questline.phases.map((phase, pIdx) => (
+                    <div key={pIdx} className="relative z-10 pl-20">
+                      {/* Node */}
+                      <div className="absolute left-6 top-6 w-5 h-5 rounded-full bg-[#121212] border-2 border-amber-500 flex items-center justify-center text-[10px] text-amber-500 font-bold shadow-[0_0_10px_rgba(245,158,11,0.5)]">
+                        {pIdx + 1}
+                      </div>
+
+                      <div className="bg-[#1a1a1a] border border-white/5 rounded-lg p-6 hover:border-amber-500/30 transition-colors">
+                        <h4 className="font-hero text-amber-500 text-lg mb-4">{phase.name}</h4>
+                        <div className="space-y-4">
+                          {phase.steps.map((step, sIdx) => (
+                            <div key={sIdx} className="flex gap-4 items-start">
+                              <div className="mt-1 w-1.5 h-1.5 rounded-full bg-gray-600 shrink-0"></div>
+                              <div>
+                                <strong className="text-gray-200 block text-sm">{step.name}</strong>
+                                <p className="text-gray-400 text-xs leading-relaxed">{step.desc}</p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
             </div>
-          </div>
+          )}
 
         </main>
       </div>

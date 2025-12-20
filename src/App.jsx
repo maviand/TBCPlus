@@ -32,7 +32,8 @@ import VaultOfArtifacts from './components/VaultOfArtifacts';
 import TheArtisansCodex from './components/TheArtisansCodex';
 import Legendaries from './components/Legendaries';
 import Lore from './components/Lore';
-import PvpForgedInFlames from './components/PvpForgedInFlames';
+import TheTheaterOfWar from './components/TheTheaterOfWar';
+import TheArmory from './components/TheArmory';
 import Home from './components/Home';
 
 
@@ -42,6 +43,7 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
     { id: 'lore', label: 'Lore' },
     { id: 'classes', label: 'Classes' },
     { id: 'races', label: 'Races' },
+    { id: 'armory', label: 'Armory' },
     { id: 'pvp', label: 'PvP' },
     { id: 'professions', label: 'Professions' },
     { id: 'content', label: 'Content' },
@@ -187,7 +189,8 @@ const App = () => {
         {activePage === 'lore' && <Lore />}
         {activePage === 'classes' && <HallOfLegends />}
         {activePage === 'races' && <TheNewBlood />}
-        {activePage === 'pvp' && <PvpForgedInFlames />}
+        {activePage === 'armory' && <TheArmory />}
+        {activePage === 'pvp' && <TheTheaterOfWar />}
         {activePage === 'professions' && <TheArtisansCodex />}
         {activePage === 'content' && <TheAtlasOfOutland />}
         {activePage === 'systems' && <FelForgedVanguard />}
