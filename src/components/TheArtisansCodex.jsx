@@ -1168,7 +1168,36 @@ const TheArtisansCodex = () => {
         dps: '99.0',
         stats: '+35 Strength\n+35 Stamina',
         effects: ['Equip: Increases Mining skill by 20.', 'Equip: Allows you to mine deposits while mounted.', 'Use: Strike the earth to unearth a "Volcanic Geode" containing rare gems. (10 Min Cooldown)'],
-        flavor: "Sharp enough to pick a dragon's teeth."
+        flavor: "Sharp enough to pick a dragon's teeth.",
+        questline: {
+          title: "The Earth-Warder's Path",
+          description: "To master the earth, one must break it. You seek to forge a tool capable of piercing the planet's core, a pickaxe that sings with the song of the deep.",
+          steps: [
+            // PHASE 1: HARDENED STEEL (T4)
+            { phase: "Phase 1: Hardened Steel", name: "Fel Reaver Plating", desc: "Salvage 'True-Iron Plating' from Fel Reavers in Hellfire." },
+            { name: "Raid: The Curator", desc: "Extract 'Arcane Core Metal' from the Curator.", isRaid: true },
+            { name: "Raid: Gruul", desc: "Harvest 'Crystalized Earth' from Gruul's lair.", isRaid: true },
+            { name: "Forging", desc: "Smelt the alloy in the depths of Blackrock Depths (Classic connection).", reward: "Hardened Arcanite Pick (Rare)" },
+
+            // PHASE 2: QUENCHING (T5)
+            { phase: "Phase 2: Quenching", name: "Abyssal Waters", desc: "Collect 'Pure Abyssal Water' from the reservoirs of Coilfang." },
+            { name: "Raid: Hydross", desc: "Quench the heated blade in the essence of Hydross.", isRaid: true },
+            { name: "Raid: Leotheras", desc: "Use the 'Inner Demon's Fire' to reheat the blade for tempering.", isRaid: true },
+            { name: "Tempering", desc: "The blade is now unbreakable.", reward: "Abyssal Pickaxe (Epic)" },
+
+            // PHASE 3: SHARPENING (T6)
+            { phase: "Phase 3: Sharpening", name: "Mount Hyjal", desc: "Sharpen the blade on the 'Stones of Eternity' in Hyjal." },
+            { name: "Raid: Archimonde", desc: "Strike the 'World Tree's Bark' (fallen piece) to test the edge.", isRaid: true },
+            { name: "Raid: Supremus", desc: "Shatter the 'Rock of Ages' from Supremus.", isRaid: true },
+            { name: "The Edge", desc: "It can cut through reality.", reward: "The Core-Hound's Toothpick (T6 Epic)" },
+
+            // PHASE 4: THE CORE (SWP)
+            { phase: "Phase 4: The Core", name: "Sunwell's Heat", desc: "Infuse the pick with the heat of the Sunwell." },
+            { name: "Raid: Brutallus", desc: "Pierce the armor of the Pit Lord.", isRaid: true },
+            { name: "Raid: Kil'jaeden", desc: "Strike the Deceiver. Break his will.", isRaid: true },
+            { name: "Earth-Warder", desc: "You are the master of the deep." }
+          ]
+        }
       },
       specs: [
         { name: 'Prospector', title: 'Gem Seeker', desc: '**Perk:** "Flawless Faceting" can find epic gems in ore.' },
@@ -1211,7 +1240,36 @@ const TheArtisansCodex = () => {
         unique: true,
         stats: '+120 Attack Power',
         effects: ['Equip: Allows the tracking of Hidden Beasts.', 'Use: Consume the essence of the heart, transforming into a Primal Stalker. Increases damage by 15% and run speed by 30% for 20 sec. (5 Min Cooldown)'],
-        flavor: "Still beating."
+        flavor: "Still beating.",
+        questline: {
+          title: "The Ultimate Hunt",
+          description: "There is one beast that rules them all. Ak'tar, the World-Eater. You must track this legendary creature across the stars and claim its heart as your trophy.",
+          steps: [
+            // PHASE 1: THE SCENT (T4)
+            { phase: "Phase 1: The Scent", name: "Karazhan Stables", desc: "Find 'Scent Glands' from the spectral horses in Karazhan." },
+            { name: "Raid: Magtheridon", desc: "The pit lord's blood is bait. Collect it.", isRaid: true },
+            { name: "Raid: Gruul", desc: "Gruul has fought the beast. Find 'Scar Tissue' in his lair.", isRaid: true },
+            { name: "Tracking", desc: "Create a 'Void-Compass' to track the beast's movements.", reward: "Hunter's Charm (Rare)" },
+
+            // PHASE 2: THE BAIT (T5)
+            { phase: "Phase 2: The Bait", name: "Serpentshrine", desc: "The beast loves water. Collect 'Pure Water' from Vashj's personal pool." },
+            { name: "Raid: Hydross", desc: "Harvest 'Tainted Element' to mask your scent.", isRaid: true },
+            { name: "Raid: Void Reaver", desc: "Use the Reaver's fel-cannon to blast a hole in the beast's hideout.", isRaid: true },
+            { name: "The Lure", desc: "Set the trap in the Netherstorm.", reward: "Stalker's Idol (Epic)" },
+
+            // PHASE 3: THE HUNT (T6)
+            { phase: "Phase 3: The Hunt", name: "Hyjal's Past", desc: "Hunt the beast's ancestor in the Caverns of Time." },
+            { name: "Raid: Rage Winterchill", desc: "Collect 'Frozen Blood' to preserve the heart.", isRaid: true },
+            { name: "Raid: Illidan", desc: "The Betrayer knows where the beast sleeps. Interrogate him.", isRaid: true },
+            { name: "The Strike", desc: "You have found it. Prepare for the kill.", reward: "Ak'tar's Primal Heart (T6 Epic)" },
+
+            // PHASE 4: THE FEAST (SWP)
+            { phase: "Phase 4: The Feast", name: "Sunwell's Power", desc: "The beast seeks to consume the Sunwell." },
+            { name: "Raid: Felmyst", desc: "Slay the dragon to clear the path.", isRaid: true },
+            { name: "Raid: Kil'jaeden", desc: "The beast is Ak'tar's pet? No, Ak'tar hunts Kil'jaeden.", isRaid: true },
+            { name: "Apex Predator", desc: "You are the top of the food chain." }
+          ]
+        }
       },
       specs: [
         { name: 'Tanner', title: 'Hide Master', desc: '**Perk:** "Flesh-Stitch" combines scraps into pristine hides.' },
@@ -1254,7 +1312,36 @@ const TheArtisansCodex = () => {
         unique: true,
         stats: '+65 Spirit',
         effects: ['Equip: Grants a chance to find additional herbs when gathering.', 'Use: Summon a Tranquil Treant for 30 sec that pulses healing to your party. (5 Min Cooldown)'],
-        flavor: "Life finds a way."
+        flavor: "Life finds a way.",
+        questline: {
+          title: "The World-Seed",
+          description: "Outland is dying. The Emerald Dream is distant. You must cultivate a seed that can bridge the gap between the dead world and the living dream.",
+          steps: [
+            // PHASE 1: GERMINATION (T4)
+            { phase: "Phase 1: Germination", name: "Opera House", desc: "Find the 'Lost Seed' in the Wizard of Oz event (Karazhan)." },
+            { name: "Raid: Nightbane", desc: "Use the dragon's charred bones as fertilizer.", isRaid: true },
+            { name: "Raid: Gruul", desc: "Protect the seedling from the Gronn's stomps.", isRaid: true },
+            { name: "Planting", desc: "Plant the seed in the Cenarion Refuge.", reward: "Sprouting Charms (Rare)" },
+
+            // PHASE 2: GROWTH (T5)
+            { phase: "Phase 2: Growth", name: "Pure Mana", desc: "Water the seedling with 'Pure Mana' from Kael'thas's vats." },
+            { name: "Raid: Solarian", desc: "Expose the plant to the 'Light of the Void' to harden it.", isRaid: true },
+            { name: "Raid: Vashj", desc: "Recover the 'Vial of Eternity' (Replica) to nourish the roots.", isRaid: true },
+            { name: "Blossoming", desc: "The plant blooms with emerald light.", reward: "Verdant Idol (Epic)" },
+
+            // PHASE 3: THE DREAM (T6)
+            { phase: "Phase 3: The Dream", name: "Nordrassil", desc: "Graft a branch of Nordrassil (Mount Hyjal) onto your plant." },
+            { name: "Raid: Archimonde", desc: "Defend the graft from the Defiler.", isRaid: true },
+            { name: "Raid: Illidan", desc: "Cleansse the 'Corrupted Earth' of Shadowmoon using the plant.", isRaid: true },
+            { name: "Symbiosis", desc: "You are one with the dream.", reward: "Verdant Keeper's Charm (T6 Epic)" },
+
+            // PHASE 4: SUNLIGHT (SWP)
+            { phase: "Phase 4: Sunlight", name: "Sunwell's Light", desc: "The plant needs the sun." },
+            { name: "Raid: M'uru", desc: "Absorb the Light of M'uru into the leaves.", isRaid: true },
+            { name: "Raid: Kil'jaeden", desc: "Use the plant to purify the Sunwell.", isRaid: true },
+            { name: "Life-Binder", desc: "You have restored life to a dead world." }
+          ]
+        }
       },
       specs: [
         { name: 'Cultivator', title: 'The Gardener', desc: '**Perk:** "Green Thumb" finds Golden Lotus in any node.' },
@@ -1299,7 +1386,36 @@ const TheArtisansCodex = () => {
             armor: '550',
             stats: '+40 Strength\n+40 Intellect',
             effects: ['Equip: Reduces magic damage taken by 5%.', 'Use: Breath of the Dragon - Unleash a cone of elemental damage based on your highest resistance. (2 Min Cooldown)'],
-            flavor: "Hardened by fire."
+            flavor: "Hardened by fire.",
+            questline: {
+              title: "The Dragonstalker",
+              description: "Dragons are the ultimate prey. You will hunt the great flights of Outland, skinning their champions to forge armor that breathes with their power.",
+              steps: [
+                // PHASE 1: NETHERWING (T4)
+                { phase: "Phase 1: Netherwing", name: "Netherstorm", desc: "Hunt 'Nether Drakes' in Netherstorm. Collect 20 Scales." },
+                { name: "Raid: Netherspite", desc: "Skin the 'Nether-Infused Hide' from Netherspite.", isRaid: true },
+                { name: "Raid: Nightbane", desc: "Claim the 'Charred Scales' of Nightbane.", isRaid: true },
+                { name: "Stitching", desc: "Sew the scales with wire made of Arcanite.", reward: "Dragonscale Bracers (Rare)" },
+
+                // PHASE 2: SCALES OF VASHJ (T5)
+                { phase: "Phase 2: Vashj's Pets", name: "Serpentshrine", desc: "Skin the elite sea-serpents guarding Vashj." },
+                { name: "Raid: Fathom-Lord", desc: "The Fathom-Lord's armor is made of naga scales. Steal it.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Vashj herself is too humanoid, but her bow is made of sea-monster bone. Take it.", isRaid: true },
+                { name: "Hardening", desc: "Treat the leather with acidic poison.", reward: "Scaled Guards (Epic)" },
+
+                // PHASE 3: THE ASPECTS (T6)
+                { phase: "Phase 3: The Aspects", name: "Hyjal's Flight", desc: "Witness the flight of the aspects in the Caverns of Time." },
+                { name: "Raid: Winterchill", desc: "His frost breath hardens leather like steel.", isRaid: true },
+                { name: "Raid: Archimonde", desc: "He destroyed the World Tree. Use its bark to reinforce your armor.", isRaid: true },
+                { name: "Breath", desc: "Infuse the armor with dragon fire.", reward: "Bindings of the Dragonflight (T6 Epic)" },
+
+                // PHASE 4: SUNWELL (SWP)
+                { phase: "Phase 4: Sunwell", name: "Kalecgos", desc: "Free Kalecgos. He gifts you a single 'Scale of the Blue Aspect'." },
+                { name: "Raid: Madrigosa", desc: "Skin the fallen blue dragon.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "The Deceiver falls. The hunt is over.", isRaid: true },
+                { name: "Dragon-King", desc: "You are the friend of dragons." }
+              ]
+            }
           }
         },
         {
@@ -1316,7 +1432,36 @@ const TheArtisansCodex = () => {
             armor: '600',
             stats: '+45 Agility\n+45 Intellect',
             effects: ['Equip: Your attacks have a chance to trigger Chain Lightning.', 'Use: Summon a localized storm cloud, dealing Nature damage to all enemies in 10 yards. (3 Min Cooldown)'],
-            flavor: "Ride the lightning."
+            flavor: "Ride the lightning.",
+            questline: {
+              title: "Thunderstruck",
+              description: "The elements of Outland are chaotic. You will bind the storm itself into leather, creating gloves that crackle with the fury of the skies.",
+              steps: [
+                // PHASE 1: LIGHTNING (T4)
+                { phase: "Phase 1: Lightning", name: "Elemental Plateau", desc: "Farm 'Primal Air' and 'Primal Water' from the plateau." },
+                { name: "Raid: The Curator", desc: "The Curator is powered by lightning. Discharge him.", isRaid: true },
+                { name: "Raid: Gruul", desc: "Gruul's lair connects to the deep earth. Find 'Grounded Leather'.", isRaid: true },
+                { name: "Grounding", desc: "Create a grounding layer so you don't shock yourself.", reward: "Static Grips (Rare)" },
+
+                // PHASE 2: THE STORM (T5)
+                { phase: "Phase 2: The Storm", name: "The Eye", desc: "Survive the Tempest Keep. Collect 'Storm Scraps'." },
+                { name: "Raid: Al'ar", desc: "Heat rises. Capture the 'Thermal Updrafts' of Al'ar.", isRaid: true },
+                { name: "Raid: Kael'thas", desc: "The Gravity Lapse is a storm of physics. Study it.", isRaid: true },
+                { name: "Charging", desc: "Leave the gloves on the highest peak in Netherstorm during a storm.", reward: "Storm-Leather Gloves (Epic)" },
+
+                // PHASE 3: THUNDER (T6)
+                { phase: "Phase 3: Thunder", name: "Hyjal", desc: "The storm gathers over Hyjal." },
+                { name: "Raid: Rage Winterchill", desc: "Frost and Lightning create the perfect storm.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Stormrage. It's in the name.", isRaid: true },
+                { name: "Unleash", desc: "The gloves tremble with power.", reward: "Storm-Caller's Grips (T6 Epic)" },
+
+                // PHASE 4: CATACLYSM (SWP)
+                { phase: "Phase 4: Cataclysm", name: "Sunwell", desc: "The energy here is blinding." },
+                { name: "Raid: Brutallus", desc: "His blood burns like acid rain.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Strike him down with the fury of the storm.", isRaid: true },
+                { name: "Thunder God", desc: "You are the storm." }
+              ]
+            }
           }
         },
         {
@@ -1333,7 +1478,36 @@ const TheArtisansCodex = () => {
             armor: '300',
             stats: '+45 Agility\n+45 Stamina',
             effects: ['Equip: Critical strikes grant a stack of "Primal Fury". At 5 stacks, your next special attack unleashes a Spirit Beast strike.', 'Use: Call of the Wild - Increases Agility by 150 for 15 sec. (5 Min Cooldown)'],
-            flavor: "Hunt or be hunted."
+            flavor: "Hunt or be hunted.",
+            questline: {
+              title: "The Pack Leader",
+              description: "You are not a lone wolf. You are the Alpha. You will forge bindings that connect you to the spirit of the Wild Gods.",
+              steps: [
+                // PHASE 1: THE WOLF (T4)
+                { phase: "Phase 1: The Wolf", name: "Nagrand", desc: "Hunt 50 Talbuks to prove your prowess." },
+                { name: "Raid: Attumen", desc: "Midnight is a beast of legend. Claim his 'Spectral Horseshoe'.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Magtheridon's head is the ultimate trophy.", isRaid: true },
+                { name: "Bonding", desc: "Meditate at the Throne of Elements.", reward: "Wolf-Spirit Bindings (Rare)" },
+
+                // PHASE 2: THE BEAR (T5)
+                { phase: "Phase 2: The Bear", name: "Zul'Aman", desc: "Invoke the spirits of the Amani Loa. (Lore only, raid not out yet)." },
+                { name: "Raid: Leotheras", desc: "The Demon Hunter has a beast inside him. Silence it.", isRaid: true },
+                { name: "Raid: Vashj", desc: "She commands the beasts of the deep.", isRaid: true },
+                { name: "Bear Form", desc: "Infuse the bindings with the strength of the bear.", reward: "Spirit-Walker's Wraps (Epic)" },
+
+                // PHASE 3: THE CAT (T6)
+                { phase: "Phase 3: The Cat", name: "Hyjal", desc: "Ashmane falls." },
+                { name: "Raid: Archimonde", desc: "Survival of the fittest.", isRaid: true },
+                { name: "Raid: Illidan", desc: "The hunter becomes the hunted.", isRaid: true },
+                { name: "Feral Instinct", desc: "Your reflexes are supernatural.", reward: "Bindings of the Primal Hunt (T6 Epic)" },
+
+                // PHASE 4: THE APEX (SWP)
+                { phase: "Phase 4: The Apex", name: "Sunwell", desc: "The final hunting ground." },
+                { name: "Raid: Kalecgos", desc: "Dragons are just big lizards.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "End the Legion's hunt.", isRaid: true },
+                { name: "Wild God", desc: "You are the Avatar of the Wild." }
+              ]
+            }
           }
         }
       ]
