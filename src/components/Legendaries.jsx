@@ -534,6 +534,68 @@ const Legendaries = () => {
                 '**Stage 3: The Soul-Forge (Tier 6)**\nThe blades are thirsty. Slay **1000 Demons** in Shadowmoon Valley while carrying the Smithing Hammer to charge it with Fel energy.',
                 '**Stage 4: The Bind (Sunwell)**\nDefeat Illidan again. Use the charged hammer on his corpse to bind the Glaives to your soul forever. The blades are now yours.'
             ]
+        },
+        {
+            id: 'ashbringer',
+            name: 'The Ashbringer',
+            icon: <Sword className="w-8 h-8 text-orange-500" />,
+            lore: "The blade that shattered Frostmourne. Legends say it was forged from a dark crystal purified by the Holy Light. Its original wielder, Alexandros Mograine, was betrayed. Now, the corrupted blade rests in Naxxramas, waiting for a champion to redeem it.",
+            items: [
+                {
+                    name: 'Corrupted Ashbringer',
+                    quality: 'epic',
+                    ilvl: 141,
+                    slot: 'Two-Hand',
+                    type: 'Sword',
+                    damage: '310 - 466',
+                    speed: '3.60',
+                    stats: ['-25 Stamina'],
+                    effects: ['Chance on hit: Steals 185 life from target.', '"The blade whispers to you... do not trust them."'],
+                },
+                {
+                    name: 'The Ashbringer (Reforged)',
+                    quality: 'legendary',
+                    ilvl: 154,
+                    slot: 'Two-Hand',
+                    type: 'Sword',
+                    damage: '350 - 520',
+                    speed: '3.60',
+                    dps: '120.8',
+                    stats: ['+45 Strength', '+45 Stamina', '+30 Crit Rating'],
+                    sockets: ['Red Socket', 'Red Socket'],
+                    socketBonus: '+6 Strength',
+                    effects: [
+                        'Chance on hit: Blasts the target with Holy Fire for 700 damage.',
+                        'Equip: Increases Attack Power by 180.',
+                        '"The crystal is cracked, but the light holds."'
+                    ],
+                },
+                {
+                    name: 'The Ashbringer, Light of the Dawn',
+                    quality: 'legendary',
+                    ilvl: 164,
+                    slot: 'Two-Hand',
+                    type: 'Sword',
+                    damage: '450 - 680',
+                    speed: '3.60',
+                    dps: '156.9',
+                    stats: ['+75 Strength', '+75 Stamina', '+50 Crit Rating'],
+                    sockets: ['Red Socket', 'Red Socket', 'Yellow Socket'],
+                    socketBonus: '+8 Strength',
+                    effects: [
+                        'Chance on hit: Blasts the target with Holy Fire for 1200 damage and burns them for 500 over 10s.',
+                        'Equip: Increases Attack Power by 250.',
+                        'Use: "Wake of Ashes" - Stuns all Undead and Demons in a 12 yd cone for 6 sec. (2 Min Cooldown)',
+                        '"Using this sword against Undead is unfair. Good."'
+                    ],
+                }
+            ],
+            quest: [
+                '**Stage 1: The Drop (Classic)**\nLoot the **"Corrupted Ashbringer"** from the Four Horsemen chest in Naxxramas (Classic/T3). Equip it and enter the Scarlet Monastery. The Crusaders will kneel. Speak to Commander Mograine to hear the tragedy.',
+                '**Stage 2: The Whisper (Tier 4)**\nThe blade whispers to you. It hungers for demons. Slay **100 Legion enemies** in Hellfire Peninsula to feed its thirst. Show the blade to A\'dal in Shattrath, who points you to a blacksmith in the Shattered Reach.',
+                '**Stage 3: The Reforging (Tier 5)**\nFind Kurdran\'s Smith. He demands payment: **20 Primal Nethers**, **10 Fel Steel Bars**, and the **"Hammer of the Naaru"** (Gruul). He shatters the corrupted crystal and forges a new housing: "The Empty Shell".',
+                '**Stage 4: Redemption (Sunwell)**\nTake the shell to the **Sunwell**. Defeat M\'uru. Use the Empty Shell to absorb his essence as he shifts from Void to Light. Finally, return to Naxxramas (Timelocked) and give the blade to the ghost of Alexandros Mograine. He blesses it, freeing his soul and granting you the true **Ashbringer**.'
+            ]
         }
     ];
 

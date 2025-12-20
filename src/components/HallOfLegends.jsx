@@ -210,74 +210,8 @@ const HallOfLegends = () => {
     },
   };
 
-  // --- ARTIFACT DATA ---
-  const artifacts = {
-    ashbringer: {
-      name: 'The Ashbringer',
-      title: 'Blade of the Scarlet Highlord',
-      icon: <Sword className="w-6 h-6" />,
-      crest: "https://i.imgur.com/bX9I5zR.png",
-      color: 'text-amber-500',
-      borderColor: 'border-amber-600',
-      bgGradient: 'from-amber-900/80 to-black',
-      lore: "The blade that shattered the Frostmourne. Legends say it was forged from a dark crystal purified by the Holy Light. Its original wielder, Alexandros Mograine, was betrayed and murdered by his own son, Renault, in the ruins of Stratholme. Now, the corrupted blade rests in Naxxramas, but its light is not extinguished. It waits for a champion to redeem it.",
-      stats: {
-        damage: "350 - 520",
-        speed: "3.60",
-        dps: "120.8",
-        effects: [
-          "Chance on hit: Blasts the target with Holy Fire for 700 damage.",
-          "Equip: Increases Attack Power by 180.",
-          "Equip: Increases Critical Strike Rating by 45.",
-          "Use: 'Wake of Ashes' - Stuns all Undead and Demons in a 12 yd cone for 6 sec. (2 Min Cooldown)"
-        ]
-      },
-      questline: {
-        title: "The Corrupted Heart",
-        desc: "A journey across time and space to redeem the most powerful weapon ever forged.",
-        phases: [
-          {
-            name: "Phase 0: The Drop (Classic)",
-            steps: [
-              { name: "Naxxramas (60)", desc: "Loot the 'Corrupted Ashbringer' from the Four Horsemen chest." },
-              { name: "Scarlet Monastery", desc: "Equip the blade and enter the Monastery. The Crusaders will kneel. Speak to Commander Mograine to hear the tragedy." }
-            ]
-          },
-          {
-            name: "Phase 1: The Whisper (T4)",
-            steps: [
-              { name: "Hellfire Peninsula", desc: "The blade whispers to you. It hungers for demons. Slay 100 Legion enemies to feed its thirst." },
-              { name: "A'dal", desc: "Show the blade to A'dal in Shattrath. He refuses to touch it, but points you to a blacksmith who walks the line between Light and Void." }
-            ]
-          },
-          {
-            name: "Phase 2: The Smith (T5)",
-            steps: [
-              { name: "Shattered Reach", desc: "Find 'Kurdran's Smith', a Son of Lothar living in the neutral hub on the edge of Terokkar." },
-              { name: "Materials", desc: "He demands payment: 20 Primal Nethers, 10 Fel Steel Bars, and the 'Hammer of the Naaru' (Drop from Gruul)." },
-              { name: "The Reforging", desc: "The smith shatters the corrupted crystal, but cannot purify it. He forges a new housing: 'The Empty Shell'." }
-            ]
-          },
-          {
-            name: "Phase 3: The Light (T6)",
-            steps: [
-              { name: "Mount Hyjal", desc: "Take the shell to the summit of Hyjal during the Archimonde encounter." },
-              { name: "The World Tree", desc: "Soak the blade in the waters of the Well of Eternity right after Archimonde falls." },
-              { name: "Infusion", desc: "The blade begins to glow, but the soul inside is still screaming." }
-            ]
-          },
-          {
-            name: "Phase 4: Redemption (Sunwell/Naxx 70)",
-            steps: [
-              { name: "Sunwell Plateau", desc: "Defeat M'uru. Use the 'Empty Shell' to absorb his essence as he shifts from Void to Light." },
-              { name: "Naxxramas (Timelocked)", desc: "Enter Naxxramas 70. Defeat the Four Horsemen again. The ghost of Alexandros appears." },
-              { name: "The Choice", desc: "Give the blade to Alexandros to free his soul. He blesses it and returns it to you. You are now the Highlord." }
-            ]
-          }
-        ]
-      }
-    }
-  };
+  // --- ARTIFACT DATA REMOVED (Moved to Legendaries) ---
+  const artifacts = {};
 
   const activeData = activeTab === 'classes' ? classes[activeClass] : artifacts[activeArtifact];
 
@@ -315,20 +249,11 @@ const HallOfLegends = () => {
         <aside className="lg:w-1/4 mb-12 lg:mb-0">
           <div className="sticky top-52">
 
-            {/* TAB SWITCHER */}
+            {/* TAB SWITCHER REMOVED - ONLY CLASSES NOW */}
             <div className="flex border border-white/10 rounded mb-6 overflow-hidden">
-              <button
-                onClick={() => setActiveTab('classes')}
-                className={`flex-1 py-3 text-xs font-hero uppercase tracking-widest ${activeTab === 'classes' ? 'bg-[#c29c55] text-black' : 'bg-black/40 text-gray-500 hover:bg-white/5'}`}
-              >
-                Heroes
-              </button>
-              <button
-                onClick={() => setActiveTab('artifacts')}
-                className={`flex-1 py-3 text-xs font-hero uppercase tracking-widest ${activeTab === 'artifacts' ? 'bg-[#c29c55] text-black' : 'bg-black/40 text-gray-500 hover:bg-white/5'}`}
-              >
-                Relics
-              </button>
+              <div className="flex-1 py-3 text-xs font-hero uppercase tracking-widest bg-[#c29c55] text-black text-center">
+                Heroes of Azeroth
+              </div>
             </div>
 
             <h3 className="font-hero text-gray-400 text-sm uppercase tracking-widest mb-6 text-center lg:text-left">

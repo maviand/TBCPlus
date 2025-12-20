@@ -15,6 +15,10 @@ const TheAtlasOfOutland = () => {
   const [selectedEntry, setSelectedEntry] = useState(null);
   const [scrolled, setScrolled] = useState(false);
 
+  // --- VANGUARD STATE ---
+  const [vanguardTab, setVanguardTab] = useState('raids'); // raids | dungeons
+  const [selectedRaid, setSelectedRaid] = useState('karazhan');
+
   // Handle scroll for sticky header
   useEffect(() => {
     const handleScroll = () => {
@@ -49,11 +53,12 @@ const TheAtlasOfOutland = () => {
   // --- CONTINENT DATA ---
   const continents = {
     outland: { name: 'Outland', icon: <Globe className="w-4 h-4" /> },
-    azeroth: { name: 'Azeroth (The Lost Zones)', icon: <Anchor className="w-4 h-4" /> },
+    azeroth: { name: 'Azeroth', icon: <Anchor className="w-4 h-4" /> },
+    vanguard: { name: 'Raid Journal', icon: <Skull className="w-4 h-4" /> }, // NEW TAB
     cot: { name: 'Caverns of Time', icon: <Clock className="w-4 h-4" /> },
     tuning: { name: 'Raid Fixes', icon: <Hammer className="w-4 h-4" /> },
-    citadel: { name: 'Citadel of the Void', icon: <Skull className="w-4 h-4" /> },
-    oldworld: { name: 'Old World Scaling', icon: <BookOpen className="w-4 h-4" /> }
+    citadel: { name: 'Citadel of the Void', icon: <Zap className="w-4 h-4" /> },
+    oldworld: { name: 'Old World', icon: <BookOpen className="w-4 h-4" /> }
   };
 
   // --- ZONES DATA ---
@@ -80,72 +85,11 @@ const TheAtlasOfOutland = () => {
     citadel: {
       far_reach: { name: 'The Far Reach', icon: <Zap className="w-4 h-4" /> }
     },
-    _garbage_tuning: [
-      {
-        name: 'Heroic+ Dungeons',
-        type: 'System Update',
-        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Heroic+Plus",
-        lore: "**T5 Launch Feature** \nA new difficulty mode for all TBC 5-man dungeons. It is unlocking alongside SSC/TK to provide a massive challenge for 5-man groups.",
-        geography: "**New Mechanics:** \nFrom Exploding Bog-Lords in Underbog to Sonic Booms in Shadow Labyrinth that hit 2 players, every boss has a twist.",
-        philosophy: { tbc: "Badges were grindy.", plus: "Heroic+ drops T4/T5 set tokens and massive Badge yields." },
-        bosses: ["**Kargath:** Blade Dance is now constant.", "**Murmur:** Sonic Boom hits two targets."],
-        mechanics: "**Rewards:** \nilvl 128 Epic Gear and catch-up tokens."
-      },
-      {
-        name: 'Gruul & Magtheridon Hard Mode',
-        type: 'Raid Mechanics',
-        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Gruul+Mag",
-        lore: "**Tier 4 Hard Modes** \nOptional triggers to increase difficulty and loot. **Gruul:** Kill Council in specific order. **Magtheridon:** Click cubes in 5-second window.",
-        geography: "**Mechanics:** \nGruul gains Whirlwind. Magtheridon keeps channeler abilities.",
-        philosophy: { tbc: "Too easy later on.", plus: "Keeps T4 relevant during T5/T6." },
-        bosses: ["**Gruul:** Reanimates Gronn Adds.", "**Magtheridon:** Permanent Shadow Bolley Volleys."],
-        mechanics: "**Loot:** \nDrops optional T5-equivalent jewelry and cloaks."
-      },
-      {
-        name: 'Hyjal: The Dynamic War',
-        type: 'Raid Overhaul',
-        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Hyjal",
-        lore: "**Tier 6 Redesign** \nNo more 8-wave boredom. Now 4 intense waves with objectives (Protect Sappers, Interrupt Summoners). Jaina and Thrall use major cooldowns to help.",
-        geography: "**The Change:** \nMini-bosses spawn during waves. Archimonde has a mid-phase 'Drain Nordrassil'. Tyrande grants jump buffs.",
-        philosophy: { tbc: "Hyjal was a slog.", plus: "Now a strategic, fast-paced war zone." },
-        bosses: [
-          "**Rage Winterchill:** \nThe Lich's prowess is fully realized. He casts 'Death & Decay' which must be kited out of, and channels an 'Ice Barrier' that makes him immune to damage until shattered by massive burst damage.",
-          "**Archimonde:** \nThe Defiler requires coordination with Jaina and Thrall. At 20% health, he channels 'Drain Nordrassil', becoming immune to conventional damage. Players must use 'Tears of the Goddess' (granted by Tyrande) to reflect his own Chaos energy back at him."
-        ],
-        mechanics: "**Impact:** \nCleansing the base visibly changes the environment (trees bloom)."
-      }
-    ],
+
     oldworld: {
       oldworld_zone: { name: 'Classic Content', icon: <BookOpen className="w-4 h-4" /> }
     },
-    _garbage_oldworld: [
-      {
-        name: 'Heroic Azeroth Raids',
-        type: 'Scalable Content',
-        image: 'https://static.wikia.nocookie.net/wowpedia/images/4/4d/WoWBlog_MC_Banner.jpg/revision/latest?cb=20211008221056',
-        lore: "**Timelocked Raiding** \nMolten Core (10-Man), BWL (25-Man), AQ40, and Naxxramas are scaled up to Level 70. They drop loot just below current TBC tier ilvl.",
-        geography: "**Progression:** \nMC = ilvl 110. BWL = ilvl 125. Naxx = ilvl 148 (T6 equivalent).",
-        philosophy: { tbc: "Old raids died.", plus: "They offer alternative gearing paths and trinkets." },
-        bosses: [
-          "**Ragnar-O's:** \nThe Firelord has awakened fully. In his 'Living Meteor' phase, he submerges, and players must kite massive molten boulders into 'Vent' targets to cap the volcano before he re-emerges.",
-          "**Vaelastrasz the Corrupt:** \nThe tragic red dragon now applies 'Burning Adrenaline' to multiple players. Instead of killing them, it turns them into living bombs that must run to specific 'Void Zones' to detonate safely."
-        ],
-        mechanics: "**Loot:** \nUnique 'Timeworn' items and Tier 2 recolors."
-      },
-      {
-        name: 'World Invasions',
-        type: 'Open World Event',
-        image: 'https://i.imgur.com/e5wE7xi.png',
-        lore: "**A Realm Reborn** \nScourge and Legion invasions strike classic zones (Winterspring, EPL). Phase 1: Infiltration. Phase 2: Siege (World Boss). Phase 3: Rewards.",
-        geography: "**Zones:** \nRotates weekly between Kalimdor and Eastern Kingdoms.",
-        philosophy: { tbc: "Azeroth was empty.", plus: "Weekly reasons to go back to the old world." },
-        bosses: [
-          "**Doom Lord Kazzak (World):** \nThe Supreme Commander of the Legion forces. He flies between zones, bombarding the ground. Players must use flying mounts to engage him in the air.",
-          "**Highlord Kruul:** \nReplaces Kazzak on the ground. He captures faction leaders, forcing the raid to free them to gain powerful 'Faction Champion' buffs."
-        ],
-        mechanics: "**Rewards:** \nHonor, Catch-up gear, and gathering nodes."
-      }
-    ]
+
   };
 
   // --- ZONE INTEL DATA (NEW) ---
@@ -222,7 +166,131 @@ const TheAtlasOfOutland = () => {
     }
   };
 
-  // --- CONTENT DATA ---
+  // --- VANGUARD DATA (Merged from TheVanguard.jsx) ---
+  const raids = {
+    karazhan: {
+      title: "Karazhan: The Master's Key",
+      tier: "Tier 4",
+      size: "10 Player",
+      icon: <Globe className="w-6 h-6" />, // Changed Icon to generic if Ghost not imp
+      desc: "The tower has awakened. Medivh's echoes are no longer passive; they are actively testing those who dare enter. The 'Chess Event' is no longer a game—it is a war.",
+      bosses: [
+        {
+          name: "Attumen the Huntsman",
+          title: "The First Rider",
+          mechanic: "**Midnight's Frenzy:** At 50% HP, Midnight becomes un-tankable and fixates on random players, forcing kiting throughout the stables. **Intangible Presence:** Attumen curses healers, reducing healing done by 100% until they deal damage to a ghost add."
+        },
+        {
+          name: "Moroes",
+          title: "The Tower Steward",
+          mechanic: "**The Dinner Party:** Moroes now invites 6 guests (up from 4). **Garrote:** Now applies a 'Bleeding Out' debuff that increases physical damage taken by 10% per stack. Must be cleansed by physically interacting with 'Guest Cleanse' objects around the room."
+        },
+        {
+          name: "The Opera Event",
+          title: "A Night at the Theater",
+          mechanic: "**New Play - 'The Arthas Tragedy':** Players re-enact the Culling of Stratholme. One tank plays Arthas, one healer plays Uther/Jaina. Dps must kill undead citizens before they turn into elites."
+        },
+        {
+          name: "The Chess Event",
+          title: "Reworked: Tower Defense",
+          mechanic: "**No Vehicles:** Players fight *alongside* the pieces. You must defend your King from waves of cheating pieces (Exploding Pawns, Assassin Bishops). Players gain buffs based on the piece they stand near."
+        },
+        {
+          name: "Prince Malchezaar",
+          title: "The Eredar Lord",
+          mechanic: "**Dimensional Rift:** In Phase 3, the platform shatters. Players must jump between floating debris using temporary gravity-boots to dodging Infernals."
+        }
+      ]
+    },
+    gruul: {
+      title: "Gruul's Lair",
+      tier: "Tier 4",
+      size: "25 Player",
+      icon: <Skull className="w-6 h-6" />,
+      desc: "The Dragonkiller has grown. His lair is now a vertical encounter where players must climb the spires of Blade's Edge during the fight.",
+      bosses: [
+        {
+          name: "High King Maulgar",
+          title: "Lord of the Ogres",
+          mechanic: "**Council Mechanics:** The 4 adds must be killed simultaneously (within 10s window). If one dies early, Maulgar enrages, gaining 500% damage and wiping the raid."
+        },
+        {
+          name: "Gruul the Dragonkiller",
+          title: "Apex Predator",
+          mechanic: "**Growth:** Gruul grows physically larger every 10%. By 20%, he is so large he breaks the ceiling, causing falling debris (AOE). **Shatter:** Now creates permanent terrain fissures that block line-of-sight."
+        }
+      ]
+    },
+    magtheridon: {
+      title: "Magtheridon's Lair",
+      tier: "Tier 4",
+      size: "20 Player",
+      icon: <Flame className="w-6 h-6" />,
+      desc: "The Pit Lord is bound by 5 cubes. In TBC+, the Cube Clickers are not just clicking—they are fighting a mental battle with the Legion.",
+      bosses: [
+        {
+          name: "Magtheridon",
+          title: "The Forgotten One",
+          mechanic: "**The Cubes:** Clicking a cube teleports the player into the 'Nether Realm' for 10s. They must defeat a scaling demon add inside to maintain the seal. If they fail, the blast goes off."
+        }
+      ]
+    },
+    ssc: {
+      title: "Serpentshrine Cavern",
+      tier: "Tier 5",
+      size: "25 Player",
+      icon: <Anchor className="w-6 h-6" />,
+      desc: "Lady Vashj controls the waters of Outland. The raid now features underwater combat mechanics (with swim speed buffs) and 3D movement phases.",
+      bosses: [
+        {
+          name: "Lady Vashj",
+          title: "Coilfang Matron",
+          mechanic: "**Tainted Cores:** The passing mechanic remains, but the 'Strider' adds now fear players. **Phase 4 (New):** The water rises. The final 10% is fought underwater with 300% swim speed, dodging electrical currents."
+        }
+      ]
+    },
+    tk: {
+      title: "The Eye (Tempest Keep)",
+      tier: "Tier 5",
+      size: "25 Player",
+      icon: <Zap className="w-6 h-6" />,
+      desc: "Kael'thas Sunstrider's fortress. The Legendary Weapons are now permanent loots that drop *before* the final phase and are equipped for the rest of the fight.",
+      bosses: [
+        {
+          name: "Kael'thas Sunstrider",
+          title: "Sun King",
+          mechanic: "**Gravity Lapse:** Now completely inverts controls (Up is Down). **Phoenix Rebirth:** The Phoenixes leave behind an egg that heals Kael'thas if not destroyed."
+        }
+      ]
+    }
+  };
+
+  const dungeons = [
+    {
+      name: "Hellfire Ramparts (H+)",
+      affix: "Legion's March",
+      desc: "Fel Orcs spawn continuously from portals until bosses are defeated. Speed is key.",
+      loot: "Primal Nether, Tier 3.5 Token"
+    },
+    {
+      name: "The Blood Furnace (H+)",
+      affix: "Sanguine Pools",
+      desc: "Enemies leave pools of blood that heal other enemies and damage players.",
+      loot: "Badge of Justice x4"
+    },
+    {
+      name: "Slave Pens (H+)",
+      affix: "Rising Weeds",
+      desc: "Entangling roots randomly spawn, trapping players until destroyed by allies.",
+      loot: "Unidentified Plant Parts (Rep Items)"
+    },
+    {
+      name: "Mana Tombs (H+)",
+      affix: "Arcane Detonation",
+      desc: "Mana-users explode upon death. Melee must move out or die.",
+      loot: "Ethereal Key (Tradeable)"
+    }
+  ];
   const contentData = {
     // --- OUTLAND ---
     hellfire: [
@@ -1753,16 +1821,16 @@ const TheAtlasOfOutland = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-4xl mx-auto text-left space-y-6 text-sm text-[#8a7b62] bg-[#0b0d10] p-8 rounded border border-[#2f2f35] shadow-xl">
           <p className="font-body italic border-b border-[#2f2f35] pb-6 mb-4 text-base text-[#c29c55]/80 text-center">
-            "From a developer's perspective, we identified narrative voids in the original expansion—like Kael'thas's transition to the Legion or the Draenei's isolated starting experience—and built dungeons specifically to tell those stories."
+            &quot;From a developer&apos;s perspective, we identified narrative voids in the original expansion—like Kael&apos;thas&apos;s transition to the Legion or the Draenei&apos;s isolated starting experience—and built dungeons specifically to tell those stories.&quot;
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <h4 className="text-[#c29c55] font-hero text-xs uppercase tracking-widest mb-3 border-b border-[#c29c55]/20 pb-1">Closing Narrative Gaps</h4>
-              <p className="text-[#aeb6bf] text-xs leading-relaxed">TBC had incredible lore but often told it through text rather than gameplay. We knew Kael'thas joined Illidan, but we never *played* their escape from Dalaran. The new **Siege of Dalaran** lets players live that history. Similarly, the **Dark Portal Excavation** connects Azeroth and Outland, showing the immediate aftermath of the portal's reopening.</p>
+              <p className="text-[#aeb6bf] text-xs leading-relaxed">TBC had incredible lore but often told it through text rather than gameplay. We knew Kael&apos;thas joined Illidan, but we never *played* their escape from Dalaran. The new **Siege of Dalaran** lets players live that history. Similarly, the **Dark Portal Excavation** connects Azeroth and Outland, showing the immediate aftermath of the portal&apos;s reopening.</p>
             </div>
             <div>
               <h4 className="text-[#c29c55] font-hero text-xs uppercase tracking-widest mb-3 border-b border-[#c29c55]/20 pb-1">Diversifying Gameplay</h4>
-              <p className="text-[#aeb6bf] text-xs leading-relaxed">We wanted to break the "Tank and Spank" monotony. Dungeons like **The Apexis Conclave** introduce puzzle mechanics (Light Reflection), while **The Ethereum Vaults** introduce a "Heist" timer. This variety ensures that different class utilities (Mage blinking, Rogue sprinting) have moments to shine.</p>
+              <p className="text-[#aeb6bf] text-xs leading-relaxed">We wanted to break the &quot;Tank and Spank&quot; monotony. Dungeons like **The Apexis Conclave** introduce puzzle mechanics (Light Reflection), while **The Ethereum Vaults** introduce a &quot;Heist&quot; timer. This variety ensures that different class utilities (Mage blinking, Rogue sprinting) have moments to shine.</p>
             </div>
             <div>
               <h4 className="text-[#c29c55] font-hero text-xs uppercase tracking-widest mb-3 border-b border-[#c29c55]/20 pb-1">Evergreen Relevance</h4>
@@ -1797,142 +1865,241 @@ const TheAtlasOfOutland = () => {
         </div>
       </div>
 
-      {/* ZONE NAVIGATION */}
-      <div className="sticky top-0 z-40 bg-[#0b0d10] border-b border-[#2f2f35] mb-12 shadow-2xl overflow-x-auto no-scrollbar">
-        <div className="container mx-auto flex justify-start lg:justify-center gap-3 p-3 min-w-max">
-          {Object.entries(zones[activeContinent]).map(([key, zone]) => (
+      {/* --- VANGUARD VIEW --- */}
+      {/* --- VANGUARD VIEW --- */}
+      {activeContinent === 'vanguard' && (
+        <div className="container mx-auto px-4 py-8 min-h-screen animate-fade-in">
+          {/* Vanguard Tabs */}
+          <div className="flex justify-center gap-8 mb-12 border-b border-red-900/30">
             <button
-              key={key}
-              onClick={() => setActiveZone(key)}
-              className={`py-3 px-6 rounded-sm flex items-center gap-2 font-hero text-xs uppercase tracking-widest transition-all duration-300 ${activeZone === key
-                ? 'bg-[#c29c55] text-black shadow-[0_0_20px_rgba(194,156,85,0.3)] transform scale-105'
-                : 'bg-[#1a1c22] text-[#5c5c63] hover:bg-[#2f2f35] hover:text-[#e0e0e0] border border-[#2f2f35]'
-                }`}
+              onClick={() => setVanguardTab('raids')}
+              className={`pb-4 px-6 font-cinzel text-lg tracking-widest transition-all ${vanguardTab === 'raids' ? 'text-red-500 border-b-2 border-red-500' : 'text-stone-500 hover:text-stone-300'}`}
             >
-              {zone.icon} {zone.name}
+              Raid Journal
             </button>
-          ))}
-        </div>
-      </div>
+            <button
+              onClick={() => setVanguardTab('dungeons')}
+              className={`pb-4 px-6 font-cinzel text-lg tracking-widest transition-all ${vanguardTab === 'dungeons' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-stone-500 hover:text-stone-300'}`}
+            >
+              Heroic+ Dungeons
+            </button>
+          </div>
 
-      {/* CONTENT GRID */}
-      <div className="container mx-auto px-4 pb-24 min-h-screen">
-        {selectedEntry && <DetailModal item={selectedEntry} onClose={() => setSelectedEntry(null)} />}
-
-        {/* --- ZONE INTEL SECTION (NEW) --- */}
-        {zoneIntel[activeZone] && (
-          <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
-            {/* Hubs Card */}
-            <div className="md:col-span-2 bg-[#121212] border border-white/10 rounded-lg p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-16 bg-blue-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
-              <h3 className="font-hero text-lg text-blue-400 mb-4 flex items-center gap-2">
-                <Anchor className="w-4 h-4" /> Strategic Hubs
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {zoneIntel[activeZone].hubs.map((hub, idx) => (
-                  <div key={idx} className="bg-black/40 p-3 rounded border border-white/5">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-gray-200 font-bold">{hub.name}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded ${hub.faction === 'Alliance' ? 'bg-blue-900/50 text-blue-200' :
-                          hub.faction === 'Horde' ? 'bg-red-900/50 text-red-200' :
-                            hub.faction === 'Neutral' ? 'bg-yellow-900/50 text-yellow-200' :
-                              'bg-red-900/80 text-white'
-                        }`}>{hub.faction}</span>
+          {/* Raids Content */}
+          {vanguardTab === 'raids' && (
+            <div className="flex flex-col lg:flex-row gap-8">
+              <aside className="lg:w-1/4 space-y-4">
+                {Object.entries(raids).map(([key, raid]) => (
+                  <button
+                    key={key}
+                    onClick={() => setSelectedRaid(key)}
+                    className={`w-full text-left p-4 rounded border transition-all ${selectedRaid === key
+                      ? 'bg-red-900/20 border-red-500 text-white'
+                      : 'bg-[#1a1a1a] border-stone-800 text-stone-500 hover:border-stone-600'
+                      }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded bg-black/50 ${selectedRaid === key ? 'text-red-400' : 'text-stone-600'}`}>
+                        {raid.icon}
+                      </div>
+                      <div>
+                        <h3 className="font-cinzel font-bold">{raid.title}</h3>
+                        <span className="text-xs uppercase tracking-wider opacity-60">{raid.tier} - {raid.size}</span>
+                      </div>
                     </div>
-                    <p className="text-gray-400 text-xs italic">{hub.desc}</p>
-                  </div>
+                  </button>
                 ))}
-              </div>
-            </div>
+              </aside>
 
-            {/* Travel Card */}
-            <div className="bg-[#121212] border border-white/10 rounded-lg p-6 relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-16 bg-green-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
-              <h3 className="font-hero text-lg text-green-400 mb-4 flex items-center gap-2">
-                <Compass className="w-4 h-4" /> Travel Logistics
-              </h3>
-              <div>
-                <h4 className="text-gray-200 font-bold mb-1">{zoneIntel[activeZone].travel.title}</h4>
-                <p className="text-gray-400 text-xs leading-relaxed">{zoneIntel[activeZone].travel.desc}</p>
-              </div>
+              {/* Main Raid Content */}
+              <main className="lg:w-3/4 bg-[#111] border border-stone-800 p-8 rounded-lg">
+                <h2 className="font-cinzel text-3xl text-red-500 mb-2">{raids[selectedRaid].title}</h2>
+                <p className="font-body text-stone-400 mb-8 italic">{raids[selectedRaid].desc}</p>
+
+                <h3 className="font-cinzel text-xl text-white mb-6 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-red-500" /> Major Mechanical Changes
+                </h3>
+
+                <div className="space-y-6">
+                  {raids[selectedRaid].bosses.map((boss, idx) => (
+                    <div key={idx} className="bg-[#1a1a1a] p-6 rounded border-l-4 border-red-900">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-hero text-lg text-red-200">{boss.name}</h4>
+                        <span className="text-xs text-stone-500 uppercase">{boss.title}</span>
+                      </div>
+                      <p className="text-sm text-stone-300 leading-relaxed">
+                        {formatText(boss.mechanic)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </main>
+            </div>
+          )}
+
+          {/* Dungeons Content */}
+          {vanguardTab === 'dungeons' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {dungeons.map((dungeon, idx) => (
+                <div key={idx} className="bg-[#111] border border-blue-900/30 p-6 rounded hover:border-blue-500/50 transition-colors">
+                  <h3 className="font-cinzel text-xl text-blue-400 mb-2">{dungeon.name}</h3>
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-xs bg-blue-900/40 text-blue-200 px-2 py-1 rounded border border-blue-900">
+                      Affix: {dungeon.affix}
+                    </span>
+                  </div>
+                  <p className="text-stone-400 text-sm mb-4">{dungeon.desc}</p>
+                  <div className="text-xs text-stone-500 border-t border-stone-800 pt-3">
+                    <strong className="text-stone-300">Key Loot:</strong> {dungeon.loot}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* STANDARD ATLAS VIEW */}
+      {activeContinent !== 'vanguard' && (
+        <>
+          {/* ZONE NAVIGATION */}
+          <div className="sticky top-0 z-40 bg-[#0b0d10] border-b border-[#2f2f35] mb-12 shadow-2xl overflow-x-auto no-scrollbar">
+            <div className="container mx-auto flex justify-start lg:justify-center gap-3 p-3 min-w-max">
+              {Object.entries(zones[activeContinent]).map(([key, zone]) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveZone(key)}
+                  className={`py-3 px-6 rounded-sm flex items-center gap-2 font-hero text-xs uppercase tracking-widest transition-all duration-300 ${activeZone === key
+                    ? 'bg-[#c29c55] text-black shadow-[0_0_20px_rgba(194,156,85,0.3)] transform scale-105'
+                    : 'bg-[#1a1c22] text-[#5c5c63] hover:bg-[#2f2f35] hover:text-[#e0e0e0] border border-[#2f2f35]'
+                    }`}
+                >
+                  {zone.icon} {zone.name}
+                </button>
+              ))}
             </div>
           </div>
-        )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
-          {contentData[activeZone] ? (
-            contentData[activeZone].map((item, i) => (
-              <div
-                key={i}
-                onClick={() => setSelectedEntry(item)}
-                className={`
+          {/* CONTENT GRID */}
+          <div className="container mx-auto px-4 pb-24 min-h-screen">
+            {selectedEntry && <DetailModal item={selectedEntry} onClose={() => setSelectedEntry(null)} />}
+
+            {/* --- ZONE INTEL SECTION (NEW) --- */}
+            {zoneIntel[activeZone] && (
+              <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4 animate-fade-in">
+                {/* Hubs Card */}
+                <div className="md:col-span-2 bg-[#121212] border border-white/10 rounded-lg p-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-16 bg-blue-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                  <h3 className="font-hero text-lg text-blue-400 mb-4 flex items-center gap-2">
+                    <Anchor className="w-4 h-4" /> Strategic Hubs
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {zoneIntel[activeZone].hubs.map((hub, idx) => (
+                      <div key={idx} className="bg-black/40 p-3 rounded border border-white/5">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-gray-200 font-bold">{hub.name}</span>
+                          <span className={`text-xs px-2 py-0.5 rounded ${hub.faction === 'Alliance' ? 'bg-blue-900/50 text-blue-200' :
+                            hub.faction === 'Horde' ? 'bg-red-900/50 text-red-200' :
+                              hub.faction === 'Neutral' ? 'bg-yellow-900/50 text-yellow-200' :
+                                'bg-red-900/80 text-white'
+                            }`}>{hub.faction}</span>
+                        </div>
+                        <p className="text-gray-400 text-xs italic">{hub.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Travel Card */}
+                <div className="bg-[#121212] border border-white/10 rounded-lg p-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-16 bg-green-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                  <h3 className="font-hero text-lg text-green-400 mb-4 flex items-center gap-2">
+                    <Compass className="w-4 h-4" /> Travel Logistics
+                  </h3>
+                  <div>
+                    <h4 className="text-gray-200 font-bold mb-1">{zoneIntel[activeZone].travel.title}</h4>
+                    <p className="text-gray-400 text-xs leading-relaxed">{zoneIntel[activeZone].travel.desc}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in">
+              {contentData[activeZone] ? (
+                contentData[activeZone].map((item, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setSelectedEntry(item)}
+                    className={`
                       relative rounded-sm overflow-hidden group cursor-pointer transition-all duration-500 hover:-translate-y-2
                       ${item.type.includes('MEGA') ? 'col-span-1 md:col-span-2 lg:col-span-2 border-2 border-[#c29c55] bg-[#1a120b] shadow-[0_0_30px_rgba(194,156,85,0.1)]' : 'bg-[#0b0d10] border border-[#2f2f35] hover:border-[#c29c55]/50 hover:shadow-2xl'}
                     `}
-              >
-                {/* Card Header/Image Placeholder */}
-                <div className={`${item.type.includes('MEGA') ? 'h-72' : 'h-48'} bg-[#15171e] relative overflow-hidden`}>
-                  {item.image ? (
-                    <img src={item.image} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center opacity-10 group-hover:opacity-20 transition-opacity">
-                      <Globe className="w-24 h-24" />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d10] via-[#0b0d10]/50 to-transparent"></div>
-
-                  <div className="absolute bottom-6 left-6 z-10 pr-4">
-                    <h3 className={`font-hero text-[#f0e6d2] group-hover:text-[#c29c55] transition-colors drop-shadow-lg ${item.type.includes('MEGA') ? 'text-4xl' : 'text-2xl'}`}>
-                      {item.name}
-                    </h3>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#aeb6bf] bg-black/60 px-3 py-1 rounded backdrop-blur-md border border-[#ffffff]/10 inline-block mt-2">
-                      {item.type}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-8">
-                  <p className="text-[#aeb6bf] text-xs leading-relaxed line-clamp-3 mb-6 border-b border-[#2f2f35] pb-6 font-sans">
-                    {formatText(item.lore)}
-                  </p>
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex -space-x-3 hover:space-x-0 transition-all duration-300">
-                      {item.bosses && item.bosses.slice(0, 3).map((b, idx) => (
-                        <div key={idx} className="w-8 h-8 rounded-full bg-[#1a1c22] border border-[#2f2f35] flex items-center justify-center text-[10px] text-[#5c5c63] shadow-md hover:z-10 hover:border-[#c29c55] hover:text-[#c29c55] transition-colors" title={b}>
-                          <Skull className="w-4 h-4" />
-                        </div>
-                      ))}
-                      {item.bosses && item.bosses.length > 3 && (
-                        <div className="w-8 h-8 rounded-full bg-[#0b0d10] border border-[#2f2f35] flex items-center justify-center text-[9px] text-[#aeb6bf] shadow-md z-10">
-                          +{item.bosses.length - 3}
+                  >
+                    {/* Card Header/Image Placeholder */}
+                    <div className={`${item.type.includes('MEGA') ? 'h-72' : 'h-48'} bg-[#15171e] relative overflow-hidden`}>
+                      {item.image ? (
+                        <img src={item.image} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center opacity-10 group-hover:opacity-20 transition-opacity">
+                          <Globe className="w-24 h-24" />
                         </div>
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d10] via-[#0b0d10]/50 to-transparent"></div>
+
+                      <div className="absolute bottom-6 left-6 z-10 pr-4">
+                        <h3 className={`font-hero text-[#f0e6d2] group-hover:text-[#c29c55] transition-colors drop-shadow-lg ${item.type.includes('MEGA') ? 'text-4xl' : 'text-2xl'}`}>
+                          {item.name}
+                        </h3>
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-[#aeb6bf] bg-black/60 px-3 py-1 rounded backdrop-blur-md border border-[#ffffff]/10 inline-block mt-2">
+                          {item.type}
+                        </span>
+                      </div>
                     </div>
-                    <button className="text-[#c29c55] text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
-                      Briefing <ArrowRight className="w-3 h-3" />
-                    </button>
+
+                    {/* Card Body */}
+                    <div className="p-8">
+                      <p className="text-[#aeb6bf] text-xs leading-relaxed line-clamp-3 mb-6 border-b border-[#2f2f35] pb-6 font-sans">
+                        {formatText(item.lore)}
+                      </p>
+
+                      <div className="flex justify-between items-center">
+                        <div className="flex -space-x-3 hover:space-x-0 transition-all duration-300">
+                          {item.bosses && item.bosses.slice(0, 3).map((b, idx) => (
+                            <div key={idx} className="w-8 h-8 rounded-full bg-[#1a1c22] border border-[#2f2f35] flex items-center justify-center text-[10px] text-[#5c5c63] shadow-md hover:z-10 hover:border-[#c29c55] hover:text-[#c29c55] transition-colors" title={b}>
+                              <Skull className="w-4 h-4" />
+                            </div>
+                          ))}
+                          {item.bosses && item.bosses.length > 3 && (
+                            <div className="w-8 h-8 rounded-full bg-[#0b0d10] border border-[#2f2f35] flex items-center justify-center text-[9px] text-[#aeb6bf] shadow-md z-10">
+                              +{item.bosses.length - 3}
+                            </div>
+                          )}
+                        </div>
+                        <button className="text-[#c29c55] text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+                          Briefing <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                ))
+              ) : (
+                <div className="col-span-full text-center py-32 opacity-50">
+                  <AlertTriangle className="w-16 h-16 text-[#2f2f35] mx-auto mb-6" />
+                  <p className="text-[#5c5c63] font-hero uppercase tracking-widest text-lg">No new intelligence for this region.</p>
+                  {/* Contextual Extras Box */}
+                  <div className="bg-[#1a1c22] p-6 rounded border border-[#c29c55]/20 flex flex-col items-center justify-center text-center">
+                    <Compass className="w-10 h-10 text-[#c29c55] mb-3 opacity-40" />
+                    <p className="text-xs text-[#5c5c63] uppercase tracking-widest font-bold">Exploration Required</p>
+                    <span className="text-[#8a7b62] text-xs mt-1">Discover the entrance within the zone to unlock this entry in your journal.</span>
                   </div>
                 </div>
-              </div>
 
-            ))
-          ) : (
-            <div className="col-span-full text-center py-32 opacity-50">
-              <AlertTriangle className="w-16 h-16 text-[#2f2f35] mx-auto mb-6" />
-              <p className="text-[#5c5c63] font-hero uppercase tracking-widest text-lg">No new intelligence for this region.</p>
-              {/* Contextual Extras Box */}
-              <div className="bg-[#1a1c22] p-6 rounded border border-[#c29c55]/20 flex flex-col items-center justify-center text-center">
-                <Compass className="w-10 h-10 text-[#c29c55] mb-3 opacity-40" />
-                <p className="text-xs text-[#5c5c63] uppercase tracking-widest font-bold">Exploration Required</p>
-                <span className="text-[#8a7b62] text-xs mt-1">Discover the entrance within the zone to unlock this entry in your journal.</span>
-              </div>
+              )}
             </div>
-
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </div >
   );
 };
