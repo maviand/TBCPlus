@@ -84,7 +84,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Heroic+ Dungeons',
         type: 'System Update',
-        image: import.meta.env.BASE_URL + "images/art/system_heroic_plus.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Heroic+Plus",
         lore: "**T5 Launch Feature** \nA new difficulty mode for all TBC 5-man dungeons. It is unlocking alongside SSC/TK to provide a massive challenge for 5-man groups.",
         geography: "**New Mechanics:** \nFrom Exploding Bog-Lords in Underbog to Sonic Booms in Shadow Labyrinth that hit 2 players, every boss has a twist.",
         philosophy: { tbc: "Badges were grindy.", plus: "Heroic+ drops T4/T5 set tokens and massive Badge yields." },
@@ -94,7 +94,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Gruul & Magtheridon Hard Mode',
         type: 'Raid Mechanics',
-        image: import.meta.env.BASE_URL + "images/art/system_gruul_mag.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Gruul+Mag",
         lore: "**Tier 4 Hard Modes** \nOptional triggers to increase difficulty and loot. **Gruul:** Kill Council in specific order. **Magtheridon:** Click cubes in 5-second window.",
         geography: "**Mechanics:** \nGruul gains Whirlwind. Magtheridon keeps channeler abilities.",
         philosophy: { tbc: "Too easy later on.", plus: "Keeps T4 relevant during T5/T6." },
@@ -104,7 +104,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Hyjal: The Dynamic War',
         type: 'Raid Overhaul',
-        image: import.meta.env.BASE_URL + "images/art/system_hyjal.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Hyjal",
         lore: "**Tier 6 Redesign** \nNo more 8-wave boredom. Now 4 intense waves with objectives (Protect Sappers, Interrupt Summoners). Jaina and Thrall use major cooldowns to help.",
         geography: "**The Change:** \nMini-bosses spawn during waves. Archimonde has a mid-phase 'Drain Nordrassil'. Tyrande grants jump buffs.",
         philosophy: { tbc: "Hyjal was a slog.", plus: "Now a strategic, fast-paced war zone." },
@@ -634,7 +634,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Heroic+ Dungeons',
         type: 'System Update',
-        image: import.meta.env.BASE_URL + "images/art/system_heroic_plus.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Heroic+Plus",
         lore: "**T5 Launch Feature** \nThe ultimate 5-man challenge. Unlocks alongside SSC/TK. Every boss has new mechanics.",
         geography: "**Mechanics:** \n**Hellfire:** Kargath Blade Dances constantly. \n**Coilfang:** Hungarfen spawns fixating Bog-Lords. \n**Auchindoun:** Murmur's Sonic Boom hits two players. \n**Tempest Keep:** Freywinn summons Volatile Saplings.",
         philosophy: { tbc: "Badges were grindy.", plus: "Heroic+ drops T4/T5 set tokens and massive Badge yields." },
@@ -644,7 +644,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Karazhan: Timeless Masterpiece',
         type: '10-Man Raid Refresh',
-        image: import.meta.env.BASE_URL + "images/art/system_karazhan.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Karazhan",
         lore: "**The Tower Reopened** \nKarazhan's haunted elegance—curtain halls, spectral operas, dragon duels—cements it as WoW's pinnacle raid. Now enhanced with a Heroic Encore and the long-awaited Forgotten Crypts.",
         karaData: {
           title: "Karazhan Redesign: Timeless Masterpiece",
@@ -690,7 +690,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'The Titan & The Pit',
         type: 'Raid Overhaul',
-        image: import.meta.env.BASE_URL + "images/art/system_gruul_mag.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Gruul+Mag",
         lore: "**Gruul's Lair & Magtheridon's Lair Redesigned** \nReimagined as multi-phase spectacles. Features 'Progression Toggles' to escalate difficulty and rewards as you conquer higher raid tiers.",
         gruulMagData: {
           toggles: {
@@ -722,7 +722,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'SSC & TK: The Dual Threat',
         type: 'Raid Overhaul',
-        image: import.meta.env.BASE_URL + "images/art/system_ssc_tk.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+SSC+TK",
         lore: "**Tier 5 Redefined** \nSerpentshrine Cavern and Tempest Keep are no longer just 'farm content.' Reimagined as high-octane spectacles: The Abyssal Crucible vs The Arcane Maelstrom.",
         sscTkData: {
           tabs: {
@@ -758,7 +758,7 @@ const TheAtlasOfOutland = () => {
       {
         name: 'Mount Hyjal: The Battle for Nordrassil',
         type: 'Raid Redesign',
-        image: import.meta.env.BASE_URL + "images/art/system_hyjal.png",
+        image: "https://placehold.co/600x400/111/4a3c2c?text=System+Hyjal",
         lore: "Mount Hyjal is the emotional centerpiece of TBC, but has been reimagined for TBC Plus.",
         hyjalData: {
           overview: {

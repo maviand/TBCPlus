@@ -146,7 +146,7 @@ const Legendaries = () => {
         {
             id: 'vessel',
             name: 'Vessel of the Forgotten Light',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_vessel.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Vessel" />,
+            icon: <Gem className="w-8 h-8 text-orange-500" />,
             lore: 'An ancient Naaru crystal, dormant since the fall of Auchindoun. It is not just a weapon, but a responsibility. You must nurture it from a flicker to a blinding sun.',
             items: [
                 {
@@ -217,7 +217,7 @@ const Legendaries = () => {
         {
             id: 'crown',
             name: 'Crown of the Sunken Star',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_crown.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Crown" />,
+            icon: <Crown className="w-8 h-8 text-orange-500" />,
             lore: 'An ancient Highborne diadem, lost when the Well of Eternity imploded and cast into the Great Dark Beyond. It crashed into Zangarmarsh just before the portal reopened. It promises infinite mana, at the cost of your sanity.',
             items: [
                 {
@@ -286,7 +286,7 @@ const Legendaries = () => {
         {
             id: 'sulfuras',
             name: 'Sulfuras, Hand of Ragnaros',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_sulfuras.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Sulfuras" />,
+            icon: <Hammer className="w-8 h-8 text-orange-500" />,
             lore: 'The Firelord may have been banished, but his hammer remains. In the Timelocked Molten Core, Ragnaros\'s power has not faded; it has grown. To wield this hammer is to hold a volcano in your hands.',
             items: [
                 {
@@ -339,7 +339,7 @@ const Legendaries = () => {
         {
             id: 'thunderfury',
             name: 'Thunderfury, Blessed Blade',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_thunderfury.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Thunderfury" />,
+            icon: <Zap className="w-8 h-8 text-orange-500" />,
             lore: 'Prince Thunderaan was betrayed. His essence, trapped in a talisman, now yearns for freedom. In the Timelocked Blackwing Lair, the winds of the seeker blow stronger than ever.',
             items: [
                 {
@@ -388,7 +388,7 @@ const Legendaries = () => {
         {
             id: 'atiesh',
             name: 'Atiesh, Greatstaff of the Guardian',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_atiesh.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Atiesh" />,
+            icon: <Ghost className="w-8 h-8 text-orange-500" />,
             lore: 'The staff of Medivh. It was shattered to prevent Sargeras from claiming it. Now, in the Timelocked Naxxramas, the splinters cry out to be reunited.',
             items: [
                 {
@@ -430,7 +430,7 @@ const Legendaries = () => {
         {
             id: 'thoridal',
             name: 'Thori\'dal, the Stars\' Fury',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_thoridal.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Thori'dal" />,
+            icon: <Crosshair className="w-8 h-8 text-orange-500" />,
             lore: 'Not a weapon of mortal hands, but a poem written in starlight. Thori\'dal resonates with the restored Sunwell, evolving as you attuned yourself to the Light.',
             items: [
                 {
@@ -502,7 +502,7 @@ const Legendaries = () => {
         {
             id: 'warglaives',
             name: 'Warglaives of Azzinoth',
-            icon: <img src={import.meta.env.BASE_URL + "images/art/legendary_warglaives.png"} className="w-8 h-8 rounded border border-orange-500/30" alt="Warglaives" />,
+            icon: <Sword className="w-8 h-8 text-orange-500" />,
             lore: 'The Illidari creed: sacrifice everything. These blades are not drops; they are earned through a journey of stealth and assassination.',
             items: [
                 {

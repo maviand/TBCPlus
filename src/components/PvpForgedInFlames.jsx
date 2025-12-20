@@ -48,7 +48,7 @@ const PvpForgedInFlames = () => {
                     name: "Hellfire Citadel Siege",
                     type: "40v40 Epic Battleground",
                     icon: <Flame className="w-8 h-8 text-orange-500" />,
-                    image: import.meta.env.BASE_URL + "images/art/pvp_hellfire_siege.png",
+                    image: "https://placehold.co/600x400/111/4a3c2c?text=PvP+Hellfire+Siege",
                     desc: "**Objective:** Assault vs. Defend. \n**Mechanic:** The Horde defends the ramparts of Hellfire Citadel; the Alliance assaults with captured Fel Reavers. \n**Flavor:** Destructible walls. Use siege engines to breach the gates. The final phase is a rush to the throne room while dodging orbital strikes from the Legion."
                 },
                 {

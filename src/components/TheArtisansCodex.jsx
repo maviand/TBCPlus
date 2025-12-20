@@ -96,16 +96,62 @@ const TheArtisansCodex = () => {
     );
   };
 
+  // --- QUESTLINE DISPLAY ---
+  const QuestlineCard = ({ questline }) => {
+    if (!questline) return null;
+    return (
+      <div className="bg-[#0b0d10] border border-[#c29c55] rounded-[4px] p-6 shadow-2xl max-w-[400px] w-full text-[#e0e0e0] font-body relative ml-4 animate-in slide-in-from-left duration-300">
+        <h4 className="font-hero text-[#c29c55] text-lg border-b border-[#c29c55]/30 pb-2 mb-4">
+          <span className="text-xs text-[#8a7b62] block uppercase tracking-widest mb-1">Acquisition Chain</span>
+          {questline.title}
+        </h4>
+        <p className="text-xs text-[#aeb6bf] italic mb-6 leading-relaxed">"{questline.description}"</p>
+
+        <div className="space-y-4 relative">
+          {/* Vertical Line */}
+          <div className="absolute left-[11px] top-2 bottom-4 w-[1px] bg-[#2f2f35]"></div>
+
+          {questline.steps.map((step, i) => (
+            <div key={i} className="relative flex gap-4">
+              <div className="z-10 w-6 h-6 rounded-full bg-[#1a1c22] border border-[#c29c55] flex items-center justify-center text-[10px] text-[#c29c55] font-bold shadow-md shrink-0">
+                {i + 1}
+              </div>
+              <div className="pb-2">
+                <h5 className="text-sm font-bold text-[#f0e6d2]">{step.name}</h5>
+                <p className="text-xs text-[#8a7b62] leading-snug">{step.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6 pt-4 border-t border-[#c29c55]/30 text-center">
+          <span className="text-[10px] text-[#c29c55] uppercase tracking-widest">Mastercraft Reward</span>
+        </div>
+      </div>
+    );
+  };
+
   // --- MODAL TOOLTIP COMPONENT ---
   const InspectionWindow = ({ item, onClose }) => {
     if (!item) return null;
 
     return (
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4">
-        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
-        <div className="relative animate-in fade-in zoom-in duration-200">
-          <button onClick={onClose} className="absolute -top-12 right-0 text-white/50 hover:text-white transition-colors"><X className="w-8 h-8" /></button>
-          <WowTooltip item={item} />
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 overflow-y-auto py-10">
+        <div className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onClick={onClose}></div>
+        <div className="relative z-10 flex flex-col md:flex-row items-start justify-center gap-0 md:gap-0 animate-in fade-in zoom-in duration-200 pointer-events-none">
+          {/* The Tooltip (Left or Top) */}
+          <div className="pointer-events-auto">
+            <WowTooltip item={item} />
+          </div>
+
+          {/* The Questline (Right or Bottom) - Only if it exists */}
+          {item.questline && (
+            <div className="pointer-events-auto md:-ml-1 mt-4 md:mt-0">
+              <QuestlineCard questline={item.questline} />
+            </div>
+          )}
+
+          <button onClick={onClose} className="pointer-events-auto absolute -top-12 -right-12 text-white/50 hover:text-white transition-colors p-2"><X className="w-8 h-8" /></button>
         </div>
       </div>
     );
@@ -405,29 +451,30 @@ const TheArtisansCodex = () => {
       title: 'Architect of the Future',
       icon: <Wrench className="w-6 h-6" />,
       image: 'https://i.imgur.com/kmLvKh4.jpeg',
-      desc: 'Engineers are the mad scientists of Outland. From devastating explosives to mind-bending gadgets, they define the technological edge of the war.',
+      desc: 'Engineers are the visionary architects of the impossible, blending arcane volatility with mechanical precision. In Outland, where the laws of physics are fraying, Engineers do not merely build gadgets—they weaponize the very fabric of reality.\n\nFrom the chaotic, fel-infused workshops of Shadowmoon Valley to the sleek, mana-driven bio-domes of Netherstorm, the Engineer is a master of adaptation. Whether it is deploying a pocket-sized gravity well to crush a legion of demons or rewinding time itself to undo a fatal mistake, the modern Engineer is defined by a single creed: **"If it didn\'t explode, you didn\'t use enough power."**',
       philosophy: {
-        tbc: "**The 2007 Landscape:** \nTBC was arguably the golden age of Engineering. The 'Goggles' introduced in patch 2.1 were iconic. However, outside of PvP (where grenades were king), their gadgets like bombs and target dummies often fell off in high-end PvE due to scaling issues or immunities.\n",
-        plus: "**The Vision for Plus:** \nWe want to fully embrace the 'Gadgeteer' class fantasy. Engineering should be chaotic, powerful, and visually loud. \n\n1. **Ordnance that Matters:** We scaled up explosives. The *Big One* Rocket Launcher isn't just a stat stick; it's a tactical nuke for AoE phases, giving Engineers a DPS cooldown that rivals class abilities. \n2. **Time & Space:** Gnomish engineers lean into the sci-fi elements of Netherstorm. The *Chronal Displacer* introduces 'Recall' mechanics into WoW, allowing for high-skill resets in raids.\n3. **Deployable Utility:** The *Gravity Well* creates crowd control zones, allowing Engineers to function as utility supports on trash packs."
+        tbc: "**The 2007 Landscape:** \nTBC was arguably the golden age of Engineering, introducing the iconic Goggles which finally gave the profession a competitive dedicated head slot. However, the profession still suffered from the 'Gimmick Problem'. \n\nOutside of the arena—where Rocket Boots and Grenades were absolute game-changers—engineering gadgets often fell into disuse in high-end PvE. Explosives didn't scale with stats, making them DPS losses on bosses. Target Dummies were instantly destroyed by raid-level mobs. The profession was fun, but it often felt like a toybox rather than a toolkit. You were the person who could make a robot squirrel, not the person who could turn the tide of a raid encounter.",
+        plus: "**The Vision for Plus:** \nWe have completely reimagined Engineering to embrace the fantasy of the 'Combat Gadgeteer'. An Engineer should be calculating, chaotic, and undeniably effective. \n\n1. **Ordnance that Matters:** We have introduced 'Scaling Ordnance'. Explosives like the *Rocket Launcher* and *Thermal Detonators* now scale with your Attack Power or Spell Power. This turns them from novelties into legitimate DPS cooldowns that rival class abilities during AoE phases.\n2. **Temporal & Spatial Manipulation:** Gnomish Engineers have unlocked the secrets of the Netherstorm. The *Chronal Displacer* brings 'Recall' mechanics (similar to Tracer/Ekko) into WoW, allowing for high-skill positional resets and damage mitigation in raids.\n3. **Battlefield Control:** Goblin Engineers focus on 'Area Denial'. The *Gravity Well* and *Holo-Projector* allow Engineers to function as utility supports, grouping up enemies or creating decoys to save healers from loose adds."
       },
       coreSystem: {
-        title: 'Schematic Iteration',
-        desc: 'Innovation requires failure. Crafting attempts now generate **"Eureka!"** moments—flashes of brilliance that grant temporary intelligence buffs or unlock fragments of lost schematics from the Netherstorm.\n\n**Overcharge:** Most gadgets can now be "Overcharged" via a toggle, doubling their effectiveness but risking a catastrophic malfunction that could stun the user or leak radiation.'
+        title: 'Schematic Iteration & Overcharge',
+        desc: 'Innovation requires failure. The path to perfection is paved with blown fuses and singed eyebrows.\n\n**Schematic Iteration:** Crafting attempts now generate **"Eureka!"** moments—flashes of brilliance that grant temporary intelligence buffs (e.g., "Brainstorm: +50 Int") or unlock fragments of lost schematics from the Netherstorm. Collecting enough fragments allows you to "Invent" new, random patterns without visiting a trainer.\n\n**The Overcharge Mechanic:** Most high-end gadgets now feature an **[Overcharge]** toggle in their tooltip. Activating this boosts the effect by 50-100% (e.g., Rocket Boots last twice as long), but introduces a **"Catastrophic Failure Chance"**. An overcharged failure might stun you, deal massive damage, or teleport you 100 feet in the air. Do you feel lucky?'
       },
       raidUtility: [
-        { name: 'Field Repair Bot 110G', quality: 'epic', type: 'Deployable', desc: 'Deploys a Field Repair Bot 110G. This rugged unit can repair armor and purchase unwanted items. Utilizing Gnomish efficiency, it remains active for 10 minutes before its fuel cell depletes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Authorized reseller.", effects: ["Use: Deploys a vendor/repair bot for 10 min. (1 Hour Cooldown)"] },
-        { name: 'Gnomish Gravity Well', quality: 'epic', type: 'Deployable', desc: 'Deploys an experimental gravity generator. It creates a localized distortion field that reduces the movement speed of all enemies within 15 yards by 60%. Warning: May cause nausea.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Creates a gravity well slowing enemies by 60% for 20 sec. (5 Min Cooldown)"] },
-        { name: 'Rocket Boots Xtreme Lite', quality: 'rare', type: 'Consumable', desc: 'Engages solid-fuel thrusters to increase movement speed by 300% for 5 seconds. This "Lite" version has reduced mass but retains the 10% chance of catastrophic fuel leak dealing Fire damage to the wearer.', ilvl: 115, slot: 'Feet', stats: '', flavor: "Void warranty if used indoors.", effects: ["Use: +300% Speed for 5 sec. 10% malfunction chance. (3 Min Cooldown)"] },
-        { name: 'Target Dummy MKII', quality: 'rare', type: 'Deployable', desc: 'Deploys an advanced mechanical decoy. This rugged dummy taunts all nearby enemies, forcing them to attack it for 10 seconds or until it is destroyed. Constructed with reinforced plating.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Hit me!", effects: ["Use: Taunts nearby enemies for 10 sec. (3 Min Cooldown)"] },
-        { name: 'Portable Mailbox', quality: 'rare', type: 'Deployable', desc: 'Deploys a MOLL-E (Mobile Otherspace Letter Launcher - Experimental) unit, allowing access to the mailbox for 5 minutes. The spacetime connection requires 1 hour to recharge.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "You've got mail.", effects: ["Use: Access mail for 5 min. (1 Hour Cooldown)"] },
-        { name: 'Goblin Jumper Cables XL', quality: 'rare', type: 'Trinket', desc: 'A set of heavy-duty jumper cables. Allows a skilled Engineer to shock a dead ally back to life with 30% health and mana. 50% success rate. Side effects include singing hair and mild tremors.', ilvl: 60, slot: 'Trinket', stats: '', flavor: "Clear!", effects: ["Use: 50% chance to resurrect ally. (10 Min Cooldown)"] },
-        { name: 'Holo-Projector', quality: 'uncommon', type: 'Deployable', desc: 'Projects a convincing holographic decoy at the target location. Enemies are distracted by the glimmering image for 5 seconds, reducing their detection range and aggression.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Look over there!", effects: ["Use: Distracts enemies for 5 sec. (2 Min Cooldown)"] }
+        { name: 'The "Big One" Rocket Launcher', quality: 'legendary', type: 'Range', desc: 'See Specializations.', ilvl: 164, icon: <img src="https://i.imgur.com/7suSoyA.jpeg" className="w-full h-full object-cover" alt="icon" /> }, // Placeholder for list view, actual data in spec
+        { name: 'Field Repair Bot 110G', quality: 'epic', type: 'Deployable', desc: 'Deploys a Field Repair Bot 110G. This rugged unit can repair armor and purchase unwanted items. Utilizing Gnomish efficiency, it remains active for 10 minutes before its fuel cell depletes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Authorized reseller.", effects: ["Use: Deploys a vendor/repair bot for 10 min. (1 Hour Cooldown)"], icon: <img src="https://i.imgur.com/AxFu3Fh.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Gnomish Gravity Well', quality: 'epic', type: 'Deployable', desc: 'Deploys an experimental gravity generator. It creates a localized distortion field that reduces the movement speed of all enemies within 15 yards by 60%. Warning: May cause nausea in gnomes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Creates a gravity well slowing enemies by 60% for 20 sec. (5 Min Cooldown)"], icon: <img src="https://i.imgur.com/tikCGSV.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Rocket Boots Xtreme Lite', quality: 'rare', type: 'Consumable', desc: 'Engages solid-fuel thrusters to increase movement speed by 300% for 5 seconds. This "Lite" version has reduced mass but retains the 10% chance of catastrophic fuel leak dealing Fire damage to the wearer.', ilvl: 115, slot: 'Feet', stats: '', flavor: "Void warranty if used indoors.", effects: ["Use: +300% Speed for 5 sec. 10% malfunction chance. (3 Min Cooldown)"], icon: <img src="https://i.imgur.com/uTlkQeP.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Target Dummy MKII', quality: 'rare', type: 'Deployable', desc: 'Deploys an advanced mechanical decoy. This rugged dummy taunts all nearby enemies, forcing them to attack it for 10 seconds or until it is destroyed. Constructed with reinforced adamantite plating.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Hit me!", effects: ["Use: Taunts nearby enemies for 10 sec. (3 Min Cooldown)"], icon: <img src="https://i.imgur.com/jsPvTBK.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Portable Mailbox', quality: 'rare', type: 'Deployable', desc: 'Deploys a MOLL-E (Mobile Otherspace Letter Launcher - Experimental) unit, allowing access to the mailbox for 5 minutes. The spacetime connection requires 1 hour to recharge.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "You've got mail.", effects: ["Use: Access mail for 5 min. (1 Hour Cooldown)"], icon: <img src="https://i.imgur.com/pYPawTo.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Goblin Jumper Cables XL', quality: 'rare', type: 'Trinket', desc: 'A set of heavy-duty jumper cables. Allows a skilled Engineer to shock a dead ally back to life with 30% health and mana. 50% success rate. Side effects include singing hair and mild tremors.', ilvl: 60, slot: 'Trinket', stats: '', flavor: "Clear!", effects: ["Use: 50% chance to resurrect ally. (10 Min Cooldown)"], icon: <img src="https://i.imgur.com/gcC5VMG.jpeg" className="w-full h-full object-cover" alt="icon" /> },
+        { name: 'Holo-Projector', quality: 'uncommon', type: 'Deployable', desc: 'Projects a convincing holographic decoy at the target location. Enemies are distracted by the glimmering image for 5 seconds, reducing their aggression radius and detection capabilities.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Look over there!", effects: ["Use: Distracts enemies for 5 sec. (2 Min Cooldown)"], icon: <img src="https://i.imgur.com/XGnfPKA.jpeg" className="w-full h-full object-cover" alt="icon" /> }
       ],
       specs: [
         {
           name: 'Goblin Engineering',
           title: 'Master of Explosives',
-          desc: 'Focus on destruction and rocketry.',
+          desc: 'Focus on destruction, rocketry, and mayhem.',
           legendary: {
             name: 'The "Big One" Rocket Launcher',
             quality: 'legendary',
@@ -440,13 +487,25 @@ const TheArtisansCodex = () => {
             dps: '146.6',
             stats: '+25 Agility',
             effects: ['Equip: Increases attack power by 40.', 'Use: Fire a tactical nuke at the target area. Deals 3000 to 4000 Fire damage to all enemies in 10 yds. (10 Min Cooldown)'],
-            flavor: "If brute force doesn't work, you aren't using enough."
+            flavor: "If brute force doesn't work, you aren't using enough.",
+            icon: <img src="https://i.imgur.com/7suSoyA.jpeg" className="w-full h-full object-cover" alt="icon" />,
+            questline: {
+              title: "The Boomstick Protocols",
+              description: "To build the ultimate weapon, you must gather the most volatile substances in Outland and convince the goblins of Area 52 that you aren't going to blow up the entire Netherstorm... well, probably not.",
+              steps: [
+                { name: "Volatile Collection", desc: "Collect 20 Primal Fire and 10 Fel Iron Casings." },
+                { name: "Blueprint Heist", desc: "Infiltrate the Mechanar and steal the 'Sunfury Ballistics Data'." },
+                { name: "Consulting Nixx", desc: "Bring the data to Nixx Sprocketspring in Gadgetzan for decoding." },
+                { name: "The Uranium Core", desc: "Obtain a Depleted Uranium Core from the final boss of The Arcatraz." },
+                { name: "Test Fire", desc: "Travel to Shadowmoon Valley and test the weapon on a Fel Reaver." }
+              ]
+            }
           }
         },
         {
           name: 'Gnomish Engineering',
           title: 'Gadgeteer',
-          desc: 'Focus on utility and devices.',
+          desc: 'Focus on utility, devices, and defying physics.',
           legendary: {
             name: 'Chronal Displacer',
             quality: 'legendary',
@@ -455,13 +514,24 @@ const TheArtisansCodex = () => {
             unique: true,
             stats: '+50 Intellect',
             effects: ['Equip: Engineering cooldowns reduced by 20%.', 'Use: Rewind time 4 seconds, restoring your Health and Mana to their previous values. (5 Min Cooldown)'],
-            flavor: "Did that just happen? Or did it un-happen?"
+            flavor: "Did that just happen? Or did it un-happen?",
+            icon: <img src="https://i.imgur.com/hne8n9Q.jpeg" className="w-full h-full object-cover" alt="icon" />,
+            questline: {
+              title: "A Stitch in Time",
+              description: "The Gnomes have discovered a way to manipulate the timeline, but they need a stabilizer to prevent the user from being erased from existence. Simple, right?",
+              steps: [
+                { name: "Temporal Anomalies", desc: "Collect 10 Chronal Sands from the Caverns of Time." },
+                { name: "The Bronze Binding", desc: "Obtain a Bronze Dragonflight Scale from the Keepers of Time." },
+                { name: "Paradox Stability", desc: "Construct a 'Flux Capacitor' using Khorium and Primal Mana." },
+                { name: "The Test Run", desc: "Use the prototype in the Eco-Dome and survive the temporal backlash." }
+              ]
+            }
           }
         },
         {
           name: 'Aether-Tech',
           title: 'Energy Manipulation',
-          desc: 'Focus on shielding and energy fields.',
+          desc: 'Focus on shielding, energy fields, and techno-mancy.',
           legendary: {
             name: 'Cognition-Enhancing Goggles v3.0',
             quality: 'legendary',
@@ -472,7 +542,18 @@ const TheArtisansCodex = () => {
             armor: '200',
             stats: '+50 Stamina\n+50 Intellect',
             effects: ['Equip: Slightly increases stealth detection.', 'Use: Project a Personal Force Field absorbing 5000 damage. Lasts 30 sec. (3 Min Cooldown)'],
-            flavor: "I can see... everything."
+            flavor: "I can see... everything.",
+            icon: <img src="https://i.imgur.com/2HcXIoa.jpeg" className="w-full h-full object-cover" alt="icon" />,
+            questline: {
+              title: "Sight Beyond Sight",
+              description: "To see the flow of magic itself, one must construct a set of lenses ground from the rarest gems and infused with the essence of the Nether.",
+              steps: [
+                { name: "Prismatic Lenses", desc: "Craft 2 Prismatic Lenses using Deep Peridot and Shadow Draenite." },
+                { name: "Nether Infusion", desc: "Absorb raw energy from the Manaforges in Netherstorm." },
+                { name: "The Frame", desc: "Forge a lightweight Felsteel frame at the Elemental Forge." },
+                { name: "Calibration", desc: "Calibrate the goggles by observing the Void energies of Dimensius." }
+              ]
+            }
           }
         }
       ]
