@@ -100,32 +100,42 @@ const TheArtisansCodex = () => {
   const QuestlineCard = ({ questline }) => {
     if (!questline) return null;
     return (
-      <div className="bg-[#0b0d10] border border-[#c29c55] rounded-[4px] p-6 shadow-2xl max-w-[400px] w-full text-[#e0e0e0] font-body relative ml-4 animate-in slide-in-from-left duration-300">
-        <h4 className="font-hero text-[#c29c55] text-lg border-b border-[#c29c55]/30 pb-2 mb-4">
+      <div className="bg-[#0b0d10] border border-[#c29c55] rounded-[4px] p-6 shadow-2xl max-w-[400px] w-full text-[#e0e0e0] font-body relative ml-4 animate-in slide-in-from-left duration-300 h-[600px] overflow-y-auto custom-scrollbar">
+        <h4 className="font-hero text-[#c29c55] text-lg border-b border-[#c29c55]/30 pb-2 mb-4 sticky top-0 bg-[#0b0d10] z-20">
           <span className="text-xs text-[#8a7b62] block uppercase tracking-widest mb-1">Acquisition Chain</span>
           {questline.title}
         </h4>
         <p className="text-xs text-[#aeb6bf] italic mb-6 leading-relaxed">"{questline.description}"</p>
 
-        <div className="space-y-4 relative">
+        <div className="space-y-2 relative">
           {/* Vertical Line */}
           <div className="absolute left-[11px] top-2 bottom-4 w-[1px] bg-[#2f2f35]"></div>
 
           {questline.steps.map((step, i) => (
-            <div key={i} className="relative flex gap-4">
-              <div className="z-10 w-6 h-6 rounded-full bg-[#1a1c22] border border-[#c29c55] flex items-center justify-center text-[10px] text-[#c29c55] font-bold shadow-md shrink-0">
-                {i + 1}
+            <React.Fragment key={i}>
+              {step.phase && (
+                <div className="relative z-10 mt-6 mb-2">
+                  <span className="text-[10px] text-[#ff8000] font-bold uppercase tracking-widest bg-[#0b0d10] py-1 px-2 border border-[#ff8000]/30 rounded">
+                    {step.phase}
+                  </span>
+                </div>
+              )}
+              <div className="relative flex gap-4 group">
+                <div className={`z-10 w-6 h-6 rounded-full border flex items-center justify-center text-[10px] font-bold shadow-md shrink-0 transition-colors ${step.isRaid ? 'bg-[#2a0f0f] border-red-500 text-red-500' : 'bg-[#1a1c22] border-[#c29c55] text-[#c29c55]'}`}>
+                  {i + 1}
+                </div>
+                <div className="pb-2">
+                  <h5 className={`text-sm font-bold ${step.isRaid ? 'text-red-400' : 'text-[#f0e6d2]'}`}>{step.name}</h5>
+                  <p className="text-xs text-[#8a7b62] leading-snug group-hover:text-[#aeb6bf] transition-colors">{step.desc}</p>
+                  {step.reward && <p className="text-[10px] text-[#1eff00] mt-1">Reward: {step.reward}</p>}
+                </div>
               </div>
-              <div className="pb-2">
-                <h5 className="text-sm font-bold text-[#f0e6d2]">{step.name}</h5>
-                <p className="text-xs text-[#8a7b62] leading-snug">{step.desc}</p>
-              </div>
-            </div>
+            </React.Fragment>
           ))}
         </div>
 
-        <div className="mt-6 pt-4 border-t border-[#c29c55]/30 text-center">
-          <span className="text-[10px] text-[#c29c55] uppercase tracking-widest">Mastercraft Reward</span>
+        <div className="mt-6 pt-4 border-t border-[#c29c55]/30 text-center sticky bottom-0 bg-[#0b0d10] py-2">
+          <span className="text-[10px] text-[#ff8000] uppercase tracking-widest shadow-[0_0_10px_#ff8000] animate-pulse">Legendary Mastercraft</span>
         </div>
       </div>
     );
@@ -461,7 +471,6 @@ const TheArtisansCodex = () => {
         desc: 'Innovation requires failure. The path to perfection is paved with blown fuses and singed eyebrows.\n\n**Schematic Iteration:** Crafting attempts now generate **"Eureka!"** moments—flashes of brilliance that grant temporary intelligence buffs (e.g., "Brainstorm: +50 Int") or unlock fragments of lost schematics from the Netherstorm. Collecting enough fragments allows you to "Invent" new, random patterns without visiting a trainer.\n\n**The Overcharge Mechanic:** Most high-end gadgets now feature an **[Overcharge]** toggle in their tooltip. Activating this boosts the effect by 50-100% (e.g., Rocket Boots last twice as long), but introduces a **"Catastrophic Failure Chance"**. An overcharged failure might stun you, deal massive damage, or teleport you 100 feet in the air. Do you feel lucky?'
       },
       raidUtility: [
-        { name: 'The "Big One" Rocket Launcher', quality: 'legendary', type: 'Range', desc: 'See Specializations.', ilvl: 164, icon: <img src="https://i.imgur.com/7suSoyA.jpeg" className="w-full h-full object-cover" alt="icon" /> }, // Placeholder for list view, actual data in spec
         { name: 'Field Repair Bot 110G', quality: 'epic', type: 'Deployable', desc: 'Deploys a Field Repair Bot 110G. This rugged unit can repair armor and purchase unwanted items. Utilizing Gnomish efficiency, it remains active for 10 minutes before its fuel cell depletes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Authorized reseller.", effects: ["Use: Deploys a vendor/repair bot for 10 min. (1 Hour Cooldown)"], icon: <img src="https://i.imgur.com/AxFu3Fh.jpeg" className="w-full h-full object-cover" alt="icon" /> },
         { name: 'Gnomish Gravity Well', quality: 'epic', type: 'Deployable', desc: 'Deploys an experimental gravity generator. It creates a localized distortion field that reduces the movement speed of all enemies within 15 yards by 60%. Warning: May cause nausea in gnomes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Creates a gravity well slowing enemies by 60% for 20 sec. (5 Min Cooldown)"], icon: <img src="https://i.imgur.com/tikCGSV.jpeg" className="w-full h-full object-cover" alt="icon" /> },
         { name: 'Rocket Boots Xtreme Lite', quality: 'rare', type: 'Consumable', desc: 'Engages solid-fuel thrusters to increase movement speed by 300% for 5 seconds. This "Lite" version has reduced mass but retains the 10% chance of catastrophic fuel leak dealing Fire damage to the wearer.', ilvl: 115, slot: 'Feet', stats: '', flavor: "Void warranty if used indoors.", effects: ["Use: +300% Speed for 5 sec. 10% malfunction chance. (3 Min Cooldown)"], icon: <img src="https://i.imgur.com/uTlkQeP.jpeg" className="w-full h-full object-cover" alt="icon" /> },
@@ -491,13 +500,32 @@ const TheArtisansCodex = () => {
             icon: <img src="https://i.imgur.com/7suSoyA.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
               title: "The Boomstick Protocols",
-              description: "To build the ultimate weapon, you must gather the most volatile substances in Outland and convince the goblins of Area 52 that you aren't going to blow up the entire Netherstorm... well, probably not.",
+              description: "A weapon this destructive was never meant to exist. You'll have to steal the plans, forge the barrel in hellfire, and power it with the entropy of the Legion itself.",
               steps: [
-                { name: "Volatile Collection", desc: "Collect 20 Primal Fire and 10 Fel Iron Casings." },
-                { name: "Blueprint Heist", desc: "Infiltrate the Mechanar and steal the 'Sunfury Ballistics Data'." },
-                { name: "Consulting Nixx", desc: "Bring the data to Nixx Sprocketspring in Gadgetzan for decoding." },
-                { name: "The Uranium Core", desc: "Obtain a Depleted Uranium Core from the final boss of The Arcatraz." },
-                { name: "Test Fire", desc: "Travel to Shadowmoon Valley and test the weapon on a Fel Reaver." }
+                // PHASE 1: TITAN-FORGED PROTOTYPE (T4)
+                { phase: "Phase 1: The Prototype", name: "Volatile Beginnings", desc: "Collect 20 Primal Fire and 10 Fel Iron Casings to demonstrate your commitment to chaos." },
+                { name: "The Sunfury Data", desc: "Infiltrate the Mechanar and steal the encrypted 'Sunfury Ballistics Data' from Pathaleon's desk." },
+                { name: "Raid: Prince Malchezaar", desc: "Retrieve the 'Void-Warped Firing Pin' from Prince Malchezaar in Karazhan.", isRaid: true },
+                { name: "Assembly: The MK-I", desc: "Forge the 'Unstable Rocket Launcher' at the Anvil of Area 52.", reward: "Rocket Launcher MK-I (Rare)" },
+
+                // PHASE 2: FEL-INFUSED UPGRADE (T5)
+                { phase: "Phase 2: Fel Infusion", name: "The Reaver's Plating", desc: "Harvest 'Fel-Hardened Plating' from the Fel Reaver in Hellfire Peninsula. You'll need a bigger wrench." },
+                { name: "Raid: Void Reaver", desc: "Obtain the 'Arcane Core Stabilizer' from the Void Reaver in The Eye.", isRaid: true },
+                { name: "Raid: Fathom-Lord Karathress", desc: "Recover the 'Hydro-cooled Venting System' from Karathress in SSC.", isRaid: true },
+                { name: "Engineering: Overclock", desc: "Use 10 Primal Nethers to overclock the firing mechanism.", reward: "Rocket Launcher MK-II (Epic)" },
+
+                // PHASE 3: THE HYJAL PAYLOAD (T6)
+                { phase: "Phase 3: The Big One", name: "Demonic Entropy", desc: "Collect 20 'Motes of Entropy' from demons in Shadowmoon Valley." },
+                { name: "Raid: Rage Winterchill", desc: " Loot the 'Phylactery of Absolute Zero' from Rage Winterchill in Hyjal to cool the barrel.", isRaid: true },
+                { name: "Raid: Teron Gorefiend", desc: "Capture the 'Soul-Screaming Trigger' from Teron Gorefiend in the Black Temple.", isRaid: true },
+                { name: "Legacy of the Illidari", desc: "Present the weapon to Nixx Sprocketspring. He's terrified.", reward: "The 'Big One' (T6 Epic)" },
+
+                // PHASE 4: SUNWELL ASCENSION (SWP)
+                { phase: "Phase 4: Worldbreaker", name: "Sunwell Energies", desc: "Collect 'Sunmotes' from the Sunwell Plateau trash." },
+                { name: "Raid: Felmyst", desc: "Obtain 'Dragonfire propellant' from Felmyst.", isRaid: true },
+                { name: "Raid: The Eredar Twins", desc: "Loot the 'Entropy Converter' from the Eredar Twins.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Infuse the weapon in the Sunwell itself after Kil'jaeden's defeat.", isRaid: true },
+                { name: "The Final Calibration", desc: "The weapon is ready. Try not to destroy the planet." }
               ]
             }
           }
@@ -518,12 +546,31 @@ const TheArtisansCodex = () => {
             icon: <img src="https://i.imgur.com/hne8n9Q.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
               title: "A Stitch in Time",
-              description: "The Gnomes have discovered a way to manipulate the timeline, but they need a stabilizer to prevent the user from being erased from existence. Simple, right?",
+              description: "Time is a tangled web. You intend to build a pair of scissors. The Bronze Dragonflight might object, but that's a problem for future you.",
               steps: [
-                { name: "Temporal Anomalies", desc: "Collect 10 Chronal Sands from the Caverns of Time." },
-                { name: "The Bronze Binding", desc: "Obtain a Bronze Dragonflight Scale from the Keepers of Time." },
-                { name: "Paradox Stability", desc: "Construct a 'Flux Capacitor' using Khorium and Primal Mana." },
-                { name: "The Test Run", desc: "Use the prototype in the Eco-Dome and survive the temporal backlash." }
+                // PHASE 1: TEMPORAL ANCHOR (T4)
+                { phase: "Phase 1: The Anchor", name: "Sands of the Hourglass", desc: "Collect 20 Chronal Sands from the Caverns of Time dungeons." },
+                { name: "Raid: Moroes", desc: "Steal the 'Pocket Watch of the Castellan' from Moroes in Karazhan.", isRaid: true },
+                { name: "Raid: Gruul the Dragonkiller", desc: "Obtain a 'Gronn-Scale Binding' to hold the device together.", isRaid: true },
+                { name: "Calibration", desc: "Calibrate the device in the entry tunnel of the Dark Portal.", reward: "Portable Time-Skip (Rare)" },
+
+                // PHASE 2: CAUSALITY BREAKER (T5)
+                { phase: "Phase 2: Causality", name: "Nether-Warped Metal", desc: "Mine 50 Adamantite Ore from the twisting nether areas of Netherstorm." },
+                { name: "Raid: Kael'thas Sunstrider", desc: "Loot the 'Gravity-Well Engine' from Kael'thas in The Eye.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Recover the 'Deep-Sea Pressure Valve' to prevent implosion.", isRaid: true },
+                { name: "Stabilization", desc: "Use Primal Water to cool the chronal circuits.", reward: "Stable Chronal Displacer (Epic)" },
+
+                // PHASE 3: INFINITE LOOPS (T6)
+                { phase: "Phase 3: Infinity", name: "Anachronistic Scrap", desc: "Find parts that haven't been invented yet in the Black Temple." },
+                { name: "Raid: Archimonde", desc: "Capture a 'Fragment of the World Tree's History' during the Hyjal Summit.", isRaid: true },
+                { name: "Raid: Reliquary of Souls", desc: "Obtain the 'Essence of Desire' to fuel the device's intent.", isRaid: true },
+                { name: "The Paradox", desc: "Resolve the grandfather paradox you accidentally created.", reward: "Advanced Chronal Unit (T6 Epic)" },
+
+                // PHASE 4: TIME LORD (SWP)
+                { phase: "Phase 4: Time Lord", name: "Sunwell's Light", desc: "Infuse the device with the purified energy of the Sunwell." },
+                { name: "Raid: M'uru", desc: "Absorb the 'Void-Light Singularity' from M'uru's remains.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Steal a moment of time from the Deceiver himself.", isRaid: true },
+                { name: "The Omega Point", desc: "The device is complete. History is yours to rewrite." }
               ]
             }
           }
@@ -546,12 +593,31 @@ const TheArtisansCodex = () => {
             icon: <img src="https://i.imgur.com/2HcXIoa.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
               title: "Sight Beyond Sight",
-              description: "To see the flow of magic itself, one must construct a set of lenses ground from the rarest gems and infused with the essence of the Nether.",
+              description: "To see the flow of magic is to understand the universe. You are building not just goggles, but a window into the soul of reality.",
               steps: [
-                { name: "Prismatic Lenses", desc: "Craft 2 Prismatic Lenses using Deep Peridot and Shadow Draenite." },
-                { name: "Nether Infusion", desc: "Absorb raw energy from the Manaforges in Netherstorm." },
-                { name: "The Frame", desc: "Forge a lightweight Felsteel frame at the Elemental Forge." },
-                { name: "Calibration", desc: "Calibrate the goggles by observing the Void energies of Dimensius." }
+                // PHASE 1: PRISMATIC LENSES (T4)
+                { phase: "Phase 1: Clarity", name: "Deep Gems", desc: "Cut 2 perfect Deep Peridots and Shadow Draenite for the lenses." },
+                { name: "Raid: Shade of Aran", desc: "Obtain the 'Spectacles of the Archmage' from the Shade of Aran.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Extract 'Pit Lord's Retinas' for darkvision. Gross.", isRaid: true },
+                { name: "The Frame", desc: "Forge a Felsteel Frame to hold the lenses.", reward: "Aether-Goggles MK-I (Rare)" },
+
+                // PHASE 2: NETHER SIGHT (T5)
+                { phase: "Phase 2: The Void", name: "Manaforge Absorption", desc: "Absorb raw arcane energy from all 4 Manaforges in Netherstorm." },
+                { name: "Raid: Solarian", desc: "Loot the 'Star-Chart Overlay' from High Astromancer Solarian.", isRaid: true },
+                { name: "Raid: Leotheras the Blind", desc: "Take the 'Demon Hunter's Blindfold' for spectral sight.", isRaid: true },
+                { name: "Integration", desc: "Calibrate the lenses to filter out Fel radiation.", reward: "Cognition Goggles v2.0 (Epic)" },
+
+                // PHASE 3: ILLIDARI VISION (T6)
+                { phase: "Phase 3: True Sight", name: "Shadowmoon Ritual", desc: "Observe the Spectre of Gurtogg Bloodboil to learn heat signatures." },
+                { name: "Raid: Illidan Stormrage", desc: "This is it. You need the 'Skull of Gul'dan's Resonance' (Note: Not the item, just the aura).", isRaid: true },
+                { name: "Raid: Mother Shahraz", desc: "Obtain 'Prismatic Scales' to reflect gaze attacks.", isRaid: true },
+                { name: "Third Eye", desc: "Open your third eye. Metaphorically. Mostly.", reward: "Master's Goggles (T6 Epic)" },
+
+                // PHASE 4: OMNISCIENCE (SWP)
+                { phase: "Phase 4: Omniscience", name: "Light of the Sun", desc: "Polish the lenses with dust from the Sunwell." },
+                { name: "Raid: Brutallus", desc: "Analyze the 'Broken Will' of the Pit Lord.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Stare into the Deceiver's eyes and do not blink.", isRaid: true },
+                { name: "The v3.0 Upgrade", desc: "You can see forever. It's beautiful." }
               ]
             }
           }
