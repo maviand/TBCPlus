@@ -1544,7 +1544,36 @@ const TheArtisansCodex = () => {
         dps: '83.3',
         stats: '+50 Fishing Skill',
         effects: ['Equip: Water Walking.', 'Use: Cast "Recall", teleporting you to your hearthstone location. (30 Min Cooldown)'],
-        flavor: "Wait for it..."
+        flavor: "Wait for it...",
+        questline: {
+          title: "The One That Didn't Get Away",
+          description: "Legends speak of a Leviathan that lurks beneath the Netherstorm. To catch it, you need more than a rod. You need an artifact.",
+          steps: [
+            // PHASE 1: THE LINE (T4)
+            { phase: "Phase 1: The Line", name: "Terokkar Spiders", desc: "Harvest 'Iron-Silk Webbing' from the giant spiders of Terokkar." },
+            { name: "Raid: Attumen", desc: "The hair of Midnight is the only material strong enough for the core.", isRaid: true },
+            { name: "Raid: Moroes", desc: "Steal 'Ghostly Wire' from the Castellan's pocket.", isRaid: true },
+            { name: "Spinning", desc: "Weave the line in the moonlight of Zangarmarsh.", reward: "Iron-Silk Line (Rare)" },
+
+            // PHASE 2: THE LURE (T5)
+            { phase: "Phase 2: The Lure", name: "Coilfang Reservoir", desc: "The Naga know the secrets of the deep." },
+            { name: "Raid: Hydross", desc: "A 'Drop of Pure Water' to mask the lure.", isRaid: true },
+            { name: "Raid: Vashj", desc: "The 'Eye of the Storm' from Vashj attracts all attention.", isRaid: true },
+            { name: "Crafting", desc: "The lure glows with an irresistible light.", reward: "Hypnotic Lure (Epic)" },
+
+            // PHASE 3: THE HOOK (T6)
+            { phase: "Phase 3: The Hook", name: "Hyjal", desc: "The World Tree's roots drink deep." },
+            { name: "Raid: Archimonde", desc: "A shard of the World Tree makes the perfect bobber.", isRaid: true },
+            { name: "Raid: Illidan", desc: "The 'Betrayer's Barb'. Cruel and sharp.", isRaid: true },
+            { name: "Forging", desc: "The hook can catch a soul.", reward: "Nat Pagle's Master Angler's Rod (T6 Epic)" },
+
+            // PHASE 4: THE CATCH (SWP)
+            { phase: "Phase 4: The Catch", name: "Sunwell", desc: "The Golden Carp of the Sunwell." },
+            { name: "Raid: M'uru", desc: "Purify the rod in the Void.", isRaid: true },
+            { name: "Raid: Kil'jaeden", desc: "Cast your line into the burning font.", isRaid: true },
+            { name: "Master Angler", desc: "You have completed the Codex." }
+          ]
+        }
       },
       specs: [
         { name: 'Angler', title: 'Pool Master', desc: '**Perk:** "Net Casting" catches 5-10 fish instantly.' },
@@ -1580,7 +1609,36 @@ const TheArtisansCodex = () => {
         unique: true,
         stats: '+65 Spirit',
         effects: ['Equip: Increases the healing of your bandages by 30%.', 'Use: "Hippocratic Oath" - Prevents death from damage that would normally kill you, instead restoring you to 20% HP. (5 Min Cooldown)'],
-        flavor: "Do no harm."
+        flavor: "Do no harm.",
+        questline: {
+          title: "The Universal Cure",
+          description: "Disease, poison, curse, bleed. All are enemies of life. You seek to create an artifact that can purge any ailment, a brooch that pulses with the heartbeat of the world.",
+          steps: [
+            // PHASE 1: ANATOMY (T4)
+            { phase: "Phase 1: Anatomy", name: "Gruul's Lair", desc: "Study the regenerative blood of the Gronn." },
+            { name: "Raid: Maulgar", desc: "Collect 'Ogre Anatomy Charts' from the High King.", isRaid: true },
+            { name: "Raid: Maiden", desc: "The Maiden of Virtue is made of pure light. Chip a piece off.", isRaid: true },
+            { name: "Study", desc: "Compile your notes into a medical journal.", reward: "Medic's Journal (Rare)" },
+
+            // PHASE 2: ANTIDOTES (T5)
+            { phase: "Phase 2: Antidotes", name: "Serpentshrine", desc: "The most potent poisons are here." },
+            { name: "Raid: Hydross", desc: "Purify 'Corrupted Water' to create a base for the antidote.", isRaid: true },
+            { name: "Raid: Vashj", desc: "Harvest 'Naga Venom' to create an anti-venom.", isRaid: true },
+            { name: "Synthesis", desc: "Brew the Panacea in an alchemy lab.", reward: "Vial of Panacea (Epic)" },
+
+            // PHASE 3: SOUL MENDING (T6)
+            { phase: "Phase 3: Soul Mending", name: "Hyjal", desc: "The soul needs healing too." },
+            { name: "Raid: Archimonde", desc: "His 'Finger of Death' kills instantly. Reverse-engineer it.", isRaid: true },
+            { name: "Raid: Illidan", desc: "Heal the 'Wound of the Betrayer'.", isRaid: true },
+            { name: "Enchanting", desc: "Bind the Panacea to a gem.", reward: "The First-Ponder's Brooch (T6 Epic)" },
+
+            // PHASE 4: THE OATH (SWP)
+            { phase: "Phase 4: The Oath", name: "Sunwell", desc: "The Light burns." },
+            { name: "Raid: Twins", desc: "Harmony and Discord. Balance them.", isRaid: true },
+            { name: "Raid: Kil'jaeden", desc: "Heal the world.", isRaid: true },
+            { name: "Doctor", desc: "You have sworn the oath." }
+          ]
+        }
       },
       specs: [
         { name: 'Field Medic', title: 'The Lifesaver', desc: '**Perk:** "Stabilize" puts a dead ally in stasis.' },
@@ -1616,7 +1674,36 @@ const TheArtisansCodex = () => {
         unique: true,
         stats: '+40 All Stats',
         effects: ['Use: "Taste of Argus" - Increases all primary stats by 5% for 15 sec. Acts as a food buff override. (10 Min Cooldown)'],
-        flavor: "A dash of magic."
+        flavor: "A dash of magic.",
+        questline: {
+          title: "The Lost Recipes",
+          description: "Food is memory. You are searching for the lost cookbook of the Titans, a tome said to contain recipes that can feed the soul.",
+          steps: [
+            // PHASE 1: THE HEAT (T4)
+            { phase: "Phase 1: The Heat", name: "Karazhan Kitchens", desc: "The ghostly chefs of Karazhan know the secrets." },
+            { name: "Raid: Nightbane", desc: "Collect 'Ever-Burning Coals' to fuel your stove.", isRaid: true },
+            { name: "Raid: Gruul", desc: "Tenderize 'Gronn Steak'. It takes a raid group to lift it.", isRaid: true },
+            { name: "Cooking", desc: "Prepare a meal for the beggars of Shattrath.", reward: "Iron Chef's Apron (Rare)" },
+
+            // PHASE 2: THE SPICE (T5)
+            { phase: "Phase 2: The Spice", name: "Netherstorm", desc: "The spices here are out of this world." },
+            { name: "Raid: Void Reaver", desc: "Harvest 'Nether-Salt' from the static discharge.", isRaid: true },
+            { name: "Raid: Kael'thas", desc: "The Phoenix Egg Omelet. A dish for kings.", isRaid: true },
+            { name: "Tasting", desc: "It burns... in a good way.", reward: "Spice-Infused Spoon (Epic)" },
+
+            // PHASE 3: THE MEAT (T6)
+            { phase: "Phase 3: The Meat", name: "Hyjal", desc: "Ancient beasts have the best flavor." },
+            { name: "Raid: Archimonde", desc: "Use the 'World Tree's Syrup' as a glaze.", isRaid: true },
+            { name: "Raid: Illidan", desc: "Illidan was prepared. Are you?", isRaid: true },
+            { name: "Feast", desc: "Feed the troops before the final battle.", reward: "The High Chef's Spoon (T6 Epic)" },
+
+            // PHASE 4: DIVINE TASTE (SWP)
+            { phase: "Phase 4: Divine Taste", name: "Sunwell", desc: "The ultimate oven." },
+            { name: "Raid: Twins", desc: "Sugar and Spice.", isRaid: true },
+            { name: "Raid: Kil'jaeden", desc: "The Last Supper.", isRaid: true },
+            { name: "Chef de Cuisine", desc: "Bon appétit." }
+          ]
+        }
       },
       specs: [
         { name: 'Gourmand', title: 'Master of the Feast', desc: '**Perk:** "The Grand Buffet" allows creation of choice feasts.' },
