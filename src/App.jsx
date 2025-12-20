@@ -34,6 +34,7 @@ import Legendaries from './components/Legendaries';
 import Lore from './components/Lore';
 import TheTheaterOfWar from './components/TheTheaterOfWar';
 import TheArmory from './components/TheArmory';
+import TheVanguard from './components/TheVanguard';
 import Home from './components/Home';
 
 
@@ -45,6 +46,7 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
     { id: 'races', label: 'Races' },
     { id: 'armory', label: 'Armory' },
     { id: 'pvp', label: 'PvP' },
+    { id: 'raids', label: 'Raids' },
     { id: 'professions', label: 'Professions' },
     { id: 'content', label: 'Content' },
     { id: 'systems', label: 'Systems' },
@@ -191,6 +193,7 @@ const App = () => {
         {activePage === 'races' && <TheNewBlood />}
         {activePage === 'armory' && <TheArmory />}
         {activePage === 'pvp' && <TheTheaterOfWar />}
+        {activePage === 'raids' && <TheVanguard />}
         {activePage === 'professions' && <TheArtisansCodex />}
         {activePage === 'content' && <TheAtlasOfOutland />}
         {activePage === 'systems' && <FelForgedVanguard />}
