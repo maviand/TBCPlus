@@ -500,32 +500,36 @@ const TheArtisansCodex = () => {
             icon: <img src="https://i.imgur.com/7suSoyA.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
               title: "The Boomstick Protocols",
-              description: "A weapon this destructive was never meant to exist. You'll have to steal the plans, forge the barrel in hellfire, and power it with the entropy of the Legion itself.",
+              description: "A weapon this destructive isn't 'found'—it's forged in hellfire. You must gather volatile materials, harvest components from defeated constructs, and physically assemble the barrel.",
               steps: [
                 // PHASE 1: TITAN-FORGED PROTOTYPE (T4)
-                { phase: "Phase 1: The Prototype", name: "Volatile Beginnings", desc: "Collect 20 Primal Fire and 10 Fel Iron Casings to demonstrate your commitment to chaos." },
-                { name: "The Sunfury Data", desc: "Infiltrate the Mechanar and steal the encrypted 'Sunfury Ballistics Data' from Pathaleon's desk." },
-                { name: "Raid: Prince Malchezaar", desc: "Retrieve the 'Void-Warped Firing Pin' from Prince Malchezaar in Karazhan.", isRaid: true },
-                { name: "Assembly: The MK-I", desc: "Forge the 'Unstable Rocket Launcher' at the Anvil of Area 52.", reward: "Rocket Launcher MK-I (Rare)" },
+                { phase: "Phase 1: The Prototype", name: "Experimental Chassis", desc: "Forge the 'Unstable Barrel' using 20x Adamantite Bars and 10x Fel Iron Bolts." },
+                { name: "Volatile Fuel Mixing", desc: "Synthesize 'Liquid Hellfire' by combining 10x Primal Fire with Sulphuron charges." },
+                { name: "The Sunfury Data", desc: "Use your 'Gnomish Decoder Ring' to decrypt the ballistics data on Pathaleon's desk in The Mechanar." },
+                { name: "Raid: Malchezaar's Pin", desc: "Extract the 'Void-Warped Firing Pin' from Prince Malchezaar using a Micro-Adjuster.", isRaid: true },
+                { name: "Assembly: The MK-I", desc: "Calibrate the assembly at the Area 52 Anvil. Don't explode.", reward: "Rocket Launcher MK-I (Rare)" },
 
                 // PHASE 2: FEL-INFUSED UPGRADE (T5)
-                { phase: "Phase 2: Fel Infusion", name: "The Reaver's Plating", desc: "Harvest 'Fel-Hardened Plating' from the Fel Reaver in Hellfire Peninsula. You'll need a bigger wrench." },
-                { name: "Raid: Void Reaver", desc: "Obtain the 'Arcane Core Stabilizer' from the Void Reaver in The Eye.", isRaid: true },
-                { name: "Raid: Fathom-Lord Karathress", desc: "Recover the 'Hydro-cooled Venting System' from Karathress in SSC.", isRaid: true },
-                { name: "Engineering: Overclock", desc: "Use 10 Primal Nethers to overclock the firing mechanism.", reward: "Rocket Launcher MK-II (Epic)" },
+                { phase: "Phase 2: Fel Infusion", name: "Field Test: Fel Reavers", desc: "Test fire the MK-I on 5 Fel Reavers in HFP. Collect the 'Combat Telemetry'." },
+                { name: "Raid: Void Reaver Engine", desc: "Harvest the 'Fel-Engine Core' from the wreckage of the Void Reaver in The Eye.", isRaid: true },
+                { name: "Raid: Coolant System", desc: "Siphon 'Hydraulic Fluid' from Fathom-Lord Karathress's suit in SSC.", isRaid: true },
+                { name: "Engineering: Overclock", desc: "Install 4x Primal Nethers and a Khorium Scope to stable the core.", reward: "Rocket Launcher MK-II (Epic)" },
+                { name: "Safety Check", desc: "The safety check failed. You removed the safety. It slows down the reload time." },
 
                 // PHASE 3: THE HYJAL PAYLOAD (T6)
-                { phase: "Phase 3: The Big One", name: "Demonic Entropy", desc: "Collect 20 'Motes of Entropy' from demons in Shadowmoon Valley." },
-                { name: "Raid: Rage Winterchill", desc: " Loot the 'Phylactery of Absolute Zero' from Rage Winterchill in Hyjal to cool the barrel.", isRaid: true },
-                { name: "Raid: Teron Gorefiend", desc: "Capture the 'Soul-Screaming Trigger' from Teron Gorefiend in the Black Temple.", isRaid: true },
-                { name: "Legacy of the Illidari", desc: "Present the weapon to Nixx Sprocketspring. He's terrified.", reward: "The 'Big One' (T6 Epic)" },
+                { phase: "Phase 3: The Big One", name: "Entropic Harvesting", desc: "Use an 'Ether-Vacuum' to collect Entropic Residue from demons in Shadowmoon Valley." },
+                { name: "Raid: Thermal Stress Test", desc: "Survive Rage Winterchill's 'Death & Decay' while holding the barrel to temper the metal.", isRaid: true },
+                { name: "Raid: The Trigger", desc: "Extract the 'Soul-Screaming Trigger' from Teron Gorefiend's corpse.", isRaid: true },
+                { name: "Illidari Infusion", desc: "Dip the finished barrel into the fel-lava pools of Shadowmoon Valley." },
+                { name: "Presentation", desc: "Show the weapon to Nixx Sprocketspring. He faints.", reward: "The 'Big One' (T6 Epic)" },
 
                 // PHASE 4: SUNWELL ASCENSION (SWP)
-                { phase: "Phase 4: Worldbreaker", name: "Sunwell Energies", desc: "Collect 'Sunmotes' from the Sunwell Plateau trash." },
-                { name: "Raid: Felmyst", desc: "Obtain 'Dragonfire propellant' from Felmyst.", isRaid: true },
-                { name: "Raid: The Eredar Twins", desc: "Loot the 'Entropy Converter' from the Eredar Twins.", isRaid: true },
-                { name: "Raid: Kil'jaeden", desc: "Infuse the weapon in the Sunwell itself after Kil'jaeden's defeat.", isRaid: true },
-                { name: "The Final Calibration", desc: "The weapon is ready. Try not to destroy the planet." }
+                { phase: "Phase 4: Worldbreaker", name: "Sunmote Fuel", desc: "Refine 10x Sunmotes into 'Solar Propellant'." },
+                { name: "Raid: Dragonfire", desc: "Harvest 'Fel-Gland Secretions' from Felmyst to coat the payload.", isRaid: true },
+                { name: "Raid: Entropy Converter", desc: "Salvage the 'Dark Energy Converter' from the Eredar Twins.", isRaid: true },
+                { name: "Raid: Kil'jaeden's Gift", desc: "Infuse the weapon in the Sunwell immediately after Kil'jaeden's defeat.", isRaid: true },
+                { name: "The Final Calibration", desc: "Tighten the last screw. Aim away from face." },
+                { name: "Ultimate Power", desc: "You have become Death, destroyer of worlds." }
               ]
             }
           }
@@ -546,31 +550,36 @@ const TheArtisansCodex = () => {
             icon: <img src="https://i.imgur.com/hne8n9Q.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
               title: "A Stitch in Time",
-              description: "Time is a tangled web. You intend to build a pair of scissors. The Bronze Dragonflight might object, but that's a problem for future you.",
+              description: "You aren't finding a trinket; you are building a time machine. Requires precision engineering, temporal stability, and a complete disregard for the laws of causality.",
               steps: [
                 // PHASE 1: TEMPORAL ANCHOR (T4)
-                { phase: "Phase 1: The Anchor", name: "Sands of the Hourglass", desc: "Collect 20 Chronal Sands from the Caverns of Time dungeons." },
-                { name: "Raid: Moroes", desc: "Steal the 'Pocket Watch of the Castellan' from Moroes in Karazhan.", isRaid: true },
-                { name: "Raid: Gruul the Dragonkiller", desc: "Obtain a 'Gronn-Scale Binding' to hold the device together.", isRaid: true },
-                { name: "Calibration", desc: "Calibrate the device in the entry tunnel of the Dark Portal.", reward: "Portable Time-Skip (Rare)" },
+                { phase: "Phase 1: The Anchor", name: "Sands of Time", desc: "Sift through the sands of the Black Morass to find 20x 'Chronal Shruken Heads'." },
+                { name: "Bronze Framework", desc: "Craft the outer casing using 15x Khorium Bars and Hardened Adamantite." },
+                { name: "Raid: The Timelock", desc: "Disassemble Moroes's pocket watch to recover the 'Spring of Eternal Ticking'.", isRaid: true },
+                { name: "Raid: Gronn-Scale Case", desc: "Harvest 'Gronn-Hide' from Gruul to shield the device from physical impact.", isRaid: true },
+                { name: "Calibration: Dark Portal", desc: "Tune the device to the rift frequency of the Dark Portal.", reward: "Portable Time-Skip (Rare)" },
 
                 // PHASE 2: CAUSALITY BREAKER (T5)
-                { phase: "Phase 2: Causality", name: "Nether-Warped Metal", desc: "Mine 50 Adamantite Ore from the twisting nether areas of Netherstorm." },
-                { name: "Raid: Kael'thas Sunstrider", desc: "Loot the 'Gravity-Well Engine' from Kael'thas in The Eye.", isRaid: true },
-                { name: "Raid: Vashj", desc: "Recover the 'Deep-Sea Pressure Valve' to prevent implosion.", isRaid: true },
-                { name: "Stabilization", desc: "Use Primal Water to cool the chronal circuits.", reward: "Stable Chronal Displacer (Epic)" },
+                { phase: "Phase 2: Causality", name: "Manaforge Tuning", desc: "Use a 'Spectral Tuner' at Manaforge B'naar to match the Nether frequency." },
+                { name: "Raid: Gravity Well", desc: "Deploy a 'Temporal Buoy' during the Kael'thas fight to record the gravity lapses.", isRaid: true },
+                { name: "Raid: Pressure Valve", desc: "Salvage a 'Titan-Forged Valve' from the Steamvaults (Heroic) or Vashj's console.", isRaid: true },
+                { name: "Crafting: Chronal Oil", desc: "Distill 'Chronal Oil' using Primal Water and Netherbloom.", reward: "Stable Chronal Displacer (Epic)" },
+                { name: "Paradox Check", desc: "Ensure you haven't recently killed your own grandfather." },
 
                 // PHASE 3: INFINITE LOOPS (T6)
-                { phase: "Phase 3: Infinity", name: "Anachronistic Scrap", desc: "Find parts that haven't been invented yet in the Black Temple." },
-                { name: "Raid: Archimonde", desc: "Capture a 'Fragment of the World Tree's History' during the Hyjal Summit.", isRaid: true },
-                { name: "Raid: Reliquary of Souls", desc: "Obtain the 'Essence of Desire' to fuel the device's intent.", isRaid: true },
-                { name: "The Paradox", desc: "Resolve the grandfather paradox you accidentally created.", reward: "Advanced Chronal Unit (T6 Epic)" },
+                { phase: "Phase 3: Infinity", name: "Past Shadows", desc: "Scan the 'Temporal Anomalies' in the Battle for Mount Hyjal with your goggles." },
+                { name: "Raid: World Tree Fragment", desc: "Harvest a splinter of Nordrassil from Archimonde's impact crater.", isRaid: true },
+                { name: "Raid: Essence of Desire", desc: "Capture the 'Essence of Desire' from the Reliquary of Souls using an Empty Delight Bottle.", isRaid: true },
+                { name: "Crafting: The Resolver", desc: "Build the 'Paradox Resolver' circuit using Primal Shadow and Void Crystals." },
+                { name: "Integration", desc: "Install the Resolver. The ticking sound should stop. (T6 Epic Reward)" },
 
                 // PHASE 4: TIME LORD (SWP)
-                { phase: "Phase 4: Time Lord", name: "Sunwell's Light", desc: "Infuse the device with the purified energy of the Sunwell." },
-                { name: "Raid: M'uru", desc: "Absorb the 'Void-Light Singularity' from M'uru's remains.", isRaid: true },
-                { name: "Raid: Kil'jaeden", desc: "Steal a moment of time from the Deceiver himself.", isRaid: true },
-                { name: "The Omega Point", desc: "The device is complete. History is yours to rewrite." }
+                { phase: "Phase 4: Time Lord", name: "Sunwell's Light", desc: "Capture 'Light of the Sun' in a prismatic vial." },
+                { name: "Raid: Singularity", desc: "Use the device to absorb the 'Void-Light Singularity' from M'uru's remains.", isRaid: true },
+                { name: "Raid: Deceiver's Time", desc: "Steal a moment of time from Kil'jaeden by activating the device at 1% HP.", isRaid: true },
+                { name: "The Omega Component", desc: "Synthesize the final component: 'The Eternity Chip'." },
+                { name: "Complete", desc: "The device is active. History is yours to rewrite." },
+                { name: "Warning", desc: "Do not use near murlocs." }
               ]
             }
           }
@@ -593,31 +602,36 @@ const TheArtisansCodex = () => {
             icon: <img src="https://i.imgur.com/2HcXIoa.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
               title: "Sight Beyond Sight",
-              description: "To see the flow of magic is to understand the universe. You are building not just goggles, but a window into the soul of reality.",
+              description: "You are building a window into the soul of the universe. This requires expert jewelcrafting, optical calibration, and exposure to dangerously high levels of arcane radiation.",
               steps: [
                 // PHASE 1: PRISMATIC LENSES (T4)
-                { phase: "Phase 1: Clarity", name: "Deep Gems", desc: "Cut 2 perfect Deep Peridots and Shadow Draenite for the lenses." },
-                { name: "Raid: Shade of Aran", desc: "Obtain the 'Spectacles of the Archmage' from the Shade of Aran.", isRaid: true },
-                { name: "Raid: Magtheridon", desc: "Extract 'Pit Lord's Retinas' for darkvision. Gross.", isRaid: true },
-                { name: "The Frame", desc: "Forge a Felsteel Frame to hold the lenses.", reward: "Aether-Goggles MK-I (Rare)" },
+                { phase: "Phase 1: Clarity", name: "Perfect Lenses", desc: "Cut 2x 'Flawless Deep Peridots' and 2x 'Radiant Shadow Draenite' (Requires JC friend or AH)." },
+                { name: "Dungeon: Arcane Signatures", desc: "Use a 'Spectromatic Scanner' to record energy signatures in The Arcatraz." },
+                { name: "Raid: Spectral Sight", desc: "Scan the 'Shade of Aran' during his arcane explosion phase.", isRaid: true },
+                { name: "Raid: Demonic Retinas", desc: "Harvest 'Pit Lord Retinas' from Magtheridon. Gross, but effective.", isRaid: true },
+                { name: "Assembly: MK-I Grip", desc: "Craft the 'Felsteel Frame' to hold the heavy lenses.", reward: "Aether-Goggles MK-I (Rare)" },
 
                 // PHASE 2: NETHER SIGHT (T5)
-                { phase: "Phase 2: The Void", name: "Manaforge Absorption", desc: "Absorb raw arcane energy from all 4 Manaforges in Netherstorm." },
-                { name: "Raid: Solarian", desc: "Loot the 'Star-Chart Overlay' from High Astromancer Solarian.", isRaid: true },
-                { name: "Raid: Leotheras the Blind", desc: "Take the 'Demon Hunter's Blindfold' for spectral sight.", isRaid: true },
-                { name: "Integration", desc: "Calibrate the lenses to filter out Fel radiation.", reward: "Cognition Goggles v2.0 (Epic)" },
+                { phase: "Phase 2: The Void", name: "Void Calibration", desc: "Stare into the Void at the edge of Netherstorm for 5 minutes. Maintain sanity." },
+                { name: "Raid: Star Charts", desc: "Scan the 'Holographic Star-Map' in High Astromancer Solarian's room.", isRaid: true },
+                { name: "Raid: Demon Hunter Vision", desc: "Analyze Leotheras the Blind's eye-wrappings for spectral enchantment data.", isRaid: true },
+                { name: "Crafting: Manasteel Overlay", desc: "Plate the goggles with 'Manasteel' (Hardened Adamantite + Primal Mana).", reward: "Cognition Goggles v2.0 (Epic)" },
+                { name: "Tuning", desc: "Adjust the focal length. Now you can see smells." },
 
                 // PHASE 3: ILLIDARI VISION (T6)
-                { phase: "Phase 3: True Sight", name: "Shadowmoon Ritual", desc: "Observe the Spectre of Gurtogg Bloodboil to learn heat signatures." },
-                { name: "Raid: Illidan Stormrage", desc: "This is it. You need the 'Skull of Gul'dan's Resonance' (Note: Not the item, just the aura).", isRaid: true },
-                { name: "Raid: Mother Shahraz", desc: "Obtain 'Prismatic Scales' to reflect gaze attacks.", isRaid: true },
-                { name: "Third Eye", desc: "Open your third eye. Metaphorically. Mostly.", reward: "Master's Goggles (T6 Epic)" },
+                { phase: "Phase 3: True Sight", name: "Fel Signatures", desc: "Record the heat signature of the lava in Shadowmoon Valley." },
+                { name: "Raid: Skull Resonance", desc: "Hold the goggles near the 'Skull of Gul'dan' when Illidan drops it.", isRaid: true },
+                { name: "Raid: Prismatic Scales", desc: "Harvest 'Reflective Scales' from Mother Shahraz to coat the lenses.", isRaid: true },
+                { name: "Crafting: Third Eye Circuit", desc: "Build the 'Third Eye' processor using a Primal Might and Void Crystals." },
+                { name: "Master's Calibration", desc: "The goggles now filter out illusions.", reward: "Master's Goggles (T6 Epic)" },
 
                 // PHASE 4: OMNISCIENCE (SWP)
-                { phase: "Phase 4: Omniscience", name: "Light of the Sun", desc: "Polish the lenses with dust from the Sunwell." },
-                { name: "Raid: Brutallus", desc: "Analyze the 'Broken Will' of the Pit Lord.", isRaid: true },
-                { name: "Raid: Kil'jaeden", desc: "Stare into the Deceiver's eyes and do not blink.", isRaid: true },
-                { name: "The v3.0 Upgrade", desc: "You can see forever. It's beautiful." }
+                { phase: "Phase 4: Omniscience", name: "Sun Dust Polish", desc: "Polish the lenses with 'Sun Dust' collected from the Isle of Quel'Danas." },
+                { name: "Raid: Broken Will", desc: "Scan the 'Broken Will' of Brutallus to understand fear mechanics.", isRaid: true },
+                { name: "Raid: Deceiver's Gaze", desc: "Stare directly into Kil'jaeden's eyes during the encounter.", isRaid: true },
+                { name: "Crafting: Omni-Lens", desc: "Fuse all lenses into a single 'Omni-Lens'." },
+                { name: "Final Adjustment", desc: "You can see forever. It's beautiful." },
+                { name: "Side Effects", desc: "Warning: May cause migraines and existential dread." }
               ]
             }
           }
