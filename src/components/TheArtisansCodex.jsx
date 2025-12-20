@@ -390,7 +390,7 @@ const TheArtisansCodex = () => {
       title: 'Warden of the Soul',
       icon: <Zap className="w-6 h-6" />,
       image: 'https://i.imgur.com/FApg0VK.jpeg',
-      desc: 'Enchanters manipulate the flow of magic itself. They can now "disenchant" the environment for buffs and craft temporary "Runes" for weapons.',
+      desc: 'Enchanters are the masters of magical essence, capable of binding the chaotic energies of the Nether into physical form. In this expanded vision, Enchanters do not merely apply stats to gear; they actively manipulate the magical fabric of the world.\n\nFrom dismantling magical barriers in dungeons to weaving temporary runes of immense power, the Enchanter is the ultimate magical utilitarian. They bridge the gap between the raw power of a Mage and the binding will of a Warlock.',
       philosophy: {
         tbc: "**The 2007 Landscape:** \nEnchanting was indispensable but functionally invisible. You were a vendor of stats. You stood in Ironforge or Shattrath spamming 'LFW'. Ring enchants were a nice personal perk, but they were just raw numbers. The profession had no 'moments of glory' in a raid.\n",
         plus: "**The Vision for Plus:** \nWe view Enchanters as masters of magical essence. They shouldn't just apply stats; they should manipulate the magic of the world. \n\n1. **Environmental Disenchanting:** Enchanters can now interact with the world—disenchanting magical barriers in dungeons, draining power from crystals in Netherstorm, or siphoning energy from raid bosses to create temporary buffs.\n2. **Weapon Runes:** Instead of permanent enchants being the only option, 'Runes' are powerful, temporary combat buffs. The *Rune of Soul-Binding* brings a 'Cheat Death' mechanic to any class.\n3. **The Soulforge:** The quality system here is visual. A 'Flawless' enchant doesn't just give +40 Spell Power; it makes your weapon drip with liquid magic."
@@ -420,7 +420,36 @@ const TheArtisansCodex = () => {
             unique: true,
             stats: '+45 Intellect\n+45 Spirit',
             effects: ['Equip: Your healing spells have a chance to grant the target a "Soul Shell" absorbing 1000 damage.', 'Use: Sacrifice 10% of your total health to instantly restore 20% mana to a friendly target. (3 Min Cooldown)'],
-            flavor: "A fair trade."
+            flavor: "A fair trade.",
+            questline: {
+              title: "The Binding of Souls",
+              description: "To bind a soul is forbidden magic. You must tread the line between life and death, gathering echoes of the past and forging a vessel capable of holding them without shattering.",
+              steps: [
+                // PHASE 1: THE VESSEL (T4)
+                { phase: "Phase 1: The Vessel", name: "Spirit Dust", desc: "Disenchant 50 Arcane Dust from magical items to create a base." },
+                { name: "Raid: The Curator", desc: "Siphon 'Arcane Residue' from The Curator in Karazhan using your Wand of Extraction.", isRaid: true },
+                { name: "Raid: Nightbane", desc: "Collect the 'Ashes of the Restless' from the urn after summoning Nightbane.", isRaid: true },
+                { name: "Crafting: The Phylactery", desc: "Bind the dusts into a 'Empty Phylactery' at the Altar of Shadows in Shadowmoon.", reward: "Empty Phylactery (Rare)" },
+
+                // PHASE 2: SOUL ECHOES (T5)
+                { phase: "Phase 2: Soul Echoes", name: "Auchindoun Spirits", desc: "Use the Phylactery to capture 20 'Restless Spirits' in the Auchindoun dungeons." },
+                { name: "Raid: Void Reaver", desc: "Disenchant the 'Fel-Shielding' from Void Reaver immediately after its death.", isRaid: true },
+                { name: "Raid: Lurker Below", desc: "Recover the 'Heart of the Deep' from the Lurker. It still beats.", isRaid: true },
+                { name: "Integration", desc: "Fuse the spirits into the phylactery. It begins to whisper to you.", reward: "Whispering Phylactery (Epic)" },
+
+                // PHASE 3: THE BINDING (T6)
+                { phase: "Phase 3: The Binding", name: "Hyjal's Ghosts", desc: "Speak to the wisps in Mount Hyjal and gain their blessing (or steal their essence)." },
+                { name: "Raid: Azgalor", desc: "Capture the 'Silence of the Void' when Azgalor casts Doom.", isRaid: true },
+                { name: "Raid: Reliquary of Souls", desc: "Drain the 'Essence of Suffering' directly from the Reliquary.", isRaid: true },
+                { name: "Ascension", desc: "The voices are loud now. You must silence them to control the power.", reward: "The Soul-Binder's Phylactery (T6 Epic)" },
+
+                // PHASE 4: ETERNAL SOUL (SWP)
+                { phase: "Phase 4: Eternal Soul", name: "Sunwell's Light", desc: "Purify the phylactery in the fountain of the Sunwell." },
+                { name: "Raid: M'uru", desc: "Absorb the 'Song of the Naaru' as M'uru fades.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Offer the phylactery to the Deceiver, then double-cross him to steal his power.", isRaid: true },
+                { name: "The Final Bind", desc: "You have conquered death. For now." }
+              ]
+            }
           }
         },
         {
@@ -435,7 +464,36 @@ const TheArtisansCodex = () => {
             unique: true,
             stats: '+45 Spell Critical Strike Rating',
             effects: ['Equip: Your elemental spells have a chance to trigger a secondary blast of the opposite element.', 'Use: Overload the prism, increasing spell critical strike chance by 100% for 5 sec. (5 Min Cooldown)'],
-            flavor: "Fire, Frost, and Fury."
+            flavor: "Fire, Frost, and Fury.",
+            questline: {
+              title: "The Elemental Convergence",
+              description: "Chaos is not disorder; it is merely a pattern you do not yet understand. You will weave the opposing forces of Fire, Frost, and Arcane into a single, perfect prism.",
+              steps: [
+                // PHASE 1: RAW MATERIALS (T4)
+                { phase: "Phase 1: Raw Chaos", name: "Primal Harvest", desc: "Collect 10 Primal Fire, 10 Primal Water, and 10 Primal Air." },
+                { name: "Raid: Aran's Schematics", desc: "Steal the 'Elemental Diagrams' from the library in Karazhan.", isRaid: true },
+                { name: "Raid: Gruul's Lair", desc: "Harvest 'Gronn-Blood' to act as a binding agent.", isRaid: true },
+                { name: "The Mold", desc: "Craft the 'Elemental Mold' using Hardened Adamantite.", reward: "Unstable Elemental Prism (Rare)" },
+
+                // PHASE 2: FUSION (T5)
+                { phase: "Phase 2: Fusion", name: "Netherstorm Storms", desc: "Charge the prism by holding it aloft in a Netherstorm lightning strike." },
+                { name: "Raid: Al'ar", desc: "Capture the 'Ashes of the Phoenix' from Al'ar. Hot to the touch.", isRaid: true },
+                { name: "Raid: Hydross", desc: "Collect 'Pure Water Globules' from Hydross the Unstable.", isRaid: true },
+                { name: "Stabilization", desc: "The prism is vibrating. Cool it in the lakes of Nagrand.", reward: "Stabilized Prism (Epic)" },
+
+                // PHASE 3: ASCENDANCE (T6)
+                { phase: "Phase 3: Ascendance", name: "Shadowmoon Volcano", desc: "Throw the prism into the volcano in Shadowmoon Valley. Fish it out quickly.", isRaid: false },
+                { name: "Raid: Rage Winterchill", desc: "Freeze the prism in the 'Death and Decay' of Rage Winterchill.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Absorb the 'Flames of Azzinoth' during the encounter.", isRaid: true },
+                { name: "Mastery", desc: "The elements obey you now.", reward: "Prism of Chaotic Elements (T6 Epic)" },
+
+                // PHASE 4: THE VOID (SWP)
+                { phase: "Phase 4: The Void", name: "Void Infusion", desc: "Expose the prism to the Void energies of the Sunwell Plateau." },
+                { name: "Raid: Twins", desc: "Capture the 'Shadow Nova' of the Eredar Twins.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Use the prism to refract the Deceiver's magic back at him.", isRaid: true },
+                { name: "Universal Truth", desc: "All magic is one." }
+              ]
+            }
           }
         },
         {
@@ -450,7 +508,36 @@ const TheArtisansCodex = () => {
             unique: true,
             stats: '+35 Stamina\n+40 Intellect',
             effects: ['Equip: Increases spell power by 45.', 'Equip: Disenchanting yields double materials.', 'Use: Create a "Runic Ward" at your feet. Allies standing inside have the mana cost of all spells reduced by 25%. (5 Min Cooldown)'],
-            flavor: "The circle is complete."
+            flavor: "The circle is complete.",
+            questline: {
+              title: "The Runic Circle",
+              description: "A ring is a circle with no beginning and no end. You will forge a signet that represents the eternal cycle of magic: creation and destruction.",
+              steps: [
+                // PHASE 1: THE BAND (T4)
+                { phase: "Phase 1: The Band", name: "Khorium Band", desc: "Smelt a 'Perfect Khorium Bar' (Miners only) or buy one." },
+                { name: "Raid: Prince Malchezaar", desc: "Obtain the 'Signet of Netherspace' to study its dimensional properties.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Extract the 'Blood of the Pit Lord' to etch the runes.", isRaid: true },
+                { name: "Etching", desc: "Carefully scribe the first rune of power.", reward: "Runed Khorium Band (Rare)" },
+
+                // PHASE 2: THE RUNES (T5)
+                { phase: "Phase 2: The Runes", name: "Arcane Patterns", desc: "Study the runes in the Botanica, Mechanar, and Arcatraz." },
+                { name: "Raid: Solarian", desc: "Loot the 'Star-Chart' from Solarian to learn celestial runes.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Recover the 'Naga Runestone' from Lady Vashj.", isRaid: true },
+                { name: "Rune Weaving", desc: "Weave the runes into the metal itself.", reward: "Signet of the Magus (Epic)" },
+
+                // PHASE 3: THE WARD (T6)
+                { phase: "Phase 3: The Ward", name: "Protective Wards", desc: "Learn the ancient wards of the Night Elves in Hyjal." },
+                { name: "Raid: Archimonde", desc: "Withstand the 'Finger of Death' (don't die) to charge the ring's defensive capabilities.", isRaid: true },
+                { name: "Raid: Mother Shahraz", desc: "Steal the 'Prismatic Aura' from Mother Shahraz.", isRaid: true },
+                { name: "The Arch-Enchanter", desc: "The ring hums with power.", reward: "Signet of the Arch-Enchanter (T6 Epic)" },
+
+                // PHASE 4: PERFECTION (SWP)
+                { phase: "Phase 4: Perfection", name: "Sunwell Runes", desc: "Study the runes on the floor of the Sunwell Plateau." },
+                { name: "Raid: Brutallus", desc: "Absorb the 'Burn' to temper the ring.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: " The final rune must be written in the blood of a God.", isRaid: true },
+                { name: "Legacy", desc: "You are the Arch-Enchanter." }
+              ]
+            }
           }
         }
       ]
