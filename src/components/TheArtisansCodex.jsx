@@ -803,10 +803,10 @@ const TheArtisansCodex = () => {
       title: 'Weaver of Magic',
       icon: <Scissors className="w-6 h-6" />,
       image: 'https://i.imgur.com/0sgpPtf.jpeg',
-      desc: 'Tailors are weavers of reality, creating banners that act as raid cooldowns and cloaks that define caster playstyles.',
+      desc: 'Tailors are the weavers of reality, pulling threads from the very fabric of the Nether to stitch together garments of immense power. They do not merely clothe the heroes of Azeroth; they armor them in magic itself.\n\nFrom the void-soaked looms of Shadowmoon to the star-threads of the Netherstorm, the modern Tailor is a master of the arcane arts, capable of creating banners that turn the tide of war and cloaks that defy the laws of physics.',
       philosophy: {
         tbc: "**The 2007 Landscape:** \nTailoring was the undisputed king of early TBC. The Spellfire, Shadoweave, and Primal Mooncloth sets were mandatory for casters for months, often beating Tier 5. It was a great system for engagement, but it had a downside: it forced players to wear specific looking gear. Once you replaced the set, the profession lost much of its value.\n",
-        plus: "**The Vision for Plus:** \nWe want to keep the power of the cloth sets but move that power into 'Masterwork' items and active utility. \n\n1. **Banners of War:** Tailors can now weave magical banners. These act like the Shaman's totems but are raid-wide cooldowns. The *Banner of Arcane Warding* gives the raid a massive resistance boost, making Tailors essential for surviving magical nukes.\n2. **Legendary Cloaks:** Instead of a 3-piece set that locks your slots, the specialization culminates in a single Legendary Cloak (e.g., *Sunfire Drape*). This allows players to wear raid tier sets while still having a profession-defining item that evolves with them.\n3. **Active Weaving:** The 'Void-Touched' fantasy is expanded. Shadoweave tailors can actually fade into the void to drop threat, giving Warlocks and Shadow Priests much-needed survival tools in a high-threat meta."
+        plus: "**The Vision for Plus:** \nWe want to keep the power of the cloth sets but move that power into 'Masterwork' items and active utility. \n\n1. **Banners of War:** Tailors can now weave magical banners. These act like the Shaman's totems but are raid-wide cooldowns. The *Banner of Arcane Warding* gives the raid a massive resistance boost, making Tailors essential for surviving magical storms.\n2. **Legendary Cloaks:** Instead of a 3-piece set that locks your slots, the specialization culminates in a single Legendary Cloak (e.g., *Sunfire Drape*). This interacts with your class mechanics, evolving with you.\n3. **Active Weaving:** The 'Void-Touched' fantasy is expanded. Shadoweave tailors can actually fade into the void to drop threat, giving Warlocks and Shadow Priests much-needed survival tools in a high-threat meta."
       },
       coreSystem: {
         title: 'The Arcane Loom',
@@ -836,7 +836,36 @@ const TheArtisansCodex = () => {
             armor: '180',
             stats: '+35 Stamina\n+25 Intellect',
             effects: ['Equip: Increases Shadow and Frost spell power by 65.', 'Equip: Your Shadow and Frost spells have a chance to summon a Void Tendril to fight for you.', 'Use: Fade into the void, instantly reducing your threat to zero. (3 Min Cooldown)'],
-            flavor: "The darkness embraces you."
+            flavor: "The darkness embraces you.",
+            questline: {
+              title: "Threads of the Void",
+              description: "To weave shadow is to invite madness. You must journey to the edge of reality, harvesting the threads that bind the Void to our world, and stitching them into a mantle that grants dominance over darkness.",
+              steps: [
+                // PHASE 1: DARK THREADS (T4)
+                { phase: "Phase 1: Dark Threads", name: "Void-Spinning", desc: "Create a 'Void-Spinning Wheel' using Fel Iron and Shadowcloth." },
+                { name: "Raid: Netherspite", desc: "Collect 'Nether-Web Silk' from Netherspite's room in Karazhan.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Harvest 'Pit Lord Sinew' to use as the unbreakable core thread.", isRaid: true },
+                { name: "The First Weave", desc: "Weave the base fabric at the Altar of Shadows.", reward: "Shadow-Warped Cloak (Rare)" },
+
+                // PHASE 2: DIMENSIONAL FABRIC (T5)
+                { phase: "Phase 2: Dimensional Fabric", name: "Manaforge Ara", desc: "Soak the cloak in the raw void energy of the Dimensional Ships." },
+                { name: "Raid: Void Reaver", desc: "Salvage 'Fel-Steel Weave' plating from the Void Reaver.", isRaid: true },
+                { name: "Raid: Solarian", desc: "Capture the 'Void Star' essence from the Astromancer.", isRaid: true },
+                { name: "Void-Stitching", desc: "Stitch the plating into the fabric using a needle made of pure void.", reward: "Mantle of Deep Shadow (Epic)" },
+
+                // PHASE 3: THE EMBRACE (T6)
+                { phase: "Phase 3: The Embrace", name: "Hyjal's Darkness", desc: "Harvest 'Shadows of the Past' from the burning ruins of Hyjal." },
+                { name: "Raid: Teron Gorefiend", desc: "Steal the 'Cloak of the Death Knight' from Gorefiend.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Absorb the 'Shadow of the Betrayer' during his demon phase.", isRaid: true },
+                { name: "Ascension", desc: "The cloak pulses with a heartbeat. It is alive.", reward: "Mantle of the Void-Touched (T6 Epic)" },
+
+                // PHASE 4: ENTROPY (SWP)
+                { phase: "Phase 4: Entropy", name: "Sunwell's Shadow", desc: "Find the shadows cast by the Light of the Sunwell." },
+                { name: "Raid: Entropius", desc: "Absorb the 'Essence of Entropy' as M'uru transforms.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Use the cloak to withstand the Deceiver's darkness.", isRaid: true },
+                { name: "The Void Lord", desc: "You do not fear the dark. You are the dark." }
+              ]
+            }
           }
         },
         {
@@ -853,7 +882,36 @@ const TheArtisansCodex = () => {
             armor: '180',
             stats: '+35 Stamina\n+25 Intellect',
             effects: ['Equip: Increases Fire and Arcane spell power by 65.', 'Equip: Your critical strikes have a chance to grant "Phoenix Fire," increasing casting speed by 20% for 10 sec.', 'Use: Rise from the ashes. Rebirth yourself with 50% health. (30 Min Cooldown)'],
-            flavor: "Burn brighter."
+            flavor: "Burn brighter.",
+            questline: {
+              title: "The Phoenix's Plumage",
+              description: "Fire burns, but Spellfire purifies. You seek to create a garment not of cloth, but of woven flame. This requires the feathers of a phoenix and the heat of a star.",
+              steps: [
+                // PHASE 1: IGNITION (T4)
+                { phase: "Phase 1: Ignition", name: "Spellcloth", desc: "Weave 10 bolts of Spellcloth at the Mana-Loom." },
+                { name: "Raid: Shade of Aran", desc: "Collect 'Eternal Embers' from the library after defeating Aran.", isRaid: true },
+                { name: "Raid: Gruul", desc: "Harvest 'Gronn-Hide' to protect the wearer from the heat.", isRaid: true },
+                { name: "Kindling", desc: "The cloak is warm to the touch. It smokes slightly.", reward: "Ember-Silk Cloak (Rare)" },
+
+                // PHASE 2: INFERNO (T5)
+                { phase: "Phase 2: Inferno", name: "Netherstorm Beacons", desc: "Collect 'Solar Flares' from the mana collectors in Netherstorm." },
+                { name: "Raid: Al'ar", desc: "Pluck a 'Molten Feather' from the ashes of Al'ar.", isRaid: true },
+                { name: "Raid: Kael'thas", desc: "Absorb the 'Pyroblast' of the Sun King (survive it).", isRaid: true },
+                { name: "Weaving Fire", desc: "Weave the fire into the cloth. Do not burn your hands.", reward: "Blazing Drape (Epic)" },
+
+                // PHASE 3: SUPERNOVA (T6)
+                { phase: "Phase 3: Supernova", name: "Hyjal's Fire", desc: "Collect 'Living Flame' from the Elementals in Hyjal." },
+                { name: "Raid: Archimonde", desc: "Capture the 'Doom Fire' in a specially prepared jar.", isRaid: true },
+                { name: "Raid: Flames of Azzinoth", desc: "Harvest the 'Essence of Azzinoth' from the elementals.", isRaid: true },
+                { name: "Phoenix Reborn", desc: "The cloak grants life as well as death.", reward: "Sunfire Drape (T6 Epic)" },
+
+                // PHASE 4: THE SUN (SWP)
+                { phase: "Phase 4: The Sun", name: "Sunwell's Heat", desc: "Bathe the cloak in the lava of the Sunwell." },
+                { name: "Raid: Twins", desc: "Take the 'Heat of the Stars' from the Eredar Twins.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "The cloak protects you from the Deceiver's fire.", isRaid: true },
+                { name: "Eternal Flame", desc: "The fire will never go out." }
+              ]
+            }
           }
         },
         {
@@ -870,7 +928,36 @@ const TheArtisansCodex = () => {
             armor: '180',
             stats: '+40 Stamina\n+35 Intellect',
             effects: ['Equip: Increases healing done by up to 110.', 'Equip: Your healing spells have a chance to grant the target "Starlight\'s Grace," healing them for 200 every sec for 10 sec.', 'Use: Instantly restore 2000 Mana to yourself and your target. (5 Min Cooldown)'],
-            flavor: "Elune guide you."
+            flavor: "Elune guide you.",
+            questline: {
+              title: "The Moon's Grace",
+              description: "The moon watches over all. You will weave the moonlight itself into a cloak that brings solace to the weary and life to the dying.",
+              steps: [
+                // PHASE 1: MOONLIGHT (T4)
+                { phase: "Phase 1: Moonlight", name: "Primal Mooncloth", desc: "Imbue 10 bolts of Primal Mooncloth at the Moonwell." },
+                { name: "Raid: Maiden", desc: "Receive the 'Blessing of Virtue' from the Maiden in Karazhan.", isRaid: true },
+                { name: "Raid: Nightbane", desc: "Cleanse the 'Soul of the Dragon' after defeating Nightbane.", isRaid: true },
+                { name: "Starlight", desc: "The cloth glows with a soft, pale light.", reward: "Glimmering Moon-Cloak (Rare)" },
+
+                // PHASE 2: ECLIPSE (T5)
+                { phase: "Phase 2: Eclipse", name: "Cenarrion Blessing", desc: "Earn the blessing of the Cenarion Expedition (Exalted)." },
+                { name: "Raid: Hydross", desc: "Purify the cloak in the 'Pure Waters' of Hydross.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Recover the 'Tear of Elune' (Replica) from Lady Vashj.", isRaid: true },
+                { name: "Silver Thread", desc: "Embroider the cloak with silver thread spun from starlight.", reward: "Cloak of the Silver Moon (Epic)" },
+
+                // PHASE 3: ASCENDANCE (T6)
+                { phase: "Phase 3: Ascendance", name: "Hyjal's Hope", desc: "Bathe the cloak in the waters of the new Well of Eternity." },
+                { name: "Raid: Archimonde", desc: "Protect the World Tree. Collect a 'Leaf of Nordrassil'.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Redeem the 'Soul of the Betrayer' (metaphorically).", isRaid: true },
+                { name: "The Eclipse", desc: "The cloak represents the balance of nature.", reward: "Cloak of the Lunar Eclipse (T6 Epic)" },
+
+                // PHASE 4: ETERNITY (SWP)
+                { phase: "Phase 4: Eternity", name: "Sunwell's Light", desc: "The Sun and Moon are brothers. Unite them." },
+                { name: "Raid: M'uru", desc: "Heal the 'Void God' until he becomes a being of Light.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Banishing the darkness is the ultimate healing.", isRaid: true },
+                { name: "Goddess's Favored", desc: "You are the chosen of Elune." }
+              ]
+            }
           }
         }
       ]
@@ -881,7 +968,7 @@ const TheArtisansCodex = () => {
       title: 'The Architect of Magic',
       icon: <PenTool className="w-6 h-6" />,
       image: 'https://i.imgur.com/bV47vOI.jpeg',
-      desc: 'Scribes rewrite the laws of magic itself. They create Glyphs to alter abilities and powerful Darkmoon Cards.',
+      desc: 'Scribes are the architects of magic, rewriting the laws of reality with ink and parchment. In TBC Plus, Inscription is reimagined as an ancient discipline revived by the Sha\'tar and the Blood Elves.\n\nFrom crafting powerful Darkmoon Cards that twist fate to inscribing Glyphs that fundamentally alter how spells function, Scribes are the silent authors of victory.',
       philosophy: {
         tbc: "**The 2007 Landscape:** \nInscription didn't exist in original TBC! It was added in Wrath of the Lich King. Its absence meant there was no system to customize spell visuals or minor mechanics, and the 'Darkmoon Card' trinkets were just random world drops or vendor items with no crafting fantasy behind them.\n",
         plus: "**The Vision for Plus:** \nWe are backporting Inscription to TBC but giving it a distinct 'Outland Flavor'. It is the domain of High Elves and Draenei scholars who study the magic of the Nether. \n\n1. **Glyphs as Artifacts:** Glyphs aren't just UI elements; they are physical items you slot into your spellbook. 'Ancient' and 'Primordial' glyphs allow for customization of spell ranges, durations, and visuals.\n2. **Scrolls of Power:** Scribes bring the 'Battle Shout' mechanic to caster groups via *Scroll of Heroic Tales*. This balances the group utility, so you don't strictly need a Warrior in every caster group for shouts.\n3. **Darkmoon Cards:** We have reimagined the Darkmoon decks to be more interactive. The *Deck of Fates* is a legendary trinket that requires active management, drawing cards in combat to gain random but powerful buffs."
@@ -913,11 +1000,39 @@ const TheArtisansCodex = () => {
             armorType: 'Staff',
             damage: '150 - 290',
             speed: '2.40',
-
             dps: '91.6',
             stats: '+60 Intellect\n+55 Stamina\n+45 Haste Rating',
             effects: ['Equip: Increases spell power by 290.', 'Equip: Your spells have a chance to duplicate themselves at 50% effectiveness.', 'Use: Scribble a rune of power on the air, increasing damage done by 15% for 20 sec. (3 Min Cooldown)'],
-            flavor: "The pen is mightier."
+            flavor: "The pen is mightier.",
+            questline: {
+              title: "The Guardian's Legacy",
+              description: "Medivh is gone, but his words remain. You will gather the scattered pages of the Guardian's private journal and forge a quill capable of rewriting the laws of magic.",
+              steps: [
+                // PHASE 1: INK AND PARCHMENT (T4)
+                { phase: "Phase 1: Ink and Parchment", name: "Ebon Ink", desc: "Distill 20 vials of 'Ebon Ink' from Dark Rune fragments." },
+                { name: "Raid: The Curator", desc: "Retrieve the 'Library Catalogue' from the Curator to find the missing pages.", isRaid: true },
+                { name: "Raid: Shade of Aran", desc: "Confront the Shade of Nielas Aran to claim 'The Father's Nib'.", isRaid: true },
+                { name: "The Shaft", desc: "Carve the shaft of the quill from a branch of the Great Tree in Terokkar.", reward: "Apprentice's Quill (Rare)" },
+
+                // PHASE 2: LOST WORDS (T5)
+                { phase: "Phase 2: Lost Words", name: "Kirin Tor Secrets", desc: "Infiltrate Violet Hold (Lore) by speaking to the mages in Area 52." },
+                { name: "Raid: Kael'thas", desc: "Recover the 'Page of Fire' from Kael'thas's private collection.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Recover the 'Page of Water' preserved in Vashj's waterproof vault.", isRaid: true },
+                { name: "Binding", desc: "Bind the pages into a new grimoire. The quill drinks the ink.", reward: "Scribe's Quill (Epic)" },
+
+                // PHASE 3: THE AUTHOR (T6)
+                { phase: "Phase 3: The Author", name: "Hyjal's History", desc: "Witness the history of the world in the Caverns of Time." },
+                { name: "Raid: Archimonde", desc: "Steal the 'Demon Star' rune from Archimonde's spellbook.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Record the 'Secret of Metamorphosis' from the Betrayer.", isRaid: true },
+                { name: "Mastery", desc: "The quill writes on its own now.", reward: "The Quill of the Guardian (T6 Epic)" },
+
+                // PHASE 4: FINAL CHAPTER (SWP)
+                { phase: "Phase 4: Final Chapter", name: "Sunwell's Story", desc: "Record the tragedy of the Sunwell." },
+                { name: "Raid: Brutallus", desc: "The quill thirsts for the blood of a pit lord.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: " rewrite the ending. Save the world.", isRaid: true },
+                { name: "Epilogue", desc: "The story is yours to tell." }
+              ]
+            }
           }
         },
         {
@@ -932,7 +1047,36 @@ const TheArtisansCodex = () => {
             unique: true,
             stats: '+55 Strength\n+55 Agility\n+55 Intellect',
             effects: ['Equip: Every 10 sec, you draw a card granting a random secondary stat buff.', 'Use: Force a "Joker" card, activating all possible buffs for 10 sec. (2 Min Cooldown)'],
-            flavor: "Pick a card. Any card."
+            flavor: "Pick a card. Any card.",
+            questline: {
+              title: "The Hand of Fate",
+              description: "Fate is a fickle mistress. You will assemble a deck of cards not for games, but for war. Each card represents a cosmic force you must master.",
+              steps: [
+                // PHASE 1: THE SUITS (T4)
+                { phase: "Phase 1: The Suits", name: "Ace of Warlords", desc: "Find the Ace of Warlords in the ruins of Highmaul (Nagrand)." },
+                { name: "Raid: Malchezaar", desc: "Win a game of cards against Prince Malchezaar (Lore event). Loot the 'King of Netherspace'.", isRaid: true },
+                { name: "Raid: Gruul", desc: "The 'Joker' is stuck in Gruul's teeth. Get it.", isRaid: true },
+                { name: "Shuffling", desc: "Shuffle the deck 100 times. Do not drop a card.", reward: "Stacked Deck (Rare)" },
+
+                // PHASE 2: THE DEAL (T5)
+                { phase: "Phase 2: The Deal", name: "Darkmoon Faire", desc: "Present your deck to Silas Darkmoon. He nods approvingly." },
+                { name: "Raid: Leotheras", desc: "The 'Jack of Madness' is held by Leotheras.", isRaid: true },
+                { name: "Raid: Hydross", desc: "The 'Queen of Tides' is held by Hydross.", isRaid: true },
+                { name: "Marking Cards", desc: "Mark the cards with invisible ink. Cheating is encouraged.", reward: "Marked Deck (Epic)" },
+
+                // PHASE 3: THE BLUFF (T6)
+                { phase: "Phase 3: The Bluff", name: "Hyjal's Gamble", desc: "Bet your soul against a demon in Hyjal. Win.", isRaid: false },
+                { name: "Raid: Azgalor", desc: "The 'Ten of Dooms'. Loot it.", isRaid: true },
+                { name: "Raid: Illidan", desc: "The 'Suicide King'. Illidan holds this card.", isRaid: true },
+                { name: "High Stakes", desc: "The deck glows with chaotic energy.", reward: "The Deck of Fates (T6 Epic)" },
+
+                // PHASE 4: ALL IN (SWP)
+                { phase: "Phase 4: All In", name: "Sunwell's Gold", desc: "Gild the edges of the cards with Sunwell gold." },
+                { name: "Raid: Kalecgos", desc: "The 'Dragon' card.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "The 'Deceiver'. The final card.", isRaid: true },
+                { name: "Royal Flush", desc: "You have the winning hand." }
+              ]
+            }
           }
         },
         {
@@ -951,7 +1095,36 @@ const TheArtisansCodex = () => {
             dps: '79.2',
             stats: '+40 Stamina\n+40 Intellect',
             effects: ['Equip: Increases healing done by up to 550.', 'Equip: Your Glyphs are 10% more effective.', 'Use: Rewrite an enemy\'s fate, dispelling all magical buffs on them. (1 Min Cooldown)'],
-            flavor: "Art is subjective."
+            flavor: "Art is subjective.",
+            questline: {
+              title: "The Art of War",
+              description: "A brush stroke can be as deadly as a sword strike. You will craft a brush capable of painting reality itself, using the blood of demons as your palette.",
+              steps: [
+                // PHASE 1: BRISTLES (T4)
+                { phase: "Phase 1: Bristles", name: "Clefthoof Hair", desc: "Collect 'Fine Clefthoof Hair' from Nagrand matriarchs." },
+                { name: "Raid: Attumen", desc: "The mane of Midnight makes excellent bristles.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Use 'Pit Lord Blood' as a binding agent.", isRaid: true },
+                { name: "Crafting", desc: "Assemble the brush. It feels heavy.", reward: "Fine Brush (Rare)" },
+
+                // PHASE 2: PIGMENTS (T5)
+                { phase: "Phase 2: Pigments", name: "Nether Pigment", desc: "Grind Netherbloom into a fine purple paste." },
+                { name: "Raid: Al'ar", desc: "Ashes of Al'ar make a brilliant orange pigment.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Vashj's scales provide a vibrant teal.", isRaid: true },
+                { name: "Mixing", desc: "Mix the pigments on a palette of pure crystal.", reward: "Artist's Brush (Epic)" },
+
+                // PHASE 3: MASTERPIECE (T6)
+                { phase: "Phase 3: Masterpiece", name: "Hyjal's Canvas", desc: "Paint a protective ward on the World Tree." },
+                { name: "Raid: Archimonde", desc: "Capture the moment of his defeat in a sketch.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Illidan's tattoos are the ultimate inspiration. Study them.", isRaid: true },
+                { name: "The Artist", desc: "You are ready to paint the world.", reward: "Brush of Reality (T6 Epic)" },
+
+                // PHASE 4: SIGNATURE (SWP)
+                { phase: "Phase 4: Signature", name: "Sunwell's Light", desc: "Dip the brush in the Sunwell." },
+                { name: "Raid: Felmyst", desc: "Paint a dragon.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Sign your name on the Deceiver's face.", isRaid: true },
+                { name: "Magnum Opus", desc: "It is finished." }
+              ]
+            }
           }
         }
       ]
