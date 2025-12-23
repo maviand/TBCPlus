@@ -88,11 +88,12 @@ const TalentCalculator = () => {
         return (
             <g>
                 <defs>
-                    <marker id="arrow-gray" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,8 L8,4 z" fill="#4b5563" />
+                    {/* 50% Smaller Arrowheads: 4px width roughly */}
+                    <marker id="arrow-gray" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,5 L5,2.5 z" fill="#4b5563" />
                     </marker>
-                    <marker id="arrow-gold" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,8 L8,4 z" fill="#fbbf24" />
+                    <marker id="arrow-gold" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,5 L5,2.5 z" fill="#fbbf24" />
                     </marker>
                 </defs>
                 {talents.map(talent => {
@@ -122,9 +123,7 @@ const TalentCalculator = () => {
                     const tCx = tCol * 60 + 30;
                     const tCy = tRow * 64 + 20;
 
-                    const r = 20; // radius
-                    // Actually marker refX puts the tip at the point. We want the tip to touch the edge.
-                    // So we draw TO the edge.
+                    const r = 20; // 20px radius touches border exactly
 
                     let d = "";
 
@@ -174,26 +173,19 @@ const TalentCalculator = () => {
                         const endX = tCx;
                         const endY = tCy;
 
-                        // Midpoint for the elbow bend
-                        let midX, midY;
+                        // Standard TBC style: Exit Vertical, turn, Enter Vertical.
+                        // Wait, it enters Top/Bottom usually.
 
-                        if (tRow > pRow) { // Prereq is above talent (downward flow)
-                            if (tCol > pCol) { // Prereq is left of talent (rightward flow)
-                                // Path: Prereq (bottom) -> down -> right -> Talent (top)
-                                d = `M${startX} ${startY + r} L${startX} ${startY + 32} L${endX} ${startY + 32} L${endX} ${endY - r}`;
-                            } else { // tCol < pCol (leftward flow)
-                                // Path: Prereq (bottom) -> down -> left -> Talent (top)
-                                d = `M${startX} ${startY + r} L${startX} ${startY + 32} L${endX} ${startY + 32} L${endX} ${endY - r}`;
-                            }
-                        } else { // tRow < pRow (upward flow)
-                            if (tCol > pCol) { // Prereq is left of talent (rightward flow)
-                                // Path: Prereq (top) -> up -> right -> Talent (bottom)
-                                d = `M${startX} ${startY - r} L${startX} ${startY - 32} L${endX} ${startY - 32} L${endX} ${endY + r}`;
-                            } else { // tCol < pCol (leftward flow)
-                                // Path: Prereq (top) -> up -> left -> Talent (bottom)
-                                d = `M${startX} ${startY - r} L${startX} ${startY - 32} L${endX} ${startY - 32} L${endX} ${endY + r}`;
-                            }
-                        }
+                        const exitY = (tRow > pRow) ? pCy + r : pCy - r;
+                        const enterY = (tRow > pRow) ? tCy - r : tCy + r;
+
+                        // Mid Y should be in the gap between rows.
+                        // Gap is 24px. Center of gap is pCy + 32 (if going down).
+                        // If going UP, gap is pCy - 32.
+
+                        const bendY = (tRow > pRow) ? pCy + 32 : pCy - 32;
+
+                        d = `M${startX} ${exitY} L${startX} ${bendY} L${endX} ${bendY} L${endX} ${enterY}`;
                     }
 
                     return (
