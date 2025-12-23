@@ -7,6 +7,10 @@ import {
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
 import { druidTalents } from '../data/druid-talents';
+import {
+    hunterTalents, mageTalents, paladinTalents, priestTalents,
+    rogueTalents, shamanTalents, warlockTalents, warriorTalents
+} from '../data/additional-class-talents';
 
 const TalentCalculator = () => {
     const [activeClass, setActiveClass] = useState('druid');
@@ -14,18 +18,34 @@ const TalentCalculator = () => {
     const [totalPoints, setTotalPoints] = useState(0);
     const MAX_POINTS = 61;
 
-    // -- CLASS DATA --
-    const classes = {
-        druid: { name: 'Druid', icon: <Leaf className="w-5 h-5" />, color: 'text-orange-400', border: 'border-orange-500' },
-        hunter: { name: 'Hunter', icon: <Crosshair className="w-5 h-5" />, color: 'text-green-400', border: 'border-green-500' },
-        mage: { name: 'Mage', icon: <Flame className="w-5 h-5" />, color: 'text-blue-400', border: 'border-blue-500' },
-        paladin: { name: 'Paladin', icon: <Hammer className="w-5 h-5" />, color: 'text-pink-400', border: 'border-pink-500' },
-        priest: { name: 'Priest', icon: <BookOpen className="w-5 h-5" />, color: 'text-white', border: 'border-gray-400' },
-        rogue: { name: 'Rogue', icon: <Sword className="w-5 h-5" />, color: 'text-yellow-400', border: 'border-yellow-500' },
-        shaman: { name: 'Shaman', icon: <Zap className="w-5 h-5" />, color: 'text-blue-600', border: 'border-blue-600' },
-        warlock: { name: 'Warlock', icon: <Skull className="w-5 h-5" />, color: 'text-purple-500', border: 'border-purple-500' },
-        warrior: { name: 'Warrior', icon: <Shield className="w-5 h-5" />, color: 'text-red-500', border: 'border-red-500' },
+    // -- DATA AGGREGATION --
+    const ALL_TALENTS = {
+        druid: druidTalents,
+        hunter: hunterTalents,
+        mage: mageTalents,
+        paladin: paladinTalents,
+        priest: priestTalents,
+        rogue: rogueTalents,
+        shaman: shamanTalents,
+        warlock: warlockTalents,
+        warrior: warriorTalents
     };
+
+    // -- CLASS CONFIG (Icons & Colors) --
+    // Using Crests as requested from the Classes page
+    const CLASS_CONFIG = {
+        druid: { name: 'Druid', crest: "https://i.imgur.com/t9FOweo.png", color: 'text-orange-400', border: 'border-orange-500' },
+        hunter: { name: 'Hunter', crest: "https://i.imgur.com/En31Y4t.png", color: 'text-green-400', border: 'border-green-500' },
+        mage: { name: 'Mage', crest: "https://i.imgur.com/qn2djXW.png", color: 'text-blue-400', border: 'border-blue-500' },
+        paladin: { name: 'Paladin', crest: "https://i.imgur.com/tbPW0IM.png", color: 'text-pink-400', border: 'border-pink-500' },
+        priest: { name: 'Priest', crest: "https://i.imgur.com/aj1CVrE.png", color: 'text-white', border: 'border-gray-400' },
+        rogue: { name: 'Rogue', crest: "https://i.imgur.com/kQJfCCO.png", color: 'text-yellow-400', border: 'border-yellow-500' },
+        shaman: { name: 'Shaman', crest: "https://i.imgur.com/OaLY1Ck.png", color: 'text-blue-600', border: 'border-blue-600' },
+        warlock: { name: 'Warlock', crest: "https://i.imgur.com/MHcMLJx.png", color: 'text-purple-500', border: 'border-purple-500' },
+        warrior: { name: 'Warrior', crest: "https://i.imgur.com/seZs5WM.png", color: 'text-red-500', border: 'border-red-500' },
+    };
+
+    const currentClassData = ALL_TALENTS[activeClass];
 
     // Reset points when class changes
     useEffect(() => {
@@ -35,9 +55,9 @@ const TalentCalculator = () => {
 
     // -- HELPER: Count points in a specific tree --
     const getTreePoints = (treeKey) => {
-        if (activeClass !== 'druid') return 0;
-        const treeTalents = druidTalents[treeKey].talents;
-        return treeTalents.reduce((acc, t) => acc + (points[t.id] || 0), 0);
+        const treeData = currentClassData[treeKey];
+        if (!treeData) return 0;
+        return treeData.talents.reduce((acc, t) => acc + (points[t.id] || 0), 0);
     };
 
     // -- HANDLERS --
@@ -57,8 +77,8 @@ const TalentCalculator = () => {
             // Check prerequisite dependency
             if (talent.prereq) {
                 const prereqRank = points[talent.prereq] || 0;
-                // Find prereq max points (inefficient but works for small data)
-                const prereqTalent = druidTalents[treeKey].talents.find(t => t.id === talent.prereq);
+                // Find prereq max points
+                const prereqTalent = currentClassData[treeKey].talents.find(t => t.id === talent.prereq);
                 if (prereqTalent && prereqRank < prereqTalent.maxPoints) return;
             }
 
@@ -71,8 +91,6 @@ const TalentCalculator = () => {
         e.preventDefault();
         const currentRank = points[talent.id] || 0;
         if (currentRank > 0) {
-            // Logic to prevent breaking dependencies (simple strict mode: cannot remove if dependent exists)
-            // For now, simpler removal allowed for prototype
             setPoints({ ...points, [talent.id]: currentRank - 1 });
             setTotalPoints(totalPoints - 1);
         }
@@ -126,9 +144,9 @@ const TalentCalculator = () => {
                     // Radius adjustment:
                     // Icon is 40px wide/high (r=20).
                     // User requested "edge to edge".
-                    // r=20 touches exactly.
-                    // r=19 makes it penetrate 1px, ensuring no sub-pixel gaps.
-                    const r = 19;
+                    // r=20 touches exactly the boundary of a 40px icon.
+                    // With a 3px border, the "outside edge" is at the 40px boundary.
+                    const r = 20;
 
                     let d = "";
 
@@ -195,6 +213,10 @@ const TalentCalculator = () => {
                             stroke={color}
                             strokeWidth="3"
                             markerEnd={markerId}
+                            style={{
+                                filter: isActive ? "drop-shadow(0 0 3px #fbbf24)" : "none",
+                                transition: "all 0.3s ease"
+                            }}
                         />
                     );
                 })}
@@ -207,8 +229,7 @@ const TalentCalculator = () => {
         const treePoints = getTreePoints(specKey);
 
         return (
-            /* Removed overflow-hidden to allow tooltips to pop out */
-            <div className="flex-1 min-w-[300px] bg-[#121212] border border-white/10 rounded-lg flex flex-col relative">
+            <div className="flex-1 min-w-[300px] bg-[#121212] border border-white/10 rounded-lg flex flex-col relative shadow-xl">
                 {/* Header */}
                 <div className="p-4 bg-white/5 border-b border-white/5 flex items-center justify-between rounded-t-lg">
                     <div className="flex items-center gap-2">
@@ -225,28 +246,19 @@ const TalentCalculator = () => {
                 {/* Grid Container */}
                 <div
                     className="relative p-6 flex-1 bg-cover bg-center rounded-b-lg"
-                    style={{ backgroundImage: `url(${specData.background})` }}
+                    style={{
+                        backgroundImage: `url(${specData.background})`,
+                        backgroundBlendMode: 'overlay',
+                        backgroundColor: '#0a0a0a' // Darken default
+                    }}
                 >
-                    <div className="absolute inset-0 bg-[#0a0a0a]/90 rounded-b-lg"></div>
-
-                    {/* Arrows Layer */}
-                    <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ overflow: 'visible' }}>
-                        {/* We need to offset the SVG to match the padding-6 (24px) of the container */}
-                        {/* Or interpret the coordinates relative to the grid container div */}
-                        {/* The grid starts at padding: 24px. So (0,0) in grid is (24,24) in SVG if SVG is inset-0? */}
-                        {/* Actually, let's put SVG INSIDE the grid container wrapper? No. */}
-                        {/* Let's translate the group by (margin-x: auto) which is tricky. */}
-                        {/* Fix: Put SVG inside the 240px container */}
-                    </svg>
+                    <div className="absolute inset-0 bg-[#0a0a0a]/80 rounded-b-lg"></div>
 
                     {/* Talent Grid Wrapper */}
                     <div className="relative z-10" style={{ width: '240px', margin: '0 auto' }}>
 
-                        {/* SVG Layer for Arrows - Local to this 240px wide container */}
+                        {/* SVG Layer for Arrows */}
                         <svg className="absolute -top-4 -left-4 w-[120%] h-[120%] pointer-events-none z-0" style={{ overflow: 'visible' }}>
-                            {/* Translating to handle local coords: padding-top/left within this box? No, grid gap handling. */}
-                            {/* The renderArrows function uses 60/64 steps. This roughly matches the DOM grid. */}
-                            {/* Shift by half column (30) is center. Shift by vertical? */}
                             {renderArrows(specKey, specData.talents)}
                         </svg>
 
@@ -257,28 +269,27 @@ const TalentCalculator = () => {
                                 const isMaxed = rank === talent.maxPoints;
                                 const hasPoints = rank > 0;
                                 // Check maxed dependency
-                                const prereqTalentData = talent.prereq ? druidTalents[specKey].talents.find(t => t.id === talent.prereq) : null;
+                                const prereqTalentData = talent.prereq ? currentClassData[specKey].talents.find(t => t.id === talent.prereq) : null;
                                 const isLocked = talent.prereq && (points[talent.prereq] || 0) < (prereqTalentData?.maxPoints || 0);
                                 const isGreyed = isLocked || (getTreePoints(specKey) < talent.row * 5); // Simple tier availability check
 
                                 // Icon logic
-                                const iconUrl = talent.icon.startsWith('http')
+                                const iconUrl = talent.icon.startsWith('http') || talent.icon.startsWith('data:')
                                     ? talent.icon
                                     : `https://wow.zamimg.com/images/wow/icons/large/${talent.icon}.jpg`;
 
                                 // Tooltip Positioning Logic
                                 const isTopRow = talent.row < 2;
-                                // Horizontal alignment to prevent clipping
-                                let alignClass = "left-1/2 -translate-x-1/2"; // default center
-                                if (talent.col === 0) alignClass = "left-0 translate-x-0"; // align left edge
-                                if (talent.col === 3) alignClass = "right-0 translate-x-0"; // align right edge
+                                let alignClass = "left-1/2 -translate-x-1/2";
+                                if (talent.col === 0) alignClass = "left-0 translate-x-0";
+                                if (talent.col === 3) alignClass = "right-0 translate-x-0";
 
                                 const tooltipClass = `${isTopRow ? "top-full mt-2" : "bottom-full mb-2"} ${alignClass}`;
 
                                 return (
                                     <div
                                         key={talent.id}
-                                        className="relative group flex justify-center w-10 h-10" // Explicit size for grid cell center
+                                        className="relative group flex justify-center w-10 h-10"
                                         style={{
                                             gridColumn: talent.col + 1,
                                             gridRow: talent.row + 1
@@ -287,7 +298,7 @@ const TalentCalculator = () => {
                                         onContextMenu={(e) => handleRemovePoint(talent, specKey, e)}
                                     >
                                         <div className={`
-                                            absolute inset-0 rounded border-2 transition-all cursor-pointer z-20
+                                            absolute inset-0 rounded border-[3px] transition-all cursor-pointer z-20
                                             ${isMaxed ? 'border-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]' :
                                                 hasPoints ? 'border-green-400' :
                                                     isGreyed ? 'border-gray-800 opacity-50 grayscale' : 'border-gray-500 hover:border-gray-300'}
@@ -303,7 +314,7 @@ const TalentCalculator = () => {
                                             </div>
                                         </div>
 
-                                        {/* Tooltip - High Z-Index, fixed width */}
+                                        {/* Tooltip */}
                                         <div className={`absolute w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-[100] pointer-events-none text-left ${tooltipClass}`}>
                                             <h4 className="font-bold text-amber-400 text-sm">{talent.name}</h4>
                                             <p className="text-[10px] text-gray-400 mb-2">Rank {rank}/{talent.maxPoints}</p>
@@ -343,21 +354,24 @@ const TalentCalculator = () => {
             <div className="w-full max-w-[1920px] mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
 
                 {/* LEFT: Class Selector */}
-                <aside className="lg:w-48 flex-shrink-0 hidden xl:block">
-                    <div className="bg-[#121212] border border-white/10 rounded-lg p-3 sticky top-24">
+                <aside className="lg:w-64 flex-shrink-0">
+                    <div className="bg-[#121212] border border-white/10 rounded-lg p-4 sticky top-24">
+                        <h3 className="font-hero text-gray-400 text-xs uppercase tracking-widest mb-4 border-b border-white/10 pb-2">Select Class</h3>
                         <div className="grid grid-cols-4 lg:grid-cols-1 gap-2">
-                            {Object.entries(classes).map(([key, cls]) => (
+                            {Object.entries(CLASS_CONFIG).map(([key, cls]) => (
                                 <button
                                     key={key}
                                     onClick={() => setActiveClass(key)}
-                                    className={`flex items-center gap-2 p-2 rounded transition-colors ${activeClass === key
-                                        ? `bg-white/10 text-white ${cls.border} border-l-2`
-                                        : 'text-gray-500 hover:text-gray-300 hover:bg-white/5'
+                                    className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-300 group ${activeClass === key
+                                        ? `bg-white/10 text-white ${cls.border} border-l-4 shadow-lg`
+                                        : 'text-gray-500 hover:text-gray-300 hover:bg-white/5 border border-transparent'
                                         }`}
                                     title={cls.name}
                                 >
-                                    {cls.icon}
-                                    <span className="font-medium hidden lg:block text-sm">{cls.name}</span>
+                                    <div className={`w-8 h-8 rounded bg-black/40 border border-white/5 p-1 ${activeClass === key ? 'scale-110' : 'group-hover:scale-110'} transition-transform`}>
+                                        <img src={cls.crest} className="w-full h-full object-contain" />
+                                    </div>
+                                    <span className="font-hero font-bold tracking-wide hidden lg:block text-sm">{cls.name}</span>
                                 </button>
                             ))}
                         </div>
@@ -370,17 +384,17 @@ const TalentCalculator = () => {
                     <div className="flex justify-between items-center mb-6 bg-[#121212] p-4 rounded-lg border border-white/10 shadow-lg sticky top-20 z-40 backdrop-blur-md bg-opacity-90">
                         <div className="flex items-center gap-6">
                             <div className="text-center">
-                                <span className={`block text-3xl font-hero font-bold ${activeClass === 'druid' ? 'text-amber-500' : 'text-gray-600'}`}>
+                                <span className={`block text-3xl font-hero font-bold ${CLASS_CONFIG[activeClass].color}`}>
                                     {totalPoints} / {MAX_POINTS}
                                 </span>
                                 <span className="text-[10px] uppercase text-gray-500 tracking-wider">Points Used</span>
                             </div>
                             <div className="h-10 w-px bg-white/10"></div>
                             {/* Tree Summaries */}
-                            {activeClass === 'druid' && Object.keys(druidTalents).map(treeKey => (
-                                <div key={treeKey} className="text-center">
+                            {Object.keys(currentClassData).map(treeKey => (
+                                <div key={treeKey} className="text-center hidden md:block">
                                     <span className="block text-xl font-mono text-gray-300">{getTreePoints(treeKey)}</span>
-                                    <span className="text-[9px] uppercase text-gray-500 tracking-wider">{druidTalents[treeKey].name}</span>
+                                    <span className="text-[9px] uppercase text-gray-500 tracking-wider truncate max-w-[80px] block">{currentClassData[treeKey].name}</span>
                                 </div>
                             ))}
                         </div>
@@ -392,22 +406,10 @@ const TalentCalculator = () => {
                         </button>
                     </div>
 
-                    {activeClass !== 'druid' ? (
-                        <div className="h-96 flex items-center justify-center bg-[#121212] border border-white/10 rounded-lg">
-                            <div className="text-center text-gray-500">
-                                <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                                <h2 className="text-2xl font-hero text-gray-400">Work in Progress</h2>
-                                <p>The {classes[activeClass].name} talent tree is being reforged.</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="flex flex-col lg:flex-row gap-4 overflow-x-auto pb-8">
-                            {/* Render all 3 trees */}
-                            {renderTree('balance', druidTalents.balance)}
-                            {renderTree('feral', druidTalents.feral)}
-                            {renderTree('restoration', druidTalents.restoration)}
-                        </div>
-                    )}
+                    <div className="flex flex-col xl:flex-row gap-6 overflow-x-auto pb-8">
+                        {/* Render all 3 trees */}
+                        {Object.entries(currentClassData).map(([key, data]) => renderTree(key, data))}
+                    </div>
                 </main>
             </div>
         </div>
