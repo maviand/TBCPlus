@@ -110,8 +110,7 @@ const TalentCalculator = () => {
                     // Grid cols: 4, Width: 240px. Col Width = 60px.
                     // Row Height = 64px (40px icon + 24px gap).
                     // Icon Size = 40px.
-                    // Center CX = Col*60 + 36 (Measured offset).
-                    // Center CY = Row*64 + 36 (Measured offset).
+                    // MEASURED OFFSETS (Browser Refined): X+36, Y+36.
 
                     const pCol = prereq.col;
                     const pRow = prereq.row;
@@ -126,8 +125,10 @@ const TalentCalculator = () => {
 
                     // Radius adjustment:
                     // Icon is 40px wide/high (r=20).
-                    // With accurate centers, r=20 touches the border exactly.
-                    const r = 20;
+                    // User requested "edge to edge".
+                    // r=20 touches exactly.
+                    // r=19 makes it penetrate 1px, ensuring no sub-pixel gaps.
+                    const r = 19;
 
                     let d = "";
 
@@ -180,17 +181,7 @@ const TalentCalculator = () => {
                         const enterY = (tRow > pRow) ? tCy - r : tCy + r;
 
                         // Mid Y calculation
-                        // Gap is 24px. Center of gap is pCy + 32 (if going down).
-                        // pCy is now 36. 36 + 32 = 68. Row boundary is 64. 68 is 4px into next row?
-                        // Wait, if pCy=36 (Center), and Row height 64.
-                        // Next Row Center = 36 + 64 = 100.
-                        // Midpoint = (36 + 100) / 2 = 68.
-                        // Row Boundary = 64.
-                        // 68 is 4px below boundary.
-                        // Gap is from Y=56 (Bottom of Icon 1) to Y=80 (Top of Icon 2).
-                        // Y=68 is perfectly centered in the 24px gap (56 + 12 = 68).
-                        // Math holds up.
-
+                        // Centered in gap.
                         const bendY = (tRow > pRow) ? pCy + 32 : pCy - 32;
 
                         d = `M${startX} ${exitY} L${startX} ${bendY} L${endX} ${bendY} L${endX} ${enterY}`;

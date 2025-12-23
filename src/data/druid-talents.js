@@ -70,7 +70,7 @@ export const druidTalents = {
 
             // ROW 5
             { id: "savage-strikes", name: "Savage Strikes", icon: "ability_racial_bloodrage", row: 4, col: 0, maxPoints: 2, description: (rank) => `Increases the critical strike chance of your Claw, Rake, Mangle (Cat), Mangle (Bear) and Maul capabilities by ${rank * 10}%.` },
-            { id: "faerie-fire-feral", name: "Faerie Fire (Feral)", icon: "spell_nature_faeriefire", row: 4, col: 1, maxPoints: 1, description: (rank) => `Decrease the armor of the target, prevent them from stealthing or turning invisible.` },
+            { id: "faerie-fire-feral", name: "Faerie Fire (Feral)", icon: "spell_nature_faeriefire", row: 4, col: 2, maxPoints: 1, description: (rank) => `Decrease the armor of the target, prevent them from stealthing or turning invisible.` },
             { id: "nurturing-instinct", name: "Nurturing Instinct", icon: "ability_druid_healinginstincts", row: 4, col: 3, maxPoints: 2, description: (rank) => `Increases your healing spells by up to ${rank * 25}% of your Agility.` },
 
             // ROW 6
