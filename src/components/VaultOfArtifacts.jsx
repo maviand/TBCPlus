@@ -103,6 +103,7 @@ const VaultOfArtifacts = () => {
       specs: {
         arms: {
           name: 'Arms',
+          icon: 'https://i.imgur.com/tgSiYFd.png',
           title: 'The Master of the Blade',
           desc: 'For the Arms warrior, the weapon is an extension of the soul. Your journey requires mastery of technique.',
           steps: [
@@ -123,6 +124,7 @@ const VaultOfArtifacts = () => {
         },
         fury: {
           name: 'Fury',
+          icon: 'https://i.imgur.com/wJbmNeR.png',
           title: 'The Unrelenting Berserker',
           desc: 'Rage is not chaos; it is fuel. You must learn to burn without consuming yourself.',
           steps: [
@@ -143,6 +145,7 @@ const VaultOfArtifacts = () => {
         },
         protection: {
           name: 'Protection',
+          icon: 'https://i.imgur.com/FhuhqTX.png',
           title: 'The Unbreakable Bulwark',
           desc: 'You are the shield that guards the realms of men. You do not falter.',
           steps: [
@@ -169,6 +172,7 @@ const VaultOfArtifacts = () => {
       specs: {
         holy: {
           name: 'Holy',
+          icon: 'https://i.imgur.com/nbn8UHD.jpeg',
           title: 'The Light\'s Mercy',
           desc: 'The Light burns the unworthy, but heals the faithful. Mastery lies in balancing these natures.',
           steps: [
@@ -189,6 +193,7 @@ const VaultOfArtifacts = () => {
         },
         prot: {
           name: 'Protection',
+          icon: 'https://i.imgur.com/tcWwZXg.png',
           title: 'The Sacred Shield',
           desc: 'A shield of faith is stronger than steel. You must become the sanctuary.',
           steps: [
@@ -209,6 +214,7 @@ const VaultOfArtifacts = () => {
         },
         ret: {
           name: 'Retribution',
+          icon: 'https://i.imgur.com/dpHn8vW.png',
           title: 'The Hand of Justice',
           desc: 'Retribution is swift and final. You are the judge, jury, and executioner.',
           steps: [
@@ -235,6 +241,7 @@ const VaultOfArtifacts = () => {
       specs: {
         bm: {
           name: 'Beast Mastery',
+          icon: 'https://i.imgur.com/O9XtjlG.png',
           title: 'The Pack Lord',
           desc: 'One heart, two bodies. You and your beast are a single predatory entity.',
           steps: [
@@ -255,6 +262,7 @@ const VaultOfArtifacts = () => {
         },
         mm: {
           name: 'Marksmanship',
+          icon: 'https://i.imgur.com/qtQxThz.png',
           title: 'The Deadeye',
           desc: 'One shot, one kill. Patience is your weapon.',
           steps: [
@@ -275,6 +283,7 @@ const VaultOfArtifacts = () => {
         },
         surv: {
           name: 'Survival',
+          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
           title: 'The Trapper',
           desc: 'Explosives, traps, venom. You win before the fight begins.',
           steps: [
@@ -301,6 +310,7 @@ const VaultOfArtifacts = () => {
       specs: {
         ass: {
           name: 'Assassination',
+          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
           title: 'The Poisoner',
           desc: 'A whisper in the dark, a knife in the ribs. Lethality is an art.',
           steps: [
@@ -321,6 +331,7 @@ const VaultOfArtifacts = () => {
         },
         combat: {
           name: 'Combat',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
           title: 'The Duelist',
           desc: 'Face your enemy steel to steel. No hiding, just skill.',
           steps: [
@@ -341,6 +352,7 @@ const VaultOfArtifacts = () => {
         },
         sub: {
           name: 'Subtlety',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
           title: 'The Shadow',
           desc: 'You are nowhere and everywhere. A phantom of death.',
           steps: [
@@ -367,6 +379,7 @@ const VaultOfArtifacts = () => {
       specs: {
         disc: {
           name: 'Discipline',
+          icon: 'https://i.imgur.com/yKNBawv.png',
           title: 'The Shield of the Soul',
           desc: 'Willpower is stronger than steel. To protect others, you must first master your own mind.',
           steps: [
@@ -387,6 +400,7 @@ const VaultOfArtifacts = () => {
         },
         holy: {
           name: 'Holy',
+          icon: 'https://i.imgur.com/2JfVmju.png',
           title: 'The Beacon of Light',
           desc: 'You are a conduit of the Light\'s purest grace. Where there is death, you bring rebirth.',
           steps: [
@@ -407,6 +421,7 @@ const VaultOfArtifacts = () => {
         },
         shadow: {
           name: 'Shadow',
+          icon: 'https://i.imgur.com/cgUNFcU.png',
           title: 'The Void Cultist',
           desc: 'To defeat the darkness, you must understand it. You walk the line between genius and insanity.',
           steps: [
@@ -433,6 +448,7 @@ const VaultOfArtifacts = () => {
       specs: {
         ele: {
           name: 'Elemental',
+          icon: 'https://i.imgur.com/8ChsJBV.png',
           title: 'The Storm Caller',
           desc: 'The elements respond to your call. You are the lightning rod.',
           steps: [
@@ -453,6 +469,7 @@ const VaultOfArtifacts = () => {
         },
         enh: {
           name: 'Enhancement',
+          icon: 'https://i.imgur.com/38aMS1Y.png',
           title: 'The Storm Hammer',
           desc: 'Earth and air fused into kinetic destruction. Strike as one with the elements.',
           steps: [
@@ -473,6 +490,7 @@ const VaultOfArtifacts = () => {
         },
         resto: {
           name: 'Restoration',
+          icon: 'https://i.imgur.com/2msDhl4.png',
           title: 'The Tidecaller',
           desc: 'Water is life. You control the ebb and flow of existence.',
           steps: [
@@ -499,6 +517,7 @@ const VaultOfArtifacts = () => {
       specs: {
         arcane: {
           name: 'Arcane',
+          icon: 'https://i.imgur.com/Zt0BQe6.png',
           title: 'The Archmage',
           desc: 'Arcane is the fabric of the universe. You tug at the threads of reality.',
           steps: [
@@ -519,6 +538,7 @@ const VaultOfArtifacts = () => {
         },
         fire: {
           name: 'Fire',
+          icon: 'https://i.imgur.com/TRNTMys.png',
           title: 'The Pyromancer',
           desc: 'Some just want to watch the world burn. You are the spark.',
           steps: [
@@ -539,6 +559,7 @@ const VaultOfArtifacts = () => {
         },
         frost: {
           name: 'Frost',
+          icon: 'https://i.imgur.com/oR1e4BK.png',
           title: 'The Frostlord',
           desc: 'Cold, calculating, and inevitable. You are the winter storm.',
           steps: [
@@ -565,6 +586,7 @@ const VaultOfArtifacts = () => {
       specs: {
         aff: {
           name: 'Affliction',
+          icon: 'https://i.imgur.com/ZAsJNiE.jpeg',
           title: 'The Soul Reaper',
           desc: 'Agony, corruption, unstable magic. You slowly unravel the soul.',
           steps: [
@@ -585,6 +607,7 @@ const VaultOfArtifacts = () => {
         },
         demo: {
           name: 'Demonology',
+          icon: 'https://i.imgur.com/iGZVgov.png',
           title: 'The Demon Commander',
           desc: 'You do not serve the Legion. The Legion serves you.',
           steps: [
@@ -605,6 +628,7 @@ const VaultOfArtifacts = () => {
         },
         destro: {
           name: 'Destruction',
+          icon: 'https://i.imgur.com/67hJXkU.png',
           title: 'The Chaos Bringer',
           desc: 'Fel fire burns hotter than any natural flame. Unleash chaos.',
           steps: [
@@ -631,6 +655,7 @@ const VaultOfArtifacts = () => {
       specs: {
         balance: {
           name: 'Balance',
+          icon: 'https://i.imgur.com/xqYw2gI.png',
           title: 'The Starseer',
           desc: 'The moon and the stars are your guides. Maintain the balance of nature.',
           steps: [
@@ -651,6 +676,7 @@ const VaultOfArtifacts = () => {
         },
         feral: {
           name: 'Feral',
+          icon: 'https://i.imgur.com/su1345k.jpeg',
           title: 'The Apex Predator',
           desc: 'Nature is red in tooth and claw. You are the king of the jungle.',
           steps: [
@@ -671,6 +697,7 @@ const VaultOfArtifacts = () => {
         },
         resto: {
           name: 'Restoration',
+          icon: 'https://i.imgur.com/8WViTgN.png',
           title: 'The World Tree\'s Tender',
           desc: 'Growth, rebirth, serenity. You are the roots that hold the world together.',
           steps: [
@@ -761,9 +788,10 @@ const VaultOfArtifacts = () => {
               <button
                 key={key}
                 onClick={() => setActiveSpec(key)}
-                className={`text-sm font-cinzel tracking-widest uppercase transition-colors pb-2 border-b-2 ${activeSpec === key ? 'text-white border-amber-500' : 'text-stone-600 border-transparent hover:text-stone-400'
+                className={`text-sm font-cinzel tracking-widest uppercase transition-colors pb-2 border-b-2 flex items-center gap-2 ${activeSpec === key ? 'text-white border-amber-500' : 'text-stone-600 border-transparent hover:text-stone-400'
                   }`}
               >
+                <img src={spec.icon} className="w-5 h-5 object-contain" alt="" />
                 {spec.name}
               </button>
             ))}

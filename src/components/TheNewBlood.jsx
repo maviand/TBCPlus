@@ -83,31 +83,37 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Warrior',
+          icon: 'https://i.imgur.com/wJbmNeR.png',
           title: 'Bruiser-for-Hire',
           desc: 'Less "martial arts," more "dirty fighting." You are the heavy muscle for debt collection. Your "Charge" is rocket-assisted. Your "Shield Bash" uses a reinforced vault door. Your "Execute" is a point-blank shotgun blast (visual only). You wear plate armor not for honor, but because insurance premiums are lower if you wear safety gear.'
         },
         {
           class: 'Rogue',
+          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
           title: 'Corporate Fixer',
           desc: 'Specializes in "Hostile Takeovers" and industrial espionage. Your poisons are re-purposed industrial waste and toxic sludge. Pickpocket yields 10% more gold (embezzlement). Your Stealth is less about magic and more about a high-tech cloaking field that sometimes sparks and sputters.'
         },
         {
           class: 'Hunter',
+          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
           title: 'Big Game Poacher',
           desc: 'Pets are investments, not friends. You don\'t "tame" beasts; you "break" them with shock collars. Uses a pneumatic "Net-Gun" instead of traps. Exotic munitions leave glowing radioactive residue. You treat rare spawns as "high-value assets" to be captured and sold.'
         },
         {
           class: 'Mage',
+          icon: 'https://i.imgur.com/TRNTMys.png',
           title: 'Pyrotechnician',
           desc: 'Magic via technology. You don\'t chant; you calibrate. Fireballs are launched from wrist-mounted mortars. Blink leaves a puff of black exhaust smoke and an oil slick. Frost Nova is a coolant leak from your backpack reactor. You are walking OSHA violation.'
         },
         {
           class: 'Warlock',
+          icon: 'https://i.imgur.com/iGZVgov.png',
           title: 'Void-Contractor',
           desc: 'Demons aren\'t summoned; they are "sub-contracted" via binding clauses written in infernal legalese. Soulstones are literal soul-batteries you screw into a socket. Very unstable visuals—your minions sometimes complain about their pay or demand hazard pay in Demonic.'
         },
         {
           class: 'Priest',
+          icon: 'https://i.imgur.com/yKNBawv.png',
           title: 'Field Medic',
           desc: 'Healing is a fee-for-service business. You are an insurance adjustor with a med-kit. "Holy Nova" sprays a revitalizing green chemical mist. "Resurrection" involves a jumper-cable shock to the chest. Your buffs are "Performance Enhancers" (experimental drugs).'
         }
@@ -150,31 +156,37 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Paladin',
+          icon: 'https://i.imgur.com/dpHn8vW.png',
           title: 'Knight of the Silver Hand (A) / Blood Knight (H)',
           desc: '**High:** Classic golden light, defensive/protective. They view the Light as a sacred trust to be rebuilt, often carrying symbols of the old Alliance. \n**Blood:** Aggressive red/gold visuals. They view the Light as a resource to be bent to their will. "Seal of Blood" is standard. Their mounts wear red caparisons compared to the High Elf blue.'
         },
         {
           class: 'Mage',
+          icon: 'https://i.imgur.com/Zt0BQe6.png',
           title: 'Arcanist (A) / Magister (H)',
           desc: '**High:** Frost and Arcane focus, clean lines, Kirin Tor aesthetic. They study nether-stability and seek to cure the addiction through discipline. \n**Blood:** Fire focus, chaotic visuals, spells look like they are burning the air itself. They study nether-weaponization and use Fel crystals to amplify their power.'
         },
         {
           class: 'Hunter',
+          icon: 'https://i.imgur.com/qtQxThz.png',
           title: 'Ranger (A) / Farstrider (H)',
           desc: '**High:** Nature-aligned, woodland visual motifs. They bond with eagles and lynxes. They patrol the forests to heal the land. \n**Blood:** Uses darker arrows, red-feathered fletching, more militaristic. They bond with Dragonhawks and Mana-Wyrms. They patrol the forests to eradicate threats.'
         },
         {
           class: 'Warlock',
+          icon: 'https://i.imgur.com/67hJXkU.png',
           title: 'Fel-Caster (Horde Only)',
           desc: 'Blood Elves who dove too deep. They don\'t hide their demons; they parade them as symbols of mastery over the Fel. Their fire spells are tinged green. They are the ultimate pragmatists, using the very energy that destroyed their home to protect what remains of it.'
         },
         {
           class: 'Priest',
+          icon: 'https://i.imgur.com/2JfVmju.png',
           title: 'Cleric (A) / Soul-Mender (H)',
           desc: '**High:** Traditional Holy light, focused on mending the spirit and resisting the whispers of the Void. \n**Blood:** "Discipline" takes on a sinister tone—bending the will of the light to cauterize wounds. Shadow priests are viewed as "researchers" delving into the powers of the Naaru.'
         },
         {
           class: 'Rogue',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
           title: 'Shadowblade',
           desc: 'Spies used by Lor\'themar or Vereesa. They use magic to muffle their footsteps, leaving faint arcane trails. High Elves use invisibility and distraction; Blood Elves use aggressive takedowns and mana-burn poisons.'
         }
@@ -216,26 +228,31 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Warrior',
+          icon: 'https://i.imgur.com/tgSiYFd.png',
           title: 'Gorian Gladiator',
           desc: 'Uses "oversized" weapon models (2H weapons held in 1H - Titan\'s Grip style by default for animations). "Thunder Clap" is a literal foot stomp that cracks the ground texture. Your shout buffs are deep, resonant bellows that fear critters. You embody the physical dominance of the Highmaul Coliseum.'
         },
         {
           class: 'Mage',
+          icon: 'https://i.imgur.com/Zt0BQe6.png',
           title: 'Imperator',
           desc: 'Uses earth-based runes for magic. Fire spells look like molten lava. Frost spells look like jagged crystal formations. They cast spells by punching the air rather than wiggling fingers. They are the scholars of the race, seeking to rebuild the arcane libraries of Goria.'
         },
         {
           class: 'Warlock',
+          icon: 'https://i.imgur.com/ZAsJNiE.jpeg',
           title: 'Void-Caller',
           desc: 'Ogres of the Twilight\'s Hammer legacy. They use physical brute force to constrain their demons. "Summon" animations involve dragging the demon out of a portal by its neck. They view Fel magic as just another tool for domination.'
         },
         {
           class: 'Shaman',
+          icon: 'https://i.imgur.com/8ChsJBV.png',
           title: 'Geomancer',
           desc: 'Totems are massive stone obelisks carved with Gorian runes. Lightning Bolt is a jagged, red-hued "Gorian Lightning." Ascendance turns you into a stone golem. You speak to the earth not with requests, but with commands.'
         },
         {
           class: 'Hunter',
+          icon: 'https://i.imgur.com/O9XtjlG.png',
           title: 'Beastlord',
           desc: 'You don\'t "tame" beasts; you break them. Pets scale slightly larger than normal. Start with a Rylak. Traps are massive iron cages. You wear the trophies of your kills, covering your armor in furs and bones.'
         }
@@ -277,26 +294,31 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Druid',
+          icon: 'https://i.imgur.com/su1345k.jpeg',
           title: 'Form-Shifter',
           desc: '**Cat Form:** You ARE the Saberon (no change, just prowl animation). \n**Bear Form:** A massive, armored "Alpha" Saberon. \n**Moonkin:** A "Witch Doctor" form draped in feathers and skulls. \n**Flight:** A Wyvern-hybrid shift. You view Druidism not as balance, but as mastering every predator in the ecosystem.'
         },
         {
           class: 'Rogue',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
           title: 'Stalker',
           desc: 'No daggers. You use "Fist Weapons" (Claws) exclusively for your animations. Stealth run speed is significantly faster on all fours. Ambush is a throat-bite animation. You are the terror in the tall grass.'
         },
         {
           class: 'Warrior',
+          icon: 'https://i.imgur.com/wJbmNeR.png',
           title: 'Pride-Lord',
           desc: 'Battle Shout is a terrifying roar that actually fears critters. Execute is a bite animation. You fight with a savagery that unnerves even Orcs. You prefer bleeding your enemies out, watching the life drain from them.'
         },
         {
           class: 'Hunter',
+          icon: 'https://i.imgur.com/O9XtjlG.png',
           title: 'Pack-Leader',
           desc: 'You fight alongside your pet as an equal. Melee animations (Wing Clip, Raptor Strike) are seamless claw swipes. You can tame "Feral Druids" (just kidding... mostly). You communicate with your pet via growls, not commands.'
         },
         {
           class: 'Shaman',
+          icon: 'https://i.imgur.com/38aMS1Y.png',
           title: 'Element-Binder',
           desc: 'Primitive shamanism. Totems are piles of skulls and sticks tied with leather. Ghost Wolf turns you into a spectral tiger. Bloodlust is a "Primal Howl" that echoes across the map. You bargain with the elements of blood and earth.'
         }
@@ -337,36 +359,41 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Shaman',
+          icon: 'https://i.imgur.com/8ChsJBV.png',
           title: 'Krokul Nobundo-Disciple',
           desc: 'The defining class. "Totems" are floating, broken crystals. Elemental spirits are darker, more chaotic forms of fire and earth. They speak to the "Broken" elements of Outland—the corrupted earth and the fel-fire. They seek to heal the land to heal themselves.'
         },
         {
           class: 'Warlock',
+          icon: 'https://i.imgur.com/iGZVgov.png',
           title: 'Fel-Binder',
           desc: 'You turn the enemy\'s weapon against them. Your demons are enslaved with chains of light. Shadow Bolts look like jagged glass. You use the Fel to destroy the Legion, a dangerous irony that makes other Alliance races uneasy.'
         },
         {
           class: 'Rogue',
+          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
           title: 'Deathsworn',
           desc: 'Masters of stealth who learned from Akama. Vanish creates a cloud of red mist. Eviscerate leaves a fel-green scar. You specialize in killing demons from the shadows, using their own tactics against them. You are the knife in the dark.'
         },
         {
           class: 'Hunter',
+          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
           title: 'Wasteland Survivor',
           desc: 'Uses scavenged technology. Traps are jury-rigged fel devices. Pets are usually Void-warped beasts (Warp Stalkers). You track demons with supernatural precision, smelling the sulfur on them from miles away.'
         },
         {
           class: 'Mage',
+          icon: 'https://i.imgur.com/Zt0BQe6.png',
           title: 'Nether-Mage',
           desc: 'Magic practiced in secret. Arcane Missiles are purple void-energy. Polymorph turns the target into a mutated cockroach. You tap into the leylines of Outland directly, bypassing the need for refined mana crystals.'
         }
       ],
 
       racials: [
-        { name: 'Soul Siphon', desc: 'Chance on hit to restore 2% Mana/Energy. You feed on the energy of your enemies.' },
-        { name: 'Ashtongue Cunning', desc: '+10 Stealth Detection. +10 Lockpicking. You know how to get into places you aren\'t wanted.' },
-        { name: 'Fel-Scarred', desc: '-1% Shadow Damage Taken. Immune to Fel Taint environment damage. You have already endured the worst.' },
-        { name: 'Fragmented Memories', desc: '+10 Jewelcrafting. You remember the old ways of Argus, if only in flashes.' }
+        { name: 'Soul Siphon', desc: 'Chance on hit to restore 4% Mana/Energy. You feed on the energy of your enemies.' },
+        { name: 'Ashtongue Cunning', desc: '+15 Stealth Detection. +10 Lockpicking. Movement Speed increased by 5% while Stealthed.' },
+        { name: 'Fel-Scarred', desc: '-2% Shadow Damage Taken. Duration of Curses reduced by 15%. You have already endured the worst.' },
+        { name: 'Fragmented Memories', desc: '+15 Jewelcrafting. You remember the old ways of Argus, if only in flashes.' }
       ],
 
       locations: {
@@ -397,35 +424,40 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Shaman',
+          icon: 'https://i.imgur.com/8ChsJBV.png',
           title: 'Stormcaller',
           desc: 'The iconic Wildhammer class. Lightning bolts are brighter, louder, and blue-white. Chain Lightning arcs like a tesla coil. Your totems are carved from Aerie Peak gryphon bones. You don\'t commune with the elements; you wrestle them.'
         },
         {
           class: 'Warrior',
+          icon: 'https://i.imgur.com/wJbmNeR.png',
           title: 'Thane',
           desc: 'Specializes in Dual-Wielding Hammers. "Thunder Clap" summons a localized storm cloud. "Charge" leaves a trail of static. You are a berserker of the skies, often diving into combat from above (no fall damage).'
         },
         {
           class: 'Hunter',
+          icon: 'https://i.imgur.com/qtQxThz.png',
           title: 'Sky-Hunter',
           desc: 'Uses thrown weapons (Axes/Hammers) visually instead of bows/guns. Pets are avian (Eagles, Owls, Gryphons). You can track "Air Elementals" on the minimap. Your traps are "Storm Runes" placed on the ground.'
         },
         {
           class: 'Druid',
+          icon: 'https://i.imgur.com/xqYw2gI.png',
           title: 'Aerie-Keeper',
           desc: 'Forms are avian-themed. Moonkin is a feathered "Storm-Crow" humanoid. Bear form has Gryphon-like beak features. Cat form is a mountain lynx. You are the guardian of the roost.'
         },
         {
           class: 'Rogue',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
           title: 'Wind-Walker',
           desc: 'Subtlety focused. Shadowstep looks like a gust of wind. Sprint leaves a blurred trail of leaves and feathers. You drop from the sky silently, an assassin who strikes from the clouds.'
         }
       ],
 
       racials: [
-        { name: 'Stormborn', desc: '+10 Nature Resistance. 15% Stun Resistance. You were born in a thunderstorm; a little shock won\'t stop you.' },
-        { name: 'Sky-Captain', desc: '+5% Mounted Speed (Ground & Flying). Stacks with other effects. You know how to read the wind currents.' },
-        { name: 'Thunderstrike', desc: 'Active: Hurl a storm hammer. Stuns for 2 sec + Nature Dmg. (2m CD). A classic Wildhammer greeting.' },
+        { name: 'Stormborn', desc: '+1% Nature Damage. +10 Nature Resistance. 15% Stun Resistance. You were born in a thunderstorm.' },
+        { name: 'Sky-Captain', desc: '+10% Mounted Speed (Ground & Flying). Stacks with other effects. You know how to read the wind currents.' },
+        { name: 'Thunderstrike', desc: 'Active: Hurl a storm hammer. Instantly Stuns for 3 sec + Nature Dmg. (2m CD). A classic Wildhammer greeting.' },
         { name: 'Gryphon\'s Eye', desc: '+1% Hit Chance with Ranged Weapons and while Dual-Wielding. Sharp eyes from high altitudes.' },
         { name: 'Aerial Specialist', desc: '+15 Leatherworking. (Saddles/Harnesses). You make your own gear from the beasts you hunt.' }
       ],
@@ -601,7 +633,7 @@ const TheNewBlood = () => {
                 <div key={idx} className="bg-[#111] border border-white/10 p-6 rounded hover:border-[#f8b700]/50 transition-colors group">
                   <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
                     <h3 className="font-hero text-lg text-white group-hover:text-[#f8b700] transition-colors">{cls.class}</h3>
-                    <div className="text-gray-600 group-hover:text-white transition-colors"><Shield size={16} /></div>
+                    <img src={cls.icon} alt="" className="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
                   </div>
                   <h4 className={`text-xs uppercase tracking-widest ${activeData.accentColor} mb-2`}>{cls.title}</h4>
                   <p className="text-sm text-gray-400 leading-relaxed">

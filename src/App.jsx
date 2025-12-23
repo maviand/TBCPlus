@@ -25,6 +25,7 @@ import {
 
 // --- Components ---
 import HallOfLegends from './components/HallOfLegends';
+import TalentCalculator from './components/TalentCalculator';
 import TheNewBlood from './components/TheNewBlood';
 import TheAtlasOfOutland from './components/TheAtlasOfOutland';
 import FelForgedVanguard from './components/FelForgedVanguard';
@@ -34,6 +35,7 @@ import Legendaries from './components/Legendaries';
 import Lore from './components/Lore';
 import TheTheaterOfWar from './components/TheTheaterOfWar';
 import TheArmory from './components/TheArmory';
+import TheGuildSanctum from './components/TheGuildSanctum';
 import Home from './components/Home';
 
 
@@ -42,8 +44,10 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
     { id: 'home', label: 'Home' },
     { id: 'lore', label: 'Lore' },
     { id: 'classes', label: 'Classes' },
+    { id: 'talents', label: 'Talents' },
     { id: 'races', label: 'Races' },
     { id: 'armory', label: 'Armory' },
+    { id: 'sanctum', label: 'Guild Sanctum' },
     { id: 'pvp', label: 'PvP' },
     { id: 'professions', label: 'Professions' },
     { id: 'content', label: 'Content' },
@@ -72,12 +76,12 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
 
           {/* Desktop Nav */}
           <div className="hidden lg:block">
-            <div className="ml-4 flex items-baseline space-x-4">
+            <div className="ml-2 flex items-baseline space-x-1">
               {navItems.map((item) => (
                 <button
                   key={item.id}
                   onClick={() => set(item.id)}
-                  className={`px-3 py-2 rounded-md text-xs font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${active === item.id
+                  className={`px-2 py-2 rounded-md text-[11px] font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${active === item.id
                     ? 'text-green-400 bg-green-900/20 shadow-[0_0_10px_rgba(74,222,128,0.1)]'
                     : 'text-gray-300 hover:text-white hover:bg-slate-800'
                     }`}
@@ -188,8 +192,10 @@ const App = () => {
         {/* Page Routing */}
         {activePage === 'lore' && <Lore />}
         {activePage === 'classes' && <HallOfLegends />}
+        {activePage === 'talents' && <TalentCalculator />}
         {activePage === 'races' && <TheNewBlood />}
         {activePage === 'armory' && <TheArmory />}
+        {activePage === 'sanctum' && <TheGuildSanctum />}
         {activePage === 'pvp' && <TheTheaterOfWar />}
         {activePage === 'professions' && <TheArtisansCodex />}
         {activePage === 'content' && <TheAtlasOfOutland />}

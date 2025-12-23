@@ -65,20 +65,30 @@ const Home = ({ setPage }) => {
                 <div className="absolute inset-0 bg-[url('https://i.imgur.com/i9PDsfK.jpeg')] opacity-10 bg-cover bg-fixed"></div>
                 <div className="container mx-auto px-4 py-12 relative z-10">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                        {/* Stat 1 */}
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">6</h4>
-                            <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">New Races</p>
-                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">High/Blood Elves & Goblins (Choose Allegiance), Ogres</p>
+                            <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">New Playable Races</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">High Elves, Goblins, Ogres, Broken, Wildhammer & Saberon</p>
                         </div>
+
+                        {/* Stat 2 */}
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
-                            <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">1000+</h4>
+                            <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">2500+</h4>
                             <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">New Quests</p>
-                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Class Campaigns & Story Arcs</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Class Campaigns, Zone Storylines & Prestige Chains</p>
+                        </div>
+
+                        {/* Stat 3 */}
+                        <div className="p-4 group hover:bg-white/5 rounded transition-all">
+                            <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">7+</h4>
+                            <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">Custom Dungeons</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Karazhan Crypts, Stormwind Vault, Caverns of Time: War</p>
                         </div>
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">1</h4>
                             <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">New Raid Tier</p>
-                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Citadel of the Void</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Citadel of the Void (Complementing Sunwell Plateau)</p>
                         </div>
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">2</h4>
@@ -93,12 +103,12 @@ const Home = ({ setPage }) => {
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">100%</h4>
                             <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">HD Remaster</p>
-                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Toggleable Graphics</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Seamless World & No Load Screens</p>
                         </div>
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">∞</h4>
                             <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">Timelocked Raids</p>
-                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Molten Core & BWL Scaled</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Molten Core, BWL & Naxxramas</p>
                         </div>
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">Account</h4>
@@ -131,7 +141,7 @@ const Home = ({ setPage }) => {
                             <img src="https://i.imgur.com/yRtAtam.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
                             <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Class Identity</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Every spec has been reworked with a "Masterwork" system. Paladins get Holy Power, Shamans get instant totems. No more one-button rotations.
+                                Every spec has been reworked with a "Masterwork" system. Paladins get Holy Power, Shamans get swiftness. Professions now feature Mastercraft recipes.
                             </p>
                         </div>
                     </div>
@@ -149,7 +159,7 @@ const Home = ({ setPage }) => {
                             <img src="https://i.imgur.com/9G9klET.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
                             <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">New Allies</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Play as <span className="text-orange-400">Goblins</span>, <span className="text-green-400">Ogres</span>, <span className="text-blue-400">High Elves</span>, and more. Each race brings unique racials and lore to the Outland campaign.
+                                Play as <span className="text-orange-400">Goblins</span>, <span className="text-green-400">Ogres</span>, <span className="text-blue-400">High Elves</span>, Broken, Wildhammer Dwarves & Saberon. Each race brings unique racials and lore to the Outland campaign.
                             </p>
                         </div>
                     </div>
@@ -167,7 +177,7 @@ const Home = ({ setPage }) => {
                             <img src="https://i.imgur.com/q9Dvzj3.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
                             <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Endgame Plus</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Face the <span className="text-[#a335ee] font-bold">Citadel of the Void</span> (New Raid Tier), conquer Heroic+ Dungeons, and explore the <span className="text-purple-400">Karazhan Crypts</span>.
+                                Face the <span className="text-[#a335ee] font-bold">Citadel of the Void</span> (Tier 6.5), conquer Heroic+ Dungeons, and explore the <span className="text-purple-400">Karazhan Crypts</span>. All raids, including Naxxramas, are tuned for level 70.
                             </p>
                         </div>
                     </div>
@@ -185,7 +195,7 @@ const Home = ({ setPage }) => {
                             <img src="https://i.imgur.com/xz9m7dI.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
                             <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Modern Systems</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Warbands (Account-Wide Reputation), Transmog, Dual Spec, and Collections. Respecting your time without breaking immersion.
+                                Warbands (Account-Wide Reputation), Transmog, Dual Spec, and Collections. Enjoy a fully seamless world with no load screens between zones.
                             </p>
                         </div>
                     </div>

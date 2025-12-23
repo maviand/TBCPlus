@@ -1,32 +1,62 @@
 import React from 'react';
-import { BookOpen, Scroll, Map, Crown, Sword, Shield, Flame, Skull, Ghost, Anchor, Star, Clock, Target, Flag, Zap, Heart, Hammer } from 'lucide-react';
+import { Map, Crown, Sword, Shield, Flame, Skull, Ghost, Star, Clock, Flag, Heart, Hammer, Globe } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
 
 const Lore = () => {
     // Scroll logic removed as UnifiedHeader is static
 
+    // Helper for bold text and paragraphs
+    const formatText = (text) => {
+        if (!text) return null;
+        return text.split('\n').filter(line => line.trim() !== '').map((line, i) => (
+            <p key={i} className="mb-4">
+                {line.split(/(\*\*.*?\*\*)/g).map((part, j) =>
+                    part.startsWith('**') ? <strong key={j} className="text-amber-500 font-bold">{part.slice(2, -2)}</strong> : part
+                )}
+            </p>
+        ));
+    };
+
     const sections = [
         {
             title: "The Divergence",
             icon: <Clock className="w-6 h-6 text-amber-500" />,
-            image: "https://placehold.co/600x400/111/4a3c2c?text=Lore+Divergence",
-            content: `The timeline changed the moment the Dark Portal opened. In the original timeline, we were conquerors. In this one, we are survivors. 
+            image: "https://i.imgur.com/UkRrxCS.jpeg",
+            content: `The timeline shattered the moment the Dark Portal reopened. In the timeline you knew, the Alliance and Horde invaded Outland as conquerors, sweeping aside the Illidari in a blind rush for loot and glory. But here, the portal did not open to the sound of trumpets, but to the screams of the dying. The Legion was waiting.
             
-            Kael'thas Sunstrider did not betray his people for the Legion; he betrayed the Legion for his people, using Fel technology to rebuild Silvermoon as a floating fortress. Illidan Stormrage is not the villain of the Black Temple, but its warden, holding back a void incursion from the depths of Shadowmoon Valley. 
+            **The Trap:** Highlord Fordring's expeditionary force was not met by a disorganized rabble of fel orcs, but by a disciplined Legion siege engine. The Stair of Destiny became a slaughterhouse. We were not the heroes of this story; we were the refugees.
             
-            The events of The Burning Crusade: Plus explore a harsher, more complex Outland where the lines between hero and villain are blurred by survival.`
+            **The Illidari Alliance:** It was not the Naaru who saved the remnants of the Azerothian forces; it was *him*. Illidan Stormrage. Not the mad tyrant brooding atop the Black Temple, but the Lord of Outland, the only strategist capable of holding the line against the Burning Crusade. 
+            
+            In TBC Plus, the narrative has shifted from "Invade and Loot" to "Survive and Rebuild." The Alliance and Horde are fractured, their supply lines cut. They are forced to rely on the "native" factions they once scorned. Kael'thas Sunstrider did not betray his people; he saved them by turning the mana-forges into shields against the Void. Vashj controls the water not to drought the land, but to ration it against the Legion's scorched-earth tactics.
+            
+            The line between hero and villain has dissolved. To survive the Burning Legion, we must become monsters ourselves.`
         },
         {
-            title: "The Fel Horde",
-            icon: <Skull className="w-6 h-6 text-red-500" />,
-            image: "https://placehold.co/600x400/111/4a3c2c?text=Lore+Fel+Horde",
-            content: `Under Warchief Kargath Bladefist, the Fel Horde has evolved into a disciplined, industrial war machine. They have fortified Hellfire Citadel not just with stone, but with captured Legion technology. They are not mindless berserkers; they are soldiers fighting a war of attrition against both the Alliance/Horde expedition and the Burning Legion itself, refusing to bow to either.`
+            title: "The New Horde",
+            icon: <Flag className="w-6 h-6 text-red-500" />,
+            image: "https://i.imgur.com/YXZhmlD.jpeg",
+            content: `Thrall's Horde has always been a coalition of outcasts, but in the shattered landscape of Outland, necessity has forged stranger alliances still. The Mag'har of Nagrand were not just peaceful villagers; they were the uncorrupted heart of the Orcish war machine, and under the tutelage of a younger, fiercer Garrosh Hellscream, they have reminded the Horde of what it means to conquer.
+            
+            **The Ogres of Ogri'la:** Intelligent, arcane-gifted, and tired of being enslaved by the Gronn, the Ogres have finally taken their place as the scholars and heavy infantry of the Horde. Led by the brilliant Mog'dorg the Wizened, they bring a magical might that rivals the elves.
+            
+            **The Saberon:** From the jungles of Farahlon (a zone restored in this timeline), the predatory Saberon have pledged their claws to the Horde. They are not honorable warriors; they are assassins, ambushers, and apex predators who view the Legion as merely the ultimate prey.
+            
+            **The Blood Elves:** Kael'thas has returned to Silvermoon not as a traitor, but as a hard-eyed realist. The utilization of Fel technology—regulated, controlled, weaponized—has created a schism with the druidic Tauren, but their results are undeniable. The Horde is no longer just a collection of mud huts and axes; it is an industrial power fueled by demon blood and goblin engineering.`
         },
         {
-            title: "The Void Incursion",
-            icon: <Ghost className="w-6 h-6 text-purple-500" />,
-            image: "https://placehold.co/600x400/111/4a3c2c?text=Lore+Void+Incursion",
-            content: `While existing threats remain, a new danger rises from the nether-storm lashed rocks of Netherstorm and the crypts of Auchindoun. The Void Lords have sensed the instability of Outland. Dimensius the All-Devouring was only a scout. The Ethereals have split into two factions: the Consortium, who seek profit, and the Ethereum, who seek to collapse Outland into the Void.`
+            title: "The Alliance Fractured",
+            icon: <Globe className="w-6 h-6 text-blue-500" />,
+            image: "https://i.imgur.com/dkRqSrH.jpeg",
+            content: `The Alliance expedition was decimated in the initial assault. Cut off from Stormwind, Jaina Proudmoore and Khadgar were forced to make impossible choices. The high ideals of the Alliance have been stained by the mud and blood of the Hellfire Peninsula.
+            
+            **The Broken:** Nobundo's people were once shunned for their deformity. Now, they are the spiritual backbone of the Alliance. Their shamanistic connection to the shattered elements of Outland allows the Alliance to survive in zones where the Light cannot reach. The Krokul are not just refugees; they are the guides, the spies, and the survivors who know every bolt-hole in Argus's shadow.
+            
+            **The High Elves:** The Silver Covenant, refusing to bow to Kael'thas's "pragmatism," have doubled down on their purity. But without the Sunwell, they are fading. Their desperation makes them dangerous. They have turned to ancient, forbidden void research—not to embrace the darkness, but to hunt it.
+            
+            **The Wildhammer:** With their gryphons and stormhammers, the Wildhammer have established airy citations in the Blade's Edge Mountains to control the skies. They are the first line of defense against the Legion's bat-riders, bringing a reckless, thundering fury that the stoic Ironforge dwarves lack.
+            
+            This is not the Alliance of shiny plate and grand speeches. This is a resistance movement, ragged and desperate, fighting for every inch of ground with Guerilla tactics and broken equipment.`
         }
     ];
 
@@ -128,8 +158,8 @@ const Lore = () => {
                         <div key={idx} className="bg-[#111] border border-stone-800 p-8 rounded-lg relative overflow-hidden group hover:border-amber-900/50 transition-colors">
                             {/* Background Image */}
                             <div className="absolute inset-0 z-0">
-                                <img src={section.image} alt="" className="w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-700 blur-[2px]" />
-                                <div className="absolute inset-0 bg-gradient-to-r from-[#111] via-[#111]/90 to-transparent"></div>
+                                <img src={section.image} alt="" className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-700" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
                             </div>
 
                             <div className="absolute top-0 right-0 p-12 opacity-5 transform group-hover:scale-110 transition-transform duration-700 z-0">
@@ -141,9 +171,9 @@ const Lore = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-cinzel text-2xl text-amber-500 mb-4 drop-shadow-md">{section.title}</h3>
-                                    <p className="font-body text-stone-300 text-lg leading-relaxed whitespace-pre-line drop-shadow-sm">
-                                        {section.content}
-                                    </p>
+                                    <div className="font-body text-stone-300 text-lg leading-relaxed drop-shadow-sm">
+                                        {formatText(section.content)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
