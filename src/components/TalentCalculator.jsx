@@ -85,74 +85,74 @@ const TalentCalculator = () => {
 
     // -- ARROW RENDERING --
     const renderArrows = (treeKey, talents) => {
-        return talents.map(talent => {
-            if (!talent.prereq) return null;
-            const prereq = talents.find(t => t.id === talent.prereq);
-            if (!prereq) return null;
+        return (
+            <g>
+                <defs>
+                    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#4b5563" />
+                    </marker>
+                    <marker id="arrow-gold" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L9,3 z" fill="#fbbf24" />
+                    </marker>
+                </defs>
+                {talents.map(talent => {
+                    if (!talent.prereq) return null;
+                    const prereq = talents.find(t => t.id === talent.prereq);
+                    if (!prereq) return null;
 
-            // Arrow color state
-            const isActive = points[prereq.id] === prereq.maxPoints;
-            const color = isActive ? "#fbbf24" : "#4b5563"; // amber-400 : gray-600
+                    // Arrow color state
+                    const isActive = points[prereq.id] === prereq.maxPoints;
+                    const color = isActive ? "#fbbf24" : "#4b5563"; // amber-400 : gray-600
+                    const markerId = isActive ? "url(#arrow-gold)" : "url(#arrow-gray)";
 
-            // Grid Layout Geometry
-            // Grid cols: 4, Width: 240px. Col Width = 60px.
-            // Row Height = 64px.
-            // Icon Center relative to cell: X=30, Y=20 (icon 40x40)
+                    // Grid Layout Geometry
+                    // Grid cols: 4, Width: 240px. Col Width = 60px.
+                    // Row Height = 64px.
+                    // Icon Center relative to cell: X=30, Y=20 (icon 40x40)
 
-            // Start Point: Prereq Icon Center
-            const startX = prereq.col * 60 + 30;
-            const startY = prereq.row * 64 + 20;
+                    const startX = prereq.col * 60 + 30;
+                    const startY = prereq.row * 64 + 20;
 
-            // End Point: Talent Icon Center
-            const endX = talent.col * 60 + 30;
-            const endY = talent.row * 64 + 20;
+                    const endX = talent.col * 60 + 30;
+                    const endY = talent.row * 64 + 20;
 
-            // Offset to edge of icon (20px radius) for cleaner drawing?
-            // Let's draw center-to-center but behind icons (z-0). 
-            // Better: Draw from edge to edge.
+                    const iconR = 24; // Distance from center to stop line (20px radius + 4px gap)
 
-            // Simplified edge calculation
-            const iconR = 22; // 20px radius + 2px buffer
+                    let d = "";
 
-            let d = "";
+                    // Case 1: Same Row (Horizontal)
+                    if (talent.row === prereq.row) {
+                        if (talent.col > prereq.col) {
+                            // Right arrow
+                            d = `M${startX + iconR} ${startY} L${endX - iconR} ${endY}`;
+                        } else {
+                            // Left arrow
+                            d = `M${startX - iconR} ${startY} L${endX + iconR} ${endY}`;
+                        }
+                    }
+                    // Case 2: Same Column (Vertical Down)
+                    else if (talent.col === prereq.col) {
+                        d = `M${startX} ${startY + iconR} L${endX} ${endY - iconR}`;
+                    }
+                    // Case 3: Elbow
+                    else {
+                        const midY = startY + 32;
+                        d = `M${startX} ${startY + iconR} L${startX} ${midY} L${endX} ${midY} L${endX} ${endY - iconR}`;
+                    }
 
-            // Case 1: Same Row (Horizontal)
-            if (talent.row === prereq.row) {
-                if (talent.col > prereq.col) {
-                    // Right arrow
-                    d = `M${startX + iconR} ${startY} L${endX - iconR} ${endY}`;
-                } else {
-                    // Left arrow (rare)
-                    d = `M${startX - iconR} ${startY} L${endX + iconR} ${endY}`;
-                }
-            }
-            // Case 2: Same Column (Vertical Down)
-            else if (talent.col === prereq.col) {
-                d = `M${startX} ${startY + iconR} L${endX} ${endY - iconR}`;
-            }
-            // Case 3: Elbow (Down -> Over -> Down)
-            else {
-                // Vertical first, then horizontal, or Horizontal then vertical?
-                // Standard trees usually go Down half-way, then Over, then Down.
-                const midY = startY + 32; // Halfway to next row (20 + 32 = 52. Next row start is 64+20=84. diff 64. 32 is half)
-                d = `M${startX} ${startY + iconR} L${startX} ${midY} L${endX} ${midY} L${endX} ${endY - iconR}`;
-            }
-
-            return (
-                <g key={`${talent.id}-arrow`}>
-                    <path
-                        d={d}
-                        fill="none"
-                        stroke={color}
-                        strokeWidth="2"
-                    />
-                    {/* Arrowhead at end */}
-                    {/* We need to rotate arrowhead? Or just draw simple square/triangle relative to direction */}
-                    {/* Simplified: Only draw small circle or blunt end for now to avoid rotation math clutter in limited space */}
-                    <circle cx={endX} cy={endY - (talent.row === prereq.row ? 0 : iconR)} r="2" fill={color} />
-                </g>
-            );
-        });
+                    return (
+                        <path
+                            key={`${talent.id}-arrow`}
+                            d={d}
+                            fill="none"
+                            stroke={color}
+                            strokeWidth="2"
+                            markerEnd={markerId}
+                        />
+                    );
+                })}
+            </g>
+        );
     };
 
     // -- RENDER SINGLE TREE --
