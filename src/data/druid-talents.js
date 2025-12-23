@@ -2,7 +2,7 @@ export const druidTalents = {
     balance: {
         name: "Balance",
         icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_starfall.jpg",
-        background: "https://i.imgur.com/1jWqK7k.jpeg",
+        background: "https://static.wikia.nocookie.net/wowpedia/images/4/47/Talents_background_-_druid_Balance.png",
         talents: [
             // ROW 1
             { id: "starlight-wrath", name: "Starlight Wrath", icon: "spell_nature_abolishmagic", row: 0, col: 1, maxPoints: 5, description: (rank) => `Reduces the cast time of your Wrath and Starfire spells by ${rank * 0.1} sec.` },
@@ -47,7 +47,7 @@ export const druidTalents = {
     feral: {
         name: "Feral Combat",
         icon: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_catform.jpg",
-        background: "https://i.imgur.com/su1345k.jpeg",
+        background: "https://static.wikia.nocookie.net/wowpedia/images/0/0b/Talents_background_-_druid_Feral_Combat.png",
         talents: [
             // ROW 1
             { id: "ferocity", name: "Ferocity", icon: "ability_hunter_pet_hyena", row: 0, col: 1, maxPoints: 5, description: (rank) => `Reduces the cost of your Maul, Swipe, Claw, Rake and Mangle abilities by ${rank}.` },
@@ -92,7 +92,7 @@ export const druidTalents = {
     restoration: {
         name: "Restoration",
         icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingtouch.jpg",
-        background: "https://i.imgur.com/8WViTgN.png",
+        background: "https://static.wikia.nocookie.net/wowpedia/images/a/a2/Talents_background_-_druid_Restoration.png",
         talents: [
             // ROW 1
             { id: "improved-mark", name: "Improved Mark of the Wild", icon: "spell_nature_regeneration", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the effects of your Mark of the Wild and Gift of the Wild spells by ${rank * 7}%.` },

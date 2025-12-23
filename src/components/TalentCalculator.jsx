@@ -94,34 +94,40 @@ const TalentCalculator = () => {
             const isActive = points[prereq.id] === prereq.maxPoints;
             const color = isActive ? "#fbbf24" : "#4b5563"; // amber-400 : gray-600
 
-            // Grid constants (approximate based on styling)
-            const cellW = 60;
-            const cellH = 70;
-            const offsetX = 30; // Center of cell X
-            const offsetY = 30; // Center of cell Y (roughly) 
+            // Grid Layout Geometry
+            // Grid cols: 4, Width: 240px. 
+            // Col Width = 60px.
+            // Row Height = 40px (icon) + 24px (gap) = 64px.
+            // Icon Size = 40px (w-10 h-10).
 
-            // Note in renderTree: grid gap-y-6 (~24px). grid gap-x?? It's grid-cols-4 and width 240px.
-            // 240px / 4 = 60px column width exactly.
-            // Row height: 40px icon + 24px gap = ~64px height per row step.
+            // Start Point: Bottom Center of Prereq
+            const startX = prereq.col * 60 + 30; // 30 is center of 60
+            const startY = prereq.row * 64 + 40; // 40 is height of icon box
 
-            const startX = prereq.col * 60 + 30;
-            const startY = prereq.row * 64 + 40; // Bottom of icon (approx)
+            // End Point: Top Center of Talent
             const endX = talent.col * 60 + 30;
-            const endY = talent.row * 64; // Top of icon (approx)
+            const endY = talent.row * 64;
 
-            // Adjust path based on relationship
+            // PATH FINDING (Manhattan)
+            // Strategy: Down -> Horizontal -> Down
+            // Vertical gap is 24px (from y=40 to y=64 next row).
+            // Elbow Y should be halfway in gap: 40 + 12 = 52 relative to row start.
+            // But prereq.row and talent.row might differ.
+
             let d = "";
+            const halfGap = 12;
 
-            // 1. Same Column (Vertical Down)
-            if (prereq.col === talent.col) {
-                const midY = (startY + endY) / 2;
+            if (talent.col === prereq.col) {
+                // Simple Vertical Drop
                 d = `M${startX} ${startY} L${endX} ${endY}`;
-            }
-            // 2. Different Column
-            else {
-                // Elbow connector: Down -> Horizontal -> Down
-                const midY = startY + 15;
-                d = `M${startX} ${startY} L${startX} ${midY} L${endX} ${midY} L${endX} ${endY}`;
+            } else {
+                // Turn Logic
+                // 1. Down to elbow level (halfway between start row and next row)
+                const elbowY = startY + halfGap;
+
+                // 2. Horizontal to target X
+                // 3. Down to target Y
+                d = `M${startX} ${startY} L${startX} ${elbowY} L${endX} ${elbowY} L${endX} ${endY}`;
             }
 
             return (
@@ -192,9 +198,12 @@ const TalentCalculator = () => {
 
                             // Tooltip Positioning Logic
                             const isTopRow = talent.row < 2;
-                            const tooltipClass = isTopRow
-                                ? "top-full mt-2"
-                                : "bottom-full mb-2";
+                            // Horizontal alignment to prevent clipping
+                            let alignClass = "left-1/2 -translate-x-1/2"; // default center
+                            if (talent.col === 0) alignClass = "left-0 translate-x-0"; // align left edge
+                            if (talent.col === 3) alignClass = "right-0 translate-x-0"; // align right edge
+
+                            const tooltipClass = `${isTopRow ? "top-full mt-2" : "bottom-full mb-2"} ${alignClass}`;
 
                             return (
                                 <div
@@ -225,7 +234,7 @@ const TalentCalculator = () => {
                                     </div>
 
                                     {/* Tooltip */}
-                                    <div className={`absolute left-1/2 -translate-x-1/2 w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none text-left ${tooltipClass}`}>
+                                    <div className={`absolute w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none text-left ${tooltipClass}`}>
                                         <h4 className="font-bold text-amber-400 text-sm">{talent.name}</h4>
                                         <p className="text-[10px] text-gray-400 mb-2">Rank {rank}/{talent.maxPoints}</p>
                                         <p className="text-xs text-gray-300 leading-snug">
