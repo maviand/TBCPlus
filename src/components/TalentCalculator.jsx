@@ -111,7 +111,7 @@ const TalentCalculator = () => {
                     // Row Height = 64px (40px icon + 24px gap).
                     // Icon Size = 40px.
                     // Center CX = Col*60 + 30.
-                    // Center CY = Row*64 + 20.
+                    // Center CY = Row*64 + 32 (Half of 64px row height).
 
                     const pCol = prereq.col;
                     const pRow = prereq.row;
@@ -119,17 +119,15 @@ const TalentCalculator = () => {
                     const tRow = talent.row;
 
                     const pCx = pCol * 60 + 30;
-                    const pCy = pRow * 64 + 20;
+                    const pCy = pRow * 64 + 32;
 
                     const tCx = tCol * 60 + 30;
-                    const tCy = tRow * 64 + 20;
+                    const tCy = tRow * 64 + 32;
 
                     // Radius adjustment:
-                    // Icon is 40px wide (r=20). 
-                    // Previous check showed 6px gap with r=20.
-                    // This implies the effective start/end for the line should be closer to center.
-                    // Setting r=14 to close the gap.
-                    const r = 14;
+                    // Icon is 40px wide/high (r=20).
+                    // With accurate centers, r=20 touches the border exactly.
+                    const r = 20;
 
                     let d = "";
 
@@ -175,12 +173,9 @@ const TalentCalculator = () => {
                     else {
                         // Determine direction of elbow
                         const startX = pCx;
-                        const startY = pCy;
                         const endX = tCx;
-                        const endY = tCy;
 
-                        // Standard TBC style: Exit Vertical, turn, Enter Vertical.
-
+                        // Exit/Enter Vertical Edges (standard tree flow)
                         const exitY = (tRow > pRow) ? pCy + r : pCy - r;
                         const enterY = (tRow > pRow) ? tCy - r : tCy + r;
 

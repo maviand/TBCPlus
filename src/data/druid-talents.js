@@ -130,7 +130,7 @@ export const druidTalents = {
             { id: "empowered-rejuvenation", name: "Empowered Rejuve", icon: "ability_druid_empoweredrejuvination", row: 7, col: 1, maxPoints: 5, description: (rank) => `The bonus healing effects of your healing over time spells is increased by ${rank * 4}%.` },
 
             // ROW 9
-            { id: "tree-of-life", name: "Tree of Life", icon: "ability_druid_treeoflife", row: 8, col: 1, maxPoints: 1, prereq: "empowered-rejuvenation", description: (rank) => `Shapeshift into the Tree of Life. Increases healing received by party members nearby.` },
+            { id: "tree-of-life", name: "Tree of Life", icon: "ability_druid_treeoflife", row: 8, col: 1, maxPoints: 1, description: (rank) => `Shapeshift into the Tree of Life. Increases healing received by party members nearby.` },
         ]
     }
 };
