@@ -95,39 +95,47 @@ const TalentCalculator = () => {
             const color = isActive ? "#fbbf24" : "#4b5563"; // amber-400 : gray-600
 
             // Grid Layout Geometry
-            // Grid cols: 4, Width: 240px. 
-            // Col Width = 60px.
-            // Row Height = 40px (icon) + 24px (gap) = 64px.
-            // Icon Size = 40px (w-10 h-10).
+            // Grid cols: 4, Width: 240px. Col Width = 60px.
+            // Row Height = 64px.
+            // Icon Center relative to cell: X=30, Y=20 (icon 40x40)
 
-            // Start Point: Bottom Center of Prereq
-            const startX = prereq.col * 60 + 30; // 30 is center of 60
-            const startY = prereq.row * 64 + 40; // 40 is height of icon box
+            // Start Point: Prereq Icon Center
+            const startX = prereq.col * 60 + 30;
+            const startY = prereq.row * 64 + 20;
 
-            // End Point: Top Center of Talent
+            // End Point: Talent Icon Center
             const endX = talent.col * 60 + 30;
-            const endY = talent.row * 64;
+            const endY = talent.row * 64 + 20;
 
-            // PATH FINDING (Manhattan)
-            // Strategy: Down -> Horizontal -> Down
-            // Vertical gap is 24px (from y=40 to y=64 next row).
-            // Elbow Y should be halfway in gap: 40 + 12 = 52 relative to row start.
-            // But prereq.row and talent.row might differ.
+            // Offset to edge of icon (20px radius) for cleaner drawing?
+            // Let's draw center-to-center but behind icons (z-0). 
+            // Better: Draw from edge to edge.
+
+            // Simplified edge calculation
+            const iconR = 22; // 20px radius + 2px buffer
 
             let d = "";
-            const halfGap = 12;
 
-            if (talent.col === prereq.col) {
-                // Simple Vertical Drop
-                d = `M${startX} ${startY} L${endX} ${endY}`;
-            } else {
-                // Turn Logic
-                // 1. Down to elbow level (halfway between start row and next row)
-                const elbowY = startY + halfGap;
-
-                // 2. Horizontal to target X
-                // 3. Down to target Y
-                d = `M${startX} ${startY} L${startX} ${elbowY} L${endX} ${elbowY} L${endX} ${endY}`;
+            // Case 1: Same Row (Horizontal)
+            if (talent.row === prereq.row) {
+                if (talent.col > prereq.col) {
+                    // Right arrow
+                    d = `M${startX + iconR} ${startY} L${endX - iconR} ${endY}`;
+                } else {
+                    // Left arrow (rare)
+                    d = `M${startX - iconR} ${startY} L${endX + iconR} ${endY}`;
+                }
+            }
+            // Case 2: Same Column (Vertical Down)
+            else if (talent.col === prereq.col) {
+                d = `M${startX} ${startY + iconR} L${endX} ${endY - iconR}`;
+            }
+            // Case 3: Elbow (Down -> Over -> Down)
+            else {
+                // Vertical first, then horizontal, or Horizontal then vertical?
+                // Standard trees usually go Down half-way, then Over, then Down.
+                const midY = startY + 32; // Halfway to next row (20 + 32 = 52. Next row start is 64+20=84. diff 64. 32 is half)
+                d = `M${startX} ${startY + iconR} L${startX} ${midY} L${endX} ${midY} L${endX} ${endY - iconR}`;
             }
 
             return (
@@ -138,11 +146,10 @@ const TalentCalculator = () => {
                         stroke={color}
                         strokeWidth="2"
                     />
-                    {/* Arrowhead */}
-                    <path
-                        d={`M${endX} ${endY} L${endX - 4} ${endY - 6} L${endX + 4} ${endY - 6} Z`}
-                        fill={color}
-                    />
+                    {/* Arrowhead at end */}
+                    {/* We need to rotate arrowhead? Or just draw simple square/triangle relative to direction */}
+                    {/* Simplified: Only draw small circle or blunt end for now to avoid rotation math clutter in limited space */}
+                    <circle cx={endX} cy={endY - (talent.row === prereq.row ? 0 : iconR)} r="2" fill={color} />
                 </g>
             );
         });
@@ -153,9 +160,10 @@ const TalentCalculator = () => {
         const treePoints = getTreePoints(specKey);
 
         return (
-            <div className="flex-1 min-w-[300px] bg-[#121212] border border-white/10 rounded-lg overflow-hidden flex flex-col">
+            /* Removed overflow-hidden to allow tooltips to pop out */
+            <div className="flex-1 min-w-[300px] bg-[#121212] border border-white/10 rounded-lg flex flex-col relative">
                 {/* Header */}
-                <div className="p-4 bg-white/5 border-b border-white/5 flex items-center justify-between">
+                <div className="p-4 bg-white/5 border-b border-white/5 flex items-center justify-between rounded-t-lg">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded bg-black/50 border border-white/10 p-1">
                             <img src={specData.icon} className="w-full h-full object-cover" />
@@ -169,89 +177,105 @@ const TalentCalculator = () => {
 
                 {/* Grid Container */}
                 <div
-                    className="relative p-6 flex-1 bg-cover bg-center"
+                    className="relative p-6 flex-1 bg-cover bg-center rounded-b-lg"
                     style={{ backgroundImage: `url(${specData.background})` }}
                 >
-                    <div className="absolute inset-0 bg-[#0a0a0a]/90"></div>
+                    <div className="absolute inset-0 bg-[#0a0a0a]/90 rounded-b-lg"></div>
 
                     {/* Arrows Layer */}
                     <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" style={{ overflow: 'visible' }}>
-                        {renderArrows(specKey, specData.talents)}
+                        {/* We need to offset the SVG to match the padding-6 (24px) of the container */}
+                        {/* Or interpret the coordinates relative to the grid container div */}
+                        {/* The grid starts at padding: 24px. So (0,0) in grid is (24,24) in SVG if SVG is inset-0? */}
+                        {/* Actually, let's put SVG INSIDE the grid container wrapper? No. */}
+                        {/* Let's translate the group by (margin-x: auto) which is tricky. */}
+                        {/* Fix: Put SVG inside the 240px container */}
                     </svg>
 
-                    {/* Talent Grid */}
-                    <div className="relative z-10 grid grid-cols-4 gap-y-6" style={{ width: '240px', margin: '0 auto' }}>
-                        {/* Fixed width 240px = 4 cols of ~60px */}
-                        {specData.talents.map(talent => {
-                            const rank = points[talent.id] || 0;
-                            const isMaxed = rank === talent.maxPoints;
-                            const hasPoints = rank > 0;
-                            // Check maxed dependency
-                            const prereqTalentData = talent.prereq ? druidTalents[specKey].talents.find(t => t.id === talent.prereq) : null;
-                            const isLocked = talent.prereq && (points[talent.prereq] || 0) < (prereqTalentData?.maxPoints || 0);
-                            const isGreyed = isLocked || (getTreePoints(specKey) < talent.row * 5); // Simple tier availability check
+                    {/* Talent Grid Wrapper */}
+                    <div className="relative z-10" style={{ width: '240px', margin: '0 auto' }}>
 
-                            // Icon logic
-                            const iconUrl = talent.icon.startsWith('http')
-                                ? talent.icon
-                                : `https://wow.zamimg.com/images/wow/icons/large/${talent.icon}.jpg`;
+                        {/* SVG Layer for Arrows - Local to this 240px wide container */}
+                        <svg className="absolute -top-4 -left-4 w-[120%] h-[120%] pointer-events-none z-0" style={{ overflow: 'visible' }}>
+                            {/* Translating to handle local coords: padding-top/left within this box? No, grid gap handling. */}
+                            {/* The renderArrows function uses 60/64 steps. This roughly matches the DOM grid. */}
+                            {/* Shift by half column (30) is center. Shift by vertical? */}
+                            {renderArrows(specKey, specData.talents)}
+                        </svg>
 
-                            // Tooltip Positioning Logic
-                            const isTopRow = talent.row < 2;
-                            // Horizontal alignment to prevent clipping
-                            let alignClass = "left-1/2 -translate-x-1/2"; // default center
-                            if (talent.col === 0) alignClass = "left-0 translate-x-0"; // align left edge
-                            if (talent.col === 3) alignClass = "right-0 translate-x-0"; // align right edge
+                        <div className="grid grid-cols-4 gap-y-6">
+                            {/* Fixed width 240px = 4 cols of ~60px */}
+                            {specData.talents.map(talent => {
+                                const rank = points[talent.id] || 0;
+                                const isMaxed = rank === talent.maxPoints;
+                                const hasPoints = rank > 0;
+                                // Check maxed dependency
+                                const prereqTalentData = talent.prereq ? druidTalents[specKey].talents.find(t => t.id === talent.prereq) : null;
+                                const isLocked = talent.prereq && (points[talent.prereq] || 0) < (prereqTalentData?.maxPoints || 0);
+                                const isGreyed = isLocked || (getTreePoints(specKey) < talent.row * 5); // Simple tier availability check
 
-                            const tooltipClass = `${isTopRow ? "top-full mt-2" : "bottom-full mb-2"} ${alignClass}`;
+                                // Icon logic
+                                const iconUrl = talent.icon.startsWith('http')
+                                    ? talent.icon
+                                    : `https://wow.zamimg.com/images/wow/icons/large/${talent.icon}.jpg`;
 
-                            return (
-                                <div
-                                    key={talent.id}
-                                    className="relative group flex justify-center"
-                                    style={{
-                                        gridColumn: talent.col + 1,
-                                        gridRow: talent.row + 1
-                                    }}
-                                    onClick={(e) => handleAddPoint(talent, specKey, e)}
-                                    onContextMenu={(e) => handleRemovePoint(talent, specKey, e)}
-                                >
-                                    <div className={`
-                                        relative w-10 h-10 rounded border-2 transition-all cursor-pointer z-10
-                                        ${isMaxed ? 'border-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]' :
-                                            hasPoints ? 'border-green-400' :
-                                                isGreyed ? 'border-gray-800 opacity-50 grayscale' : 'border-gray-500 hover:border-gray-300'}
-                                        bg-black
-                                    `}>
-                                        <img src={iconUrl} className="w-full h-full object-cover" />
+                                // Tooltip Positioning Logic
+                                const isTopRow = talent.row < 2;
+                                // Horizontal alignment to prevent clipping
+                                let alignClass = "left-1/2 -translate-x-1/2"; // default center
+                                if (talent.col === 0) alignClass = "left-0 translate-x-0"; // align left edge
+                                if (talent.col === 3) alignClass = "right-0 translate-x-0"; // align right edge
 
-                                        {/* Rank */}
-                                        <div className={`absolute -bottom-2 -right-2 border text-[9px] px-1 rounded font-bold
-                                            ${isMaxed ? 'bg-amber-900 border-amber-500 text-amber-100' : 'bg-black border-gray-600 text-gray-300'}
+                                const tooltipClass = `${isTopRow ? "top-full mt-2" : "bottom-full mb-2"} ${alignClass}`;
+
+                                return (
+                                    <div
+                                        key={talent.id}
+                                        className="relative group flex justify-center w-10 h-10" // Explicit size for grid cell center
+                                        style={{
+                                            gridColumn: talent.col + 1,
+                                            gridRow: talent.row + 1
+                                        }}
+                                        onClick={(e) => handleAddPoint(talent, specKey, e)}
+                                        onContextMenu={(e) => handleRemovePoint(talent, specKey, e)}
+                                    >
+                                        <div className={`
+                                            absolute inset-0 rounded border-2 transition-all cursor-pointer z-20
+                                            ${isMaxed ? 'border-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]' :
+                                                hasPoints ? 'border-green-400' :
+                                                    isGreyed ? 'border-gray-800 opacity-50 grayscale' : 'border-gray-500 hover:border-gray-300'}
+                                            bg-black
                                         `}>
-                                            {rank}/{talent.maxPoints}
+                                            <img src={iconUrl} className="w-full h-full object-cover" />
+
+                                            {/* Rank */}
+                                            <div className={`absolute -bottom-2 -right-2 border text-[9px] px-1 rounded font-bold
+                                                ${isMaxed ? 'bg-amber-900 border-amber-500 text-amber-100' : 'bg-black border-gray-600 text-gray-300'}
+                                            `}>
+                                                {rank}/{talent.maxPoints}
+                                            </div>
+                                        </div>
+
+                                        {/* Tooltip - High Z-Index, fixed width */}
+                                        <div className={`absolute w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-[100] pointer-events-none text-left ${tooltipClass}`}>
+                                            <h4 className="font-bold text-amber-400 text-sm">{talent.name}</h4>
+                                            <p className="text-[10px] text-gray-400 mb-2">Rank {rank}/{talent.maxPoints}</p>
+                                            <p className="text-xs text-gray-300 leading-snug">
+                                                {talent.description(rank === 0 ? 1 : rank)}
+                                            </p>
+                                            {rank < talent.maxPoints && (
+                                                <div className="mt-2 pt-2 border-t border-white/10">
+                                                    <p className="text-xs text-green-400">Next Rank:</p>
+                                                    <p className="text-xs text-gray-400">{talent.description(rank + 1)}</p>
+                                                </div>
+                                            )}
+                                            {isLocked && <p className="text-xs text-red-500 mt-2">Requires fully ranked {prereqTalentData?.name}</p>}
+                                            {(getTreePoints(specKey) < talent.row * 5) && <p className="text-xs text-red-500 mt-2">Requires {talent.row * 5} points in {specData.name} Talents</p>}
                                         </div>
                                     </div>
-
-                                    {/* Tooltip */}
-                                    <div className={`absolute w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none text-left ${tooltipClass}`}>
-                                        <h4 className="font-bold text-amber-400 text-sm">{talent.name}</h4>
-                                        <p className="text-[10px] text-gray-400 mb-2">Rank {rank}/{talent.maxPoints}</p>
-                                        <p className="text-xs text-gray-300 leading-snug">
-                                            {talent.description(rank === 0 ? 1 : rank)}
-                                        </p>
-                                        {rank < talent.maxPoints && (
-                                            <div className="mt-2 pt-2 border-t border-white/10">
-                                                <p className="text-xs text-green-400">Next Rank:</p>
-                                                <p className="text-xs text-gray-400">{talent.description(rank + 1)}</p>
-                                            </div>
-                                        )}
-                                        {isLocked && <p className="text-xs text-red-500 mt-2">Requires fully ranked {prereqTalentData?.name}</p>}
-                                        {(getTreePoints(specKey) < talent.row * 5) && <p className="text-xs text-red-500 mt-2">Requires {talent.row * 5} points in {specData.name} Talents</p>}
-                                    </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
