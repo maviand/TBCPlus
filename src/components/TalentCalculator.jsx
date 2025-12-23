@@ -88,11 +88,11 @@ const TalentCalculator = () => {
         return (
             <g>
                 <defs>
-                    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,6 L9,3 z" fill="#4b5563" />
+                    <marker id="arrow-gray" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,8 L8,4 z" fill="#4b5563" />
                     </marker>
-                    <marker id="arrow-gold" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,6 L9,3 z" fill="#fbbf24" />
+                    <marker id="arrow-gold" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,8 L8,4 z" fill="#fbbf24" />
                     </marker>
                 </defs>
                 {talents.map(talent => {
@@ -107,37 +107,93 @@ const TalentCalculator = () => {
 
                     // Grid Layout Geometry
                     // Grid cols: 4, Width: 240px. Col Width = 60px.
-                    // Row Height = 64px.
-                    // Icon Center relative to cell: X=30, Y=20 (icon 40x40)
+                    // Row Height = 64px (40px icon + 24px gap).
+                    // Icon Size = 40px (w-10 h-10). Radius = 20px.
+                    // Center Offset: X=30 (half col), Y=20 (half icon height relative to row start)
 
-                    const startX = prereq.col * 60 + 30;
-                    const startY = prereq.row * 64 + 20;
+                    const pCol = prereq.col;
+                    const pRow = prereq.row;
+                    const tCol = talent.col;
+                    const tRow = talent.row;
 
-                    const endX = talent.col * 60 + 30;
-                    const endY = talent.row * 64 + 20;
+                    const pCx = pCol * 60 + 30;
+                    const pCy = pRow * 64 + 20;
 
-                    const iconR = 24; // Distance from center to stop line (20px radius + 4px gap)
+                    const tCx = tCol * 60 + 30;
+                    const tCy = tRow * 64 + 20;
+
+                    const r = 20; // radius
+                    // Actually marker refX puts the tip at the point. We want the tip to touch the edge.
+                    // So we draw TO the edge.
 
                     let d = "";
 
-                    // Case 1: Same Row (Horizontal)
-                    if (talent.row === prereq.row) {
-                        if (talent.col > prereq.col) {
-                            // Right arrow
-                            d = `M${startX + iconR} ${startY} L${endX - iconR} ${endY}`;
-                        } else {
-                            // Left arrow
-                            d = `M${startX - iconR} ${startY} L${endX + iconR} ${endY}`;
+                    // Logic: Connect shortest path between edges using orthogonal lines.
+
+                    // 1. Same Row (Horizontal)
+                    if (pRow === tRow) {
+                        if (tCol > pCol) {
+                            // Prereq (Right Edge) -> Talent (Left Edge)
+                            const startX = pCx + r;
+                            const startY = pCy;
+                            const endX = tCx - r;
+                            const endY = tCy;
+                            d = `M${startX} ${startY} L${endX} ${endY}`;
+                        } else { // tCol < pCol
+                            // Prereq (Left Edge) -> Talent (Right Edge)
+                            const startX = pCx - r;
+                            const startY = pCy;
+                            const endX = tCx + r;
+                            const endY = tCy;
+                            d = `M${startX} ${startY} L${endX} ${endY}`;
                         }
                     }
-                    // Case 2: Same Column (Vertical Down)
-                    else if (talent.col === prereq.col) {
-                        d = `M${startX} ${startY + iconR} L${endX} ${endY - iconR}`;
+                    // 2. Same Column (Vertical)
+                    else if (pCol === tCol) {
+                        if (tRow > pRow) {
+                            // Prereq (Bottom Edge) -> Talent (Top Edge)
+                            const startX = pCx;
+                            const startY = pCy + r;
+                            const endX = tCx;
+                            const endY = tCy - r;
+                            d = `M${startX} ${startY} L${endX} ${endY}`;
+                        } else { // tRow < pRow
+                            // Prereq (Top Edge) -> Talent (Bottom Edge)
+                            const startX = pCx;
+                            const startY = pCy - r;
+                            const endX = tCx;
+                            const endY = tCy + r;
+                            d = `M${startX} ${startY} L${endX} ${endY}`;
+                        }
                     }
-                    // Case 3: Elbow
+                    // 3. Different Row & Col (Elbow)
                     else {
-                        const midY = startY + 32;
-                        d = `M${startX} ${startY + iconR} L${startX} ${midY} L${endX} ${midY} L${endX} ${endY - iconR}`;
+                        // Determine direction of elbow
+                        const startX = pCx;
+                        const startY = pCy;
+                        const endX = tCx;
+                        const endY = tCy;
+
+                        // Midpoint for the elbow bend
+                        let midX, midY;
+
+                        if (tRow > pRow) { // Prereq is above talent (downward flow)
+                            if (tCol > pCol) { // Prereq is left of talent (rightward flow)
+                                // Path: Prereq (bottom) -> down -> right -> Talent (top)
+                                d = `M${startX} ${startY + r} L${startX} ${startY + 32} L${endX} ${startY + 32} L${endX} ${endY - r}`;
+                            } else { // tCol < pCol (leftward flow)
+                                // Path: Prereq (bottom) -> down -> left -> Talent (top)
+                                d = `M${startX} ${startY + r} L${startX} ${startY + 32} L${endX} ${startY + 32} L${endX} ${endY - r}`;
+                            }
+                        } else { // tRow < pRow (upward flow)
+                            if (tCol > pCol) { // Prereq is left of talent (rightward flow)
+                                // Path: Prereq (top) -> up -> right -> Talent (bottom)
+                                d = `M${startX} ${startY - r} L${startX} ${startY - 32} L${endX} ${startY - 32} L${endX} ${endY + r}`;
+                            } else { // tCol < pCol (leftward flow)
+                                // Path: Prereq (top) -> up -> left -> Talent (bottom)
+                                d = `M${startX} ${startY - r} L${startX} ${startY - 32} L${endX} ${startY - 32} L${endX} ${endY + r}`;
+                            }
+                        }
                     }
 
                     return (
@@ -146,7 +202,7 @@ const TalentCalculator = () => {
                             d={d}
                             fill="none"
                             stroke={color}
-                            strokeWidth="2"
+                            strokeWidth="3"
                             markerEnd={markerId}
                         />
                     );

@@ -35,13 +35,13 @@ export const druidTalents = {
             { id: "balance-of-power", name: "Balance of Power", icon: "spell_nature_natureguardian", row: 6, col: 0, maxPoints: 2, description: (rank) => `Increases your chance to hit with all spells and reduces the chance you'll be hit by spells by ${rank * 2}%.` },
             { id: "moonkin-form", name: "Moonkin Form", icon: "spell_nature_forceofnature", row: 6, col: 1, maxPoints: 1, prereq: "moonfury", description: (rank) => `Transforms the Druid into Moonkin Form. Increases armor and party spell crit. TBC+: Provides 3% Spell Haste.` },
             { id: "dreamstate", name: "Dreamstate", icon: "spell_nature_healingtouch", row: 6, col: 2, maxPoints: 3, description: (rank) => `Regenerate mana equal to ${rank * 4}% of your Intellect every 5 sec, even while casting.` },
+            { id: "improved-faerie-fire", name: "Imp. Faerie Fire", icon: "spell_nature_faeriefire", row: 6, col: 3, maxPoints: 3, description: (rank) => `Your Faerie Fire spell also increases the chance the target will be hit by melee and ranged attacks by ${rank}%.` },
 
             // ROW 8
-            { id: "improved-faerie-fire", name: "Imp. Faerie Fire", icon: "spell_nature_faeriefire", row: 7, col: 0, maxPoints: 3, description: (rank) => `Your Faerie Fire spell also increases the chance the target will be hit by melee and ranged attacks by ${rank}%.` },
             { id: "wrath-of-cenarius", name: "Wrath of Cenarius", icon: "ability_druid_twilightvanquisher", row: 7, col: 2, maxPoints: 5, description: (rank) => `Your Starfire spell gains an additional ${rank * 4}% and your Wrath gains an additional ${rank * 2}% of your bonus damage effects.` },
 
             // ROW 9
-            { id: "force-of-nature", name: "Force of Nature", icon: "spell_nature_forceofnature", row: 8, col: 1, maxPoints: 1, prereq: "moonkin-form", description: (rank) => `Summons 3 Treants to aid the Druid for 30 sec.` },
+            { id: "force-of-nature", name: "Force of Nature", icon: "spell_nature_forceofnature", row: 8, col: 1, description: (rank) => `Summons 3 Treants to aid the Druid for 30 sec.`, maxPoints: 1 }, // REMOVED PREREQ
         ]
     },
     feral: {
@@ -124,13 +124,11 @@ export const druidTalents = {
             // ROW 7
             { id: "living-spirit", name: "Living Spirit", icon: "spell_nature_giftofthewaterspirit", row: 6, col: 0, maxPoints: 3, description: (rank) => `Increases total Spirit by ${rank * 5}%.` },
             { id: "swiftmend", name: "Swiftmend", icon: "inv_relics_idolofrejuvenation", row: 6, col: 1, maxPoints: 1, prereq: "gift-of-nature", description: (rank) => `Consumes a Rejuvenation or Regrowth effect on a friendly target to instantly heal them.` },
-            { id: "natural-perfection", name: "Natural Perfection", icon: "spell_nature_protectionformnature", row: 6, col: 2, maxPoints: 3, description: (rank) => `Your critical strike heals give you the Natural Perfection buff, reducing all damage taken by ${rank * 1}%. Stacks 3 times.` },
+            { id: "empowered-rejuvenation", name: "Empowered Rejuve", icon: "ability_druid_empoweredrejuvination", row: 6, col: 2, maxPoints: 5, description: (rank) => `The bonus healing effects of your healing over time spells is increased by ${rank * 4}%.` },
+            { id: "tree-of-life", name: "Tree of Life", icon: "ability_druid_treeoflife", row: 6, col: 3, maxPoints: 1, prereq: "empowered-rejuvenation", description: (rank) => `Shapeshift into the Tree of Life. Increases healing received by party members nearby.` },
 
             // ROW 8
-            { id: "empowered-rejuvenation", name: "Empowered Rejuve", icon: "ability_druid_empoweredrejuvination", row: 7, col: 2, maxPoints: 5, description: (rank) => `The bonus healing effects of your healing over time spells is increased by ${rank * 4}%.` },
-
-            // ROW 9
-            { id: "tree-of-life", name: "Tree of Life", icon: "ability_druid_treeoflife", row: 8, col: 1, maxPoints: 1, prereq: "empowered-rejuvenation", description: (rank) => `Shapeshift into the Tree of Life. Increases healing received by party members nearby.` },
+            { id: "natural-perfection", name: "Natural Perfection", icon: "spell_nature_protectionformnature", row: 7, col: 2, maxPoints: 3, description: (rank) => `Your critical strike heals give you the Natural Perfection buff, reducing all damage taken by ${rank * 1}%. Stacks 3 times.` },
         ]
     }
 };
