@@ -88,12 +88,12 @@ const TalentCalculator = () => {
         return (
             <g>
                 <defs>
-                    {/* 50% Smaller Arrowheads: 4px width roughly */}
-                    <marker id="arrow-gray" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,5 L5,2.5 z" fill="#4b5563" />
+                    {/* Small Arrowheads: 4px width */}
+                    <marker id="arrow-gray" markerWidth="4" markerHeight="4" refX="4" refY="2" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,4 L4,2 z" fill="#4b5563" />
                     </marker>
-                    <marker id="arrow-gold" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,5 L5,2.5 z" fill="#fbbf24" />
+                    <marker id="arrow-gold" markerWidth="4" markerHeight="4" refX="4" refY="2" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,4 L4,2 z" fill="#fbbf24" />
                     </marker>
                 </defs>
                 {talents.map(talent => {
@@ -109,8 +109,9 @@ const TalentCalculator = () => {
                     // Grid Layout Geometry
                     // Grid cols: 4, Width: 240px. Col Width = 60px.
                     // Row Height = 64px (40px icon + 24px gap).
-                    // Icon Size = 40px (w-10 h-10). Radius = 20px.
-                    // Center Offset: X=30 (half col), Y=20 (half icon height relative to row start)
+                    // Icon Size = 40px.
+                    // Center CX = Col*60 + 30.
+                    // Center CY = Row*64 + 20.
 
                     const pCol = prereq.col;
                     const pRow = prereq.row;
@@ -123,7 +124,12 @@ const TalentCalculator = () => {
                     const tCx = tCol * 60 + 30;
                     const tCy = tRow * 64 + 20;
 
-                    const r = 20; // 20px radius touches border exactly
+                    // Radius adjustment:
+                    // Icon is 40px wide (r=20). 
+                    // Previous check showed 6px gap with r=20.
+                    // This implies the effective start/end for the line should be closer to center.
+                    // Setting r=14 to close the gap.
+                    const r = 14;
 
                     let d = "";
 
@@ -174,15 +180,11 @@ const TalentCalculator = () => {
                         const endY = tCy;
 
                         // Standard TBC style: Exit Vertical, turn, Enter Vertical.
-                        // Wait, it enters Top/Bottom usually.
 
                         const exitY = (tRow > pRow) ? pCy + r : pCy - r;
                         const enterY = (tRow > pRow) ? tCy - r : tCy + r;
 
-                        // Mid Y should be in the gap between rows.
-                        // Gap is 24px. Center of gap is pCy + 32 (if going down).
-                        // If going UP, gap is pCy - 32.
-
+                        // Mid Y calculation
                         const bendY = (tRow > pRow) ? pCy + 32 : pCy - 32;
 
                         d = `M${startX} ${exitY} L${startX} ${bendY} L${endX} ${bendY} L${endX} ${enterY}`;
