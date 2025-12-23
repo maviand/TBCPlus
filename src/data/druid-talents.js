@@ -7,40 +7,41 @@ export const druidTalents = {
             // ROW 1
             { id: "starlight-wrath", name: "Starlight Wrath", icon: "spell_nature_abolishmagic", row: 0, col: 1, maxPoints: 5, description: (rank) => `Reduces the cast time of your Wrath and Starfire spells by ${rank * 0.1} sec.` },
             { id: "natures-grasp", name: "Nature's Grasp", icon: "spell_nature_naturetouchgrow", row: 0, col: 2, maxPoints: 1, description: (rank) => `While active, any time an enemy strikes the caster they have a 35% chance to become afflicted by Entangling Roots (Rank 1).` },
-            { id: "improved-moonfire", name: "Improved Moonfire", icon: "spell_nature_starfall", row: 0, col: 3, maxPoints: 2, description: (rank) => `Increases the damage and critical strike chance of your Moonfire spell by ${rank * 5}%.` },
+            { id: "improved-natures-grasp", name: "Imp. Nature's Grasp", icon: "spell_nature_naturetouchgrow", row: 0, col: 3, maxPoints: 4, prereq: "natures-grasp", description: (rank) => `Increases the chance for your Nature's Grasp to entangle an enemy by ${rank * 15}%.` },
 
             // ROW 2
             { id: "control-of-nature", name: "Control of Nature", icon: "spell_nature_stranglevines", row: 1, col: 0, maxPoints: 3, description: (rank) => `Gives you a ${rank * 33}% chance to avoid interruption caused by damage while casting Entangling Roots and Cyclone.` },
             { id: "focused-starlight", name: "Focused Starlight", icon: "spell_arcane_starfire", row: 1, col: 1, maxPoints: 2, description: (rank) => `Increases the critical strike chance of your Wrath and Starfire spells by ${rank * 2}%.` },
-            { id: "improved-insect-swarm", name: "Improved Insect Swarm", icon: "spell_nature_insectswarm", row: 1, col: 2, maxPoints: 3, description: (rank) => `Increases the damage done by your Insect Swarm spell by ${rank * 10}% and the duration by ${rank * 2} sec.` },
+            { id: "improved-moonfire", name: "Improved Moonfire", icon: "spell_nature_starfall", row: 1, col: 2, maxPoints: 2, description: (rank) => `Increases the damage and critical strike chance of your Moonfire spell by ${rank * 5}%.` },
 
             // ROW 3
-            { id: "insect-swarm", name: "Insect Swarm", icon: "spell_nature_insectswarm", row: 2, col: 1, maxPoints: 1, prereq: "improved-insect-swarm", description: (rank) => `The enemy target is swarmed by insects, decreasing their chance to hit by 2% and causing Nature damage over 12 sec.` },
-            { id: "reach-of-cenarius", name: "Reach of Cenarius", icon: "spell_nature_naturetouchgrow", row: 2, col: 2, maxPoints: 2, description: (rank) => `Increases the range of your Balance spells and Faerie Fire (Feral) by ${rank * 10}%.` },
-            { id: "vengeance", name: "Vengeance", icon: "spell_nature_purge", row: 2, col: 3, maxPoints: 5, prereq: "improved-moonfire", description: (rank) => `Increases the critical strike damage bonus of your Starfire, Starfall, and Wrath spells by ${rank * 20}%.` },
+            { id: "brambles", name: "Brambles", icon: "spell_nature_thorns", row: 2, col: 0, maxPoints: 3, description: (rank) => `Increases damage caused by your Thorns and Entangling Roots spells by ${rank * 25}% and damage done by your Treants by ${rank * 5}%.` },
+            { id: "insect-swarm", name: "Insect Swarm", icon: "spell_nature_insectswarm", row: 2, col: 2, maxPoints: 1, prereq: "improved-moonfire", description: (rank) => `The enemy target is swarmed by insects, decreasing their chance to hit by 2% and causing Nature damage over 12 sec.` },
+            { id: "reach-of-cenarius", name: "Reach of Cenarius", icon: "spell_nature_naturetouchgrow", row: 2, col: 3, maxPoints: 2, description: (rank) => `Increases the range of your Balance spells and Faerie Fire (Feral) by ${rank * 10}%.` },
 
             // ROW 4
-            { id: "celestial-focus", name: "Celestial Focus", icon: "spell_arcane_starfire", row: 3, col: 1, maxPoints: 3, description: (rank) => `Gives your Starfire spell a ${rank * 5}% chance to stun the target for 3 sec.` },
-            { id: "lunar-guidance", name: "Lunar Guidance", icon: "spell_arcane_prismaticcloak", row: 3, col: 2, maxPoints: 3, description: (rank) => `Increases your spell damage and healing by ${rank * 8}% of your total Intellect.` },
-            { id: "natures-grace", name: "Nature's Grace", icon: "spell_nature_naturesblessing", row: 3, col: 3, maxPoints: 1, description: (rank) => `All spell critical strikes grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec.` },
+            { id: "vengeance", name: "Vengeance", icon: "spell_nature_purge", row: 3, col: 1, maxPoints: 5, prereq: "focused-starlight", description: (rank) => `Increases the critical strike damage bonus of your Starfire, Starfall, and Wrath spells by ${rank * 20}%.` },
+            { id: "celestial-focus", name: "Celestial Focus", icon: "spell_arcane_starfire", row: 3, col: 2, maxPoints: 3, description: (rank) => `Gives your Starfire spell a ${rank * 5}% chance to stun the target for 3 sec.` },
 
             // ROW 5
-            { id: "moonglow", name: "Moonglow", icon: "spell_nature_sentinal", row: 4, col: 0, maxPoints: 3, description: (rank) => `Reduces the Mana cost of your Moonfire, Starfire, Wrath, Healing Touch, Regrowth and Rejuvenation spells by ${rank * 3}%.` },
-            { id: "moonkin-form", name: "Moonkin Form", icon: "spell_nature_forceofnature", row: 4, col: 1, maxPoints: 1, description: (rank) => `Transforms the Druid into Moonkin Form. While in this form, the armor contribution from items is increased by 400%, and all party members within 30 yards have their spell critical chance increased by 5%. TBC+: Provides 3% Spell Haste.` },
-            { id: "dreamstate", name: "Dreamstate", icon: "spell_nature_healingtouch", row: 4, col: 2, maxPoints: 3, description: (rank) => `Regenerate mana equal to ${rank * 4}% of your Intellect every 5 sec, even while casting.` },
+            { id: "lunar-guidance", name: "Lunar Guidance", icon: "spell_arcane_prismaticcloak", row: 4, col: 0, maxPoints: 3, description: (rank) => `Increases your spell damage and healing by ${rank * 8}% of your total Intellect.` },
+            { id: "natures-grace", name: "Nature's Grace", icon: "spell_nature_naturesblessing", row: 4, col: 1, maxPoints: 1, description: (rank) => `All spell critical strikes grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec.` },
+            { id: "moonglow", name: "Moonglow", icon: "spell_nature_sentinal", row: 4, col: 2, maxPoints: 3, description: (rank) => `Reduces the Mana cost of your Moonfire, Starfire, Wrath, Healing Touch, Regrowth and Rejuvenation spells by ${rank * 3}%.` },
 
             // ROW 6
-            { id: "moonfury", name: "Moonfury", icon: "spell_nature_moonglow", row: 5, col: 1, maxPoints: 5, prereq: "moonkin-form", description: (rank) => `Increases the damage done by your Starfire, Moonfire and Wrath spells by ${rank * 2}%.` },
-            { id: "balance-of-power", name: "Balance of Power", icon: "spell_nature_natureguardian", row: 5, col: 2, maxPoints: 2, description: (rank) => `Increases your chance to hit with all spells and reduces the chance you'll be hit by spells by ${rank * 2}%.` },
+            { id: "moonfury", name: "Moonfury", icon: "spell_nature_moonglow", row: 5, col: 1, maxPoints: 5, prereq: "natures-grace", description: (rank) => `Increases the damage done by your Starfire, Moonfire and Wrath spells by ${rank * 2}%.` },
 
             // ROW 7
-            { id: "wrath-of-cenarius", name: "Wrath of Cenarius", icon: "ability_druid_twilightvanquisher", row: 6, col: 1, maxPoints: 5, description: (rank) => `Your Starfire spell gains an additional ${rank * 4}% and your Wrath gains an additional ${rank * 2}% of your bonus damage effects.` },
+            { id: "balance-of-power", name: "Balance of Power", icon: "spell_nature_natureguardian", row: 6, col: 0, maxPoints: 2, description: (rank) => `Increases your chance to hit with all spells and reduces the chance you'll be hit by spells by ${rank * 2}%.` },
+            { id: "moonkin-form", name: "Moonkin Form", icon: "spell_nature_forceofnature", row: 6, col: 1, maxPoints: 1, prereq: "moonfury", description: (rank) => `Transforms the Druid into Moonkin Form. Increases armor and party spell crit. TBC+: Provides 3% Spell Haste.` },
+            { id: "dreamstate", name: "Dreamstate", icon: "spell_nature_healingtouch", row: 6, col: 2, maxPoints: 3, description: (rank) => `Regenerate mana equal to ${rank * 4}% of your Intellect every 5 sec, even while casting.` },
 
             // ROW 8
-            { id: "force-of-nature", name: "Force of Nature", icon: "spell_nature_forceofnature", row: 8, col: 1, maxPoints: 1, description: (rank) => `Summons 3 Treants to aid the Druid for 30 sec.` },
-            // Note: TBC standard ends at Force of Nature? 41 points usually.
-            // 2.4.3 max talent is at row 9 (41 points).
-            // Wait, 41 point talent is usually row 8 (index 8, tier 9).
+            { id: "improved-faerie-fire", name: "Imp. Faerie Fire", icon: "spell_nature_faeriefire", row: 7, col: 0, maxPoints: 3, description: (rank) => `Your Faerie Fire spell also increases the chance the target will be hit by melee and ranged attacks by ${rank}%.` },
+            { id: "wrath-of-cenarius", name: "Wrath of Cenarius", icon: "ability_druid_twilightvanquisher", row: 7, col: 2, maxPoints: 5, description: (rank) => `Your Starfire spell gains an additional ${rank * 4}% and your Wrath gains an additional ${rank * 2}% of your bonus damage effects.` },
+
+            // ROW 9
+            { id: "force-of-nature", name: "Force of Nature", icon: "spell_nature_forceofnature", row: 8, col: 1, maxPoints: 1, prereq: "moonkin-form", description: (rank) => `Summons 3 Treants to aid the Druid for 30 sec.` },
         ]
     },
     feral: {

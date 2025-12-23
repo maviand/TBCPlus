@@ -90,44 +90,51 @@ const TalentCalculator = () => {
             const prereq = talents.find(t => t.id === talent.prereq);
             if (!prereq) return null;
 
-            // Simple grid coordinates (0-indexed) to pixels
-            // Assumption: Cell size 48x48, Gap X 12px (approx), Gap Y 24px
-            // let's say cell is 64px wide region.
-            // We need relative positions. row/col delta.
+            // Arrow color state
+            const isActive = points[prereq.id] === prereq.maxPoints;
+            const color = isActive ? "#fbbf24" : "#4b5563"; // amber-400 : gray-600
 
-            // This is tricky without fixed layout pixels.
-            // Simplified: Only draw vertical arrows for same-col or 1-col diff.
-            // We'll rely on CSS absolute positioning of SVG over the grid container.
+            // Grid constants (approximate based on styling)
+            const cellW = 60;
+            const cellH = 70;
+            const offsetX = 30; // Center of cell X
+            const offsetY = 30; // Center of cell Y (roughly) 
 
-            const dx = talent.col - prereq.col;
-            const dy = talent.row - prereq.row;
+            // Note in renderTree: grid gap-y-6 (~24px). grid gap-x?? It's grid-cols-4 and width 240px.
+            // 240px / 4 = 60px column width exactly.
+            // Row height: 40px icon + 24px gap = ~64px height per row step.
 
-            // Arrow Type logic
-            let path = "";
-            // Each cell is approx 100% width? No, grid is 4 columns.
-            // Let's assume each cell center is at (col * 60 + 30, row * 70 + 30) for a 240xWidth box?
-            // Actually, we can just use simple offsets 
-            const colWidth = 50; // approximate
-            const rowHeight = 60; // approximate
+            const startX = prereq.col * 60 + 30;
+            const startY = prereq.row * 64 + 40; // Bottom of icon (approx)
+            const endX = talent.col * 60 + 30;
+            const endY = talent.row * 64; // Top of icon (approx)
 
-            // Adjust coordinates based on grid slots
-            const x1 = prereq.col * 60 + 30;
-            const y1 = prereq.row * 70 + 60; // bottom of source
-            const x2 = talent.col * 60 + 30;
-            const y2 = talent.row * 70; // top of target
+            // Adjust path based on relationship
+            let d = "";
 
-            const color = (points[prereq.id] === prereq.maxPoints) ? "#fbbf24" : "#4b5563"; // amber or gray
+            // 1. Same Column (Vertical Down)
+            if (prereq.col === talent.col) {
+                const midY = (startY + endY) / 2;
+                d = `M${startX} ${startY} L${endX} ${endY}`;
+            }
+            // 2. Different Column
+            else {
+                // Elbow connector: Down -> Horizontal -> Down
+                const midY = startY + 15;
+                d = `M${startX} ${startY} L${startX} ${midY} L${endX} ${midY} L${endX} ${endY}`;
+            }
 
             return (
                 <g key={`${talent.id}-arrow`}>
                     <path
-                        d={`M${x1} ${y1} C ${x1} ${y1 + 20}, ${x2} ${y2 - 20}, ${x2} ${y2}`}
+                        d={d}
                         fill="none"
                         stroke={color}
                         strokeWidth="2"
                     />
+                    {/* Arrowhead */}
                     <path
-                        d={`M${x2} ${y2} L${x2 - 4} ${y2 - 8} L${x2 + 4} ${y2 - 8} Z`}
+                        d={`M${endX} ${endY} L${endX - 4} ${endY - 6} L${endX + 4} ${endY - 6} Z`}
                         fill={color}
                     />
                 </g>
@@ -183,6 +190,12 @@ const TalentCalculator = () => {
                                 ? talent.icon
                                 : `https://wow.zamimg.com/images/wow/icons/large/${talent.icon}.jpg`;
 
+                            // Tooltip Positioning Logic
+                            const isTopRow = talent.row < 2;
+                            const tooltipClass = isTopRow
+                                ? "top-full mt-2"
+                                : "bottom-full mb-2";
+
                             return (
                                 <div
                                     key={talent.id}
@@ -195,7 +208,7 @@ const TalentCalculator = () => {
                                     onContextMenu={(e) => handleRemovePoint(talent, specKey, e)}
                                 >
                                     <div className={`
-                                        relative w-10 h-10 rounded border-2 transition-all cursor-pointer
+                                        relative w-10 h-10 rounded border-2 transition-all cursor-pointer z-10
                                         ${isMaxed ? 'border-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]' :
                                             hasPoints ? 'border-green-400' :
                                                 isGreyed ? 'border-gray-800 opacity-50 grayscale' : 'border-gray-500 hover:border-gray-300'}
@@ -212,7 +225,7 @@ const TalentCalculator = () => {
                                     </div>
 
                                     {/* Tooltip */}
-                                    <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none text-left">
+                                    <div className={`absolute left-1/2 -translate-x-1/2 w-64 bg-slate-950 border border-white/20 p-3 rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none text-left ${tooltipClass}`}>
                                         <h4 className="font-bold text-amber-400 text-sm">{talent.name}</h4>
                                         <p className="text-[10px] text-gray-400 mb-2">Rank {rank}/{talent.maxPoints}</p>
                                         <p className="text-xs text-gray-300 leading-snug">
