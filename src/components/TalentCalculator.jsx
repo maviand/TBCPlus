@@ -88,12 +88,12 @@ const TalentCalculator = () => {
         return (
             <g>
                 <defs>
-                    {/* Small Arrowheads: 4px width */}
-                    <marker id="arrow-gray" markerWidth="4" markerHeight="4" refX="4" refY="2" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,4 L4,2 z" fill="#4b5563" />
+                    {/* Small Arrowheads: 3.5px width */}
+                    <marker id="arrow-gray" markerWidth="3.5" markerHeight="3.5" refX="3.5" refY="1.75" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,3.5 L3.5,1.75 z" fill="#4b5563" />
                     </marker>
-                    <marker id="arrow-gold" markerWidth="4" markerHeight="4" refX="4" refY="2" orient="auto" markerUnits="strokeWidth">
-                        <path d="M0,0 L0,4 L4,2 z" fill="#fbbf24" />
+                    <marker id="arrow-gold" markerWidth="3.5" markerHeight="3.5" refX="3.5" refY="1.75" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,3.5 L3.5,1.75 z" fill="#fbbf24" />
                     </marker>
                 </defs>
                 {talents.map(talent => {
@@ -110,19 +110,19 @@ const TalentCalculator = () => {
                     // Grid cols: 4, Width: 240px. Col Width = 60px.
                     // Row Height = 64px (40px icon + 24px gap).
                     // Icon Size = 40px.
-                    // Center CX = Col*60 + 30.
-                    // Center CY = Row*64 + 32 (Half of 64px row height).
+                    // Center CX = Col*60 + 36 (Measured offset).
+                    // Center CY = Row*64 + 36 (Measured offset).
 
                     const pCol = prereq.col;
                     const pRow = prereq.row;
                     const tCol = talent.col;
                     const tRow = talent.row;
 
-                    const pCx = pCol * 60 + 30;
-                    const pCy = pRow * 64 + 32;
+                    const pCx = pCol * 60 + 36;
+                    const pCy = pRow * 64 + 36;
 
-                    const tCx = tCol * 60 + 30;
-                    const tCy = tRow * 64 + 32;
+                    const tCx = tCol * 60 + 36;
+                    const tCy = tRow * 64 + 36;
 
                     // Radius adjustment:
                     // Icon is 40px wide/high (r=20).
@@ -180,6 +180,17 @@ const TalentCalculator = () => {
                         const enterY = (tRow > pRow) ? tCy - r : tCy + r;
 
                         // Mid Y calculation
+                        // Gap is 24px. Center of gap is pCy + 32 (if going down).
+                        // pCy is now 36. 36 + 32 = 68. Row boundary is 64. 68 is 4px into next row?
+                        // Wait, if pCy=36 (Center), and Row height 64.
+                        // Next Row Center = 36 + 64 = 100.
+                        // Midpoint = (36 + 100) / 2 = 68.
+                        // Row Boundary = 64.
+                        // 68 is 4px below boundary.
+                        // Gap is from Y=56 (Bottom of Icon 1) to Y=80 (Top of Icon 2).
+                        // Y=68 is perfectly centered in the 24px gap (56 + 12 = 68).
+                        // Math holds up.
+
                         const bendY = (tRow > pRow) ? pCy + 32 : pCy - 32;
 
                         d = `M${startX} ${exitY} L${startX} ${bendY} L${endX} ${bendY} L${endX} ${enterY}`;
