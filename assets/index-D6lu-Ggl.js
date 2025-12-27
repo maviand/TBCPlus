@@ -1384,7 +1384,23 @@ They share a health pool. Players must separate them or they heal each other.`,`
 A mass of tentacles inside the tree's sap. Players must kill 'Blood Ichors' near the eye to damage it.`,`**Cenarius (The Nightmare Ghost):** 
 An illusion of the demigod testing the players' worthiness.`,`**Xavius, the Nightmare Lord:** 
 The final encounter. He attempts to put the entire raid to sleep permanently. Players must use 'Dream Potions' to stay awake.`],mechanics:`**Sanity Meter:**
-Similar to Yogg-Saron, players have a 'Sanity' bar. Standing in corruption lowers it. Reaching 0 means you are Mind Controlled. You must enter 'Dream Bubbles' to restore sanity.`}},hubs:[{name:"Nordrassil's Roots",faction:"Neutral",desc:"The base camp for the Wardens and Circle. Find the 'Seed of Life' vendor here."},{name:"Stonemaul Hold",faction:"Horde",desc:"The Ogre clan has officially joined the Horde. Rexxar is the faction leader."},{name:"Silverwing Outpost",faction:"Alliance",desc:"Night Elf Sentinels holding the line against the Warsong Gulch incursions."}]},uldum:{title:"Zone 2: Uldum",subtitle:"Titan Sci-Fi meets Ancient Sands. The race for the Forge.",headerImage:"https://i.imgur.com/72RKZWw.jpeg",color:"text-yellow-400",bgGradient:"from-yellow-900/50 to-slate-900",intro:`**The Gates have opened, not by Deathwing, but by the Ethereum seeking godhood.**
+Similar to Yogg-Saron, players have a 'Sanity' bar. Standing in corruption lowers it. Reaching 0 means you are Mind Controlled. You must enter 'Dream Bubbles' to restore sanity.`}},hubs:[{name:"Nordrassil's Roots",faction:"Neutral (Cenarion)",lore:`**The Vigil of the Ancients**
+Located at the very base of the World Tree, this camp is a joint effort between the Cenarion Circle and the remaining Wardens. The air hums with nature magic, but it is a frantic energy. Druids channel spells into the bark 24/7 to halt the rot.`,vendors:`**Unique Goods:**
+- **Seed of Life:** A unique consumable that restores HP/Mana and removes one disease.
+- **Warden's Tabard:** Reputation reward.
+- **Pattern: Living Wood Breastplate** (Leatherworking).`,quests:`**Key Storylines:**
+- *The Corrupted Roots*: Delve into the tunnel system beneath the tree.
+- *Defense of the Well*: Hold off waves of Scourge attacking the local Moonwell.`},{name:"Stonemaul Hold",faction:"Horde",lore:`**A Home for the Displaced**
+Rexxar has formally brought the Stonemaul Ogres into the Horde fold. This fortress is built from crude stone and timber, serving as a bulwark against the demons of Darkwhisper Gorge.`,vendors:`**Unique Goods:**
+- **Ogre Strength Potion:** Increases Strength by 25 for 1 hour.
+- **Stonemaul Battle Standard:** A deployable buff banner.`,quests:`**Key Storylines:**
+- *Smashing Satyrs*: Hunt down the Legion remnants in the Gorge.
+- *Ogre Diplomacy*: Help the Ogres establish trade routes with Orgrimmar.`},{name:"Silverwing Outpost",faction:"Alliance",lore:`**The Sentinel's Last Stand**
+The veterans of Warsong Gulch have established a permanent forward operating base. It is a highly militarized Night Elf spire, designed to watch the southern approach from Ashenvale.`,vendors:`**Unique Goods:**
+- **Silverwing Bow:** A high-level blue ranged weapon.
+- **Sentinel's Ration:** Best-in-slot food buff for Agility classes.`,quests:`**Key Storylines:**
+- *Holding the Line*: Intercept Horde caravans moving supplies.
+- *The Missing Scout*: Find the sentinel lost in the nightmare fog.`}]},uldum:{title:"Zone 2: Uldum",subtitle:"Titan Sci-Fi meets Ancient Sands. The race for the Forge.",headerImage:"https://i.imgur.com/72RKZWw.jpeg",color:"text-yellow-400",bgGradient:"from-yellow-900/50 to-slate-900",intro:`**The Gates have opened, not by Deathwing, but by the Ethereum seeking godhood.**
 
 The **Ethereum** seeks the **Forge of Origination** to rewrite reality and become energy-gods. This is an Indiana Jones-style race against time, but solemn and alien. **Titan Sci-Fi meets Ancient Egypt.**`,dungeons:{origination:{name:"Halls of Origination",type:"5-Man Dungeon",level:"65-67",icon:ae,color:"text-yellow-400",image:"https://i.imgur.com/d0o7eWM.jpeg",lore:`**The Ultimate Weapon**
 The Halls contain the reformatting device capable of wiping all life from Azeroth. The Ethereum, led by **Nexus-Prince Shaffar**, have hacked the security systems. Players must navigate the 'Maker's Rise', an elevator system connecting different floors.`,geography:`**The Lay of the Land:**
@@ -1406,7 +1422,22 @@ He pulls the party into the Spirit Realm (Phase 2) where they must fight his sou
 A pygmy-tamed crocodile. A simple beast fight with high physical damage.`,`**Augh:** 
 The secret pygmy rogue who stabs players in the back during the Lockmaw fight.`,`**Siamat, Lord of South Wind:** 
 The Djinn imprisoned in the city. He summons storms that knock players off the platforms.`],mechanics:`**Chariot Warfare:**
-Players can hijack Neferset Chariots to mow down trash packs, turning the dungeon into a vehicle combat section for 5 minutes.`}},hubs:[{name:"Ramkahen City",faction:"Neutral",desc:"The Venice of the Desert. Canals and Barges transport players."},{name:"Sun-King's Reach",faction:"Horde",desc:"The Reliquary has set up camp, looking for Titan energy sources."},{name:"The Iron League",faction:"Alliance",desc:"Brann Bronzebeard's expedition. Focused on archaeology."}]},grimbatol:{title:"Zone 3: Grim Batol",subtitle:"Industrial High Fantasy. The Dragonmaw War Machine.",headerImage:"https://i.imgur.com/nr9e666.jpeg",color:"text-red-500",bgGradient:"from-red-900/40 to-slate-950",intro:`**The Dragonmaw Clan has returned, and they have brought the Netherwing with them.**
+Players can hijack Neferset Chariots to mow down trash packs, turning the dungeon into a vehicle combat section for 5 minutes.`}},hubs:[{name:"Ramkahen City",faction:"Neutral (Tol'vir)",lore:`**The Jewel of the Desert**
+A thriving oasis city of canals and sandstone spires. The Ramkahen Tol'vir have opened their gates to outsiders for the first time, desperate for aid against their stone-skin brethren. The architecture is breathtakingly grand.`,vendors:`**Unique Goods:**
+- **Camel Mounts:** Grey and Tan riding camels.
+- **Tol'vir Artifacts:** Vanity items that turn you into a statue.`,quests:`**Key Storylines:**
+- *The Flesh Curse*: Research the disease turning Tol'vir soft.
+- *Canal Patrol*: Maintain order on the waterways using barges.`},{name:"Sun-King's Reach",faction:"Horde",lore:`**The Reliquary Expedition**
+The Blood Elves have sent their elite archaeological division, The Reliquary, to plunder Uldum for Titan technology. Their camp is opulent, filled with floating cushions and magical lamps.`,vendors:`**Unique Goods:**
+- **Arcane Dusts:** Reagents for high-level enchanting.
+- **Mana Scryer:** A trinket that detects hidden magic nodes.`,quests:`**Key Storylines:**
+- *Tapping the Lines*: Siphon energy from the obelisks.
+- *Rivalry*: Sabotage the Explorer's League digsites.`},{name:"The Iron League",faction:"Alliance",lore:`**Brann's Basecamp**
+The Explorer's League has set up a massive excavation site. Dwarven tanks and gyrocopters dot the landscape. Brann Bronzebeard shouts orders from his tent, excited about every potsherd found.`,vendors:`**Unique Goods:**
+- **Dwarven Hand Cannon:** A powerful boe gun.
+- **Excavator's Hat:** Vanity helm with a light.`,quests:`**Key Storylines:**
+- *Digging Deep*: Uncover the entrance to a hidden vault.
+- *Titan Translations*: Collect tablets for Brann to decipher.`}]},grimbatol:{title:"Zone 3: Grim Batol",subtitle:"Industrial High Fantasy. The Dragonmaw War Machine.",headerImage:"https://i.imgur.com/nr9e666.jpeg",color:"text-red-500",bgGradient:"from-red-900/40 to-slate-950",intro:`**The Dragonmaw Clan has returned, and they have brought the Netherwing with them.**
 
 **Zuluhed the Whacked** has sent his elite riders back to Azeroth. They have seized Grim Batol to breed a new flight of '**Nether-Red**' hybrids. The atmosphere is **Industrial High Fantasy**: Oppressive, warlike, and choked with smoke.`,dungeons:{grim:{name:"Grim Batol",type:"MEGA-DUNGEON",level:"68-70",icon:ae,color:"text-red-500",image:"https://i.imgur.com/h0oLJpi.jpeg",lore:`**A City of Dark Iron and Dragonfire**
 The dwarven architecture of Grim Batol has been perverted by Orcish spikes and chains. It is a factory of war. The Dragonmaw are breeding a new flight of dragons here, twisting the red flight with nether energies.`,geography:`**The Lay of the Land:**
@@ -1435,7 +1466,17 @@ Elemental masters. They merge into an Elementium Monstrosity offering a phase 3.
 The ogre-mage makes a cameo. He corrupts the raid with 'Blood of the Old God'.`,`**Sinestra (Heroic Only):** 
 Deathwing's prime consort. A brutal healing check.`,`**Nekros Skullcrusher:** 
 The final boss. He uses the Demon Soul to control the Red Flight. Players must steal the artifact.`],mechanics:`**Gunship Battle:**
-Actual ship-to-ship combat where players man cannons, repel boarders, and fly jetpacks to the enemy ship to sabotage the engine.`}},hubs:[{name:"Aerie Peak Command",faction:"Alliance",desc:"Wildhammer Dwarves mustering gryphons. Falstad is here."},{name:"Dragonmaw Gates",faction:"Horde",desc:"A beachhead established by the Kor'kron. Garrosh acts as quest giver."}]},systems:{professions:{title:"Reforged Professions",content:`**Old World Materials, New World Power**
+Actual ship-to-ship combat where players man cannons, repel boarders, and fly jetpacks to the enemy ship to sabotage the engine.`}},hubs:[{name:"Aerie Peak Command",faction:"Alliance",lore:`**High Altitude Warfare**
+The Wildhammer Dwarves have mobilized their entire Gryphon fleet. The peak is a bustling airfield, with gryphons taking off and landing constantly. Falstad Wildhammer personally oversees the bombing runs on Grim Batol.`,vendors:`**Unique Goods:**
+- **Armored Snowy Gryphon:** Epic flying mount.
+- **Stormhammer:** Ranged weapon that stuns targets.`,quests:`**Key Storylines:**
+- *Death from Above*: Carpet bomb the Orcish siege engines.
+- *Dragon Hunting*: Aerial dogfights against Red Drakes.`},{name:"Dragonmaw Port",faction:"Horde",lore:`**The Kor'kron Beachhead**
+Garrosh Hellscream has established a foothold on the twilight highlands coast. It is a brutal, metal-clad fortress. The Horde is here to crush the Twilight's Hammer and claim the port for themselves.`,vendors:`**Unique Goods:**
+- **Kor'kron Juggernaut pieces:** Transmog plate set.
+- **Wolf Meat Stew:** High stamina food.`,quests:`**Key Storylines:**
+- *Breaching the Gate*: Use sapper charges to blow open the main road.
+- *Nether Drake Studies*: Capture drake eggs for research.`}]},systems:{professions:{title:"Reforged Professions",content:`**Old World Materials, New World Power**
 Fel Iron is rare on Azeroth. Instead, Defenders utilize stockpiles of **Thorium, Arcanite, and Mooncloth**. Grand Masters teach 'Reforged' recipes combining Classic mats with **Primal Nethers**.
 
 **Example Recipes:**
