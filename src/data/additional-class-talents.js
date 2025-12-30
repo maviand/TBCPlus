@@ -892,7 +892,7 @@ export const warlockTalents = {
 
             // Row 8
             { id: "improved-howl-of-terror", name: "Imp. Howl of Terror", icon: "spell_shadow_deathscream", row: 7, col: 0, maxPoints: 2, description: (rank) => `Reduces the cast time of Howl of Terror by ${rank * 0.75} sec. In addition, your Fear spell now applies Curse of Exhaustion to the target automatically.` },
-            { id: "malediction", name: "Malediction", icon: "spell_shadow_curseofachimonde", row: 7, col: 2, maxPoints: 3, description: (rank) => `Increases the damage bonus of your Curse of the Elements and Curse of Shadow spells by ${rank * 1}%.` },
+            { id: "malediction", name: "Malediction", icon: "spell_shadow_curseofachimonde", row: 7, col: 2, maxPoints: 3, description: (rank) => `Increases the damage bonus of your Curse of the Elements and Curse of Shadow spells by ${rank * 1}%. Your Curse of the Elements and Curse of Shadow spells now affect all targets within 20 yards of the primary target.` },
 
             // Row 9 
             { id: "unstable-affliction", name: "Unstable Affliction", icon: "spell_shadow_unstableaffliction_3", row: 8, col: 1, maxPoints: 1, prereq: "contagion", description: (rank) => `Shadow energy slowly destroys the target, causing 870 damage over 18 sec. In addition, if the Unstable Affliction is dispelled it will cause 1575 damage to the dispeller and silence them for 5 sec.` },
@@ -905,32 +905,33 @@ export const warlockTalents = {
         talents: [
             // Row 1
             { id: "improved-healthstone", name: "Imp. Healthstone", icon: "inv_stone_04", row: 0, col: 0, maxPoints: 2, description: (rank) => `Increases the amount of Health restored by your Healthstone by ${rank * 10}%.` },
-            { id: "improved-imp", name: "Imp. Imp", icon: "spell_shadow_summonimp", row: 0, col: 1, maxPoints: 3, description: (rank) => `Increases the effect of your Imp's Firebolt, Fire Shield, and Blood Pact spells by ${rank * 10}%.` },
+            { id: "demonic-instructor", name: "Demonic Instructor", icon: "spell_shadow_summonimp", row: 0, col: 1, maxPoints: 3, description: (rank) => `Increases the effect of your Imp's Firebolt, Fire Shield, and Blood Pact spells by ${rank * 10}%.` },
             { id: "demonic-embrace", name: "Demonic Embrace", icon: "spell_shadow_metamorphosis", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your total Stamina by ${rank * 3}% but reduces your total Spirit by ${rank * 1}%.` },
 
             // Row 2
             { id: "improved-health-funnel", name: "Imp. Health Funnel", icon: "spell_shadow_lifedrain", row: 1, col: 0, maxPoints: 2, description: (rank) => `Increases the amount of Health transferred by your Health Funnel spell by ${rank * 10}%.` },
             { id: "improved-voidwalker", name: "Imp. Voidwalker", icon: "spell_shadow_summonvoidwalker", row: 1, col: 1, maxPoints: 3, description: (rank) => `Increases the effectiveness of your Voidwalker's Torment, Consume Shadows, Sacrifice and Suffering spells by ${rank * 10}%.` },
             { id: "fel-intellect", name: "Fel Intellect", icon: "spell_holy_magicalsentry", row: 1, col: 2, maxPoints: 3, description: (rank) => `Increases the maximum Mana of your Imp, Voidwalker, Succubus, and Felhunter by ${rank * 5}%.` },
+            { id: "demonic-aegis", name: "Demonic Aegis", icon: "spell_shadow_ragingscream", row: 1, col: 3, maxPoints: 3, description: (rank) => `Increases the effectiveness of your Demon Skin and Demon Armor spells by ${rank * 10}%.` },
 
             // Row 3
             { id: "improved-succubus", name: "Imp. Succubus", icon: "spell_shadow_summonsuccubus", row: 2, col: 0, maxPoints: 3, description: (rank) => `Increases the effect of your Succubus's Lash of Pain and Soothing Kiss spells by ${rank * 10}%, and increases the duration of your Succubus's Seduction and Lesser Invisibility spells by ${rank * 10}%.` },
             { id: "fel-domination", name: "Fel Domination", icon: "spell_nature_removecurse", row: 2, col: 1, maxPoints: 1, description: (rank) => `Your next Summon Imp, Voidwalker, Succubus, or Felhunter spell has its casting time reduced by 5.5 sec and its Mana cost reduced by 50%.` },
             { id: "fel-stamina", name: "Fel Stamina", icon: "spell_shadow_antishadow", row: 2, col: 2, maxPoints: 3, description: (rank) => `Increases the maximum Health of your Imp, Voidwalker, Succubus, and Felhunter by ${rank * 5}%.` },
+            { id: "improved-enslave-demon", name: "Imp. Enslave Demon", icon: "spell_shadow_enslavedemon", row: 2, col: 3, maxPoints: 2, description: (rank) => `Reduces the Attack Speed and Casting Speed penalty of your Enslaved Demon by ${rank * 10}%. Reduces the chance your Enslaved Demon will resist Enslave Demon by ${rank * 10}%.` },
 
             // Row 4
-            { id: "demonic-aegis", name: "Demonic Aegis", icon: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_ragingscream.jpg", row: 3, col: 0, maxPoints: 3, description: (rank) => `Increases the effectiveness of your Demon Skin and Demon Armor spells by ${rank * 10}%.` },
-            { id: "master-summoner", name: "Master Summoner", icon: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_impphaseshift.jpg", row: 3, col: 1, maxPoints: 2, prereq: "fel-domination", description: (rank) => `Reduces the casting time of your Summon Imp, Voidwalker, Succubus, and Felhunter spells by ${rank * 2} sec and having the Mana cost by ${rank * 20}%.` },
+            { id: "master-conjuror", name: "Master Conjuror", icon: "inv_ammo_firetar", row: 3, col: 3, maxPoints: 2, description: (rank) => `Increases the Firestone and Spellstone effects by ${rank * 15}%.` },
+            { id: "master-summoner", name: "Master Summoner", icon: "spell_shadow_impphaseshift", row: 3, col: 1, maxPoints: 2, prereq: "fel-domination", description: (rank) => `Reduces the casting time of your Summon Imp, Voidwalker, Succubus, and Felhunter spells by ${rank * 2} sec and having the Mana cost by ${rank * 20}%.` },
             { id: "unholy-power", name: "Unholy Power", icon: "spell_shadow_shadowworddominate", row: 3, col: 2, maxPoints: 5, description: (rank) => `Increases the damage done by your Voidwalker, Succubus, Felhunter and Felguard melee attacks by ${rank * 4}%.` },
 
             // Row 5
             { id: "demonic-empowerment", name: "Demonic Empowerment", icon: "ability_warlock_demonicempowerment", row: 4, col: 0, maxPoints: 1, description: (rank) => `Grants your summoned demon a unique ability for 20 sec.\n• Felguard: 20% Attack Speed and break CC\n• Imp: 30% Spell Crit\n• Voidwalker: +30% Health\n• Succubus: Instant Invisibility\n• Felhunter: Removes all magic effects` },
             { id: "demonic-pact", name: "Demonic Pact", icon: "spell_shadow_demonicpact", row: 4, col: 1, maxPoints: 5, description: (rank) => `Your pet's critical strikes apply the Demonic Pact effect to your party or raid members, increasing their Spell Power by ${rank * 2}% of your Spell Damage for 45 sec.` },
-            { id: "master-conjuror", name: "Master Conjuror", icon: "inv_ammo_firetar", row: 4, col: 3, maxPoints: 2, description: (rank) => `Increases the Firestone and Spellstone effects by ${rank * 15}%.` },
 
             // Row 6
-            { id: "mana-feed", name: "Mana Feed", icon: "spell_shadow_manafeed", row: 5, col: 0, maxPoints: 3, description: (rank) => `When you gain Mana from Drain Mana or Life Tap, your pet gains ${rank * 33}% of the mana you gained.` },
-            { id: "master-demonologist", name: "Master Demonologist", icon: "spell_shadow_shadowpact", row: 5, col: 2, maxPoints: 5, prereq: "unholy-power", description: (rank) => `Grants both the Warlock and the summoned demon an effect as long as that demon is active. (Imp: -Threat, Void: -Phys Dmg, etc). Whenever you Life Tap, your summoned demon gains mana equal to ${rank * 6}% of the mana you gained.` },
+            { id: "fel-gluttony", name: "Fel Gluttony", icon: "spell_shadow_manafeed", row: 5, col: 0, maxPoints: 3, description: (rank) => `When you gain Mana from Drain Mana or Life Tap, your pet gains ${rank * 33}% of the mana you gained. In addition, when your pet deals damage, you heal for ${rank * 2}% of the damage dealt.` },
+            { id: "master-demonologist", name: "Master Demonologist", icon: "spell_shadow_shadowpact", row: 5, col: 2, maxPoints: 5, prereq: "unholy-power", description: (rank) => `Grant effects to Warlock and Demon while active:\n• Imp: -${rank * 4}% Threat\n• Voidwalker: -${rank * 2}% Phys Dmg\n• Succubus: +${rank * 2}% All Dmg\n• Felhunter: +${rank * 0.2} All Res\n• Felguard: +${rank * 1}% Dmg & -${rank * 1}% Phys Dmg` },
 
             // Row 7
             { id: "soul-link", name: "Soul Link", icon: "spell_shadow_gathershadows", row: 6, col: 1, maxPoints: 1, prereq: "demonic-pact", description: (rank) => `When active, 20% of all damage taken by the caster is taken by your Imp, Voidwalker, Succubus, Felhunter, or Felguard instead.` },
@@ -966,7 +967,7 @@ export const warlockTalents = {
             // Row 4
             { id: "intensity", name: "Intensity", icon: "spell_fire_lavaspawn", row: 3, col: 0, maxPoints: 2, description: (rank) => `Gives you a ${rank * 35}% chance to resist interruption caused by damage while casting or channeling any Destruction spell.` },
             { id: "destructive-reach", name: "Destructive Reach", icon: "spell_shadow_corpseexplode", row: 3, col: 1, maxPoints: 2, description: (rank) => `Increases the range of your Destruction spells by ${rank * 10}% and reduces threat caused by Destruction spells by ${rank * 5}%.` },
-            { id: "improved-searing-pain", name: "Imp. Searing Pain", icon: "spell_fire_soulburn", row: 3, col: 3, maxPoints: 2, description: (rank) => `Increases the critical strike chance of your Searing Pain spell by ${rank * 4}%.` },
+            { id: "improved-searing-pain", name: "Imp. Searing Pain", icon: "spell_fire_soulburn", row: 3, col: 3, maxPoints: 2, description: (rank) => `Increases the critical strike chance of your Searing Pain spell by ${rank * 4}%. Allows Searing Pain to be cast while moving. 6 sec cooldown.` },
 
             // Row 5
             { id: "pyroclasm", name: "Pyroclasm", icon: "spell_fire_volcano", row: 4, col: 0, maxPoints: 2, description: (rank) => `Gives your Rain of Fire, Hellfire, and Soul Fire spells a ${rank * 13}% chance to stun the target for 3 sec.` },
@@ -986,7 +987,7 @@ export const warlockTalents = {
             { id: "shadow-and-flame", name: "Shadow and Flame", icon: "spell_shadow_shadowandflame", row: 7, col: 1, maxPoints: 5, description: (rank) => `Your Shadow Bolt and Incinerate spells gain an additional ${rank * 4}% of your bonus spell damage effects.` },
 
             // Row 9 
-            { id: "shadowfury", name: "Shadowfury", icon: "spell_shadow_shadowfury", row: 8, col: 1, maxPoints: 1, description: (rank) => `Shadowfury is unleashed, causing Shadow damage and stunning all enemies within 8 yds for 2 sec.` },
+            { id: "shadowfury", name: "Shadowfury", icon: "spell_shadow_shadowfury", row: 8, col: 1, maxPoints: 1, description: (rank) => `Shadowfury is unleashed, causing Shadow damage and stunning all enemies within 12 yds for 2 sec. Targets also take 20% increased Fire damage for 6 sec. Instant Cast. 20 sec Cooldown.` },
         ]
     }
 };
