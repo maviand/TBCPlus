@@ -23,8 +23,8 @@ const TheEtherealTrade = () => {
 
                 {/* THE GADGETZAN EXCHANGE (STOCK MARKET) */}
                 <div className="relative border border-purple-900/30 rounded-xl p-8 mb-20 overflow-hidden shadow-2xl group">
-                    <div className="absolute inset-0 bg-[url('https://i.imgur.com/gG0R4Jz.jpeg')] bg-cover bg-center opacity-60 group-hover:opacity-75 transition-all duration-700"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#060608] via-[#060608]/95 to-[#060608]/50"></div>
+                    <div className="absolute inset-0 bg-[url('https://i.imgur.com/gG0R4Jz.jpeg')] bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-700"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#060608]/90 via-[#060608]/70 to-[#060608]/30"></div>
                     <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none"><LineChart size={300} /></div>
 
                     <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
