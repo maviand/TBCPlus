@@ -22,7 +22,9 @@ const TheEtherealTrade = () => {
             <div className="container mx-auto px-4 py-12">
 
                 {/* THE GADGETZAN EXCHANGE (STOCK MARKET) */}
-                <div className="bg-[#120f1f] border border-purple-900/30 rounded-xl p-8 mb-20 relative overflow-hidden shadow-2xl">
+                <div className="relative border border-purple-900/30 rounded-xl p-8 mb-20 overflow-hidden shadow-2xl group">
+                    <div className="absolute inset-0 bg-[url('https://i.imgur.com/gG0R4Jz.jpeg')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-all duration-700"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#060608] via-[#060608]/95 to-[#060608]/50"></div>
                     <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none"><LineChart size={300} /></div>
 
                     <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
@@ -73,7 +75,9 @@ const TheEtherealTrade = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
 
                     {/* Pillar 1: Buy Orders */}
-                    <div className="bg-[#120f1f] p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group relative overflow-hidden">
+                    <div className="relative p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/jRXIXQr.jpeg')] bg-cover bg-center opacity-25 group-hover:opacity-35 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><ShoppingBag size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
                             <div className="p-3 bg-purple-900/20 rounded-lg text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
@@ -98,7 +102,9 @@ const TheEtherealTrade = () => {
                     </div>
 
                     {/* Pillar 2: Contracts */}
-                    <div className="bg-[#120f1f] p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group relative overflow-hidden">
+                    <div className="relative p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/ZCmbFEo.jpeg')] bg-cover bg-center opacity-25 group-hover:opacity-35 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Scroll size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
                             <div className="p-3 bg-purple-900/20 rounded-lg text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
@@ -118,7 +124,9 @@ const TheEtherealTrade = () => {
                     </div>
 
                     {/* Pillar 3: Caravans */}
-                    <div className="bg-[#120f1f] p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group relative overflow-hidden">
+                    <div className="relative p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group overflow-hidden">
+                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/zdkShOD.jpeg')] bg-cover bg-center opacity-25 group-hover:opacity-35 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Truck size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
                             <div className="p-3 bg-purple-900/20 rounded-lg text-purple-400 group-hover:bg-purple-500 group-hover:text-white transition-colors">
