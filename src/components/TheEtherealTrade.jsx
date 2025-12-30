@@ -30,7 +30,9 @@ const TheEtherealTrade = () => {
                     <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
                         <div className="md:w-1/3">
                             <div className="flex items-center gap-3 mb-4">
-                                <img src="https://i.imgur.com/impoLGq.jpeg" className="w-12 h-12 object-contain mix-blend-multiply rounded-full" alt="Gadgetzan Exchange" />
+                                <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-black/50">
+                                    <img src="https://i.imgur.com/impoLGq.jpeg" className="w-full h-full object-cover mix-blend-multiply scale-110" alt="Gadgetzan Exchange" />
+                                </div>
                                 <h2 className="text-3xl font-cinzel text-white">The Gadgetzan Exchange</h2>
                             </div>
                             <p className="text-stone-400 text-sm leading-relaxed mb-6">
@@ -80,7 +82,9 @@ const TheEtherealTrade = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><ShoppingBag size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
-                            <img src="https://i.imgur.com/pwjfLzu.jpeg" className="w-14 h-14 object-contain mix-blend-multiply rounded-full" alt="Buy Orders" />
+                            <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg shadow-black/50">
+                                <img src="https://i.imgur.com/pwjfLzu.jpeg" className="w-full h-full object-cover mix-blend-multiply scale-110" alt="Buy Orders" />
+                            </div>
                             <h3 className="text-2xl font-cinzel text-white">Buy Orders</h3>
                         </div>
                         <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
@@ -105,7 +109,9 @@ const TheEtherealTrade = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Scroll size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
-                            <img src="https://i.imgur.com/2gTDvXO.jpeg" className="w-14 h-14 object-contain mix-blend-multiply rounded-full" alt="Mercenary Contracts" />
+                            <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg shadow-black/50">
+                                <img src="https://i.imgur.com/2gTDvXO.jpeg" className="w-full h-full object-cover mix-blend-multiply scale-110" alt="Mercenary Contracts" />
+                            </div>
                             <h3 className="text-2xl font-cinzel text-white">Mercenary Contracts</h3>
                         </div>
                         <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
@@ -125,7 +131,9 @@ const TheEtherealTrade = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Truck size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
-                            <img src="https://i.imgur.com/6ItWByd.jpeg" className="w-14 h-14 object-contain mix-blend-multiply rounded-full" alt="The Silk Road" />
+                            <div className="w-14 h-14 rounded-full overflow-hidden shadow-lg shadow-black/50">
+                                <img src="https://i.imgur.com/6ItWByd.jpeg" className="w-full h-full object-cover mix-blend-multiply scale-110" alt="The Silk Road" />
+                            </div>
                             <h3 className="text-2xl font-cinzel text-white">The Silk Road</h3>
                         </div>
                         <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
