@@ -23,14 +23,14 @@ const TheEtherealTrade = () => {
 
                 {/* THE GADGETZAN EXCHANGE (STOCK MARKET) */}
                 <div className="relative border border-purple-900/30 rounded-xl p-8 mb-20 overflow-hidden shadow-2xl group">
-                    <div className="absolute inset-0 bg-[url('https://i.imgur.com/gG0R4Jz.jpeg')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-all duration-700"></div>
+                    <div className="absolute inset-0 bg-[url('https://i.imgur.com/gG0R4Jz.jpeg')] bg-cover bg-center opacity-60 group-hover:opacity-75 transition-all duration-700"></div>
                     <div className="absolute inset-0 bg-gradient-to-r from-[#060608] via-[#060608]/95 to-[#060608]/50"></div>
                     <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none"><LineChart size={300} /></div>
 
                     <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
                         <div className="md:w-1/3">
                             <div className="flex items-center gap-3 mb-4">
-                                <img src="https://i.imgur.com/impoLGq.jpeg" className="w-12 h-12 rounded-lg shadow-md border border-purple-500/20" alt="Gadgetzan Exchange" />
+                                <img src="https://i.imgur.com/impoLGq.jpeg" className="w-12 h-12 object-contain" alt="Gadgetzan Exchange" />
                                 <h2 className="text-3xl font-cinzel text-white">The Gadgetzan Exchange</h2>
                             </div>
                             <p className="text-stone-400 text-sm leading-relaxed mb-6">
@@ -76,11 +76,11 @@ const TheEtherealTrade = () => {
 
                     {/* Pillar 1: Buy Orders */}
                     <div className="relative p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/jRXIXQr.jpeg')] bg-cover bg-center opacity-25 group-hover:opacity-35 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/jRXIXQr.jpeg')] bg-cover bg-center opacity-60 group-hover:opacity-75 transition-all duration-500"></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><ShoppingBag size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
-                            <img src="https://i.imgur.com/pwjfLzu.jpeg" className="w-14 h-14 rounded-lg shadow-md border border-purple-500/20" alt="Buy Orders" />
+                            <img src="https://i.imgur.com/pwjfLzu.jpeg" className="w-14 h-14 object-contain" alt="Buy Orders" />
                             <h3 className="text-2xl font-cinzel text-white">Buy Orders</h3>
                         </div>
                         <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
@@ -101,11 +101,11 @@ const TheEtherealTrade = () => {
 
                     {/* Pillar 2: Contracts */}
                     <div className="relative p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/ZCmbFEo.jpeg')] bg-cover bg-center opacity-25 group-hover:opacity-35 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/ZCmbFEo.jpeg')] bg-cover bg-center opacity-60 group-hover:opacity-75 transition-all duration-500"></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Scroll size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
-                            <img src="https://i.imgur.com/2gTDvXO.jpeg" className="w-14 h-14 rounded-lg shadow-md border border-purple-500/20" alt="Mercenary Contracts" />
+                            <img src="https://i.imgur.com/2gTDvXO.jpeg" className="w-14 h-14 object-contain" alt="Mercenary Contracts" />
                             <h3 className="text-2xl font-cinzel text-white">Mercenary Contracts</h3>
                         </div>
                         <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
@@ -121,11 +121,11 @@ const TheEtherealTrade = () => {
 
                     {/* Pillar 3: Caravans */}
                     <div className="relative p-8 rounded-xl border border-purple-900/30 hover:border-purple-500/50 transition-all group overflow-hidden">
-                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/zdkShOD.jpeg')] bg-cover bg-center opacity-25 group-hover:opacity-35 transition-all duration-500"></div>
+                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/zdkShOD.jpeg')] bg-cover bg-center opacity-60 group-hover:opacity-75 transition-all duration-500"></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-[#060608] via-[#060608]/90 to-transparent"></div>
                         <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Truck size={100} /></div>
                         <div className="flex items-center gap-4 mb-6 relative z-10">
-                            <img src="https://i.imgur.com/6ItWByd.jpeg" className="w-14 h-14 rounded-lg shadow-md border border-purple-500/20" alt="The Silk Road" />
+                            <img src="https://i.imgur.com/6ItWByd.jpeg" className="w-14 h-14 object-contain" alt="The Silk Road" />
                             <h3 className="text-2xl font-cinzel text-white">The Silk Road</h3>
                         </div>
                         <p className="text-stone-400 text-sm leading-relaxed mb-6 relative z-10">
