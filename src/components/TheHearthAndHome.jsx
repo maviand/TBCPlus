@@ -59,8 +59,8 @@ const TheHearthAndHome = () => {
                                 <div className="space-y-4 pt-4">
                                     {/* Rested+ Buff */}
                                     <div className="relative p-6 border border-stone-800 rounded-lg overflow-hidden group hover:border-amber-500/50 transition-all h-32 flex items-center">
-                                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/2EKhoRz.jpeg')] bg-cover bg-center opacity-40 group-hover:opacity-60 transition-all duration-500"></div>
-                                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+                                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/2EKhoRz.jpeg')] bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-500"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
                                         <div className="relative z-10 flex items-center gap-4">
                                             <div className="bg-stone-800/80 p-2 rounded backdrop-blur-sm"><BedDouble className="text-amber-500 w-6 h-6" /></div>
                                             <div>
@@ -72,8 +72,8 @@ const TheHearthAndHome = () => {
 
                                     {/* The Vault */}
                                     <div className="relative p-6 border border-stone-800 rounded-lg overflow-hidden group hover:border-amber-500/50 transition-all h-32 flex items-center">
-                                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/rxKRgK9.jpeg')] bg-cover bg-center opacity-40 group-hover:opacity-60 transition-all duration-500"></div>
-                                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+                                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/rxKRgK9.jpeg')] bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-500"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
                                         <div className="relative z-10 flex items-center gap-4">
                                             <div className="bg-stone-800/80 p-2 rounded backdrop-blur-sm"><Box className="text-amber-500 w-6 h-6" /></div>
                                             <div>
@@ -85,8 +85,8 @@ const TheHearthAndHome = () => {
 
                                     {/* Warband Alts */}
                                     <div className="relative p-6 border border-stone-800 rounded-lg overflow-hidden group hover:border-amber-500/50 transition-all h-32 flex items-center">
-                                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/6vLXLsp.jpeg')] bg-cover bg-center opacity-40 group-hover:opacity-60 transition-all duration-500"></div>
-                                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+                                        <div className="absolute inset-0 bg-[url('https://i.imgur.com/6vLXLsp.jpeg')] bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-500"></div>
+                                        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
                                         <div className="relative z-10 flex items-center gap-4">
                                             <div className="bg-stone-800/80 p-2 rounded backdrop-blur-sm"><Map className="text-amber-500 w-6 h-6" /></div>
                                             <div>
@@ -121,28 +121,28 @@ const TheHearthAndHome = () => {
                                     {
                                         name: "Silvermoon Spire",
                                         loc: "Silvermoon City",
-                                        desc: "Floating furniture, self-sweeping brooms, and a view of the Sunwell. Features a mana-fountain that restores mana rapidly.",
+                                        desc: "Experience the height of Sin'dorei luxury in these gravity-defying spires. Features floating furniture, self-sweeping brooms, and a direct view of the Sunwell's energy. Includes a personal Mana Fountain that accelerates mana regeneration while relaxing.",
                                         img: "https://i.imgur.com/MbU3URE.jpeg",
                                         biome: "Urban / Magical"
                                     },
                                     {
                                         name: "The Iron District",
                                         loc: "Ironforge",
-                                        desc: "Carved directly into the mountain. Warm, cozy, and literally bomb-proof. Comes with a private magma-tap for Blacksmithing (+5 Skill).",
+                                        desc: "Carved directly into the living rock of Khaz Modan, these suites are warm, cozy, and literally bomb-proof. Listen to the rhythmic clanging of the Great Forge as you sleep. Comes wih a private Magma Tap for Blacksmithing (+5 Skill) and radiant floor heating.",
                                         img: "https://i.imgur.com/z3Dlsh2.jpeg",
                                         biome: "Subterranean / Industrial"
                                     },
                                     {
                                         name: "Spirit Bluffs",
                                         loc: "Thunder Bluff",
-                                        desc: "Open-air tents on a private mesa. Watch the kodo herds migrate below. Includes a 'Spirit Fire' that allows talking to dead NPCs.",
+                                        desc: "Pitch your open-air tent on a private mesa overlooking the Golden Plains of Mulgore. Watch the kodo herds migrate far below in peace. Includes a 'Spirit Fire' pit that allows Shaman and Spirit-walkers to commune with ancestral NPCs for daily blessings.",
                                         img: "https://i.imgur.com/nIzPJK1.jpeg",
                                         biome: "Plains / Tribal"
                                     },
                                     {
                                         name: "Eco-Dome Beta",
                                         loc: "Netherstorm",
-                                        desc: "A personal bubbly of nature in the void. You control the weather inside. Highly sought after by Druids and Botanists.",
+                                        desc: "Secure your own bubble of paradise amidst the chaotic void of the Netherstorm. This Ethereal-tech bio-dome features a fully controllable localized atmosphere. Highly sought after by Druids and Botanists wishing to preserve Outland's flora.",
                                         img: "https://i.imgur.com/ezIbccq.jpeg",
                                         biome: "Sci-Fi / Nature",
                                         special: "Remote Plot"
@@ -150,7 +150,7 @@ const TheHearthAndHome = () => {
                                     {
                                         name: "Nagrand Villa",
                                         loc: "Nagrand",
-                                        desc: "A floating island property. Requires a flying mount to access. The ultimate status symbol.",
+                                        desc: "A breathtaking property atop a floating island, accessible only by flying mount. Surrounded by waterfalls and grazing wildlife, this it the ultimate status symbol for the high-flying hero. Enjoy the serenity of Nagrand from your private observation deck.",
                                         img: "https://i.imgur.com/aWtMAK4.jpeg",
                                         biome: "Floating Island",
                                         special: "Remote Plot"
@@ -158,7 +158,7 @@ const TheHearthAndHome = () => {
                                     {
                                         name: "Shadowmoon Stronghold",
                                         loc: "Shadowmoon Valley",
-                                        desc: "A fortified bunker near the Black Temple. For those who want to wake up and immediately fight demons.",
+                                        desc: "A fortified Legion-styled bunker situated dangerously close to the Black Temple. Deisgned for the hardened veteran who wants to wake up and immediately fight demons. Bathed in the fel-green glow of the valley, this stronghold is defensible and grim.",
                                         img: "https://i.imgur.com/pang6cl.jpeg",
                                         biome: "Wasteland / Military",
                                         special: "Remote Plot"
@@ -200,8 +200,8 @@ const TheHearthAndHome = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                             {/* Feature 1: Trophies */}
                             <div className="relative rounded-xl border border-stone-800 overflow-hidden group hover:border-amber-900/50 transition-all h-96">
-                                <div className="absolute inset-0 bg-[url('https://i.imgur.com/EMTwb8I.jpeg')] bg-cover bg-center opacity-30 group-hover:opacity-50 transition-all duration-700"></div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/40"></div>
+                                <div className="absolute inset-0 bg-[url('https://i.imgur.com/EMTwb8I.jpeg')] bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-700"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40"></div>
                                 <div className="absolute -top-10 -right-10 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Trophy size={200} /></div>
                                 <div className="relative z-10 p-10 h-full flex flex-col justify-end">
                                     <h3 className="font-cinzel text-3xl text-amber-500 mb-6 flex items-center gap-3">
@@ -220,8 +220,8 @@ const TheHearthAndHome = () => {
 
                             {/* Feature 2: Crafting */}
                             <div className="relative rounded-xl border border-stone-800 overflow-hidden group hover:border-amber-900/50 transition-all h-96">
-                                <div className="absolute inset-0 bg-[url('https://i.imgur.com/cALjJ5I.jpeg')] bg-cover bg-center opacity-30 group-hover:opacity-50 transition-all duration-700"></div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/90 to-black/40"></div>
+                                <div className="absolute inset-0 bg-[url('https://i.imgur.com/cALjJ5I.jpeg')] bg-cover bg-center opacity-80 group-hover:opacity-100 transition-all duration-700"></div>
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40"></div>
                                 <div className="absolute -top-10 -right-10 p-4 opacity-5 group-hover:opacity-10 transition-opacity"><Hammer size={200} /></div>
                                 <div className="relative z-10 p-10 h-full flex flex-col justify-end">
                                     <h3 className="font-cinzel text-3xl text-amber-500 mb-6 flex items-center gap-3">
