@@ -20,7 +20,7 @@ const TheArtisansCodex = () => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const content = parts.map((part, partIndex) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={partIndex} className="text-[#ffd100] font-bold">{part.slice(2, -2)}</strong>;
+          return <strong key={partIndex} className="text-[#c29c55] font-normal">{part.slice(2, -2)}</strong>;
         }
         return part;
       });
@@ -227,7 +227,7 @@ const TheArtisansCodex = () => {
       id: 'alchemy',
       name: 'Alchemy',
       title: 'The Philosopher\'s Legacy',
-      icon: <FlaskConical className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/alchemy.png" alt="Alchemy" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/2IgNFRu.jpeg',
       desc: 'Alchemy is transformed from a passive craft into a science of risk and reward. A master Alchemist is a tactical genius, deploying cauldrons and volatile concoctions to turn the tide.',
       philosophy: {
@@ -308,7 +308,7 @@ const TheArtisansCodex = () => {
       id: 'blacksmithing',
       name: 'Blacksmithing',
       title: 'Master of War',
-      icon: <Hammer className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/blacksmithing.png" alt="Blacksmithing" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/omtzxB9.jpeg',
       desc: 'The smith is the backbone of the war effort. This redesign introduces crafting qualities and "deployable" heavy weaponry for raids.',
       philosophy: {
@@ -358,12 +358,12 @@ const TheArtisansCodex = () => {
             slot: 'Two-Hand',
             unique: true,
             armorType: 'Mace',
-            damage: '480 - 720',
+            damage: '520 - 780',
             speed: '3.80',
-            dps: '157.9',
+            dps: '171.1',
             durability: 120,
             stats: '+65 Strength\n+50 Stamina',
-            effects: ['Equip: Increases critical strike rating by 45.', 'Chance on Hit: Shatters the target\'s armor, reducing it by 500. Stacks up to 3 times.'],
+            effects: ['Equip: Increases critical strike rating by 45.', 'Equip: Increases Haste Rating by 30.', 'Chance on Hit: Shatters the target\'s armor, reducing it by 500. Stacks up to 3 times.'],
             flavor: "Forged in Fel Fire."
           }
         },
@@ -388,7 +388,7 @@ const TheArtisansCodex = () => {
       id: 'enchanting',
       name: 'Enchanting',
       title: 'Warden of the Soul',
-      icon: <Zap className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/enchanting.png" alt="Enchanting" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/FApg0VK.jpeg',
       desc: 'Enchanters are the masters of magical essence, capable of binding the chaotic energies of the Nether into physical form. In this expanded vision, Enchanters do not merely apply stats to gear; they actively manipulate the magical fabric of the world.\n\nFrom dismantling magical barriers in dungeons to weaving temporary runes of immense power, the Enchanter is the ultimate magical utilitarian. They bridge the gap between the raw power of a Mage and the binding will of a Warlock.',
       philosophy: {
@@ -546,7 +546,7 @@ const TheArtisansCodex = () => {
       id: 'engineering',
       name: 'Engineering',
       title: 'Architect of the Future',
-      icon: <Wrench className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/engineering.png" alt="Engineering" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/kmLvKh4.jpeg',
       desc: 'Engineers are the visionary architects of the impossible, blending arcane volatility with mechanical precision. In Outland, where the laws of physics are fraying, Engineers do not merely build gadgets—they weaponize the very fabric of reality.\n\nFrom the chaotic, fel-infused workshops of Shadowmoon Valley to the sleek, mana-driven bio-domes of Netherstorm, the Engineer is a master of adaptation. Whether it is deploying a pocket-sized gravity well to crush a legion of demons or rewinding time itself to undo a fatal mistake, the modern Engineer is defined by a single creed: **"If it didn\'t explode, you didn\'t use enough power."**',
       philosophy: {
@@ -729,7 +729,7 @@ const TheArtisansCodex = () => {
       id: 'jewelcrafting',
       name: 'Jewelcrafting',
       title: 'Shaper of Light',
-      icon: <Gem className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/jewelcrafting.png" alt="Jewelcrafting" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/vERt1RC.jpeg',
       desc: 'Jewelcrafters cut the gems that power the heroes of Azeroth. They deal in precision, light, and the hidden power within stones.',
       philosophy: {
@@ -801,7 +801,7 @@ const TheArtisansCodex = () => {
       id: 'tailoring',
       name: 'Tailoring',
       title: 'Weaver of Magic',
-      icon: <Scissors className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/tailoring.png" alt="Tailoring" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/0sgpPtf.jpeg',
       desc: 'Tailors are the weavers of reality, pulling threads from the very fabric of the Nether to stitch together garments of immense power. They do not merely clothe the heroes of Azeroth; they armor them in magic itself.\n\nFrom the void-soaked looms of Shadowmoon to the star-threads of the Netherstorm, the modern Tailor is a master of the arcane arts, capable of creating banners that turn the tide of war and cloaks that defy the laws of physics.',
       philosophy: {
@@ -825,7 +825,7 @@ const TheArtisansCodex = () => {
         {
           name: 'Shadoweave',
           title: 'Void Master',
-          desc: '**Perk:** "Unraveling Presence" adds spell vulnerability to gear.',
+          desc: '**Perk:** "Soulcloth" items heal you for 1% of shadow damage dealt.',
           legendary: {
             name: 'Mantle of the Void-Touched',
             quality: 'legendary',
@@ -871,7 +871,7 @@ const TheArtisansCodex = () => {
         {
           name: 'Spellfire',
           title: 'Destruction',
-          desc: '**Perk:** "Arcane Infusion" adds haste procs to chests.',
+          desc: '**Perk:** "Spellfire" items have a chance to ignite targets. **Set Bonus:** 3-Piece Spellfire set now grants +10% Intellect.',
           legendary: {
             name: 'Sunfire Drape of the Phoenix',
             quality: 'legendary',
@@ -917,7 +917,7 @@ const TheArtisansCodex = () => {
         {
           name: 'Mooncloth',
           title: 'Celestial',
-          desc: '**Perk:** "Gift of Elune" reduces mana costs on gear.',
+          desc: '**Perk:** "Mooncloth" items allow 15% mana regen while casting.',
           legendary: {
             name: 'Cloak of the Lunar Eclipse',
             quality: 'legendary',
@@ -966,7 +966,7 @@ const TheArtisansCodex = () => {
       id: 'inscription',
       name: 'Inscription',
       title: 'The Architect of Magic',
-      icon: <PenTool className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/inscription.png" alt="Inscription" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/bV47vOI.jpeg',
       desc: 'Scribes are the architects of magic, rewriting the laws of reality with ink and parchment. In TBC Plus, Inscription is reimagined as an ancient discipline revived by the Sha\'tar and the Blood Elves.\n\nFrom crafting powerful Darkmoon Cards that twist fate to inscribing Glyphs that fundamentally alter how spells function, Scribes are the silent authors of victory.',
       philosophy: {
@@ -1133,7 +1133,7 @@ const TheArtisansCodex = () => {
       id: 'mining',
       name: 'Mining',
       title: 'Earth-Warder\'s Codex',
-      icon: <Mountain className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/mining.png" alt="Mining" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/HeAA9bY.jpeg',
       desc: 'Miners act as battlefield engineers, constructing barricades and finding weaknesses in the earth itself.',
       philosophy: {
@@ -1209,7 +1209,7 @@ const TheArtisansCodex = () => {
       id: 'skinning',
       name: 'Skinning',
       title: 'Hunter\'s Compendium',
-      icon: <Skull className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/skinning.png" alt="Skinning" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/2KkDULp.jpeg',
       desc: 'Skinning is now about trophy hunting, harvesting organs for alchemy, and tracking legendary beasts.',
       philosophy: {
@@ -1281,7 +1281,7 @@ const TheArtisansCodex = () => {
       id: 'herbalism',
       name: 'Herbalism',
       title: 'The Emerald Compendium',
-      icon: <Leaf className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/herbalism.png" alt="Herbalism" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/klgJfWJ.jpeg',
       desc: 'Herbalists manipulate the battlefield with rapid-growth flora, creating cover and cleansing zones.',
       philosophy: {
@@ -1353,7 +1353,7 @@ const TheArtisansCodex = () => {
       id: 'leatherworking',
       name: 'Leatherworking',
       title: 'The Primal Pact',
-      icon: <Scissors className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/leatherworking.png" alt="Leatherworking" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/ZNgl6A4.jpeg',
       desc: 'Leatherworking is now about "Primal Rhythms"—powerful, exclusive buffs that force a choice.',
       philosophy: {
@@ -1365,6 +1365,7 @@ const TheArtisansCodex = () => {
         desc: 'The beat of the drum echoes the heartbeat of the land. You can only attune your soul to **ONE** Rhythm at a time, defining your role in the raid:\n\n**Drums of the Primal Hunt:** A frantic beat that drives allies to attack with blinding speed (Haste).\n**Drums of the Earth Warder:** A deep, slow rhythm that hardens skin and resolve (Armor/Stamina).\n**Drums of the Serpent:** A flowing, liquid rhythm that refreshes the mind (Mana/Spirit).'
       },
       raidUtility: [
+        { name: 'Drums of War', quality: 'epic', type: 'Consumable', desc: 'Increases melee, ranged, and spell casting speed by 5% for all party members. Lasts 30 sec.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "The rhythm of conquerors.", effects: ["Use: +5% Haste for 30 sec (2 Min Cooldown)."] },
         { name: 'Primal Rhythms', quality: 'epic', type: 'Ability', desc: 'Grants access to the Primal Rhythms. Activating this ability applies a raid-wide buff determined by your specialization (Haste, Armor, or Mana).', ilvl: 70, slot: 'Ability', stats: '', flavor: "The beat of war.", effects: ["Use: Grants a powerful raid-wide buff. (5 Min Cooldown)"] },
         { name: 'Leather Tents', quality: 'rare', type: 'Deployable', desc: 'Deploys a finely stitched leather tent. Allies resting inside gain the "Rested" status immediately, allowing for rapid logouts and health regeneration.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Home is where you pitch it.", effects: ["Use: Deploys a tent. Grant Rested + HP Regen."] },
         { name: 'Drums of Panic', quality: 'rare', type: 'Consumable', desc: 'Beats a terrifying rhythm on drums of flayed skin. The sound induces primal fear in up to 5 nearby enemies, causing them to flee for 2 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Run away!", effects: ["Use: AoE Fear (5 targets) for 2 sec. (5 Min Cooldown)"] },
@@ -1375,7 +1376,7 @@ const TheArtisansCodex = () => {
         {
           name: 'Dragonscale',
           title: 'Slayer\'s Armor',
-          desc: '**Perk:** "Scale Weaving" adds armor bonuses.',
+          desc: '**Perk:** "Dragonscale" items reduce magic damage taken by 2%.',
           legendary: {
             name: 'Bindings of the Dragonflight',
             quality: 'legendary',
@@ -1421,7 +1422,7 @@ const TheArtisansCodex = () => {
         {
           name: 'Elemental',
           title: 'Storm Weaver',
-          desc: '**Perk:** "Storm\'s Fury" adds Nature damage procs.',
+          desc: '**Perk:** "Stormhide" items increase Nature/Fire resistance.',
           legendary: {
             name: 'Storm-Caller\'s Grips',
             quality: 'legendary',
@@ -1467,7 +1468,7 @@ const TheArtisansCodex = () => {
         {
           name: 'Tribal',
           title: 'Feral Spirit',
-          desc: '**Perk:** "Heart of the Wild" extends buff durations.',
+          desc: '**Perk:** "Spirit Leather" increases Spirit and Agility by 3%.',
           legendary: {
             name: 'Bindings of the Primal Hunt',
             quality: 'legendary',
@@ -1516,7 +1517,7 @@ const TheArtisansCodex = () => {
       id: 'fishing',
       name: 'Fishing',
       title: 'The Angler\'s Almanac',
-      icon: <Fish className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/fishing.png" alt="Fishing" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/gqzTA4j.jpeg',
       desc: 'Fishing is now an active sport with a "Fighting Fish" mini-game and deep-sea leviathans. It offers **Environmental Manipulation** mechanics to stealth past enemies or save allies.',
       philosophy: {
@@ -1585,7 +1586,7 @@ const TheArtisansCodex = () => {
       id: 'firstaid',
       name: 'First Aid',
       title: 'Combat Medic\'s Codex',
-      icon: <HeartPulse className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/firstaid.png" alt="First Aid" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/NUZb092.jpeg',
       desc: 'First Aid is no longer just bandages. It is **Battlefield Triage**. We have introduced "Active Trauma Management" with effects that are usable in combat and by non-healers.',
       philosophy: {
@@ -1641,16 +1642,16 @@ const TheArtisansCodex = () => {
         }
       },
       specs: [
-        { name: 'Field Medic', title: 'The Lifesaver', desc: '**Perk:** "Stabilize" puts a dead ally in stasis.' },
-        { name: 'Toxicologist', title: 'Venom Master', desc: '**Perk:** "Immunization Serum" grants massive resistance.' },
-        { name: 'Anatomist', title: 'The Surgeon', desc: '**Perk:** "Nerve Strike" reduces enemy damage dealt.' }
+        { name: 'Armorsmith', title: 'The Bulwark', desc: '**Perk:** "Indestructible" grants immunity to durability loss and +5% Armor.' },
+        { name: 'Weaponsmith', title: 'The Striker', desc: '**Perk:** "Tempered Steel" adds +2% Crit to crafted weapons.' },
+        { name: 'Master Hammersmith', title: 'The Crusher', desc: '**Perk:** "Weighted Blows" adds a chance to stun on hit.' }
       ]
     },
     cooking: {
       id: 'cooking',
       name: 'Cooking',
       title: 'The Gourmand\'s Lexicon',
-      icon: <Utensils className="w-6 h-6" />,
+      icon: <img src="/TBCPlus/images/icons/professions/cooking.png" alt="Cooking" className="w-[18px] h-[18px] object-contain" />,
       image: 'https://i.imgur.com/fJYnwk5.jpeg',
       desc: 'Cooking becomes a social pillar. **"The Hearth\'s Morale"** encourages social interaction with deployed feasts and interactive buff sharing.',
       philosophy: {
@@ -1786,7 +1787,7 @@ const TheArtisansCodex = () => {
                         }`}
                     >
                       <span className={`transition-colors ${activeProfession === key ? 'text-[#c29c55]' : 'text-[#5c5c63] group-hover:text-[#c29c55]'}`}>
-                        {React.cloneElement(prof.icon, { size: 18 })}
+                        {React.cloneElement(prof.icon, { size: 18, className: "w-[18px] h-[18px] object-contain" })}
                       </span>
                       <span className="font-hero text-sm tracking-wide uppercase">{prof.name}</span>
                     </button>
@@ -1820,7 +1821,7 @@ const TheArtisansCodex = () => {
 
                     <div className="relative z-10 p-8 md:p-12 max-w-2xl">
                       <div className="flex items-center gap-4 mb-4">
-                        {React.cloneElement(prof.icon, { className: `w-8 h-8 text-[#c29c55]` })}
+                        {React.cloneElement(prof.icon, { className: `w-8 h-8 text-[#c29c55] object-contain` })}
                         <h2 className="font-hero text-4xl lg:text-5xl text-[#f0e6d2]">{prof.name}</h2>
                       </div>
                       <p className="font-hero text-sm text-[#c29c55] uppercase tracking-[0.25em] mb-6 border-l-2 border-[#c29c55] pl-3">{prof.title}</p>

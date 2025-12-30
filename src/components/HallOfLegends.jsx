@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
 
-const HallOfLegends = () => {
+const HallOfLegends = ({ setPage, setSelectedClass }) => {
   const [activeTab, setActiveTab] = useState('classes'); // 'classes' | 'artifacts'
   const [activeClass, setActiveClass] = useState('druid');
   const [activeArtifact, setActiveArtifact] = useState('ashbringer');
@@ -21,7 +21,7 @@ const HallOfLegends = () => {
 
       const content = parts.map((part, partIndex) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={partIndex} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+          return <strong key={partIndex} className="text-[#c29c55] font-normal">{part.slice(2, -2)}</strong>;
         }
         return part;
       });
@@ -46,14 +46,44 @@ const HallOfLegends = () => {
       borderColor: 'border-orange-500',
       bgGradient: 'from-orange-900/80 to-black',
       masterwork: {
-        name: 'The Primal Weave',
-        desc: 'The core fantasy of the Druid is adaptability, and this redesign transforms that adaptability from a costly gimmick into their single greatest strength. This passive system, the **Primal Weave**, enhances their core kit by rewarding seamless, adaptive gameplay and creating a high-skill ceiling for hybrid players.',
-        mechanic: '**Primal Echo:** Using a key ability in one form (e.g., Shred (Cat), Mangle (Bear), Starfire (Moonkin), Swiftmend (Caster)) grants you Primal Echo for 8 seconds. This buff is then consumed when you use an ability from a *different* form, granting it a powerful, one-time bonus. \n\n**Example 1 (Clutch Heal):** Shred (Cat) -> Regrowth (Caster) becomes **instant cast**. \n**Example 2 (Tank Off-DPS):** Mangle (Bear) -> Starfire (Moonkin) cast time reduced by **50%**. \n**Example 3 (Utility/PvP):** Swiftmend (Caster) -> Pounce (Cat) **no longer requires stealth** and stuns for 2 seconds.',
+        name: 'Primal Surge',
+        desc: '**Masterwork Ability: Primal Surge** \n**Instant | 15 sec Cooldown** \nAdapts to your current shapeshift form. Unleashes the raw aspect of your current form, projecting your power to influence multiple targets at once.',
+        mechanic: '🐯 **Cat Form: Primal Wrath** (35 Energy | 1-5 CP). Finishing move that strikes all enemies within 8 yards for instant damage and applies Rip. Duration increases with CP (4-20s). \n\n🐻 **Bear Form: Primal Tremor** (20 Rage). Slams the ground, dealing Physical damage to all enemies within 8 yards. Applies 1 stack of Lacerate. Generates high threat. \n\n🦉 **Moonkin Form: Primal Flare** (21% Base Mana). Blasts target with lunar energy. If target has Moonfire, duplicates it to up to 4 additional enemies within 10 yards. \n\n🌿 **Caster Form: Primal Bloom** (18% Base Mana). Consumes Rejuv/Regrowth on target for an instant moderate heal. Radiates a Rejuvenation effect (8s) to 4 nearby injured party members.',
       },
       specs: [
-        { name: 'Balance', icon: 'https://i.imgur.com/xqYw2gI.png', title: 'Celestial Arcanist', desc: '**Core Problem Solved:** The "Oomkin" curse and static rotation. \n\n**Mana Sustain:** \n**[Passive] Lunar Guidance:** Provides a **30% mana cost reduction** and grants **15% of your total Intellect as Spell Power** for premier scaling. \n**[Passive] Celestial Anointment** and **[Passive] Starlight\'s Duality** provide sustained mana return and DoT extension based on crit. \n\n**New Rotation & Abilities:** \n**[Passive] Eclipse (Reworked):** Replaced random proc with a rhythmic, low-RNG cycle: two consecutive Starfire spells empower Wrath, and vice-versa, creating an engaging A-B-B-A rotation. \n**[Spell] Starsurge (Baseline):** An **instant-cast**, high-damage Arcane execute spell (100% more damage below 25% health). \n**[Spell] Starfall (Channeled):** Powerful, thematic AoE cooldown that prioritizes DoT-afflicted targets. \n**[Spell] Typhoon:** Frontal-cone blast that **knocks enemies back 20 yards** and dazes them. \n\n**Raid Utility:** \n**[Form] Moonkin Form (Empowered):** Now provides **3% Spell Haste to the entire raid**, solidifying the spec as a mandatory caster force multiplier.' },
-        { name: 'Feral', icon: 'https://i.imgur.com/su1345k.jpeg', title: 'Primal Predator & Guardian', desc: '**Core Problem Solved:** Bear lacks defensive cooldowns; Cat rotation is clunky and mana-dependent. \n\n**I. The Guardian (Bear):** \n**[Spell] Thrash (Baseline):** Solves AoE threat. Applies a **12-second bleed** effect to all enemies within 8 yards. \n**[Talent] Survival Instincts:** The "Shield Wall" Bears always needed. Reduces all damage taken by **50% for 6 seconds** (2 charges on a 1.5m cooldown). \n**[Passive] Guardian\'s Burden (LoTP Rework):** Grants **5% Melee/Ranged Crit** to the party. Additionally, **3% of all party damage** within 20 yards is **redirected to the Bear** (mitigated by armor). \n\n**II. The Predator (Cat):** \n**[Passive] Powershifting Refined:** Shifting to Cat form now instantly grants **40 Energy** (up from 20), smoothing out the rotation. \n**[Spell] Savage Roar (Finisher):** Adds a strategic layer by granting a **30% physical damage buff** to the Druid, forcing management of two key timers (Rip and Roar). \n**[Passive] Predator\'s Rhythm (LoTP Rework):** Grants **5% Melee/Ranged Crit** to the party. While in Cat Form, all **party bleed effects deal 5% increased damage** to targets you are bleeding.' },
-        { name: 'Restoration', icon: 'https://i.imgur.com/8WViTgN.png', title: 'Grove-Warden', desc: '**Core Problem Solved:** Lack of reactive, group-wide burst healing and "oh sh*t" cooldowns. \n\n**New Burst & Raid Tools:** \n**[Spell] Wild Growth:** A powerful "smart" heal that instantly heals the **5 most-injured party/raid members**, providing the Chain Heal equivalent. \n**[Spell] Ironbark:** A premier external defensive cooldown that reduces a friendly target\'s damage taken by **20% for 12 seconds** and increases healing received from your HoTs by 30%. \n**[Passive] Efflorescence:** Casting Swiftmend now also spawns a **ground-placement AoE heal** at the target\'s location for 9 seconds. \n\n**Empowered Throughput:** \n**[Form] Tree of Life (Empowered):** Reworked into a 3-minute transformation lasting 20 seconds. While active, **Healing Touch becomes instant cast** and Wild Growth hits 2 additional targets. \n**[Passive] Symbiotic Embrace:** Rewards stacking Lifebloom by granting a mutual **10% healing increase** between you and the target for 10 seconds.' }
+        {
+          name: 'Balance',
+          icon: 'https://i.imgur.com/xqYw2gI.png',
+          title: 'Celestial Arcanist',
+          fantasy: 'A master of the stars, harnessing the rhythmic cycle of the sun and moon to call down astral devastation.',
+          abilities: [
+            { name: 'Starsurge', icon: 'spell_arcane_arcane03', desc: 'Instant-cast Arcane nuke that defines the rotation.' },
+            { name: 'Typhoon', icon: 'ability_druid_typhoon', desc: 'Frontal-cone knockback for unparalleled control.' },
+            { name: 'Solar Beam', icon: 'ability_vehicle_sonicshockwave', desc: 'Area-of-effect silence that creates a zone of nullification.' }
+          ]
+        },
+        {
+          name: 'Feral',
+          icon: 'https://i.imgur.com/su1345k.jpeg',
+          title: 'Primal Predator',
+          fantasy: 'A shapeshifting skirmisher who bleeds foes or acts as an unbreakable wall of fur and claw.',
+          abilities: [
+            { name: 'Thrash (Bear)', icon: 'spell_druid_thrash', desc: 'Massive AoE bleed for tanking threat.' },
+            { name: 'Primal Fury (Cat)', icon: 'ability_druid_primalfury', desc: 'Finisher that grants physical damage dominance.' },
+            { name: 'Swipe (Cat)', icon: 'inv_misc_monsterclaw_03', desc: 'Now strikes all nearby enemies.' }
+          ]
+        },
+        {
+          name: 'Restoration',
+          icon: 'https://i.imgur.com/8WViTgN.png',
+          title: 'Grove Warden',
+          fantasy: 'A healer who mends wounds with the essence of life itself, mobile and reactive like the wind.',
+          abilities: [
+            { name: 'Wild Growth', icon: 'ability_druid_flourish', desc: 'Smart AoE heal that prioritizes injured allies.' },
+            { name: 'Efflorescence', icon: 'spell_druid_lifebloom', desc: 'Swiftmend plants a healing garden at the target\'s feet.' },
+            { name: 'Revitalize', icon: 'ability_druid_empoweredrejuvination', desc: 'Periodically restores Energy or Rage to healed targets.' }
+          ]
+        }
       ]
     },
     hunter: {
@@ -70,9 +100,39 @@ const HallOfLegends = () => {
         mechanic: 'The mana bar is replaced by a 100-point **Focus** bar. \n**Steady Shot** is the Focus **builder** (generates 20 Focus). Spenders (Arcane Shot, Multi-Shot) cost Focus. \n\n**Empowered Shot (Passive):** Every 3rd Steady Shot grants Hunter\'s Focus, making your next spec-specific spender (like **Kill Command** or **Aimed Shot**) **free and massively empowered**. \n\nThe **Deadzone (5-8 yard minimum range) is entirely eliminated**.',
       },
       specs: [
-        { name: 'Beast Mastery', icon: 'https://i.imgur.com/O9XtjlG.png', title: 'Primal Bond', desc: '**Core Problem Solved:** The "Glass Cannon Pet" that dies to all raid AoE. \n\n**Pet Resiliency Overhaul:** \n**Avoidance (Passive):** Pet takes **90% reduced damage** from all non-player AoE effects. \n**Primal Endurance (Passive):** Pet inherits **100% of your Armor** and scales with your gear. \n\n**New Rotation & Abilities:** \n**Kill Command (Reworked):** No longer a proc. It is your active, high-impact Focus spender. \n**Barbed Shot:** Applies a bleed and **Enrages your pet** (+30% attack speed). \n**Pinnacle Talent - Animal Companion:** Summons a **second pet** from your stable to fight alongside you, providing passive cleave damage.' },
-        { name: 'Marksmanship', icon: 'https://i.imgur.com/qtQxThz.png', title: 'Master Sniper', desc: '**Core Problem Solved:** Horrible late-game scaling and reliance on the Steady Shot macro. \n\n**Core Fixes:** \n**Aimed Shot** base cast time reduced to **2.5s**. \n**Scaling Trueshot Aura:** Now grants an additional **20% of the Hunter\'s own Attack Power** to the party aura, ensuring scaling with gear. \n\n**New Abilities:** \n**Chimera Shot (10s CD):** An instant shot that deals high damage and **refreshes Serpent Sting** on the target. \n**Lethal Precision:** Makes your Empowered Aimed Shot a **guaranteed critical strike** that deals 50% more damage, creating a devastating sniper blast. \n**Master\'s Aim:** Chimera Shot marks the target, causing your next Aimed Shot to **ignore 20% of the target\'s armor**.' },
-        { name: 'Survival', icon: 'https://i.imgur.com/xHx9U5j.jpeg', title: 'Cunning Trapper', desc: '**Core Problem Solved:** Traps are useless in combat; the spec has no damage identity. \n\n**Trap Overhaul:** \n**Trap Launcher (Baseline):** Allows your next trap to be **launched up to 40 yards away**. \n**Improved Traps (Baseline):** Immolation and Explosive Trap can now be **active on the same target**. \n\n**New Rotation & Abilities:** \n**Explosive Shot (Core Spender):** Fires an explosive charge that deals fire damage over 2 seconds. \n**Pinnacle Talent - Lock and Load:** Trap ticks have a chance to trigger Lock and Load, **resetting Explosive Shot** and making your next 2 Explosive Shots **cost 0 Focus**. This is the core, proc-based gameplay loop. \n**Black Arrow:** A new Shadow damage DoT to manage that synergizes with Explosive Shot for AoE cleave.' }
+        {
+          name: 'Beast Mastery',
+          icon: 'https://i.imgur.com/O9XtjlG.png',
+          title: 'Primal Bond',
+          fantasy: 'Fighting as one with your beast, unleashing coordinated rage and commanding the wilds.',
+          abilities: [
+            { name: 'Kill Command', icon: 'ability_hunter_killcommand', desc: 'Active, high-impact Focus spender.' },
+            { name: 'Call of the Wild', icon: 'ability_hunter_kobratrap', desc: 'Party gains 10% AP for 20s.' },
+            { name: 'Exotic Beasts', icon: 'ability_hunter_beasttaming', desc: 'Tame Devilsaurs, Spirit Beasts, and Core Hounds.' }
+          ]
+        },
+        {
+          name: 'Marksmanship',
+          icon: 'https://i.imgur.com/qtQxThz.png',
+          title: 'Master Sniper',
+          fantasy: 'The precise executioner, eliminating targets from extreme range with calculated shots.',
+          abilities: [
+            { name: 'Chimera Shot', icon: 'ability_hunter_chimerashot2', desc: 'Refreshes Sting duration and deals heavy damage.' },
+            { name: 'Disengage', icon: 'ability_rogue_feint', desc: 'Leaps backward to create tactical distance.' },
+            { name: 'Kill Shot', icon: 'ability_hunter_assassinate2', desc: 'Devastating execute on low-health targets.' }
+          ]
+        },
+        {
+          name: 'Survival',
+          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
+          title: 'Cunning Trapper',
+          fantasy: 'Using gadgets, venom, and explosives to control the battlefield.',
+          abilities: [
+            { name: 'Explosive Shot', icon: 'ability_hunter_explosiveshot', desc: 'Fires a volatile payload into the target.' },
+            { name: 'Black Arrow', icon: 'spell_shadow_painspike', desc: 'Curses target with Shadow damage.' },
+            { name: 'Trap Launcher', icon: 'ability_hunter_traplauncher', desc: 'Hurl your traps to any location within 40 yards.' }
+          ]
+        }
       ]
     },
     mage: {
@@ -86,12 +146,42 @@ const HallOfLegends = () => {
       masterwork: {
         name: 'Volatile Magic',
         desc: 'The entire purpose of this system is to solve the TBC problem of **"proc munching"** (where a new proc would overwrite and waste an existing one) and turn it into a high-skill-ceiling reward. A great Mage banks and spends their procs for maximum impact, transforming all three specs from static turrets into explosive proc-based art forms.',
-        mechanic: '**Stacking Procs:** \n**Hot Streak (Fire):** Can now stack up to **2 times**, guaranteeing Pyroblast! Pyroblast! burst during Combustion. \n**Fingers of Frost (Frost):** Can stack up to **3 times**, allowing for rapid-fire Ice Lance bursts. \n**Arcane Potency (Arcane):** Stacks to make Missiles/Barrage **instant and mana-free**.',
+        mechanic: '**Stacking Procs:** \n**Hot Streak (Fire):** Can now stack up to **2 times**, guaranteeing Pyroblast! Pyroblast! burst during Combustion. \n**Fingers of Frost (Frost):** Can stack up to **3 times**, allowing for rapid-fire Ice Lance bursts. \n**Ley Line Mastery (Arcane):** Stacks to make Missiles/Barrage **instant and mana-free**.',
       },
       specs: [
-        { name: 'Arcane', icon: 'https://i.imgur.com/Zt0BQe6.png', title: 'Temporal Weaver', desc: '**Core Problem Solved:** The rigid, "1-button Arcane Blast" turret gameplay. \n\n**Rotation & Abilities:** \n**Arcane Barrage (Baseline):** An **instant-cast** blast that **resets your Arcane Blast stacks**, providing crucial mobile damage and rotational flexibility. \n**Temporal Shield (1.5m CD):** A powerful defensive cooldown. All damage taken during the shield\'s 6-second duration is **healed back** over the next 6 seconds, rewarding foresight against massive boss mechanics. \n**Temporal Flux:** Mechanically rewards the "burn-and-conserve" cycle, granting **10% spell haste** during your conserve phase and **10% crit** during your burn phase.' },
-        { name: 'Fire', icon: 'https://i.imgur.com/TRNTMys.png', title: 'Explosive Pyromancer', desc: '**Core Problem Solved:** The fundamentally broken and damage-losing **Ignite munching** mechanic. \n\n**Core Fixes:** \n**Ignite (Reworked):** The crit damage is now **"banked"** and delivered instantly on the next non-crit hit, guaranteeing every crit\'s value lands. \n**Living Bomb (Baseline):** A critical DoT that explodes for AoE damage and can trigger **Hot Streak**. \n**New Abilities:** \n**Combustion (Reworked):** Consumes active Fire DoTs (Living Bomb, Pyro DoT) and combines their remaining damage into a single **"Super-Ignite"** DoT, and **doubles the chance to trigger Hot Streak** for 10 seconds. \n**Pinnacle Talent - Meteor (1m CD):** Calls down a meteor that deals **massive AoE damage** and stuns all enemies hit.' },
-        { name: 'Frost', icon: 'https://i.imgur.com/oR1e4BK.png', title: 'Glacial Controller', desc: '**Core Problem Solved:** A "PvP-only" spec with zero raid viability due to bosses being immune to freeze. \n\n**Core Fixes:** \n**Fingers of Frost (FoF):** Now stacks up to 3 times (via Masterwork system). \n**Ice Lance (Buffed):** Now deals **TRIPLE damage** (up from double) to targets consuming an FoF charge. \n\n**New Abilities:** \n**Deep Freeze (51-pt):** This is the PvE solution. It is usable on stun-immune bosses and deals **massive nuke damage** (shattering the very air around the target). \n**Frozen Orb (1m CD):** Launches an orb of ice that slows, damages, and acts as a **proc battery** by generating multiple Fingers of Frost charges. \n**Glacial Bastion:** Casting Ice Barrier grants a small **damage-absorption shield** to nearby party members, giving Frost unique defensive raid utility.' }
+        {
+          name: 'Arcane',
+          icon: 'https://i.imgur.com/Zt0BQe6.png',
+          title: 'Temporal Weaver',
+          fantasy: 'Bending time and space to overwhelm enemies with raw, volatile power.',
+          abilities: [
+            { name: 'Arcane Barrage', icon: 'ability_mage_arcanebarrage', desc: 'Instant-cast missile barrage for mobile damage.' },
+            { name: 'Mirror Image', icon: 'spell_magic_lesserinvisibilty', desc: 'Summon duplicates to distract enemies.' },
+            { name: 'Focus Magic', icon: 'spell_arcane_studentofmagic', desc: 'Buffs a friendly caster, granting Crit to both.' }
+          ]
+        },
+        {
+          name: 'Fire',
+          icon: 'https://i.imgur.com/TRNTMys.png',
+          title: 'Explosive Pyromancer',
+          fantasy: 'Igniting the very air, leaving nothing but ash in the wake of destruction.',
+          abilities: [
+            { name: 'Living Bomb', icon: 'ability_mage_livingbomb', desc: 'Turns the target into a ticking bomb.' },
+            { name: 'Dragon\'s Breath', icon: 'inv_misc_head_dragon_01', desc: 'Disorients enemies in a fiery cone.' },
+            { name: 'Cauterize', icon: 'spell_fire_playingwithfire', desc: 'Fatal damage instead burns you over time.' }
+          ]
+        },
+        {
+          name: 'Frost',
+          icon: 'https://i.imgur.com/oR1e4BK.png',
+          title: 'Glacial Controller',
+          fantasy: 'Shattering enemies with precision, unyielding cold, and absolute control.',
+          abilities: [
+            { name: 'Deep Freeze', icon: 'ability_mage_deepfreeze', desc: 'Stuns frozen targets or deals massive damage.' },
+            { name: 'Frozen Orb', icon: 'spell_frost_frozenorb', desc: 'Launches a ball of ice that slows enemies.' },
+            { name: 'Ice Floes', icon: 'spell_frost_icefloes', desc: 'Allows casting while moving.' }
+          ]
+        }
       ]
     },
     paladin: {
@@ -108,9 +198,39 @@ const HallOfLegends = () => {
         mechanic: 'Holy Power is generated by core abilities (e.g., Crusader Strike, Holy Shock, Hammer of the Righteous, Holy Shield Block). \n\n**Spenders (Cost 3 HP) create a choice:** \n**Ret:** **Divine Storm** (AoE) or **Templar\'s Verdict** (Single-Target). \n**Prot:** **Shield of the Righteous** (Threat) or **Word of Glory** (Instant Self-Heal). \n**Holy:** **Light of Dawn** (AoE Heal).',
       },
       specs: [
-        { name: 'Holy', icon: 'https://i.imgur.com/nbn8UHD.jpeg', title: 'Beacon of Faith', desc: '**Core Problem Solved:** No AoE healing; being "tethered" to one target. \n\n**New Healing Tools:** \n**Light of Dawn (51-pt, 3 HP Spender):** Unleashes a **30-yard frontal cone of healing** to 5 allies, providing the needed AoE burst heal. \n**Beacon of Light (41-pt):** Copies **50% of all healing** done to other targets to the Beacon target (usually the Main Tank), untethering the healer to triage the raid. \n**Aura Mastery (Raid CD):** Empowers the active Aura; Devotion Aura grants **interrupt/silence immunity** to the raid for 10s. \n**Holy Shock (Buffed):** Cooldown reduced to 10s and healing increased by 30%, making it a core rotational button for HP generation.' },
-        { name: 'Protection', icon: 'https://i.imgur.com/tcWwZXg.png', title: 'Divine Fortress', desc: '**Core Problem Solved:** No major defensive cooldowns; vulnerability to spike damage. \n\n**Survivability & Utility:** \n**Word of Glory (WoG) / Shield of the Righteous (SoR):** Holy Power creates a dynamic, in-combat decision between offense (SoR threat-bomb) and defense (WoG self-heal). \n**Ardent Defender (Reworked):** A passive **"cheat death"** that negates a killing blow and heals you for 15% of max health (2m CD). \n**Guardian of Ancient Kings (51-pt):** The Paladin\'s **"Shield Wall."** Reduces all damage taken by **30%** and redirects party damage to the Paladin. \n**Grand Crusader (Talent):** Proc when you block, granting extra Holy Power, speeding up the build/spend cycle.' },
-        { name: 'Retribution', icon: 'https://i.imgur.com/dpHn8vW.png', title: 'Righteous Vindicator', desc: '**Core Problem Solved:** Mana-starvation and clunky Seal/Judgement rotation. \n\n**QoL Fixes:** \n**Judgements Refresh Seals:** Using any Judgement **no longer consumes your active Seal**, ending the clunky rotation. \n**Holy Power Rotation:** The new 4-button builder/spender rotation is fast and mana-sustainable. \n\n**New Finishers:** \n**Divine Storm (3 HP):** The iconic AoE/cleave finisher that **also heals** 3 nearby allies. \n**Templar\'s Verdict (3 HP):** A brutal single-target overhead strike. \n**Hand System (QoL):** Blessing of Freedom, Protection, and Sacrifice are moved to a separate "Hand" category and **do not overwrite** Kings/Might/Wisdom.' }
+        {
+          name: 'Holy',
+          icon: 'https://i.imgur.com/nbn8UHD.jpeg',
+          title: 'Beacon of Faith',
+          fantasy: 'The radiant healer who stands near the fray, guiding the Light to where it is needed most.',
+          abilities: [
+            { name: 'Beacon of Light', icon: 'ability_paladin_beaconoflight', desc: 'Copies heals to a designated ally.' },
+            { name: 'Light of Dawn', icon: 'spell_paladin_lightofdawn', desc: 'Frontal cone heal that consumes Holy Power.' },
+            { name: 'Aura Mastery', icon: 'spell_holy_auramastery', desc: 'Empowers your active aura with a raid-wide effect.' }
+          ]
+        },
+        {
+          name: 'Protection',
+          icon: 'https://i.imgur.com/tcWwZXg.png',
+          title: 'Divine Fortress',
+          fantasy: 'A bulwark against darkness, using holy magic to shield allies and judge the wicked.',
+          abilities: [
+            { name: 'Shield of the Righteous', icon: 'ability_paladin_shieldofvengeance', desc: 'Slams target with shield (Holy Power spender).' },
+            { name: 'Ardent Defender', icon: 'spell_holy_ardentdefender', desc: 'Cheat Death effect that heals you.' },
+            { name: 'Grand Crusader', icon: 'ability_paladin_swiftretribution', desc: 'Avenger\'s Shield procs reset its cooldown.' }
+          ]
+        },
+        {
+          name: 'Retribution',
+          icon: 'https://i.imgur.com/dpHn8vW.png',
+          title: 'Righteous Vindicator',
+          fantasy: 'The instrument of judgment, unleashing holy wrath to purge the wicked.',
+          abilities: [
+            { name: 'Templar\'s Verdict', icon: 'spell_paladin_templarsverdict', desc: 'Powerful single-target Holy Power spender.' },
+            { name: 'Divine Storm', icon: 'ability_paladin_divinestorm', desc: 'AoE Holy Power spender that heals party members.' },
+            { name: 'Hand of Hindrance', icon: 'spell_holy_sealofwisdom', desc: 'Burden the enemy with the weight of their sins (Slow).' }
+          ]
+        }
       ]
     },
     priest: {
@@ -127,9 +247,39 @@ const HallOfLegends = () => {
         mechanic: 'Generation: Casting Flash Heal/Greater Heal (Light) or DoT Ticks (Shadow) grants stacks of Evangelism (max 5). \n\n**Payoff (1m CD):** \n**Archangel (Healer):** Consumes 5 stacks to restore **25% mana** and increase healing done by **15% for 10s**. \n**Dark Archangel (Shadow):** Consumes 5 stacks to deal burst damage and increase all Shadow damage by **20% for 12s**.',
       },
       specs: [
-        { name: 'Discipline', icon: 'https://i.imgur.com/yKNBawv.png', title: 'Proactive Bulwark', desc: '**Core Problem Solved:** PW:S **Weakened Soul** debuff actively conflicting with Holy\'s Prayer of Mending. \n\n**Core Fixes:** \n**Weakened Soul (Reworked):** **No longer applied by Prayer of Mending**, removing the internal conflict. PW:S absorption is heavily buffed. \n**New Abilities:** \n**Penance (51-pt):** Channels a 3-bolt volley of Holy light (heal or damage) that can be **cast while moving**. \n**Power Word: Barrier (41-pt):** The Discipline **"raid wall."** Summons a barrier that reduces all damage taken by **25% for 10 seconds** for allies inside. \n**Rapture:** PW:S crits have a 50% chance to grant an Evangelism stack, tying the mitigation loop to the burst cycle.' },
-        { name: 'Holy', icon: 'https://i.imgur.com/2JfVmju.png', title: 'Reactive Wellspring', desc: '**Core Problem Solved:** One-dimensional gameplay (spamming Circle of Healing). \n\n**New Abilities:** \n**Circle of Healing (Reworked):** Becomes the 51-pt talent. Its healing is increased but now has a **6-second cooldown**, forcing rotational depth. \n**Divine Hymn (41-pt):** The "oh-shit" button Holy needed. A channeled **raid-saver** that heals the 5 most-injured raid members for massive amounts and increases healing received by 10%. \n**Serendipity:** Flash Heal/Binding Heal crits **reduce the cast time** of your next Greater Heal or Prayer of Healing by 35% (stacks 2x), creating a fast-heal-to-big-heal rhythm. \n**Holy Word: Sanctuary:** Prayer of Healing crits consecrate the ground, healing allies who stand in it.' },
-        { name: 'Shadow', icon: 'https://i.imgur.com/cgUNFcU.png', title: 'Void Ascendant', desc: '**Core Problem Solved:** Critically low personal DPS; serving only as a mana battery. \n\n**Damage & Utility:** \n**Vampiric Touch (Buffed):** Damage increased by **40%**. \n**Shadow Weaving (Fixed):** Is now a **personal buff** on the Priest, not a debuff on the target, allowing multiple Shadow Priests in a raid. \n**Mind Sear (41-pt):** Channels psychic energy into a hostile target, radiating **massive Shadow AoE damage** to all enemies within 10 yards. \n**Dispersion (51-pt):** The ultimate survival/mana tool. Priest dissolves into shadow, reducing all damage taken by **90% for 6 seconds** and regenerating 36% mana. \n**Void Torrent:** Mind Flay ticks have a chance to make your next Mind Blast **instant cast**.' }
+        {
+          name: 'Discipline',
+          icon: 'https://i.imgur.com/yKNBawv.png',
+          title: 'Proactive Bulwark',
+          fantasy: 'Preventing damage before it happens through disciplined shielding and atonement.',
+          abilities: [
+            { name: 'Penance', icon: 'spell_holy_penance', desc: 'Channels holy light to heal or damage.' },
+            { name: 'Power Word: barrier', icon: 'spell_holy_powerwordbarrier', desc: 'Creates a dome of light that reduces damage.' },
+            { name: 'Rapture', icon: 'spell_holy_rapture', desc: 'Refunds mana when shields break.' }
+          ]
+        },
+        {
+          name: 'Holy',
+          icon: 'https://i.imgur.com/2JfVmju.png',
+          title: 'Reactive Wellspring',
+          fantasy: 'A miracle worker who creates fonts of healing light to restore the fallen.',
+          abilities: [
+            { name: 'Divine Hymn', icon: 'spell_holy_divinehymn', desc: 'Powerful channeled raid-heal.' },
+            { name: 'Guardian Spirit', icon: 'spell_holy_guardianspirit', desc: 'Prevents death and boosts healing.' },
+            { name: 'Holy Word: Serenity', icon: 'spell_holy_persuitofjustice', desc: 'Instant, massive single-target heal.' }
+          ]
+        },
+        {
+          name: 'Shadow',
+          icon: 'https://i.imgur.com/cgUNFcU.png',
+          title: 'Void Ascendant',
+          fantasy: 'Using the maddening power of the void to rot enemies\' minds and devour their essence.',
+          abilities: [
+            { name: 'Shadowfiend', icon: 'spell_shadow_shadowfiend', desc: 'Summon a void creature to restore mana.' },
+            { name: 'Dispersion', icon: 'spell_shadow_dispersion', desc: 'Dissolve into shadow, mitigating damage.' },
+            { name: 'Devouring Plague', icon: 'spell_shadow_devouringplague', desc: 'Now a baseline DoT for all Shadow Priests.' }
+          ]
+        }
       ]
     },
     rogue: {
@@ -141,14 +291,44 @@ const HallOfLegends = () => {
       borderColor: 'border-yellow-600',
       bgGradient: 'from-yellow-900/80 to-black',
       masterwork: {
-        name: 'Vicious Techniques',
-        desc: 'This system smooths out the clunky nature of Combo Points, ensuring the Rogue wastes no movement and no opportunity. It transforms the resource from being target-bound to Rogue-bound, rewarding fast, fluid gameplay. It ends the frustration of losing valuable Combo Points.',
-        mechanic: '**Baseline QoL:** \n**Redirect (1m CD):** Instantly **transfers CPs** from a dead or invalid target to your current target. \n**Anticipation (Passive):** Prevents **over-capping** CPs, banking "wasted" points to be applied by the next generator. This fixes the major rotational frustration of the class.',
+        name: 'Ruthless Efficiency',
+        desc: '**Passive: Fluidity** \nCombo Points are now bound to the Rogue, not the target. You do not lose Combo Points when switching targets or when a target dies.',
+        mechanic: '**Active: Cunning Maneuver** \n**Instant | 20 sec Cooldown** \nAdapts to your primary specialization. Executes a specialized technique designed to exploit enemy weaknesses. \n\n☠️ **Assassination: Toxic Shiv** (15 Energy | 1 CP). Off-hand lunge dealing Nature damage. Applies 5 stacks of Deadly Poison. If already at 5, consumes them for instant Burst damage. \n\n⚔️ **Combat: Cross-Cut** (20 Energy | 1 CP/hit). Sweeping strike that hits your primary target and up to 2 nearby enemies for 100% weapon damage. \n\n👻 **Subtlety: Shadow Play** (No Cost). Fade partially into shadows. For the next 3 seconds, your abilities can be used as if you were Stealthed, even while in combat.',
       },
       specs: [
-        { name: 'Assassination', icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png', title: 'Master Poisoner', desc: '**Core Problem Solved:** The **"Spell Hit"** gearing nightmare; clunky damage profile. \n\n**Core Fixes:** \n**Poisoner\'s Precision (41-pt):** Causes **100% of Melee Hit Rating to also apply to your Poisons**, fixing gearing complexity overnight. \n**Vile Poisons (Buffed):** Deadly Poison application is **100% guaranteed** when Wound Poison is active, massively smoothing ramp-up. \n\n**New Abilities:** \n**Envenom (51-pt Finisher):** Consumes Deadly Poison stacks for **massive Nature (Poison) damage** and increases your poison application chance by 75%, defining the new rotation. \n**Vendetta (41-pt CD):** Marks an enemy, increasing all damage you deal to the target by **20% for 20 seconds**, solidifying the spec as a single-target executioner.' },
-        { name: 'Combat', icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png', title: 'The Relentless Swashbuckler', desc: '**Core Problem Solved:** One-dimensional "SS-bot" with zero AoE capability. \n\n**AoE & Cleave:** \n**Blade Flurry (Reworked CD):** Hits up to **2 additional nearby targets for full damage**, making Combat the undisputed cleave king. \n**Killing Spree (51-pt CD):** The iconic WotLK AoE burst finisher, teleporting to and attacking up to 5 nearby enemies for massive damage over 3 seconds. \n**Crimson Tempest (Finisher):** A resource-dumping **AoE finishing move** that applies a powerful bleed-over-time to all enemies within 8 yards, completing the AoE toolkit. \n**Adrenaline Rush (Reworked):** Also **reduces the Energy cost of all abilities by 20%**, turning it into a true "God Mode" burst window.' },
-        { name: 'Subtlety', icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png', title: 'The Shadowy Debuffer', desc: '**Core Problem Solved:** PvP-Only spec with zero utility, lacking sustained damage talents. \n\n**Raid Utility & Burst:** \n**Hemorrhage (Reworked 41-pt):** The new raid ticket. Applies the **Trauma debuff**, causing all Physical Critical Strikes against the target to deal an **additional 15% damage**. This is a massive physical raid damage multiplier. \n**Find Weakness (Passive):** Opener abilities (Ambush, Garrote) apply **70% armor reduction** for 10s. \n**Shadow Dance (51-pt CD):** The core fantasy. For 8 seconds, you can use **all Stealth-required abilities** (Ambush, Garrote, Cheap Shot) in combat, creating an explosive, on-demand burst window. \n**Marked for Death (1m CD):** Instantly mark a target and **generate 5 Combo Points**.' }
+        {
+          name: 'Assassination',
+          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
+          title: 'Master Poisoner',
+          fantasy: 'A deadly master of poisons, ensuring the target dies slowly and painfully.',
+          abilities: [
+            { name: 'Vendetta', icon: 'spell_rogue_murderousintent', desc: 'Marks target for death, boosting damage.' },
+            { name: 'Envenom', icon: 'ability_rogue_disembowel', desc: 'Consumes poison for massive Nature damage.' },
+            { name: 'Fan of Knives', icon: 'ability_rogue_fanofknives', desc: 'Spray knives at all nearby enemies.' }
+          ]
+        },
+        {
+          name: 'Combat',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          title: 'Relentless Swashbuckler',
+          fantasy: 'A face-to-face duelist who fights with agility, parries, and dirty tricks.',
+          abilities: [
+            { name: 'Killing Spree', icon: 'ability_rogue_murderspree', desc: 'Step through shadows to strike enemies instantly.' },
+            { name: 'Blade Flurry', icon: 'ability_warrior_punishingblow', desc: 'Toggle ability to strike a second nearby target.' },
+            { name: 'Revealing Strike', icon: 'spell_weapon_glancingblow', desc: 'Exposes defenses, increasing finisher effectiveness.' }
+          ]
+        },
+        {
+          name: 'Subtlety',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          title: 'Shadow Stalker',
+          fantasy: 'A phantom that strikes from the dark, utilizing stealth in the heat of battle.',
+          abilities: [
+            { name: 'Shadow Dance', icon: 'ability_rogue_shadowdance', desc: 'Allows use of Stealth abilities while in combat.' },
+            { name: 'Shadowstep', icon: 'ability_rogue_shadowstep', desc: 'Teleport behind your target and gain speed.' },
+            { name: 'Shuriken Toss', icon: 'ability_rogue_throwingshuriken', desc: 'Ranged combo point generator.' }
+          ]
+        }
       ]
     },
     shaman: {
@@ -165,9 +345,39 @@ const HallOfLegends = () => {
         mechanic: '**Totem Deployment QoL:** \n**Call of the Elements (Baseline):** Instantly places **all four totems** (one of each element) at your feet **in a single global cooldown**. \n**Totemic Recall (Baseline):** Refunds **75% of the mana cost**. \n**Totemic Projection (Talent):** Projects your active totems up to **40 yards away**. \n\n**Primal Bloodlust/Heroism:** The ultimate ability now grants a powerful, spec-specific rider (e.g., Elemental = **Mana Reduction**, Enhancement = **Movement Speed/Damage Proc**, Restoration = **Healing Buffer**).',
       },
       specs: [
-        { name: 'Elemental', icon: 'https://i.imgur.com/8ChsJBV.png', title: 'The Stormcaller', desc: '**Core Problem Solved:** "Oom-an" mana starvation and static gameplay. \n\n**Mana & Rotation:** \n**Elemental Focus (Reworked):** Crit now makes your next **TWO spells cost 100% less mana**. \n**Lava Burst (41-pt):** Guaranteed **critical strike** if Flame Shock is applied, becoming the new rotation-maker. \n**Lava Surge (Talent):** Flame Shock ticks have a chance to **reset Lava Burst** and make it **instant-cast**, adding a crucial proc layer. \n**Thunderstorm (30s CD):** An AoE, knockback utility tool that **restores 15% of your maximum mana**.' },
-        { name: 'Enhancement', icon: 'https://i.imgur.com/38aMS1Y.png', title: 'The Storm-Warrior', desc: '**Core Problem Solved:** The **"Hybrid Tax"** (poor scaling, split-stat needs) and clunky totem twisting. \n\n**Scaling & Flow:** \n**Mental Quickness (Passive):** You gain **30% of your Attack Power as Spell Power**, ensuring Shocks and Lightning Bolt scale with melee gear. \n**Maelstrom Weapon (41-pt):** Melee attacks have a chance to grant a stack, reducing the cast time of your next spell. At 5 stacks, your spell is **instant-cast**, creating the hybrid dream (Swing -> Swing -> INSTANT LIGHTNING BOLT). \n**Feral Spirit (51-pt):** Summons **two Spirit Wolves** for 30 seconds for massive DPS, self-healing, and an on-demand stun. \n**Lava Lash:** An instant off-hand attack that **spreads Flame Shock DoT** to another target.' },
-        { name: 'Restoration', icon: 'https://i.imgur.com/2msDhl4.png', title: 'The Spirit-Healer', desc: '**Core Problem Solved:** Complete lack of mobility, reducing HPS to zero on moving fights. \n\n**Mobility & Burst:** \n**Riptide (Baseline):** Instant-cast, low-mana HoT that provides **mobile healing**. \n**Tidal Waves (Passive):** Riptide/Chain Heal casts grant a buff that **reduces the cast time** of your next Healing Wave/Lesser Healing Wave. \n**Pinnacle Talent - Spiritwalker\'s Grace (2m CD):** For 15 seconds, you can **move while casting all Shaman spells**, solving the mobility problem entirely. \n**Ancestral Vigor:** Critical heals apply a buff that **increases the target\'s total health by 10%** for 15 seconds, providing a proactive "health buffer."' }
+        {
+          name: 'Elemental',
+          icon: 'https://i.imgur.com/8ChsJBV.png',
+          title: 'The Stormcaller',
+          fantasy: 'A conduit of storm and earth, hurling lava and lighting to obliterate foes.',
+          abilities: [
+            { name: 'Lava Burst', icon: 'spell_shaman_lavaburst', desc: 'Guaranteed crit on Flame Shocked targets.' },
+            { name: 'Thunderstorm', icon: 'spell_shaman_thunderstorm', desc: 'Knockback nearby enemies and restore mana.' },
+            { name: 'Earthquake', icon: 'spell_shaman_earthquake', desc: 'Topple enemies in a large area with tremors.' }
+          ]
+        },
+        {
+          name: 'Enhancement',
+          icon: 'https://i.imgur.com/38aMS1Y.png',
+          title: 'The Storm-Warrior',
+          fantasy: 'Imbuing weapons with elemental power to strike down foes with primal fury.',
+          abilities: [
+            { name: 'Lava Lash', icon: 'ability_shaman_lavalash', desc: 'Strike with your off-hand charged with fire.' },
+            { name: 'Feral Spirits', icon: 'spell_shaman_feralspirit', desc: 'Summon spirit wolves to fight by your side.' },
+            { name: 'Maelstrom Weapon', icon: 'spell_shaman_maelstromweapon', desc: 'Instant spells after building stacks from melee.' }
+          ]
+        },
+        {
+          name: 'Restoration',
+          icon: 'https://i.imgur.com/2msDhl4.png',
+          title: 'The Spirit-Healer',
+          fantasy: 'Using the cleansing power of water to heal allies and wash away wounds.',
+          abilities: [
+            { name: 'Riptide', icon: 'spell_shaman_riptide', desc: 'Instant heal that leaves a HoT.' },
+            { name: 'Spirit Link Totem', icon: 'spell_shaman_spiritlink', desc: 'Reduces raid damage by equalizing health.' },
+            { name: 'Healing Rain', icon: 'spell_nature_starfall', desc: 'Area of effect healing shower.' }
+          ]
+        }
       ]
     },
     warlock: {
@@ -184,9 +394,39 @@ const HallOfLegends = () => {
         mechanic: '**Resource QoL:** \n**Shards are a 3-point UI resource.** All non-combat utility (Soulstone, Healthstone, Summon) is now **FREE**. \n\n**In-Combat Generation:** Shards are generated via spec-specific rotations (DoT Ticks, Crits, Drain Soul execute). \n**Spenders (Cost 1 Shard):** \n**Affliction:** **Haunt** (Burst setup). \n**Demonology:** **Demonic Empowerment** (Pet burst). \n**Destruction:** **Chaos Bolt** (Signature nuke).',
       },
       specs: [
-        { name: 'Affliction', icon: 'https://i.imgur.com/ZAsJNiE.jpeg', title: 'The Soul-Harvester', desc: '**Core Problem Solved:** "DoT Clipping" and clunky execute phase. \n\n**Rotation & Utility:** \n**Pandemic (New Talent):** Refreshing DoTs (Corruption, UA, CoA) on a target with less than 5 seconds remaining now **adds the remaining duration** to the new DoT, fixing clipping. \n**Haunt (41-pt, Shard Spender):** Sends a soul to haunt the target, increasing all shadow **DoT damage you deal to them by 20% for 12 seconds**. This is the core burst window setup. \n**Empowered Drain Soul:** Deals **100% increased damage** on execute targets (below 25% health) and **automatically refreshes** all your DoTs on that target while channeling, making the execute self-sustaining.' },
-        { name: 'Demonology', icon: 'https://i.imgur.com/iGZVgov.png', title: 'The Demonic Commander', desc: '**Core Problem Solved:** Terrible pet scaling and weak, "support-only" fantasy. \n\n**Pet Power & Transformation:** \n**Demonic Knowledge (Buffed):** Demon pets now inherit **100% of Warlock Spell Power, Spell Hit, and Stamina**. Your demon is a direct reflection of your gear. \n**Demonic Pact (Reworked):** Your demon\'s crits apply the buff **raid-wide**, and it scales directly with your Spell Power. \n**Metamorphosis (51-pt CD):** The ultimate capstone. Transform into a powerful demon for 30s, gaining **+20% damage**, **+600% armor**, and new abilities like Shadow Cleave and Immolation Aura. \n**Demonic Empowerment (Shard Spender):** Empowers your active demon with a unique effect (e.g., Felguard gains 20% Haste).' },
-        { name: 'Destruction', icon: 'https://i.imgur.com/67hJXkU.png', title: 'The Fel-Fire Annihilator', desc: '**Core Problem Solved:** The "Destruction" Warlock famously spamming Shadow Bolt. \n\n**Rotation & Burst:** \n**Chaos Bolt (51-pt, Shard Spender):** Hurls a bolt of fel-fire that deals massive **Chaos damage** that **cannot be resisted and pierces all absorption effects**. This is the signature nuke. \n**Backdraft (Reworked Talent):** Casting Conflagrate (which generates a Shard) grants a buff, making your next 3 **Incinerate spells have 30% reduced cast time**, creating the Fire-mage rotation. \n**Havoc (45s CD):** Curses a target, causing all **single-target spells you cast on another target to be copied** to the Havoc\'d target for 100% damage (skillful cleave). \n**Shadowfury (Baseline):** A crucial AoE stun for trash packs and add control.' }
+        {
+          name: 'Affliction',
+          icon: 'https://i.imgur.com/ZAsJNiE.jpeg',
+          title: 'The Soul-Harvester',
+          fantasy: 'A master of curses who drains the victim\'s life force until they are a husk.',
+          abilities: [
+            { name: 'Haunt', icon: 'ability_warlock_haunt', desc: 'Ghostly soul that increases DoT damage.' },
+            { name: 'Soul Swap', icon: 'ability_warlock_soulswap', desc: 'Instantly moves your DoTs to a new target.' },
+            { name: 'Malefic Grasp', icon: 'ability_warlock_everlastingaffliction', desc: 'Channel that accelerates your DoT ticks.' }
+          ]
+        },
+        {
+          name: 'Demonology',
+          icon: 'https://i.imgur.com/iGZVgov.png',
+          title: 'The Demonic Commander',
+          fantasy: 'Commanding a legion of demons and embracing fel power to become a demon yourself.',
+          abilities: [
+            { name: 'Metamorphosis', icon: 'spell_shadow_demonform', desc: 'Transform into a Demon, gaining armor and abilities.' },
+            { name: 'Hand of Gul\'dan', icon: 'spell_shadow_psychicscream', desc: 'Call down a meteor that summons Wild Imps.' },
+            { name: 'Demonic Empowerment', icon: 'ability_warlock_demonicpower', desc: 'Buff your active demon with haste and health.' }
+          ]
+        },
+        {
+          name: 'Destruction',
+          icon: 'https://i.imgur.com/67hJXkU.png',
+          title: 'The Fel-Fire Annihilator',
+          fantasy: 'Unleashing chaos and fire to incinerate everything in a storm of destruction.',
+          abilities: [
+            { name: 'Chaos Bolt', icon: 'ability_warlock_chaosbolt', desc: 'Massive damage projectile that pierces shields.' },
+            { name: 'Havoc', icon: 'ability_warlock_baneofhavoc', desc: 'Copy spells to a second target for cleave.' },
+            { name: 'Conflagrate', icon: 'spell_fire_fireball', desc: 'Instant burst that consumes Immolate for haste.' }
+          ]
+        }
       ]
     },
     warrior: {
@@ -199,13 +439,43 @@ const HallOfLegends = () => {
       bgGradient: 'from-red-900/80 to-black',
       masterwork: {
         name: 'Rage & Steel',
-        desc: 'The redesign fixes the single worst-feeling mechanic in the game: **Rage starvation**. Rage is now a rewarding resource instead of a limiting one, and stance penalties have been drastically reduced to allow for fluid combat and the true feeling of being a charging, steel-clad heart of the battlefield.',
-        mechanic: '**Rage Smoothing & QoL:** \n**Tactical Mastery QoL:** Allows retaining up to **20 Rage** when changing stances. \n**Ragefont (Prot/Fury):** You gain **Rage every time you dodge or parry** an attack. \n**Arms** receives **Anger Management** (10% Rage cost reduction on offensive abilities). \n**Battle Stride:** New ability grants **40% movement speed** in any stance for 15s.',
+        desc: '**Passive: Stance Mastery** \nYou retain up to 25 Rage when changing stances. Additionally, Charge is no longer restricted to out-of-combat use.',
+        mechanic: '**Active: Battle Focus** \n**Instant | 30 sec Cooldown** \nAdapts to your current Stance. Heightens your combat senses to perform a specialized maneuver. \n\n⚔️ **Battle Stance (Arms): Calculated Strike** (No Cost). Instantly activates Overpower (no dodge required). Costs no Rage and cannot be blocked, dodged, or parried. \n\n🩸 **Berserker Stance (Fury): Bloodsurge** (No Cost). For the next 6 seconds, your Slam ability becomes instant cast and does not pause your main-hand swing timer. \n\n🛡️ **Defensive Stance (Protection): Vanguard\'s Momentum** (Gen 10 Rage). Instantly resets the cooldowns of Shield Slam and Revenge, allowing for immediate threat generation.',
       },
       specs: [
-        { name: 'Arms', icon: 'https://i.imgur.com/tgSiYFd.png', title: 'The Battlefield Tactician', desc: '**Core Problem Solved:** One-button rotation and low raid value. \n\n**Raid Utility & Burst:** \n**Trauma (Reworked Talent):** The new raid ticket. Your critical strikes apply a debuff that increases all **Physical damage taken by the target by 5%** (stacks with Rogue Hemorrhage). \n**Bladestorm (31-pt CD):** Replaces Mortal Strike in the talent tree. You become an unstoppable storm of steel for 6 seconds, hitting all nearby enemies and granting **CC immunity**. \n**Sudden Death:** Auto-attack hits have a chance to **reset Overpower** and make it usable on any target, ensuring a reliable rotational attack. \n**Anger Management:** Reduces the **Rage cost of all offensive abilities by 10%**.' },
-        { name: 'Fury', icon: 'https://i.imgur.com/wJbmNeR.png', title: 'The Unstoppable Berserker', desc: '**Core Problem Solved:** Threat-capped and Rage-starved while gearing. \n\n**DPS & Sustain:** \n**Threat Control (Passive):** All damage dealt while in Berserker Stance **generates 30% less threat**, allowing Fury to play at 100% speed. \n**Rampage:** New talent grants a stacking buff to **attack speed** that rewards high crit and sustained uptime. \n**Bloodrage Surge:** Rewards skillful Rage management by granting **additional damage to Bloodthirst** when Rage is above 80. \n**War Banner (Raid Utility):** A placeable banner that **increases the attack speed of all raid members by 5%** for 20 seconds.' },
-        { name: 'Protection', icon: 'https://i.imgur.com/FhuhqTX.png', title: 'The Battlefield Commander', desc: '**Core Problem Solved:** Weak AoE snap threat and no "big" defensive CDs. \n\n**Threat & Control:** \n**Thunder Clap (Buffed):** Now a **360-degree AoE** with 100% damage and massive threat increase for snap AoE. \n**Shockwave (41-pt):** Slams the ground, dealing high threat-damage and **stunning all enemies in a cone for 3 seconds**. \n**Guardian of Ancient Kings (Reworked):** The new major defensive cooldown. \n**Last Stand (Upgraded):** Now **taunts all nearby enemies for 3 seconds** when activated, turning it into a raid-saving peel tool.' }
+        {
+          name: 'Arms',
+          icon: 'https://i.imgur.com/tgSiYFd.png',
+          title: 'The Battlefield Tactician',
+          fantasy: 'The master of two-handed weapons and heavy trauma, dominating the frontline.',
+          abilities: [
+            { name: 'Banner of the Iron Legion', icon: 'inv_banner_03', desc: 'Plants a banner granting 20% Armor Pen to party.' },
+            { name: 'Bladestorm', icon: 'ability_warrior_bladestorm', desc: 'Unstoppable area damage spin.' },
+            { name: 'Colossus Smash', icon: 'ability_warrior_colossussmash', desc: 'Smashes defenses, bypassing armor.' }
+          ]
+        },
+        {
+          name: 'Fury',
+          icon: 'https://i.imgur.com/wJbmNeR.png',
+          title: 'The Unstoppable Berserker',
+          fantasy: 'A dual-wielding whirlwind of rage and steel, attacking with reckless abandon.',
+          abilities: [
+            { name: 'Banner of the Bloodthirst', icon: 'inv_banner_02', desc: 'Plants a banner granting 20% Haste to party.' },
+            { name: 'Titan\'s Grip', icon: 'ability_warrior_titansgrip', desc: 'Dual-wield two-handed weapons.' },
+            { name: 'Rampage', icon: 'ability_warrior_rampage', desc: 'Enrage state increasing damage dealt.' }
+          ]
+        },
+        {
+          name: 'Protection',
+          icon: 'https://i.imgur.com/FhuhqTX.png',
+          title: 'The Battlefield Commander',
+          fantasy: 'The immovable object, a wall of iron and will that protects allies.',
+          abilities: [
+            { name: 'Banner of the Bulwark', icon: 'inv_banner_01', desc: 'Plants a banner that Mocks all enemies for 6s.' },
+            { name: 'Shockwave', icon: 'ability_warrior_shockwave', desc: 'Cone stun and damage.' },
+            { name: 'Avatar', icon: 'spell_nature_stoneclawtotem', desc: 'Transform into stone, removing CC and boosting dmg.' }
+          ]
+        }
       ]
     },
   };
@@ -247,7 +517,7 @@ const HallOfLegends = () => {
 
         {/* --- LEFT COLUMN: CLASS PICKER --- */}
         <aside className="lg:w-1/4 mb-12 lg:mb-0">
-          <div className="sticky top-52">
+          <div className="sticky top-24 max-h-[85vh] overflow-y-auto pr-2 custom-scrollbar">
 
             {/* TAB SWITCHER REMOVED - ONLY CLASSES NOW */}
             <div className="flex border border-white/10 rounded mb-6 overflow-hidden">
@@ -266,7 +536,10 @@ const HallOfLegends = () => {
                 Object.entries(classes).map(([key, data]) => (
                   <button
                     key={key}
-                    onClick={() => setActiveClass(key)}
+                    onClick={() => {
+                      setActiveClass(key);
+                      setSelectedClass(key);
+                    }}
                     className={`group flex items-center gap-4 p-3 rounded-lg border transition-all duration-300 ${activeClass === key
                       ? `bg-gradient-to-r ${data.bgGradient} ${data.borderColor} border-l-4`
                       : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
@@ -322,12 +595,21 @@ const HallOfLegends = () => {
                   />
                 </div>
                 <div>
-                  <h2 className={`font-hero text-5xl md:text-6xl font-bold text-white mb-2 drop-shadow-lg`}>
+                  <h2 className={`font-hero text-5xl md:text-6xl text-[#c29c55] mb-2 drop-shadow-lg`}>
                     {activeData.name}
                   </h2>
                   <p className={`font-hero text-xl ${activeData.color} uppercase tracking-widest mb-6`}>
                     {activeData.title}
                   </p>
+
+                  {/* Link to Talents */}
+                  <button
+                    onClick={() => {
+                      setPage('talents');
+                    }}
+                    className={`flex items-center gap-2 px-6 py-2 rounded border border-white/20 bg-white/5 hover:bg-white/10 hover:border-${activeData.color.split('-')[1]}-500 transition-all text-sm font-hero tracking-wider uppercase text-gray-300 hover:text-white`}>
+                    <Sword className="w-4 h-4" /> View Talent Tree
+                  </button>
                 </div>
               </div>
             </div>
@@ -369,80 +651,53 @@ const HallOfLegends = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-8">
-                  {activeData.specs.map((spec, idx) => {
-                    const parts = spec.desc.split('\n\n');
-                    const problemPart = parts.find(p => p.startsWith('**Core Problem Solved:**'));
-                    const otherParts = parts.filter(p => p !== problemPart);
+                  {activeData.specs.map((spec, idx) => (
+                    <div key={idx} className="group relative p-8 bg-[#121212] border border-white/10 rounded-lg hover:border-white/20 transition-all">
+                      <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${activeData.bgGradient} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
 
-                    return (
-                      <div key={idx} className="group relative p-8 bg-[#121212] border border-white/10 rounded-lg hover:border-white/20 transition-all">
-                        <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b ${activeData.bgGradient} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
-
-                        <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4">
-                          <div>
-                            <h4 className="font-hero text-2xl text-white mb-1 flex items-center gap-3">
-                              <img src={spec.icon} className="w-8 h-8 object-contain" alt="" />
-                              {spec.name}
-                            </h4>
-                            <span className={`font-hero text-xs ${activeData.color} uppercase tracking-wider`}>{spec.title}</span>
-                          </div>
-                        </div>
-
-                        {problemPart && (
-                          <div className="mb-8 p-4 bg-red-900/10 border border-red-900/30 rounded flex gap-4 items-start">
-                            <div className="mt-1 shrink-0 text-red-500">
-                              <Skull className="w-5 h-5" />
-                            </div>
-                            <div>
-                              <h5 className="font-hero text-red-500 text-xs uppercase tracking-widest mb-1">Core Issue Resolved</h5>
-                              <p className="font-body text-gray-300 text-sm">
-                                {formatText(problemPart.replace('**Core Problem Solved:**', ''))}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="grid md:grid-cols-2 gap-8">
-                          {otherParts.map((part, pIdx) => {
-                            const lines = part.split('\n');
-                            const titleLine = lines[0];
-                            const contentLines = lines.slice(1);
-                            const isHeader = titleLine.startsWith('**') && titleLine.includes(':');
-                            const sectionTitle = isHeader ? titleLine.replace(/\*\*/g, '').split(':')[0] : null;
-
-                            return (
-                              <div key={pIdx} className="space-y-3">
-                                {sectionTitle ? (
-                                  <h5 className={`font-hero text-sm ${activeData.color} border-b border-white/5 pb-2 mb-2 flex items-center gap-2`}>
-                                    {sectionTitle === "Core Fixes" && <Shield className="w-3 h-3" />}
-                                    {sectionTitle === "New Abilities" && <Zap className="w-3 h-3" />}
-                                    {sectionTitle === "Raid Utility" && <Crown className="w-3 h-3" />}
-                                    {sectionTitle.toUpperCase()}
-                                  </h5>
-                                ) : (
-                                  <p className="font-body text-gray-300 mb-2">{formatText(titleLine)}</p>
-                                )}
-                                <ul className="space-y-3">
-                                  {contentLines.map((line, lIdx) => {
-                                    const abilityMatch = line.match(/^\*\*(.*?):\*\*\s*(.*)/);
-                                    if (abilityMatch) {
-                                      return (
-                                        <li key={lIdx} className="text-sm leading-relaxed text-gray-400 pl-4 border-l-2 border-white/5 hover:border-white/20 transition-colors">
-                                          <strong className="text-gray-200 block mb-0.5">{abilityMatch[1]}</strong>
-                                          {formatText(abilityMatch[2])}
-                                        </li>
-                                      );
-                                    }
-                                    return <li key={lIdx} className="text-sm text-gray-400">{formatText(line)}</li>;
-                                  })}
-                                </ul>
-                              </div>
-                            );
-                          })}
+                      <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4">
+                        <div>
+                          <h4 className="font-hero text-2xl text-white mb-1 flex items-center gap-3">
+                            <img src={spec.icon} className="w-8 h-8 object-contain" alt="" />
+                            {spec.name}
+                          </h4>
+                          <span className={`font-hero text-xs ${activeData.color} uppercase tracking-wider`}>{spec.title}</span>
                         </div>
                       </div>
-                    );
-                  })}
+
+                      {/* Fantasy */}
+                      <p className="text-gray-400 text-sm mb-6 italic leading-relaxed pl-4 border-l-2 border-white/10">
+                        "{spec.fantasy}"
+                      </p>
+
+                      {/* New Baseline Abilities */}
+                      <div className="space-y-4">
+                        <h5 className={`font-hero text-xs ${activeData.color} uppercase tracking-widest font-bold flex items-center gap-2 mb-3`}>
+                          <Zap className="w-3 h-3" /> New Baseline Abilities
+                        </h5>
+
+                        <div className="grid gap-3">
+                          {spec.abilities.map((ability, i) => (
+                            <div key={i} className="flex gap-4 items-start p-3 bg-black/20 rounded border border-white/5 hover:border-white/10 transition-colors group/ability">
+                              <div className="w-10 h-10 rounded border border-white/20 overflow-hidden shrink-0 shadow-sm relative">
+                                <img
+                                  src={`https://wow.zamimg.com/images/wow/icons/large/${ability.icon}.jpg`}
+                                  alt={ability.name}
+                                  className="w-full h-full object-cover group-hover/ability:scale-110 transition-transform duration-300"
+                                  onError={(e) => { e.target.src = 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg'; }}
+                                />
+                                <div className="absolute inset-0 ring-1 ring-inset ring-black/20"></div>
+                              </div>
+                              <div>
+                                <div className={`text-sm font-bold text-gray-200 group-hover/ability:${activeData.color} transition-colors`}>{ability.name}</div>
+                                <div className="text-xs text-gray-400 leading-tight mt-1">{ability.desc}</div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </>

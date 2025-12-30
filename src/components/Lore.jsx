@@ -145,7 +145,7 @@ const Lore = () => {
 
                 {/* Hero Text */}
                 <div className="text-center mb-16">
-                    <h2 className="font-cinzel text-5xl md:text-6xl text-white mb-6 drop-shadow-[0_0_15px_rgba(255,165,0,0.3)]">THE DARK PORTAL REOPENS</h2>
+                    <h2 className="font-cinzel text-5xl md:text-6xl text-[#c29c55] mb-6 drop-shadow-[0_0_15px_rgba(194,156,85,0.3)] uppercase tracking-widest">THE DARK PORTAL REOPENS</h2>
                     <div className="h-1 w-32 bg-gradient-to-r from-transparent via-amber-600 to-transparent mx-auto mb-8"></div>
                     <p className="font-body text-xl text-stone-400 italic max-w-3xl mx-auto leading-relaxed">
                         "Ten thousand years we have waited. But the Outland you return to is not the shattered world you remember. The threads of fate have frayed."
@@ -170,7 +170,7 @@ const Lore = () => {
                                     {section.icon}
                                 </div>
                                 <div>
-                                    <h3 className="font-cinzel text-2xl text-amber-500 mb-4 drop-shadow-md">{section.title}</h3>
+                                    <h3 className="font-cinzel text-2xl text-[#c29c55] uppercase tracking-widest mb-4 drop-shadow-md">{section.title}</h3>
                                     <div className="font-body text-stone-300 text-lg leading-relaxed drop-shadow-sm">
                                         {formatText(section.content)}
                                     </div>
@@ -182,8 +182,8 @@ const Lore = () => {
 
                 {/* LEADERS SECTION (NEW) */}
                 <div className="mb-20">
-                    <h3 className="font-cinzel text-3xl text-white mb-10 text-center uppercase tracking-widest flex items-center justify-center gap-4">
-                        <Flag className="text-amber-600" /> A Council of War
+                    <h3 className="font-cinzel text-3xl text-[#c29c55] mb-10 text-center uppercase tracking-widest flex items-center justify-center gap-4">
+                        <Flag className="text-[#c29c55]" /> A Council of War
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {leaders.map((leader, i) => (
@@ -223,7 +223,7 @@ const Lore = () => {
 
                 {/* Factions */}
                 <div className="mb-12">
-                    <h3 className="font-cinzel text-2xl text-white mb-8 text-center uppercase tracking-widest">Key Powers in Play</h3>
+                    <h3 className="font-cinzel text-2xl text-[#c29c55] mb-8 text-center uppercase tracking-widest">Key Powers in Play</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {factions.map((f, i) => (
                             <div key={i} className={`bg-[#0a0a0a] border ${f.border} p-6 rounded text-center hover:bg-[#111] transition-colors`}>

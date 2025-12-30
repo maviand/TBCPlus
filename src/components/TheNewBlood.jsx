@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Users, Sword, Shield, Zap, Crosshair, Heart, Skull,
-  Activity, Moon, Sun, Droplet, Flame, Snowflake,
   Ghost, Hammer, BookOpen, ArrowLeft, Star, Hexagon,
   Coins, Crown, Anchor, Eye, Map, Feather, Hand,
-  Scroll, Compass, Axe, GraduationCap
+  Scroll, Compass, Axe, GraduationCap, Flag,
+  Sword, Activity, Zap, Skull, Crosshair
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
 
@@ -28,7 +27,7 @@ const TheNewBlood = () => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const content = parts.map((part, partIndex) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={partIndex} className="text-[#f8b700] font-bold">{part.slice(2, -2)}</strong>;
+          return <strong key={partIndex} className="text-[#c29c55] font-normal">{part.slice(2, -2)}</strong>;
         }
         return part;
       });
@@ -70,7 +69,7 @@ const TheNewBlood = () => {
       faction: 'Neutral / Contractual Alignment',
       leader: 'Trade Prince Gallywix',
       heroImage: 'https://imgur.com/nCr9SJ1.jpeg',
-      icon: <Coins className="w-6 h-6" />,
+      icon: <img src={`https://i.imgur.com/lTTfMkw.jpeg`} alt="Goblins" className="w-6 h-6 object-contain" />,
       themeColor: '#00FF00', // Fel/Money Green
       accentColor: 'text-green-400',
 
@@ -83,19 +82,19 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Warrior',
-          icon: 'https://i.imgur.com/wJbmNeR.png',
+          icon: `/TBCPlus/images/icons/classes/warrior.png`,
           title: 'Bruiser-for-Hire',
           desc: 'Less "martial arts," more "dirty fighting." You are the heavy muscle for debt collection. Your "Charge" is rocket-assisted. Your "Shield Bash" uses a reinforced vault door. Your "Execute" is a point-blank shotgun blast (visual only). You wear plate armor not for honor, but because insurance premiums are lower if you wear safety gear.'
         },
         {
           class: 'Rogue',
-          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
+          icon: `/TBCPlus/images/icons/classes/rogue.png`,
           title: 'Corporate Fixer',
           desc: 'Specializes in "Hostile Takeovers" and industrial espionage. Your poisons are re-purposed industrial waste and toxic sludge. Pickpocket yields 10% more gold (embezzlement). Your Stealth is less about magic and more about a high-tech cloaking field that sometimes sparks and sputters.'
         },
         {
           class: 'Hunter',
-          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
+          icon: `/TBCPlus/images/icons/classes/hunter.png`,
           title: 'Big Game Poacher',
           desc: 'Pets are investments, not friends. You don\'t "tame" beasts; you "break" them with shock collars. Uses a pneumatic "Net-Gun" instead of traps. Exotic munitions leave glowing radioactive residue. You treat rare spawns as "high-value assets" to be captured and sold.'
         },
@@ -113,7 +112,7 @@ const TheNewBlood = () => {
         },
         {
           class: 'Priest',
-          icon: 'https://i.imgur.com/yKNBawv.png',
+          icon: `/TBCPlus/images/icons/classes/priest.png`,
           title: 'Field Medic',
           desc: 'Healing is a fee-for-service business. You are an insurance adjustor with a med-kit. "Holy Nova" sprays a revitalizing green chemical mist. "Resurrection" involves a jumper-cable shock to the chest. Your buffs are "Performance Enhancers" (experimental drugs).'
         }
@@ -133,6 +132,23 @@ const TheNewBlood = () => {
         hub: '**Capital Hub: "Gadgetzan Exports" (Nagrand)**\nA rapidly expanding strip-mine operation that evolves visually as the server completes daily quests. It starts as a few tents and grows into a neon-lit, smog-choked city that rivals Shattrath. It features the "Black Market Auction House," the "Corporate Lounge" inn (VIP only), and a statue of Trade Prince Gallywix made of solid gold.',
         outpost: '**Outpost: "Area 52 Annex" (Netherstorm)**\nA hostile takeover of the eastern side of Area 52. Questlines here involve corporate espionage against the Ethereals, stealing their eco-dome tech to patent it, and sabotaging Mana-Forges to drive up the price of mana crystals.',
         dungeons: '**Dungeon Ties:**\n**The Mana-Tombs:** The Cartel hires you to "liquidate" the Ethereal competition and steal their trade secrets.\n**The Mechanar:** A salvage operation. You are sent to strip the Tempest Keep structures for raw parts and sell them back to the Sha\'tar at a markup.'
+      },
+
+      campaign: {
+        title: "The Liquidated Assets Initiative",
+        commander: "Trade Prince Gallywix",
+        theme: "Aggressive Hostile Takeover",
+        objective: "The Legion isn't just an enemy; they are a competitor. They hold a monopoly on Fel energy, and it's time to bust the trust.",
+        moments: [
+          "**The Buyout:** Bribe a Pit Lord to switch sides during the siege of a Manaforge.",
+          "**Asset Seizure:** Pilot a modified Shredder to rip Fel-Cannons off Hellfire Citadel for scrap.",
+          "**The IPO:** Secure the 'deeds' to Netherstorm, turning the zone into a trade district."
+        ],
+        result: "**Unlock: The Nether-Transponder.**\nCompleting the campaign re-activates the Ethereal technology, phasing Area 52 from a warzone into a bustling **Neutral Metropolis**. This anchors the **Economy** of Outland, enabling cross-realm trade and the stable import of Azerothian supplies.",
+        foothold: {
+          name: "Quest: The Hostile Frequency",
+          desc: "Hellfire is cut off by a Legion jamming signal. Your solution? Overpower it. You rig the Dark Portal's frame to broadcast a Kaja'Cola advertisement at 500% volume, overloading the Legion's pylons and crashing their comms network."
+        }
       }
     },
 
@@ -143,7 +159,7 @@ const TheNewBlood = () => {
       faction: 'Choice at L20',
       leader: 'Alleria Windrunner (A) / Lor\'themar Theron (H)',
       heroImage: 'https://imgur.com/cuuCVtS.jpeg',
-      icon: <Crown className="w-6 h-6" />,
+      icon: <img src={`https://i.imgur.com/VutBj7P.jpeg`} alt="Elves" className="w-6 h-6 object-contain" />,
       themeColor: '#FFD700', // Gold/Sunwell
       accentColor: 'text-amber-300',
 
@@ -156,7 +172,7 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Paladin',
-          icon: 'https://i.imgur.com/dpHn8vW.png',
+          icon: `/TBCPlus/images/icons/classes/paladin.png`,
           title: 'Knight of the Silver Hand (A) / Blood Knight (H)',
           desc: '**High:** Classic golden light, defensive/protective. They view the Light as a sacred trust to be rebuilt, often carrying symbols of the old Alliance. \n**Blood:** Aggressive red/gold visuals. They view the Light as a resource to be bent to their will. "Seal of Blood" is standard. Their mounts wear red caparisons compared to the High Elf blue.'
         },
@@ -168,7 +184,7 @@ const TheNewBlood = () => {
         },
         {
           class: 'Hunter',
-          icon: 'https://i.imgur.com/qtQxThz.png',
+          icon: `/TBCPlus/images/icons/classes/hunter.png`,
           title: 'Ranger (A) / Farstrider (H)',
           desc: '**High:** Nature-aligned, woodland visual motifs. They bond with eagles and lynxes. They patrol the forests to heal the land. \n**Blood:** Uses darker arrows, red-feathered fletching, more militaristic. They bond with Dragonhawks and Mana-Wyrms. They patrol the forests to eradicate threats.'
         },
@@ -180,13 +196,13 @@ const TheNewBlood = () => {
         },
         {
           class: 'Priest',
-          icon: 'https://i.imgur.com/2JfVmju.png',
+          icon: `/TBCPlus/images/icons/classes/priest.png`,
           title: 'Cleric (A) / Soul-Mender (H)',
           desc: '**High:** Traditional Holy light, focused on mending the spirit and resisting the whispers of the Void. \n**Blood:** "Discipline" takes on a sinister tone—bending the will of the light to cauterize wounds. Shadow priests are viewed as "researchers" delving into the powers of the Naaru.'
         },
         {
           class: 'Rogue',
-          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          icon: `/TBCPlus/images/icons/classes/rogue.png`,
           title: 'Shadowblade',
           desc: 'Spies used by Lor\'themar or Vereesa. They use magic to muffle their footsteps, leaving faint arcane trails. High Elves use invisibility and distraction; Blood Elves use aggressive takedowns and mana-burn poisons.'
         }
@@ -205,6 +221,23 @@ const TheNewBlood = () => {
         hub: '**Capital Hubs:**\n**Alliance:** "The Silver Covenant Enclave" (Stormwind). A dedicated district in the Mage Quarter, clean, white stone, and blue banners.\n**Horde:** "The Court of the Sun" (Silvermoon City). Full access to the city, embracing the new, darker architecture.',
         outpost: '**Outpost: "The Sanctum of the Spark"**\nA hidden, ancient shrine deep beneath the Haven where the "Crucible of Choice" takes place. It acts as a pilgrimage site for max-level players to switch factions (very expensive/long cooldown), representing a change of heart.',
         dungeons: '**Dungeon Ties:**\n**Magisters\' Terrace:** The ultimate confrontation with Kael\'thas. High Elves go to punish the traitor; Blood Elves go to redeem their people and put their mad prince out of his misery.\n**The Sunwell Plateau:** The culmination of the race\'s storyline. The restoration of the Sunwell unites both factions in purpose, if not in banner.'
+      },
+
+      campaign: {
+        title: "The Sunwell's Shadow",
+        commander: "Alleria Windrunner (A) / Lor'themar Theron (H)",
+        theme: "Redemption vs. Revenge",
+        objective: "The Sunwell has sparked again, but it pulses with unstable void energy. You must purify it or consume it before the Legion dims it forever.",
+        moments: [
+          "**The Pilgrimage:** Escort a caravan of magisters through the Dead Scar, cleansing the earth.",
+          "**The Mirror:** A solo scenario facing your own 'Wretched' reflection in the Magisters' Terrace.",
+          "**Sword of the Sin'dorei:** Reforge the broken blade of Anasterian Sunstrider to strike the final blow."
+        ],
+        result: "**Unlock: The Ley-Line Nexus.**\nPurifying the nodes phases the 'Magisters' Terrace' from a dungeon entrance into a **Teleportation Hub**. This anchors the **Magical Transport** network, stabilizing portals to Stormwind and Orgrimmar despite the Twisting Nether's chaotic interference.",
+        foothold: {
+          name: "Quest: The Arcane Anchor",
+          desc: "The Portal's coordinates are drifting. The first wave of troops is being teleported into the vacuum of space. You must channel into the frame, manually locking the destination to the Stair of Destiny before the connection snaps."
+        }
       }
     },
 
@@ -215,7 +248,7 @@ const TheNewBlood = () => {
       faction: 'Horde (Stonemaul Clan)',
       leader: 'Rexxar',
       heroImage: 'https://imgur.com/b4F4qBk.jpeg',
-      icon: <Hammer className="w-6 h-6" />,
+      icon: <img src={`https://i.imgur.com/F64yu31.jpeg`} alt="Ogres" className="w-6 h-6 object-contain" />,
       themeColor: '#ea580c', // Rust/Orange
       accentColor: 'text-orange-500',
 
@@ -228,7 +261,7 @@ const TheNewBlood = () => {
       classFantasies: [
         {
           class: 'Warrior',
-          icon: 'https://i.imgur.com/tgSiYFd.png',
+          icon: `/TBCPlus/images/icons/classes/warrior.png`,
           title: 'Gorian Gladiator',
           desc: 'Uses "oversized" weapon models (2H weapons held in 1H - Titan\'s Grip style by default for animations). "Thunder Clap" is a literal foot stomp that cracks the ground texture. Your shout buffs are deep, resonant bellows that fear critters. You embody the physical dominance of the Highmaul Coliseum.'
         },
@@ -252,7 +285,7 @@ const TheNewBlood = () => {
         },
         {
           class: 'Hunter',
-          icon: 'https://i.imgur.com/O9XtjlG.png',
+          icon: `/TBCPlus/images/icons/classes/hunter.png`,
           title: 'Beastlord',
           desc: 'You don\'t "tame" beasts; you break them. Pets scale slightly larger than normal. Start with a Rylak. Traps are massive iron cages. You wear the trophies of your kills, covering your armor in furs and bones.'
         }
@@ -271,6 +304,23 @@ const TheNewBlood = () => {
         hub: '**Capital Hub: "Goria\'s Vantage" (Blade\'s Edge)**\nA rebuilt fortress in the mountains where Ogre players collect artifacts to unlock "Imperator" transmog sets. It serves as a stark contrast to the primitive ogre mounds found elsewhere, featuring actual architecture, libraries, and forges.',
         outpost: '**Outpost: "Highmaul Embassy" (Nagrand)**\nA diplomatic tent outside Garadar where Stonemaul emissaries try to convince the Mag\'har Orcs that the Ogres have changed. Quests involve proving your worth to the Orcs by hunting local fauna.',
         dungeons: '**Dungeon Ties:**\n**Gruul\'s Lair:** The ultimate vendetta. Gruul is the "Dragonkiller," but he is also the Enslaver of Ogres. You are there to break the chains and end the reign of the Gronn forever.\n**Bloodmaul Slag Mines:** A rescue mission to free your kin from servitude and recruit them to the new Gorian dream.'
+      },
+
+      campaign: {
+        title: "The Neo-Gorian Empire",
+        commander: "Rexxar & Centurion Cagg",
+        theme: "Imperial Rebirth",
+        objective: "Prove that Ogres are not stupid brutes, but the heirs to a lost empire of sorcerer-kings.",
+        moments: [
+          "**The Library:** Excavate Ogri'la to recover the 'Codex of Order,' unlocking new Mage abilities.",
+          "**Gronn-Slayer:** A raid-boss style quest where you 1v1 a Gronn to assert dominance.",
+          "**Throne of the Imperator:** Sit on the Highmaul throne (phased) and have local clans bow to you."
+        ],
+        result: "**Unlock: The Siege Works.**\nThe ruins of the Bladespire Citadel are rebuilt into a pristine **Ogre Fortress**. This anchors the **Military Might** of the Horde, providing the tanks, catapults, and heavy infantry required to breach the Legion's walls.",
+        foothold: {
+          name: "Quest: The Wall-Breakers",
+          desc: "A massive 'Fel-Shield' blocks the exit from the Stair of Destiny. Mages can't dispel it. You? You pick up a Fel-Reaver's severed arm and use it as a battering ram to physically smash the shield generators."
+        }
       }
     },
 
@@ -281,7 +331,7 @@ const TheNewBlood = () => {
       faction: 'Horde (Primal Pact)',
       leader: 'The Golden Alpha',
       heroImage: 'https://imgur.com/lR8vivT.jpeg',
-      icon: <Crosshair className="w-6 h-6" />,
+      icon: <img src={`https://i.imgur.com/3Us8UIl.jpeg`} alt="Saberon" className="w-6 h-6 object-contain" />,
       themeColor: '#CA8A04', // Feral Gold
       accentColor: 'text-yellow-500',
 
@@ -300,19 +350,19 @@ const TheNewBlood = () => {
         },
         {
           class: 'Rogue',
-          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          icon: `/TBCPlus/images/icons/classes/rogue.png`,
           title: 'Stalker',
           desc: 'No daggers. You use "Fist Weapons" (Claws) exclusively for your animations. Stealth run speed is significantly faster on all fours. Ambush is a throat-bite animation. You are the terror in the tall grass.'
         },
         {
           class: 'Warrior',
-          icon: 'https://i.imgur.com/wJbmNeR.png',
+          icon: `/TBCPlus/images/icons/classes/warrior.png`,
           title: 'Pride-Lord',
           desc: 'Battle Shout is a terrifying roar that actually fears critters. Execute is a bite animation. You fight with a savagery that unnerves even Orcs. You prefer bleeding your enemies out, watching the life drain from them.'
         },
         {
           class: 'Hunter',
-          icon: 'https://i.imgur.com/O9XtjlG.png',
+          icon: `/TBCPlus/images/icons/classes/hunter.png`,
           title: 'Pack-Leader',
           desc: 'You fight alongside your pet as an equal. Melee animations (Wing Clip, Raptor Strike) are seamless claw swipes. You can tame "Feral Druids" (just kidding... mostly). You communicate with your pet via growls, not commands.'
         },
@@ -336,6 +386,23 @@ const TheNewBlood = () => {
         hub: '**Capital Hub: "The Brood-Den" (Terokkar)**\nA hidden tree-city high in the canopy. No vendors accept gold here; only trade goods (meat, leather) and trophies. It connects to the Arakkoa spy network, allowing you to trade intel for supplies.',
         outpost: '**Outpost: "Fang\'s Edge" (Blade\'s Edge)**\nA hunting camp dedicated to bringing down the Gronn. It serves as the main daily quest hub for the "Trophy Hunt" system. Here, you plan raids on the Ogres below.',
         dungeons: '**Dungeon Ties:**\n**The Underbog:** Tracking the great hydra Ghazan. A rite of passage for all Saberon hunters. Bringing back his fang is a requirement for your epic mount.\n**The Steamvaults:** Vengeance against the Naga who encroached on your Zangarmarsh hunting grounds. You are there to reclaim the water.'
+      },
+
+      campaign: {
+        title: "The Apex Hunt",
+        commander: "Leorajh (The Enlightened)",
+        theme: "Survival of the Fittest",
+        objective: "The Legion creates 'Fel-Beasts.' You view them as an invasive species. Your campaign is a planetary pest control operation.",
+        moments: [
+          "**The Stalking:** Track a Fel-Reaver for 3 real-time days across Hellfire Peninsula to learn its route.",
+          "**Blood for Blood:** Eat the heart of a Doom Lord to gain permanent resistance to Fel fire.",
+          "**The Alpha's Call:** Unite the scattered Saberon tribes by defeating their chieftains in ritual combat."
+        ],
+        result: "**Unlock: The Marsh-Walker Paths.**\nClearing the Naga pumps refilled the lakes of Zangarmarsh. The zone phases from 'Dead Mire' to 'Verdant Hunting Ground.' This anchors **Logistics & Survival**, providing the food and leather needed to equip the expedition.",
+        foothold: {
+          name: "Quest: The Invisible Stalkers",
+          desc: "The path to Thrallmar looks clear, but scouts are vanishing. Your senses reveal the truth: thousands of invisible Fel-Stalkers. You lead the pack, marking the targets with pheromones so the rest of the Horde can see what they are fighting."
+        }
       }
     },
 
@@ -346,7 +413,7 @@ const TheNewBlood = () => {
       faction: 'Alliance (Ashtongue Redeemers)',
       leader: 'Akama',
       heroImage: 'https://imgur.com/jH31cAZ.jpeg',
-      icon: <Ghost className="w-6 h-6" />,
+      icon: <img src={`https://i.imgur.com/dTOcARg.jpeg`} alt="Broken" className="w-6 h-6 object-contain" />,
       themeColor: '#14b8a6', // Teal/Nether
       accentColor: 'text-teal-400',
 
@@ -371,13 +438,13 @@ const TheNewBlood = () => {
         },
         {
           class: 'Rogue',
-          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
+          icon: `/TBCPlus/images/icons/classes/rogue.png`,
           title: 'Deathsworn',
           desc: 'Masters of stealth who learned from Akama. Vanish creates a cloud of red mist. Eviscerate leaves a fel-green scar. You specialize in killing demons from the shadows, using their own tactics against them. You are the knife in the dark.'
         },
         {
           class: 'Hunter',
-          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
+          icon: `/TBCPlus/images/icons/classes/hunter.png`,
           title: 'Wasteland Survivor',
           desc: 'Uses scavenged technology. Traps are jury-rigged fel devices. Pets are usually Void-warped beasts (Warp Stalkers). You track demons with supernatural precision, smelling the sulfur on them from miles away.'
         },
@@ -401,6 +468,23 @@ const TheNewBlood = () => {
         hub: '**Capital Hub: "The Lower Rise" (Shattrath)**\nA refugee camp that you upgrade into a district. It feels desperate, crowded, and hopeful. It serves as the bridge between the Aldor and Scryers, as the Broken deal with both. It features the "Shaman\'s Stone," a place of meditation.',
         outpost: '**Outpost: "Greyheart Enclave" (Zangarmarsh)**\nA hidden village of "Lost Ones" that you are trying to rehabilitate. Quests involve gathering food and medicine for your devolved kin, defending them from Naga slavers.',
         dungeons: '**Dungeon Ties:**\n**Shadow Labyrinth:** Confronting the darker aspects of your heritage and the Shadow Council. You seek to silence the whispers.\n**The Black Temple:** The ultimate goal. Helping Akama reclaim the temple from Illidan and purifying the Karabor.'
+      },
+
+      campaign: {
+        title: "The Karabor Reclamation",
+        commander: "Akama",
+        theme: "Spiritual Purification",
+        objective: "The Black Temple was once the Temple of Karabor. You are a janitor of the holy light, here to scrub the fel-stains from your home.",
+        moments: [
+          "**Whispers of the Dark:** A horror-themed questline in Shadow Labyrinth separating Akama's voice from the Void.",
+          "**The Shard:** Recover a fragment of the Ata'mal Crystal from Illidan's vault via stealth.",
+          "**Steps of Faith:** Plant the Ashtongue banner at the summit of the Black Temple as Fel-Orcs retreat."
+        ],
+        result: "**Unlock: The Shadow-Sanctum.**\nThe lower sewers of the Black Temple phase into the **Ashtongue Refuge**, a forward operating base inside enemy territory. This anchors the **Intelligence Network**, providing the spies and assassins needed to dismantle the Legion from within.",
+        foothold: {
+          name: "Quest: The Void-Walk",
+          desc: "The main road is a continuous orbital strike zone. Akama remembers a Smuggler's Path that winds through the twisted nether-rocks floating *outside* the peninsula. You guide the Alliance vanguard across these floating islands, bypassing the bombardment entirely."
+        }
       }
     },
 
@@ -411,7 +495,7 @@ const TheNewBlood = () => {
       faction: 'Alliance (Wildhammer Clan)',
       leader: 'Kurdran Wildhammer',
       heroImage: 'https://imgur.com/NmluyOP.jpeg',
-      icon: <Feather className="w-6 h-6" />,
+      icon: <img src={`https://i.imgur.com/0TwBLo8.jpeg`} alt="Wildhammer" className="w-6 h-6 object-contain" />,
       themeColor: '#0ea5e9', // Sky Blue
       accentColor: 'text-sky-400',
 
@@ -430,13 +514,13 @@ const TheNewBlood = () => {
         },
         {
           class: 'Warrior',
-          icon: 'https://i.imgur.com/wJbmNeR.png',
+          icon: `/TBCPlus/images/icons/classes/warrior.png`,
           title: 'Thane',
           desc: 'Specializes in Dual-Wielding Hammers. "Thunder Clap" summons a localized storm cloud. "Charge" leaves a trail of static. You are a berserker of the skies, often diving into combat from above (no fall damage).'
         },
         {
           class: 'Hunter',
-          icon: 'https://i.imgur.com/qtQxThz.png',
+          icon: `/TBCPlus/images/icons/classes/hunter.png`,
           title: 'Sky-Hunter',
           desc: 'Uses thrown weapons (Axes/Hammers) visually instead of bows/guns. Pets are avian (Eagles, Owls, Gryphons). You can track "Air Elementals" on the minimap. Your traps are "Storm Runes" placed on the ground.'
         },
@@ -448,7 +532,7 @@ const TheNewBlood = () => {
         },
         {
           class: 'Rogue',
-          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          icon: `/TBCPlus/images/icons/classes/rogue.png`,
           title: 'Wind-Walker',
           desc: 'Subtlety focused. Shadowstep looks like a gust of wind. Sprint leaves a blurred trail of leaves and feathers. You drop from the sky silently, an assassin who strikes from the clouds.'
         }
@@ -467,6 +551,23 @@ const TheNewBlood = () => {
         hub: '**Capital Hub: "Kurdran\'s Watch" (Shadowmoon Valley)**\nA high-altitude fortress accessible only by flying mount, serving as the forward base for the Alliance Air Force. It has the best view in Outland. It features a flight path to every zone and a specialized "Gryphon Racer" mini-game.',
         outpost: '**Outpost: "Eagle\'s Eye" (Blade\'s Edge)**\nA small camp perched on a spire in the Blade\'s Edge Mountains. It serves as a staging ground for attacks on the Ogres below. You engage in aerial dogfights with the nether drakes.',
         dungeons: '**Dungeon Ties:**\n**Tempest Keep:** The Sky-Reavers are fascinated by the floating fortress. You want to claim it for the Alliance as the ultimate mobile aerie.\n**Sethekk Halls:** You have a special hatred for the Arakkoa, the "corrupted bird men," and seek to purge them for their mockery of the skies.'
+      },
+
+      campaign: {
+        title: "The Skies of Outland",
+        commander: "Kurdran Wildhammer",
+        theme: "Aerial Superiority",
+        objective: "The Legion dominates the ground. The Wildhammers will dominate the air.",
+        moments: [
+          "**Dogfight at the Throne:** A vehicle quest flying against Legion Fel-Bats over Kil'jaeden's Throne.",
+          "**Lightning War:** Summon a massive storm to clear the fog of war from Zangarmarsh.",
+          "**The Nest:** Rescue the last clutch of pristine Gryphon eggs from Blade we's Edge."
+        ],
+        result: "**Unlock: The Sky-Roads.**\nDefeating the Nether Drakes clears the atmospheric interference. Destroyed roosts in every zone phase into active **Flight Paths**. This anchors **Air Superiority**, allowing the Alliance to project power anywhere in Outland instantly.",
+        foothold: {
+          name: "Quest: The Suicide Dive",
+          desc: "Legion anti-air canons are grounding the Gryphon fleet. You lead a squadron of 'Storm-Riders' in a vertical dive-bomb from the cloud layer, dropping explosives directly down the barrels of the Fel-Cannons to clear the runway."
+        }
       }
     }
   };
@@ -540,7 +641,7 @@ const TheNewBlood = () => {
             <span className={`${activeData.accentColor}`}>{activeData.icon}</span>
             <span className={`font-hero text-xs tracking-[0.2em] uppercase text-gray-200`}>{activeData.faction}</span>
           </div>
-          <h1 className="font-hero text-5xl md:text-7xl font-black text-white mb-2 tracking-tighter shadow-black drop-shadow-lg">
+          <h1 className="font-hero text-5xl md:text-7xl text-[#c29c55] mb-2 tracking-tighter shadow-black drop-shadow-lg uppercase">
             {activeData.name}
           </h1>
           {/* LEADER INFO ADDED HERE */}
@@ -594,6 +695,7 @@ const TheNewBlood = () => {
           <TabButton id="classes" label="Class Fantasies" icon={Sword} />
           <TabButton id="racials" label="Racial Traits" icon={Activity} />
           <TabButton id="origins" label="Origins & Hubs" icon={Map} />
+          <TabButton id="campaign" label="Campaign" icon={Flag} />
         </div>
 
         {/* --- TAB CONTENT AREA --- */}
@@ -603,7 +705,7 @@ const TheNewBlood = () => {
           {activeTab === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="space-y-6">
-                <h2 className="font-hero text-3xl text-white border-l-4 border-[#f8b700] pl-4">The Fantasy</h2>
+                <h2 className="font-hero text-3xl text-[#c29c55] border-l-4 border-[#f8b700] pl-4 uppercase tracking-widest">The Fantasy</h2>
                 <div className="text-gray-300 text-lg leading-relaxed space-y-4 font-light">
                   {formatText(activeData.overview.fantasy)}
                 </div>
@@ -615,7 +717,7 @@ const TheNewBlood = () => {
                   <Star size={200} />
                 </div>
 
-                <h3 className={`font-hero text-xl ${activeData.accentColor} mb-4 flex items-center gap-2`}>
+                <h3 className={`font-hero text-xl text-[#c29c55] uppercase tracking-widest mb-4 flex items-center gap-2`}>
                   <Hexagon className="w-5 h-5" />
                   Unique System: {activeData.overview.systemName}
                 </h3>
@@ -669,7 +771,7 @@ const TheNewBlood = () => {
                 <div className="bg-[#111] p-8 rounded border border-white/10">
                   <div className="flex items-center gap-3 mb-4 text-[#f8b700]">
                     <Compass size={24} />
-                    <h3 className="font-hero text-xl uppercase tracking-widest">Starting Experience</h3>
+                    <h3 className="font-hero text-xl uppercase tracking-widest text-[#c29c55]">Starting Experience</h3>
                   </div>
                   <p className="text-gray-300 leading-relaxed whitespace-pre-line text-sm">
                     {formatText(activeData.locations.start)}
@@ -679,7 +781,7 @@ const TheNewBlood = () => {
                 <div className="bg-[#111] p-8 rounded border border-white/10">
                   <div className="flex items-center gap-3 mb-4 text-[#f8b700]">
                     <Anchor size={24} />
-                    <h3 className="font-hero text-xl uppercase tracking-widest">Capital Hubs</h3>
+                    <h3 className="font-hero text-xl uppercase tracking-widest text-[#c29c55]">Capital Hubs</h3>
                   </div>
                   <p className="text-gray-300 leading-relaxed whitespace-pre-line text-sm">
                     {formatText(activeData.locations.hub)}
@@ -689,7 +791,7 @@ const TheNewBlood = () => {
                 <div className="bg-[#111] p-8 rounded border border-white/10">
                   <div className="flex items-center gap-3 mb-4 text-[#f8b700]">
                     <Map size={24} />
-                    <h3 className="font-hero text-xl uppercase tracking-widest">Outposts</h3>
+                    <h3 className="font-hero text-xl uppercase tracking-widest text-[#c29c55]">Outposts</h3>
                   </div>
                   <p className="text-gray-300 leading-relaxed whitespace-pre-line text-sm">
                     {formatText(activeData.locations.outpost)}
@@ -704,6 +806,75 @@ const TheNewBlood = () => {
                   <p className="text-gray-300 leading-relaxed whitespace-pre-line text-sm">
                     {formatText(activeData.locations.dungeons)}
                   </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 5. CAMPAIGN TAB */}
+          {activeTab === 'campaign' && (
+            <div className="bg-[#111] p-8 rounded border border-white/10 animate-fade-in relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-32 bg-[#f8b700]/5 rounded-full blur-3xl pointer-events-none"></div>
+
+              <div className="flex flex-col md:flex-row gap-12 items-center">
+                <div className="md:w-1/3">
+                  <div className={`w-full aspect-square rounded-full border-4 ${activeData.accentColor.replace('text-', 'border-')} p-2 relative`}>
+                    <img
+                      src={activeData.heroImage}
+                      alt="Campaign Hero"
+                      className="w-full h-full object-cover rounded-full opacity-80"
+                    />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
+                      <Flag size={64} className="text-white opacity-50" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="md:w-2/3 space-y-6">
+                  <h2 className="font-hero text-3xl text-white mb-2">{activeData.campaign.title}</h2>
+                  <p className="text-[#f8b700] text-sm uppercase tracking-widest border-b border-white/10 pb-4">
+                    {activeData.campaign.theme}
+                  </p>
+
+                  <div className="space-y-4 text-gray-300 leading-relaxed">
+                    {/* Foothold Quest */}
+                    <div className="bg-[#1a1a1a] p-4 rounded border-l-2 border-[#f8b700] mb-6 shadow-lg">
+                      <div className="flex items-center gap-2 mb-2 text-[#f8b700]">
+                        <Compass className="w-4 h-4" />
+                        <span className="text-xs uppercase tracking-widest font-bold">Prologue: The Disconnected Peninsula</span>
+                      </div>
+                      <h4 className="text-white font-hero text-lg mb-1">{activeData.campaign.foothold.name}</h4>
+                      <p className="text-xs text-stone-400 leading-relaxed">{activeData.campaign.foothold.desc}</p>
+                    </div>
+
+                    <p>
+                      <strong className="text-white">Commander:</strong> {activeData.campaign.commander}
+                    </p>
+                    <p className="text-sm">
+                      {activeData.campaign.objective}
+                    </p>
+                    <div className="mt-4">
+                      <h4 className={`font-hero text-sm uppercase mb-2 ${activeData.accentColor}`}>Key Moments</h4>
+                      <ul className="space-y-2 text-stone-400 text-sm">
+                        {activeData.campaign.moments.map((moment, i) => (
+                          <li key={i} className="flex gap-2">
+                            <span className="text-[#f8b700]">•</span>
+                            <span>{formatText(moment)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className={`mt-6 p-4 bg-white/5 rounded border-l-2 ${activeData.accentColor.replace('text-', 'border-')}`}>
+                    <h4 className="font-hero text-white mb-2 flex items-center gap-2">
+                      <Zap className="w-4 h-4 text-[#f8b700]" />
+                      Campaign Outcome: Phasing & Unlocks
+                    </h4>
+                    <p className="text-sm text-gray-400 leading-relaxed whitespace-pre-line">
+                      {formatText(activeData.campaign.result)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

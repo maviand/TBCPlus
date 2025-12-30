@@ -68,6 +68,12 @@ const PvpForgedInFlames = () => {
                     type: "10v10 Aerial Combat",
                     icon: <Zap className="w-8 h-8 text-yellow-500" />,
                     desc: "**Objective:** Dogfighting. \n**Mechanic:** Players mount Nether Drakes equipped with lances. Combat is entirely 3D. Dismounting means death (unless you fall into a vortex). \n**Flavor:** High-speed chases around Oshu'gun. Master the 'Immelmann Turn' ability to shake pursuers."
+                },
+                {
+                    name: "The Fissure of Souls",
+                    type: "5v5 MOBA-Style Battleground",
+                    icon: <Ghost className="w-8 h-8 text-purple-600" />,
+                    desc: "**Objective:** Destroy the Enemy Soul Well. \n**Mechanic:** 3 distinct lanes with creeping Felguards and defensive towers. Jungle camps featuring Void horrors grant team-wide buffs. No gear scaling—everyone uses standardized templates. \n**Flavor:** A pocket dimension in the Twisting Nether where the Legion tests its commanders."
                 }
             ]
         },

@@ -34,8 +34,8 @@ const UnifiedHeader = ({ icon: Icon, section, sub, title, quote, onClose, backgr
 
                     {/* Section & Sub */}
                     <div className="flex flex-col">
-                        <span className="text-[#8a7b62] font-hero text-[10px] uppercase tracking-[0.2em]">{section}</span>
-                        <span className="text-[#5c5c63] text-[9px] font-bold uppercase tracking-widest bg-[#1a1c22] px-2 py-0.5 rounded border border-[#2f2f35] self-start mt-1">
+                        <span className="text-[#c29c55] font-hero text-xs uppercase tracking-[0.2em] shadow-black drop-shadow-md">{section}</span>
+                        <span className="text-[#5c5c63] text-[9px] font-medium uppercase tracking-widest bg-[#1a1c22] px-2 py-0.5 rounded border border-[#2f2f35] self-start mt-1">
                             {sub}
                         </span>
                     </div>
@@ -54,7 +54,7 @@ const UnifiedHeader = ({ icon: Icon, section, sub, title, quote, onClose, backgr
 
             {/* Title & Quote */}
             <div className="pl-0 md:pl-16 mt-6 md:mt-0">
-                <h2 className="font-hero text-3xl md:text-5xl text-[#f0e6d2] tracking-wide drop-shadow-lg mb-2 leading-tight">{title}</h2>
+                <h2 className="font-hero uppercase tracking-widest text-3xl md:text-5xl text-[#c29c55] mb-2 leading-tight drop-shadow-xl">{title}</h2>
                 {quote && (
                     <p className="font-body text-[#aeb6bf] text-sm italic max-w-2xl border-l-2 border-[#c29c55]/50 pl-4">
                         "{quote}"

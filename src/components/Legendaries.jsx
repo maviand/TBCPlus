@@ -559,6 +559,7 @@ const Legendaries = () => {
                     damage: '240 - 450',
                     speed: '2.80',
                     stats: ['+35 Agility', '+40 Stamina'],
+                    classes: 'Rogue, Warrior',
                     effects: ['(2) Set : Your melee attacks have a chance to increase your haste rating by 450 for 10 sec.', '(2) Set : Increases attack power by 200 when fighting Demons.'],
                 },
                 {
@@ -570,6 +571,7 @@ const Legendaries = () => {
                     damage: '120 - 220',
                     speed: '1.40',
                     stats: ['+35 Agility', '+40 Stamina'],
+                    classes: 'Rogue, Warrior',
                     effects: ['(2) Set : Your melee attacks have a chance to increase your haste rating by 450 for 10 sec.', '(2) Set : Increases attack power by 200 when fighting Demons.'],
                 }
             ],

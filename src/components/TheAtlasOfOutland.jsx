@@ -43,7 +43,7 @@ const TheAtlasOfOutland = () => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const content = parts.map((part, partIndex) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={partIndex} className="text-[#ffd100] font-bold">{part.slice(2, -2)}</strong>;
+          return <strong key={partIndex} className="text-[#c29c55] font-normal">{part.slice(2, -2)}</strong>;
         }
         return part;
       });
@@ -918,7 +918,7 @@ const TheAtlasOfOutland = () => {
         name: 'Fel-Forged Vanguard',
         type: 'Expansion Systems',
         image: "https://placehold.co/600x400/9b2c2c/ffffff?text=Vanguard+Command",
-        lore: "**The Age of the Warband**\nCommand your entire account as a single unit. The Vanguard system unifies your alts, reputation, and progression into a cohesive war effort.",
+        lore: "The Age of the Warband\nCommand your entire account as a single unit. The Vanguard system unifies your alts, reputation, and progression into a cohesive war effort.",
         vanguardData: {
           tabs: {
             warband: { title: "Warband & Camp", icon: <Users className="w-4 h-4" />, subtitle: "Account-Wide Progression" },
@@ -945,7 +945,7 @@ const TheAtlasOfOutland = () => {
               { name: "Dungeoneer's Row", req: "Complete 1 / 4 / 8 Heroic+ Keys", reward: "Dungeon Set Item" },
               { name: "Gladiator's Row", req: "Earn 1500 / 3000 / 5000 Conquest", reward: "PvP Season Item" }
             ],
-            currency: "**Steps of the Sun Token:** Don't like the choices? Take the token to upgrade a specific item slot or add a socket."
+            currency: "Steps of the Sun Token: Don't like the choices? Take the token to upgrade a specific item slot or add a socket."
           },
           renown: {
             title: "Renown: The Grind Reborn",
@@ -971,7 +971,7 @@ const TheAtlasOfOutland = () => {
               { role: "Melee DPS", name: "The Duelist's Dance", desc: "A 1v1 duel against a mirror image that learns your rotation." },
               { role: "Ranged DPS", name: "The Kiting Gauntlet", desc: "Slow and kite a massive Fel Reaver before it reaches you." }
             ],
-            rewards: "**Tier 2 Remastered Sets** (High-Res Textures) & Class-Specific Mount Color Variants."
+            rewards: "Tier 2 Remastered Sets (High-Res Textures) & Class-Specific Mount Color Variants."
           },
           paragon: {
             title: "Paragon Levels: Beyond the Cap",
@@ -982,7 +982,7 @@ const TheAtlasOfOutland = () => {
               { name: "Craftsman's Eye", effect: "+10% Crafting Speed / +5% Rare Proc" },
               { name: "Soulshape", effect: "Unlock Ghost Wolf / Blink cosmetic FX" }
             ],
-            note: "Paragon power is strictly Quality of Life and Open World efficiency. It provides **zero** combat power in Raids or Arena."
+            note: "Paragon power is strictly Quality of Life and Open World efficiency. It provides zero combat power in Raids or Arena."
           }
         }
       }
@@ -994,9 +994,9 @@ const TheAtlasOfOutland = () => {
         name: 'Molten Core (Timelocked)',
         type: '10-Man Raid',
         image: 'https://i.imgur.com/uoHMFpl.jpeg',
-        lore: "**The Firelord Returns** \nRagnaros has been summoned once more, but this time, his power is unchecked. Level 70 Tuned (Tier 4 Equivalent).",
-        geography: "**Loot Target:** \nilvl 110 (Tier 4 Equivalent sets). \n**Tuning:** \nStrict 10-Man. Requires 2 Tanks, 2 Healers, 6 DPS. Fire Resistance is crucial for Ragnaros and Baron Geddon (150+ unbuffed recommended).",
-        mechanics: "**Core Mechanics:** \nThis raid introduces the 'Heat Level' system. Taking fire damage stacks a debuff that increases damage taken. It resets only when out of combat, forcing a brisk pace between pulls. \n\n**Key Shifts:** \n- **Curse of Agony:** Now a raid-wide mechanic on random trash, requiring Decurse priority. \n- **Lava Surge:** Randomly erupts from the floor, enforcing constant movement.",
+        lore: "The Firelord Returns \nRagnaros has been summoned once more, but this time, his power is unchecked. Level 70 Tuned (Tier 4 Equivalent).",
+        geography: "Loot Target: \nilvl 110 (Tier 4 Equivalent sets). \n**Tuning:** \nStrict 10-Man. Requires 2 Tanks, 2 Healers, 6 DPS. Fire Resistance is crucial for Ragnaros and Baron Geddon (150+ unbuffed recommended).",
+        mechanics: "Core Mechanics: \nThis raid introduces the 'Heat Level' system. Taking fire damage stacks a debuff that increases damage taken. It resets only when out of combat, forcing a brisk pace between pulls. \n\nKey Shifts: \n- Curse of Agony: Now a raid-wide mechanic on random trash, requiring Decurse priority. \n- Lava Surge: Randomly erupts from the floor, enforcing constant movement.",
         philosophy: {
           tbc: "In original TBC, Molten Core was a ghost town—a relic of 40-man nostalgia that offered no relevant power progression for level 70 players. It sat dormant, a vast cavern of wasted potential.",
           plus: "We have reignited the blackened depths. By retuning the raid for a tight, coordination-heavy 10-man group and introducing TBC-era mechanics (like reliance on specific resistance gear and intricate dispel rotations), Molten Core becomes a vital stepping stone for fresh level 70s."
@@ -1006,9 +1006,9 @@ const TheAtlasOfOutland = () => {
         name: 'Blackwing Lair (Timelocked)',
         type: '10-Man Raid',
         image: 'https://i.imgur.com/PrE1q0k.jpeg',
-        lore: "**Nefarian's Experiments** \nThe Black Dragonflight has evolved. Level 70 Tuned (Tier 5 Equivalent).",
-        geography: "**Loot Target:** \nilvl 128 (Tier 5 Equivalent sets). \n**Tuning:** \nPrecision 10-Man. Role checks are severe. \nRequires Hunters for Enrage dispels and Mages for reliable AoE control.",
-        mechanics: "**Core Mechanics:** \nThe 'Black Flight' aura permeates the raid, reducing healing received by 10% per stack if players stand still too long. Constant stutter-stepping is required to drop stacks. \n\n**Key Shifts:** \n- **Suppression Devices:** Traps must be now be disarmed by Rogues mid-combat. \n- **Shadowflame:** Now leaves a persistent DoT, prioritizing consistent raid healing.",
+        lore: "Nefarian's Experiments \nThe Black Dragonflight has evolved. Level 70 Tuned (Tier 5 Equivalent).",
+        geography: "Loot Target: \nilvl 128 (Tier 5 Equivalent sets). \nTuning: \nPrecision 10-Man. Role checks are severe. \nRequires Hunters for Enrage dispels and Mages for reliable AoE control.",
+        mechanics: "Core Mechanics: \nThe 'Black Flight' aura permeates the raid, reducing healing received by 10% per stack if players stand still too long. Constant stutter-stepping is required to drop stacks. \n\nKey Shifts: \n- Suppression Devices: Traps must be now be disarmed by Rogues mid-combat. \n- Shadowflame: Now leaves a persistent DoT, prioritizing consistent raid healing.",
         philosophy: {
           tbc: "Blackwing Lair was often reduced to a simple gear check in later expansions, losing the strategic depth that made it iconic.",
           plus: "We have restored Nefarian's genius. This 10-man version emphasizes role responsibility over raw numbers. Class Calls are now combined and lethal, punishing the entire raid if a single player fails their specific duty."
@@ -1018,9 +1018,9 @@ const TheAtlasOfOutland = () => {
         name: 'Ahn\'Qiraj (Timelocked)',
         type: '10-Man Raid',
         image: 'https://i.imgur.com/HFQ75Yc.jpeg',
-        lore: "**The Old God Awakens** \nC'Thun stirs. Level 70 Tuned (Tier 6 Equivalent).",
-        geography: "**Loot Target:** \nilvl 141 (Tier 6 Equivalent). \n**Tuning:** \nSprint 10-Man. High movement, low tolerance for error. \nNature Resistance is mandatory for Huhuran (200+ unbuffed).",
-        mechanics: "**Core Mechanics:** \n'Sanity' is not just a C'Thun mechanic anymore. The entire raid applies a stacking 'Whispers' debuff that reduces Hit Chance. Killing trash mobs cleanses the mind. Speed is key. \n\n**Key Shifts:** \n- **Mounts:** You can ride Qiraji mounts throughout the entire instance. \n- **Sandstorms:** Periodic visibility reduction requires strict marking.",
+        lore: "The Old God Awakens \nC'Thun stirs. Level 70 Tuned (Tier 6 Equivalent).",
+        geography: "Loot Target: \nilvl 141 (Tier 6 Equivalent). \nTuning: \nSprint 10-Man. High movement, low tolerance for error. \nNature Resistance is mandatory for Huhuran (200+ unbuffed).",
+        mechanics: "Core Mechanics: \n'Sanity' is not just a C'Thun mechanic anymore. The entire raid applies a stacking 'Whispers' debuff that reduces Hit Chance. Killing trash mobs cleanses the mind. Speed is key. \n\nKey Shifts: \n- Mounts: You can ride Qiraji mounts throughout the entire instance. \n- Sandstorms: Periodic visibility reduction requires strict marking.",
         philosophy: {
           tbc: "Ahn'Qiraj was famously a marathon raid, testing endurance over skill. In the original timeline, it became an optional, often skipped tier.",
           plus: "We have transformed AQ into a sprint. The mechanics are faster, deadlier, and tuned for a Tier 6 equivalent challenge. This is no longer about slogging through trash; it is about surviving high-octane encounters."
@@ -1030,9 +1030,9 @@ const TheAtlasOfOutland = () => {
         name: 'Naxxramas (Timelocked)',
         type: '25-Man Raid',
         image: 'https://i.imgur.com/h0oLJpi.jpeg',
-        lore: "**Tier 3 Reborn** \nThe Necropolis returns. Level 70 Tuned (Sunwell Plateau Equivalent).",
-        geography: "**Loot Target:** \nilvl 149 (Sunwell Equivalent). \n**Tuning:** \n25-Man Mythic-style. \nThis is the ultimate test. Frost Resistance for Sapphiron is a hard gate.",
-        mechanics: "**Core Mechanics:** \nNaxxramas has a 'Wing Affinity' system. Clearing a wing grants a raid-wide buff specialized for the next wing (e.g., Spider Wing grants Poison Resist). Order matters. \n\n**Key Shifts:** \n- **Teleporters:** Instant transport between cleared wings. \n- **Scourgestones:** Drop from every boss, used to upgrade Tier 3 to Tier 3.5 (TBC stats).",
+        lore: "Tier 3 Reborn \nThe Necropolis returns. Level 70 Tuned (Sunwell Plateau Equivalent).",
+        geography: "Loot Target: \nilvl 149 (Sunwell Equivalent). \nTuning: \n25-Man Mythic-style. \nThis is the ultimate test. Frost Resistance for Sapphiron is a hard gate.",
+        mechanics: "Core Mechanics: \nNaxxramas has a 'Wing Affinity' system. Clearing a wing grants a raid-wide buff specialized for the next wing (e.g., Spider Wing grants Poison Resist). Order matters. \n\nKey Shifts: \n- Teleporters: Instant transport between cleared wings. \n- Scourgestones: Drop from every boss, used to upgrade Tier 3 to Tier 3.5 (TBC stats).",
         philosophy: {
           tbc: "Naxxramas was the pinnacle of Classic WoW, a raid so difficult only the elite saw it. In TBC, it was left behind, a floating fortress of unused assets.",
           plus: "We have tuned Naxxramas to be the ultimate Sunwell-tier challenge (Tier 6.5). It is the final exam of the expansion. Every boss has been amplified to require perfection, serving as the true final boss of the TBC Plus experience."
@@ -1042,24 +1042,24 @@ const TheAtlasOfOutland = () => {
         name: 'World Invasions',
         type: 'Open World Event',
         image: 'https://i.imgur.com/e5wE7xi.png',
-        lore: "**A Realm Reborn** \nScourge and Legion invasions strike classic zones (Winterspring, EPL). Phase 1: Infiltration. Phase 2: Siege (World Boss). Phase 3: Rewards.",
-        geography: "**Zones:** \nRotates weekly between Kalimdor and Eastern Kingdoms.",
+        lore: "A Realm Reborn \nScourge and Legion invasions strike classic zones (Winterspring, EPL). Phase 1: Infiltration. Phase 2: Siege (World Boss). Phase 3: Rewards.",
+        geography: "Zones: \nRotates weekly between Kalimdor and Eastern Kingdoms.",
         philosophy: { tbc: "Azeroth was empty.", plus: "Weekly reasons to go back to the old world." },
-        bosses: ["**Invasion Commanders:** \nSpawn in the open world. Require 40+ players."],
-        mechanics: "**Rewards:** \nHonor, Catch-up gear, and gathering nodes."
+        bosses: ["Invasion Commanders: \nSpawn in the open world. Require 40+ players."],
+        mechanics: "Rewards: \nHonor, Catch-up gear, and gathering nodes."
       },
       {
         name: 'The Chronicle of Azeroth',
         type: 'Weekly World Tour',
         image: 'https://i.imgur.com/WbvlN5b.jpeg',
-        lore: "**Relive the History** \nChromie offers a weekly 'Chronicle' quest. Revisit iconic locations (e.g., Uther's Tomb, The Dark Portal, Mount Hyjal) to close minor time anomalies.",
-        geography: "**Zones:** \nSpans the entire Old World. 5 Random locations per week.",
+        lore: "Relive the History \nChromie offers a weekly 'Chronicle' quest. Revisit iconic locations (e.g., Uther's Tomb, The Dark Portal, Mount Hyjal) to close minor time anomalies.",
+        geography: "Zones: \nSpans the entire Old World. 5 Random locations per week.",
         philosophy: { tbc: "Old zones were dead.", plus: "Keeps the entire world relevant for max-level players." },
-        bosses: ["**Time Anomalies:** \nMini-bosses that spawn at the location."],
-        mechanics: "**Rewards:** \nMassive Reputation gains with all Alliance/Horde factions + 'Sands of Time' currency.",
+        bosses: ["Time Anomalies: \nMini-bosses that spawn at the location."],
+        mechanics: "Rewards: \nMassive Reputation gains with all Alliance/Horde factions + 'Sands of Time' currency.",
         chronicleData: {
           overview: {
-            rationale: "**Goal:** Make the entire world relevant again, not just Outland.\n\nEvery week, Chromie identifies 5 \"Time Anomalies\" across Azeroth—events where the timeline is fraying. Players must travel to these classic zones to repair the damage. This system encouragesmax-level players to revisit zones like Winterspring, Silithus, or the Plaguelands, breathing life into the old world.",
+            rationale: "Goal: Make the entire world relevant again, not just Outland.\n\nEvery week, Chromie identifies 5 \"Time Anomalies\" across Azeroth—events where the timeline is fraying. Players must travel to these classic zones to repair the damage. This system encouragesmax-level players to revisit zones like Winterspring, Silithus, or the Plaguelands, breathing life into the old world.",
             issues: [
               "Azeroth felt abandoned in TBC.",
               "Classic 1-60 content became obsolete.",
@@ -1498,7 +1498,7 @@ const TheAtlasOfOutland = () => {
 
                       {/* Design Grid (Pain -> Design -> Boost) */}
                       <div className="space-y-4">
-                        <div className="hidden md:grid grid-cols-12 gap-4 border-b border-[#2f2f35] pb-2 text-[#5c5c63] text-[10px] uppercase tracking-widest font-bold">
+                        <div className="hidden md:grid grid-cols-12 gap-4 border-b border-[#2f2f35] pb-2 text-[#5c5c63] text-[10px] uppercase tracking-widest">
                           <div className="col-span-2">Element</div>
                           <div className="col-span-3">Original Pain</div>
                           <div className="col-span-4 text-[#c29c55]">Improved Design</div>
@@ -1508,9 +1508,9 @@ const TheAtlasOfOutland = () => {
                         {item.gruulMagData[activeTab].grid.map((row, idx) => (
                           <div key={idx} className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start p-4 bg-[#0e0e10] border border-[#1f1f23] rounded hover:border-[#2f2f35] transition-colors">
                             <div className="md:col-span-2 font-hero text-[#e0e0e0] text-xs border-b md:border-b-0 border-[#2f2f35] pb-2 md:pb-0 mb-2 md:mb-0">{row.element}</div>
-                            <div className="md:col-span-3 text-[#8a7b62] text-xs leading-relaxed"><span className="md:hidden text-[#5c5c63] font-bold uppercase text-[9px] block mb-1">Pain:</span>{row.pain}</div>
-                            <div className="md:col-span-4 text-[#aeb6bf] text-xs leading-relaxed"><span className="md:hidden text-[#c29c55] font-bold uppercase text-[9px] block mb-1 mt-3">Fix:</span>{row.design}</div>
-                            <div className="md:col-span-3 text-[#d8b4fe] text-xs leading-relaxed italic"><span className="md:hidden text-[#a335ee] font-bold uppercase text-[9px] block mb-1 mt-3">Boost:</span>{row.boost}</div>
+                            <div className="md:col-span-3 text-[#8a7b62] text-xs leading-relaxed"><span className="md:hidden text-[#5c5c63] uppercase text-[9px] block mb-1">Pain:</span>{row.pain}</div>
+                            <div className="md:col-span-4 text-[#aeb6bf] text-xs leading-relaxed"><span className="md:hidden text-[#c29c55] uppercase text-[9px] block mb-1 mt-3">Fix:</span>{row.design}</div>
+                            <div className="md:col-span-3 text-[#d8b4fe] text-xs leading-relaxed italic"><span className="md:hidden text-[#a335ee] uppercase text-[9px] block mb-1 mt-3">Boost:</span>{row.boost}</div>
                           </div>
                         ))}
                       </div>
@@ -1777,7 +1777,7 @@ const TheAtlasOfOutland = () => {
                         <div key={i} className="bg-[#1a1c22] p-5 rounded border border-[#2f2f35] hover:border-[#c29c55]/50 transition-colors group">
                           <div className="flex justify-between items-start mb-3 border-b border-[#2f2f35] pb-2">
                             <h4 className="font-hero text-[#f0e6d2] group-hover:text-[#c29c55] transition-colors">{event.event}</h4>
-                            <span className="text-[10px] uppercase font-bold text-[#5c5c63] bg-black/40 px-2 py-1 rounded">{event.region}</span>
+                            <span className="text-[10px] uppercase text-[#5c5c63] bg-black/40 px-2 py-1 rounded">{event.region}</span>
                           </div>
                           <p className="text-xs text-[#c29c55] font-bold mb-2 uppercase tracking-wide flex items-center gap-2">
                             <Compass className="w-3 h-3" /> {event.location}
@@ -1833,11 +1833,11 @@ const TheAtlasOfOutland = () => {
                       </h4>
                       <div className="space-y-4">
                         <div className="bg-[#1a1c22] p-4 rounded border-l-2 border-[#5c5c63]">
-                          <span className="text-[#5c5c63] text-xs">v2.4 (Live)</span><span className="font-bold uppercase tracking-widest block mb-1">Historical Context</span>
+                          <span className="text-[#5c5c63] text-xs">v2.4 (Live)</span><span className="uppercase tracking-widest block mb-1">Historical Context</span>
                           <p className="text-[#aeb6bf] text-sm leading-relaxed">{formatText(item.philosophy.tbc)}</p>
                         </div>
                         <div className="bg-[#0b0d10] p-4 rounded border-l-2 border-[#c29c55]">
-                          <span className="text-[#c29c55] text-xs font-bold uppercase tracking-widest block mb-1">The Vision for Plus</span>
+                          <span className="text-[#c29c55] text-xs uppercase tracking-widest block mb-1">The Vision for Plus</span>
                           <p className="text-[#e0e0e0] text-sm leading-relaxed">{formatText(item.philosophy.plus)}</p>
                         </div>
                       </div>
@@ -2099,7 +2099,7 @@ const TheAtlasOfOutland = () => {
                           </div>
                         )}
                       </div>
-                      <button className="text-[#c29c55] text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 group-hover:gap-3 transition-all">
+                      <button className="text-[#c29c55] text-[10px] uppercase tracking-widest flex items-center gap-2 group-hover:gap-3 transition-all">
                         Briefing <ArrowRight className="w-3 h-3" />
                       </button>
                     </div>

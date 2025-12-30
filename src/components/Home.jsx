@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Sword, Users, Shield, Zap, Map, Crown,
+    Sword, Users, Shield, Zap, Map, Crown, Hammer,
     ArrowRight, Sparkles, Scroll, Skull
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
@@ -31,9 +31,9 @@ const Home = ({ setPage }) => {
                         </div>
                     </div>
 
-                    <h1 className="font-hero text-5xl md:text-7xl text-[#ffb700] drop-shadow-[0_4px_8px_rgba(0,0,0,1)] mb-4 tracking-wider leading-tight">
+                    <h1 className="font-hero text-5xl md:text-7xl text-[#c29c55] drop-shadow-[0_4px_8px_rgba(0,0,0,1)] mb-4 tracking-wider leading-tight uppercase">
                         THE BURNING CRUSADE <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffd100] via-[#ffe6a0] to-[#ffd100]">PLUS</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c29c55] via-[#e6c270] to-[#c29c55]">PLUS</span>
                     </h1>
 
                     <div className="h-1 w-48 bg-gradient-to-r from-transparent via-[#c29c55] to-transparent mx-auto mb-10"></div>
@@ -88,7 +88,7 @@ const Home = ({ setPage }) => {
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">1</h4>
                             <p className="font-hero text-xs text-[#aeb6bf] uppercase tracking-widest">New Raid Tier</p>
-                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Citadel of the Void (Complementing Sunwell Plateau)</p>
+                            <p className="font-body text-[10px] text-[#5c5c63] mt-1">Citadel of the Void + Several Side Tiers</p>
                         </div>
                         <div className="p-4 group hover:bg-white/5 rounded transition-all">
                             <h4 className="font-hero text-4xl md:text-5xl text-[#c29c55] mb-2 group-hover:scale-110 transition-transform">2</h4>
@@ -122,7 +122,7 @@ const Home = ({ setPage }) => {
             {/* --- FEATURES GRID --- */}
             <div className="container mx-auto px-4 py-24">
                 <div className="text-center mb-16">
-                    <h2 className="font-hero text-4xl text-[#c29c55] mb-4">A World Reforged</h2>
+                    <h2 className="font-hero text-4xl text-[#c29c55] uppercase tracking-widest mb-4">A World Reforged</h2>
                     <p className="font-body text-[#aeb6bf] max-w-2xl mx-auto">We have kept the soul of the original game while modernizing the mechanics that held it back.</p>
                 </div>
 
@@ -139,9 +139,9 @@ const Home = ({ setPage }) => {
                         </div>
                         <div className="relative z-10">
                             <img src="https://i.imgur.com/yRtAtam.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
-                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Class Identity</h3>
+                            <h3 className="font-hero text-2xl text-[#c29c55] uppercase tracking-wide mb-3 group-hover:text-[#white] transition-colors">Class Identity</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Every spec has been reworked with a "Masterwork" system. Paladins get Holy Power, Shamans get swiftness. Professions now feature Mastercraft recipes.
+                                Every spec reworked with a "Masterwork" system. Paladins get Holy Power, Shamans get swiftness.
                             </p>
                         </div>
                     </div>
@@ -157,14 +157,183 @@ const Home = ({ setPage }) => {
                         </div>
                         <div className="relative z-10">
                             <img src="https://i.imgur.com/9G9klET.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
-                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">New Allies</h3>
+                            <h3 className="font-hero text-2xl text-[#c29c55] uppercase tracking-wide mb-3 group-hover:text-[#white] transition-colors">New Allies</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Play as <span className="text-orange-400">Goblins</span>, <span className="text-green-400">Ogres</span>, <span className="text-blue-400">High Elves</span>, Broken, Wildhammer Dwarves & Saberon. Each race brings unique racials and lore to the Outland campaign.
+                                Play as <span className="text-orange-400">Goblins</span>, <span className="text-green-400">Ogres</span>, <span className="text-blue-400">High Elves</span>, Broken, Wildhammer & Saberon.
                             </p>
                         </div>
                     </div>
 
-                    {/* Card 3: Content */}
+                    {/* Card: Housing (Redesigned) */}
+                    <div
+                        onClick={() => setPage('housing')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#15171e] via-[#15171e]/90 to-transparent"></div>
+                            {/* Placeholder for Housing Image */}
+                            <div className="w-full h-full bg-[#3c2a21] opacity-20"></div>
+                        </div>
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Crown className="w-6 h-6 text-[#c29c55]" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Hearth & Home</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                Claim your own instanced housing in capital cities. Display trophies, use crafting stations, and gain Rested+ bonuses.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Iron Soul (Hardcore) */}
+                    <div
+                        onClick={() => setPage('hardcore')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#15171e] via-[#15171e]/90 to-transparent"></div>
+                            <div className="w-full h-full bg-[#2a0a0a] opacity-20"></div>
+                        </div>
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Skull className="w-6 h-6 text-red-500" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">The Iron Soul</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                Official Hardcore support. Brave the "Mortal Flaws" system for increased rewards, or prove your worth in Ironman mode.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Economy */}
+                    <div
+                        onClick={() => setPage('economy')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Sparkles className="w-6 h-6 text-yellow-400" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Ethereal Bazaar</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                A revolutionized economy with Buy Orders, Mercenary Contracts, and high-risk Trade Caravans.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Seasons */}
+                    <div
+                        onClick={() => setPage('seasons')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Zap className="w-6 h-6 text-blue-400" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Seasonal Themes</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                Rotating 6-month seasons that alter the world. Survive the Scourge Invasion or profit during the Season of Greed.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Bard */}
+                    <div
+                        onClick={() => setPage('bard')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Scroll className="w-6 h-6 text-pink-400" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Bardic Arts</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                A new secondary profession. Perform songs, play rhythm minigames, and provide powerful morale buffs to your party.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Betrayal (Faction Swap) */}
+                    <div
+                        onClick={() => setPage('betrayal')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Sword className="w-6 h-6 text-red-400" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Path of Betrayal</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                Defect from your faction. Join the neutral Illidari or become a Renegade hostile to all.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Transmog */}
+                    <div
+                        onClick={() => setPage('transmog')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Shield className="w-6 h-6 text-purple-400" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">The Weaver's Loom</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                Advanced transmog with dyes, accessory slots (quivers, librams), and 3D armor plating attachments.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Followers */}
+                    <div
+                        onClick={() => setPage('followers')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Users className="w-6 h-6 text-green-400" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Companions</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                Recruit iconic NPCs like Rexxar and Akama to join your party for 5-man content.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Darkmoon */}
+                    <div
+                        onClick={() => setPage('darkmoon')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Sparkles className="w-6 h-6 text-purple-600" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Darkmoon Carnival</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                A permanent max-level zone featuring a rogue-like dungeon, deathmatch arena, and high-stakes gambling.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card: Lore UI */}
+                    <div
+                        onClick={() => setPage('lore')}
+                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
+                    >
+                        <div className="relative z-10">
+                            <div className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg bg-black/50 flex items-center justify-center">
+                                <Scroll className="w-6 h-6 text-amber-200" />
+                            </div>
+                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Library of Alexandros</h3>
+                            <p className="font-body text-[#aeb6bf] leading-relaxed">
+                                A new Lore UI. Track your story in The Living Scroll, watch unlocked cinematics, and complete your Bestiary.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Card 3: Content (Endgame) */}
                     <div
                         onClick={() => setPage('content')}
                         className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
@@ -177,61 +346,7 @@ const Home = ({ setPage }) => {
                             <img src="https://i.imgur.com/q9Dvzj3.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
                             <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Endgame Plus</h3>
                             <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Face the <span className="text-[#a335ee] font-bold">Citadel of the Void</span> (Tier 6.5), conquer Heroic+ Dungeons, and explore the <span className="text-purple-400">Karazhan Crypts</span>. All raids, including Naxxramas, are tuned for level 70.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Card 4: Systems */}
-                    <div
-                        onClick={() => setPage('systems')}
-                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
-                    >
-                        <div className="absolute inset-0 z-0">
-                            <img src="https://i.imgur.com/nqPIP1z.jpeg" alt="" className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all duration-700 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#15171e] via-[#15171e]/80 to-transparent"></div>
-                        </div>
-                        <div className="relative z-10">
-                            <img src="https://i.imgur.com/xz9m7dI.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
-                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Modern Systems</h3>
-                            <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Warbands (Account-Wide Reputation), Transmog, Dual Spec, and Collections. Enjoy a fully seamless world with no load screens between zones.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Card 5: Legendaries */}
-                    <div
-                        onClick={() => setPage('legendaries')}
-                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
-                    >
-                        <div className="absolute inset-0 z-0">
-                            <img src="https://i.imgur.com/LBquabK.jpeg" alt="" className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all duration-700 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#15171e] via-[#15171e]/80 to-transparent"></div>
-                        </div>
-                        <div className="relative z-10">
-                            <img src="https://i.imgur.com/sXThq9a.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
-                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Legendaries</h3>
-                            <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Craft powerful artifacts like <span className="text-orange-500">Ashbringer</span> or <span className="text-orange-500">Frostmourne</span> through epic, server-wide questlines.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Card 6: Lore */}
-                    <div
-                        onClick={() => setPage('lore')}
-                        className="group relative bg-[#15171e] border border-[#2f2f35] p-8 rounded hover:border-[#c29c55] transition-all cursor-pointer overflow-hidden min-h-[300px]"
-                    >
-                        <div className="absolute inset-0 z-0">
-                            <img src="https://i.imgur.com/tSO8ujl.jpeg" alt="" className="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-all duration-700 group-hover:scale-110" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#15171e] via-[#15171e]/80 to-transparent"></div>
-                        </div>
-                        <div className="relative z-10">
-                            <img src="https://i.imgur.com/SO4YHLu.jpeg" className="w-12 h-12 mb-6 rounded border border-[#c29c55]/30 shadow-lg object-cover" />
-                            <h3 className="font-hero text-2xl text-[#f0e6d2] mb-3 group-hover:text-[#c29c55] transition-colors">Expanded Lore</h3>
-                            <p className="font-body text-[#aeb6bf] leading-relaxed">
-                                Discover the fate of the Illidari, the secrets of the Naaru, and the true history of Draenor in a rewritten campaign.
+                                Face the <span className="text-[#a335ee] font-bold">Citadel of the Void</span> (Tier 6.5) and explore <span className="text-purple-400">Karazhan Crypts</span>.
                             </p>
                         </div>
                     </div>

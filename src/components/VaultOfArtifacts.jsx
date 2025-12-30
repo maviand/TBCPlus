@@ -155,12 +155,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - The Last Bastion:** Hold the line against 3 minutes of demons on Quel\'Danas without a healer.'
           ],
           reward: {
-            name: 'Sigil of the Bulwark',
+            name: 'Scale of Azzinoth',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+45 Stamina'], effects: ['Equip: Increases the block value of your shield by 50.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+55 Stamina'], effects: ['Equip: Increases defense rating by 20.', 'Equip: Increases the block value of your shield by 70.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+65 Stamina'], effects: ['Equip: Increases defense rating by 30.', 'Equip: Increases the block value of your shield by 90.', 'Use: For the next 10 sec, blocking an attack generates 5 rage. (2 min cooldown)'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', unique: true, stats: ['+75 Stamina'], effects: ['Equip: Increases defense rating by 40.', 'Equip: Increases the block value of your shield by 110.', 'Equip: Blocking an attack has a chance to make your next Shield Slam a guaranteed critical strike.', 'Use: Resets the cooldown of your Shield Wall. (5 min cooldown)', '"I can do this all day."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+45 Stamina'], effects: ['Equip: Increases block value by 100.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+55 Stamina', '+20 Def Rating'], effects: ['Equip: Increases block value by 150.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+65 Stamina', '+30 Def Rating'], effects: ['Equip: Chance on block to increase armor by 2000 for 10s.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+85 Stamina', '+40 Def Rating'], effects: ['Equip: Increases block value by 300.', 'Use: Activate "Great Shield", reducing all damage taken by 50% for 12 sec. (3 min CD)', '"The indomitable barrier."'] }
             ]
           }
         }
@@ -184,10 +184,10 @@ const VaultOfArtifacts = () => {
           reward: {
             name: 'Libram of the Dawn',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45 and damage done by up to 15 for all magical spells and effects.', 'Equip: Holy Light grants 10 MP5 for 8s.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55 and damage done by up to 19 for all magical spells and effects.', 'Equip: Holy Light grants 15 MP5 for 8s.', 'Use: Next Flash of Light is instant.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65 and damage done by up to 22 for all magical spells and effects.', 'Equip: Holy Light grants 20 MP5 for 8s.', 'Use: Next Holy Shock has no cooldown (10s dur).'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases healing done by up to 80 and damage done by up to 27 for all magical spells and effects.', 'Equip: Holy Light grants 25 MP5.', 'Equip: Crits with Holy Light apply "Light\'s Grace", healing for 15% of amount over 9 sec.', 'Use: Divine Favor affects your next 3 spells.', '"The Light does not abandon its champions."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45 and damage done by up to 15 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 10 mana per 5 sec.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55 and damage done by up to 19 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 15 mana per 5 sec.', 'Use: Next Flash of Light is instant.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65 and damage done by up to 22 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 20 mana per 5 sec.', 'Use: Next Holy Shock has no cooldown (10s dur).'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases healing done by up to 80 and damage done by up to 27 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 25 mana per 5 sec.', 'Equip: Crits with Holy Light apply "Light\'s Grace", healing for 15% of amount over 9 sec.', 'Use: Releases the Light within yourself, healing 5 injured allies instantly and an injured ally every 1 sec for 20 sec within 40 yds.', '"The Light does not abandon its champions."'] }
             ]
           }
         },
@@ -224,12 +224,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - Judgment Day:** Defeat a Pit Lord using only Holy damage abilities to finish him.'
           ],
           reward: {
-            name: 'Sigil of Judgment',
+            name: 'Shard of the Ashbringer',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Strength'], effects: ['Equip: Crusader Strike deals 5% more dmg.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Strength'], effects: ['Equip: Improves critical strike rating by 20.', 'Equip: Crusader Strike deals 10% more dmg.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Strength'], effects: ['Equip: Improves critical strike rating by 30.', 'Equip: Crusader Strike grants 50 AP (stacking 3x).', 'Use: Avenging Wrath duration +5s.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Strength'], effects: ['Equip: Improves critical strike rating by 40.', 'Equip: Crusader Strike grants 75 AP (stacks up to 5 times).', 'Equip: Divine Storm hits 2 extra targets and heals for 20% of damage done.', 'Use: Hammer of Wrath usable at any HP % for 10s.', '"Justice demands retribution."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Strength'], effects: ['Equip: Your melee attacks have a chance to blast enemy for 150 Holy damage.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Strength', '+20 Crit'], effects: ['Equip: Your melee attacks have a chance to blast enemy for 250 Holy damage.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Strength', '+30 Crit'], effects: ['Equip: Your melee attacks have a chance to blast enemy for 350 Holy damage and increase Strength by 100 for 10s.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Strength', '+40 Crit'], effects: ['Equip: Your melee attacks have a chance to blast target for 700 Holy damage.', 'Equip: Your attacks have a chance to increase Strength by 250 for 15s (Ashbringer\'s Wrath).', 'Use: Deal (174.3% of Attack Power)% Radiant damage to all enemies within 12 yd in front of you, and reducing movement speed by 50% for 6 sec.', '"The Light\'s vengeance."'] }
             ]
           }
         }
@@ -272,12 +272,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - Blind Shot:** Hit the weak point of a Void Walker while blinded.'
           ],
           reward: {
-            name: 'Scope of the Void',
+            name: 'Quiver of the Windrunners',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+20 Agility'], effects: ['Equip: Improves ranged critical strike rating by 20.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Improves ranged critical strike rating by 30.', 'Use: Multi-Shot hits 1 extra target.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 20.', 'Equip: Improves ranged critical strike rating by 40.', 'Use: Next Aimed Shot is instant cast.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Improves ranged critical strike rating by 50.', 'Equip: Steady Shot has a 15% chance to fire a second shot instantly.', '"Never miss."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Ranged attacks ignore 50 Armor.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Ranged attacks ignore 100 Armor.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Ranged attacks ignore 200 Armor.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+55 Agility'], effects: ['Equip: Generates magical arrows.', 'Equip: Ranged attacks ignore 400 Armor (ArP).', 'Use: Deal 272% Physical damage to your target and leaving behind a trail of wind for 5 sec that increases the movement speed of allies by 50%.', '"The legacy of the windrunners."'] }
             ]
           }
         },
@@ -298,7 +298,7 @@ const VaultOfArtifacts = () => {
               { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+20 Agility'], effects: ['Equip: Trap duration increased by 2s.'] },
               { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Trap duration increased by 3s.', 'Use: Launch a Frost Trap at a target location.'] },
               { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility', '+20 Stamina'], effects: ['Equip: Trap cooldowns reduced by 4s.', 'Use: Wyvern Sting is now instant cast.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+40 Agility', '+30 Stamina'], effects: ['Equip: Explosive Shot deals 30% splash damage to nearby targets.', 'Equip: Expose Weakness now affects the entire raid.', '"Watch your step."'] }
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+40 Agility', '+30 Stamina'], effects: ['Equip: Explosive Shot deals 30% splash damage to nearby targets.', 'Equip: Critical strike chance increased by 50% against any target below 20% health.', '"Watch your step."'] }
             ]
           }
         }
@@ -320,12 +320,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - The Perfect Kill:** Assassinate a Felguard Captain without alerting his guards.'
           ],
           reward: {
-            name: 'Vial of Black Blood',
+            name: 'Vial of the Kingslayer',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Poisons deal +5% dmg.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Increases attack power by 50.', 'Equip: Poisons deal +10% dmg.', 'Use: Apply Deadly Poison to target.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases attack power by 60.', 'Equip: Poisons deal +15% dmg.', 'Use: Envenom costs no combo points.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Your poisons have a chance to critically strike.', 'Use: Instantly apply 5 stacks of Deadly Poison to your target.', '"A slow death is a cruel mercy."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Poisons apply "Kingsbane" stack, dealing nature damage over time.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Kingsbane stacks up to 5 times.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Envenom consumes Kingsbane to deal instant Nature damage per stack.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Your poisons apply "Kingsbane", dealing escalating Nature damage.', 'Use: Envenom consumes Kingsbane to deal damage equal to the remaining DoT.', '"The King is dead."'] }
             ]
           }
         },
@@ -341,12 +341,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - 100 Parries:** Successfully parry 100 attacks within a time limit.'
           ],
           reward: {
-            name: 'Mark of the Fencer',
+            name: 'Compass of the Dreadblades',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+20 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Sinister Strike +5% dmg.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Increases attack power by 50.', 'Equip: Sinister Strike +10% dmg.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 60.', 'Equip: Blade Flurry hits 1 extra target.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Your offhand attacks have a chance to proc a main-hand attack.', 'Use: Increases Adrenaline Rush duration by 5s.', '"En garde!"'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Saber Slash has a chance to strike twice.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Saber Slash grants 1 extra Combo Point on proc.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Run Through has a 20% chance to refund 20 Energy.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Saber Slash (Proc) hits for 100% weapon damage and grants 1 Combo point.', 'Use: Curse of the Dreadblades - Your generators cost 50% less Energy for 12 sec.', '"Fear the blades."'] }
             ]
           }
         },
@@ -362,12 +362,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - Vanish:** Vanish from the sight of a Fel Reaver and survive.'
           ],
           reward: {
-            name: 'Cloak of the Unseen',
+            name: 'Fang of the Devourer',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+20 Agility'], effects: ['Equip: Stealth level effectively increased by 5.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Stealth level effectively increased by 10.', 'Use: Vanish cooldown reduced by 30s.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Stealth level effectively increased by 15.', 'Equip: Ambush crit chance +10%.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Backstab ignores 100% of armor on targets below 35% health.', 'Use: Shadowstep has no cooldown for 10s.', '"Did you hear something?"'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Shadowstep increases next attack damage by 10%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Your attacks have a chance to activate "Devourer\'s Bite", dealing Shadow Damage.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Devourer\'s Bite grants 10 Energy.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Shadowstep damage bonus increased by 20%.', 'Use: Goremaw\'s Bite - Deal Shadow damage and restore 50 Energy.', '"The shadows hunger."'] }
             ]
           }
         }
@@ -479,12 +479,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - The Earthbreaker:** Tank an elite Gronn using Shamanistic Rage and Earth Shock to hold threat and survive.'
           ],
           reward: {
-            name: 'Totem of the Earth',
+            name: 'Echo of the Doomhammer',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Windfury Weapon attack power bonus increased by 50.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 50.', 'Use: Instantly grants 3 charges of Maelstrom Weapon.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Increases attack power by 60.', 'Equip: Stormstrike increases Nature damage dealt by 25%.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Windfury attacks hit 2 extra targets with chain lightning.', 'Use: Summon Feral Spirits permanently (they persist until death).', '"The earth trembles."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Chance to strike for extra Nature damage.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Windfury Weapon +10% damage.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Stormstrike hits 1 extra target.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+55 Agility'], effects: ['Equip: Your melee attacks manifest a "Spirit Hammer" visual that strikes for Nature damage.', 'Use: Empower the hammer, maximizing Windfury procs for 10s.', '"It was forged in fire, but it knows the storm."'] }
             ]
           }
         },
@@ -548,12 +548,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - Living Bomb:** You become the bomb. Run into the center of a Legion army and detonate, dealing damage equal to your remaining mana.'
           ],
           reward: {
-            name: 'Ember of Ragnaros',
+            name: 'Ember of Felo\'melorn',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Ignite damage increased by 10%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Next Pyroblast is instant.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Fireball leaves a patch of flame dealing AoE damage.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Your spells apply "Living Bomb" automatically on crits.', 'Use: Summon a Meteor at target location. (2 min cooldown)', '"By fire be purged!"'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Fireball damage +5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Convert 5% of damage done by Fire spells into a protective shield.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Hot Streak now stacks up to 2 times.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Hot Streak now stacks up to 3 times.', 'Use: Phoenix Flames - Hurls a Phoenix dealing Fire damage and granting 1 stack of Hot Streak.', '"Flamestrike!"'] }
             ]
           }
         },
@@ -569,12 +569,12 @@ const VaultOfArtifacts = () => {
             '**Phase 4 - The Lich:** Ascend to a temporary Lich form and dominate the wills of undead minions to serve you.'
           ],
           reward: {
-            name: 'Shard of the Deep',
+            name: 'Shard of Ebonchill',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Frostbolt slows target by 50%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Reset cooldown of Icy Veins.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Fingers of Frost proc chance doubled.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Your Water Elemental becomes a Permanent Greater Water Elemental with new spells.', 'Equip: Frostbolt has a chance to freeze the target solid (stun).', '"Winter is here."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Frostbolt damage +5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Your Frost spells have a chance to grant "Brain Freeze", causing your next Flurry to be instant cast.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Ebonchill remembers your spells, duplicating every 10th Frostbolt.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Frostbolt has a chance to store an Icicle.', 'Use: Glacial Spike - Consumes 5 Icicles to deal massive Frost damage and freeze the target.', '"Winter is here."'] }
             ]
           }
         }
@@ -622,7 +622,7 @@ const VaultOfArtifacts = () => {
               { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Pet Stamina and Intellect +10%.'] },
               { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Sacrifice your pet to gain a shield equal to its max HP.'] },
               { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Hand of Gul\'dan summons 3 wild imps.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Metamorphosis is now a permanent toggle (reduced effectiveness, full effectiveness on cooldown).', 'Equip: Your Felguard wields a copy of your main hand weapon.', '"I am the legion."'] }
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Metamorphosis is now a permanent toggle (reduced effectiveness, full effectiveness on cooldown).', 'Use: Summons a Demonic Tyrant to fight by your side for 20 sec. The Tyrant casts Demonfire, dealing 450 to 520 Fire damage to your target. While the Tyrant is active, your summoned demon gains Demonic Authority, increasing its Attack Power and Spell Damage by 20% and allowing its attacks to ignore 50% of the target\'s armor.', '"I am the legion."'] }
             ]
           }
         },
@@ -691,7 +691,7 @@ const VaultOfArtifacts = () => {
               { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Energy regen increased by 5%.'] },
               { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Increases attack power by 50.', 'Use: Instantly restore 60 energy.'] },
               { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases attack power by 60.', 'Equip: Bleed damage increased by 20%.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Mangle cooldown removed.', 'Use: Berserk now persists through shapeshifting (Bear/Cat).', '"Fang and claw."'] }
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Mangle cooldown removed.', 'Use: Ashamane\'s Frenzy: Unleash a frenzy of claws, dealing (200% of Attack Power) Physical damage over 3 sec and granting 3 Combo Points to your target. (1.5 min cooldown).', '"Fang and claw."'] }
             ]
           }
         },

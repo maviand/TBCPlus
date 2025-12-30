@@ -11,7 +11,7 @@ const TheTheaterOfWar = () => {
         return text.split('\n').map((line, i) => (
             <p key={i} className="mb-4 text-stone-400 leading-relaxed">
                 {line.split(/(\*\*.*?\*\*)/g).map((part, j) =>
-                    part.startsWith('**') ? <strong key={j} className="text-red-500 font-cinzel">{part.slice(2, -2)}</strong> : part
+                    part.startsWith('**') ? <strong key={j} className="text-[#c29c55] font-normal">{part.slice(2, -2)}</strong> : part
                 )}
             </p>
         ));
@@ -62,7 +62,7 @@ const TheTheaterOfWar = () => {
                                 <div className="absolute top-0 right-0 p-4 opacity-50">
                                     <Flag className="w-16 h-16 text-red-500/50" />
                                 </div>
-                                <h2 className="font-cinzel text-3xl text-white mb-2 drop-shadow-md">Azshara Crater</h2>
+                                <h2 className="font-hero text-3xl text-[#c29c55] mb-2 drop-shadow-md">Azshara Crater</h2>
                                 <span className="inline-block px-2 py-1 bg-red-900/40 text-red-200 text-xs font-cinzel tracking-widest uppercase rounded mb-4 border border-red-500/30 backdrop-blur-sm">
                                     40v40 Epic Battleground
                                 </span>
@@ -167,7 +167,7 @@ const TheTheaterOfWar = () => {
                     activeTab === 'fissure' && (
                         <div className="space-y-12">
                             <div className="text-center max-w-4xl mx-auto mb-12">
-                                <h2 className="font-cinzel text-5xl text-purple-400 mb-4 tracking-tight drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">The Fissure of Souls</h2>
+                                <h2 className="font-hero text-5xl text-[#c29c55] mb-4 tracking-tight drop-shadow-md">The Fissure of Souls</h2>
                                 <p className="text-purple-200/60 font-cinzel tracking-widest uppercase text-sm mb-6">10v10 Siege Battleground</p>
                                 <div className="text-stone-300 leading-relaxed text-lg">
                                     {formatText(`Deep within the Twisting Nether, a shard of reality has fractured. Here, the laws of Azeroth warfare do not apply. 
@@ -240,7 +240,7 @@ const TheTheaterOfWar = () => {
                             {/* Header */}
                             <div className="text-center">
                                 <Crown className="w-20 h-20 text-amber-500 mx-auto mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-                                <h2 className="font-cinzel text-5xl text-white mb-4">The Gladiator's Sanctum</h2>
+                                <h2 className="font-hero text-5xl text-[#c29c55] mb-4">The Gladiator's Sanctum</h2>
                                 <p className="text-amber-500/80 font-cinzel tracking-[0.2em] uppercase text-sm">Season 1: The Burning Crusade</p>
                             </div>
 

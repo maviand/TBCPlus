@@ -28,73 +28,150 @@ import HallOfLegends from './components/HallOfLegends';
 import TalentCalculator from './components/TalentCalculator';
 import TheNewBlood from './components/TheNewBlood';
 import TheAtlasOfOutland from './components/TheAtlasOfOutland';
-import FelForgedVanguard from './components/FelForgedVanguard';
+
 import VaultOfArtifacts from './components/VaultOfArtifacts';
 import TheArtisansCodex from './components/TheArtisansCodex';
 import Legendaries from './components/Legendaries';
-import Lore from './components/Lore';
+// import Lore from './components/Lore'; // Replaced by new Lore UI
 import TheTheaterOfWar from './components/TheTheaterOfWar';
 import TheArmory from './components/TheArmory';
 import TheGuildSanctum from './components/TheGuildSanctum';
+import DefendersOfAzeroth from './components/DefendersOfAzeroth';
+import Systems from './components/Systems';
 import Home from './components/Home';
-
+import TheHearthAndHome from './components/TheHearthAndHome';
+import TheIronSoul from './components/TheIronSoul';
+import TheEtherealTrade from './components/TheEtherealTrade';
+import TheSeasonsOfOutland from './components/TheSeasonsOfOutland';
+import TheBardicArts from './components/TheBardicArts';
+import ThePathOfBetrayal from './components/ThePathOfBetrayal';
+import TheWeaversLoom from './components/TheWeaversLoom';
+import CompanionsOfConsequence from './components/CompanionsOfConsequence';
+import TheDarkmoonCarnival from './components/TheDarkmoonCarnival';
+import TheLibraryOfAlexandros from './components/TheLibraryOfAlexandros';
 
 const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'lore', label: 'Lore' },
-    { id: 'classes', label: 'Classes' },
-    { id: 'talents', label: 'Talents' },
-    { id: 'races', label: 'Races' },
-    { id: 'armory', label: 'Armory' },
-    { id: 'sanctum', label: 'Guild Sanctum' },
-    { id: 'pvp', label: 'PvP' },
-    { id: 'professions', label: 'Professions' },
-    { id: 'content', label: 'Content' },
-    { id: 'systems', label: 'Systems' },
-    { id: 'pinnacle', label: 'Pinnacle Quests' },
-    { id: 'legendaries', label: 'Legendaries' },
+  const [openDropdown, setOpenDropdown] = useState(null);
+
+  // Categorized Navigation
+  const navCategories = [
+    {
+      id: 'character',
+      label: 'Character',
+      items: [
+        { id: 'classes', label: 'Classes' },
+        { id: 'talents', label: 'Talents' },
+        { id: 'races', label: 'Races' },
+        { id: 'armory', label: 'Armory' },
+        { id: 'professions', label: 'Professions' },
+        { id: 'bard', label: 'Bard Analysis' },
+        { id: 'transmog', label: 'Transmog' },
+      ]
+    },
+    {
+      id: 'world',
+      label: 'World',
+      items: [
+        { id: 'content', label: 'Outland Atlas' },
+        { id: 'defenders', label: 'Defenders (Azeroth)' },
+        { id: 'seasons', label: 'Seasonal Content' },
+        { id: 'darkmoon', label: 'Darkmoon Carnival' },
+        { id: 'lore', label: 'Lore Library' },
+      ]
+    },
+    {
+      id: 'systems',
+      label: 'Systems',
+      items: [
+        { id: 'systems', label: 'Core Systems' },
+        { id: 'pvp', label: 'PvP & Arena' },
+        { id: 'sanctum', label: 'Guild Sanctum' },
+        { id: 'economy', label: 'Economy' },
+        { id: 'housing', label: 'Housing' },
+        { id: 'followers', label: 'Followers' },
+      ]
+    },
+    {
+      id: 'challenges',
+      label: 'Challenges',
+      items: [
+        { id: 'pinnacle', label: 'Pinnacle Quests' },
+        { id: 'legendaries', label: 'Legendaries' },
+        { id: 'hardcore', label: 'Iron Soul' },
+        { id: 'betrayal', label: 'Betrayal' },
+      ]
+    }
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full bg-slate-950/90 border-b border-green-900/50 backdrop-blur-md shadow-lg">
+    <nav className="sticky top-0 z-[100] w-full bg-slate-950/90 border-b border-green-900/50 backdrop-blur-md shadow-lg" onMouseLeave={() => setOpenDropdown(null)}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo Area */}
-          <div className="flex-shrink-0 flex items-center gap-3 cursor-pointer group" onClick={() => set('home')}>
-            <div className="relative">
-              <div className="absolute inset-0 bg-green-500 blur-md opacity-40 group-hover:opacity-60 transition-opacity rounded-full"></div>
-              <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-green-900 flex items-center justify-center border-2 border-green-400 shadow-[0_0_15px_rgba(74,222,128,0.5)] group-hover:scale-105 transition-transform">
-                <Flame size={24} className="text-black fill-green-900 animate-pulse" />
-              </div>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold tracking-wider text-gray-100 font-serif group-hover:text-white transition-colors">The Burning Crusade</h1>
-              <p className="text-[10px] text-green-500 tracking-[0.2em] uppercase group-hover:text-green-400">Plus v1.2</p>
-            </div>
+          <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => set('home')}>
+            <img
+              src="/TBCPlus/images/logo-tbc-plus.png"
+              alt="The Burning Crusade Plus"
+              className="h-16 w-auto object-contain group-hover:scale-105 transition-all duration-300"
+              style={{
+                maskImage: 'radial-gradient(circle at center, black 60%, transparent 100%)',
+                WebkitMaskImage: 'radial-gradient(circle at center, black 60%, transparent 100%)'
+              }}
+            />
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:block">
-            <div className="ml-2 flex items-baseline space-x-1">
-              {navItems.map((item) => (
+          <div className="hidden lg:flex items-center space-x-8">
+            <button
+              onClick={() => set('home')}
+              className={`text-sm font-hero uppercase tracking-widest hover:text-[#c29c55] transition-colors ${active === 'home' ? 'text-[#c29c55]' : 'text-gray-400'}`}
+            >
+              Home
+            </button>
+
+            {navCategories.map((category) => (
+              <div
+                key={category.id}
+                className="relative group h-full flex items-center"
+                onMouseEnter={() => setOpenDropdown(category.id)}
+                onMouseLeave={() => setOpenDropdown(null)}
+              >
                 <button
-                  key={item.id}
-                  onClick={() => set(item.id)}
-                  className={`px-2 py-2 rounded-md text-[11px] font-medium transition-all duration-200 uppercase tracking-wide relative overflow-hidden group ${active === item.id
-                    ? 'text-green-400 bg-green-900/20 shadow-[0_0_10px_rgba(74,222,128,0.1)]'
-                    : 'text-gray-300 hover:text-white hover:bg-slate-800'
-                    }`}
+                  className={`flex items-center gap-1 text-sm font-hero uppercase tracking-widest hover:text-[#c29c55] transition-colors py-8 px-4
+                    ${navCategories.some(c => c.id === category.id && c.items.some(i => i.id === active)) ? 'text-[#c29c55]' : 'text-gray-400'}`}
                 >
-                  <span className="relative z-10">{item.label}</span>
-                  {active === item.id && <div className="absolute bottom-0 left-0 w-full h-0.5 bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>}
+                  {category.label}
+                  <ChevronRight size={14} className={`transform transition-transform duration-200 ${openDropdown === category.id ? 'rotate-90' : ''}`} />
                 </button>
-              ))}
-            </div>
+
+                {/* Dropdown Menu */}
+                <div
+                  className={`absolute left-0 top-16 w-56 bg-slate-900 border border-green-900/50 shadow-xl rounded-b-lg overflow-hidden transition-all duration-200 origin-top z-[100]
+                    ${openDropdown === category.id ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
+                >
+                  <div className="py-2">
+                    {category.items.map((item) => (
+                      <button
+                        key={item.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          set(item.id);
+                          setOpenDropdown(null);
+                        }}
+                        className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-slate-800 hover:text-green-400
+                          ${active === item.id ? 'text-green-400 bg-slate-800/50' : 'text-gray-400'}`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
           {/* Mobile menu button */}
-          <div className="-mr-2 flex md:hidden">
+          <div className="-mr-2 flex lg:hidden">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none"
@@ -107,16 +184,27 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-slate-900 border-b border-green-900">
+        <div className="lg:hidden bg-slate-900 border-b border-green-900 h-[80vh] overflow-y-auto">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => { set(item.id); setMobileOpen(false); }}
-                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700"
-              >
-                {item.label}
-              </button>
+            <button
+              onClick={() => { set('home'); setMobileOpen(false); }}
+              className="block w-full text-left px-3 py-3 rounded-md text-base font-bold text-white bg-slate-800"
+            >
+              HOME
+            </button>
+            {navCategories.map((category) => (
+              <div key={category.id} className="py-2 border-b border-slate-800">
+                <div className="px-3 py-1 text-xs font-hero uppercase text-[#c29c55] opacity-70 mb-1">{category.label}</div>
+                {category.items.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => { set(item.id); setMobileOpen(false); }}
+                    className="block w-full text-left px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 pl-6"
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
         </div>
@@ -175,6 +263,7 @@ const Footer = () => (
 const App = () => {
   const [activePage, setActivePage] = useState('home');
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [selectedClass, setSelectedClass] = useState('druid');
 
   return (
     <div className="min-h-screen bg-slate-950 text-gray-100 font-sans selection:bg-green-500/30 selection:text-green-100">
@@ -190,16 +279,29 @@ const App = () => {
           <Home setPage={setActivePage} />
         )}
         {/* Page Routing */}
-        {activePage === 'lore' && <Lore />}
-        {activePage === 'classes' && <HallOfLegends />}
-        {activePage === 'talents' && <TalentCalculator />}
+        {/* {activePage === 'lore' && <Lore />} */}
+        {activePage === 'classes' && <HallOfLegends setPage={setActivePage} setSelectedClass={setSelectedClass} />}
+        {activePage === 'talents' && <TalentCalculator initialClass={selectedClass} />}
         {activePage === 'races' && <TheNewBlood />}
         {activePage === 'armory' && <TheArmory />}
         {activePage === 'sanctum' && <TheGuildSanctum />}
         {activePage === 'pvp' && <TheTheaterOfWar />}
         {activePage === 'professions' && <TheArtisansCodex />}
+        {activePage === 'systems' && <Systems />}
         {activePage === 'content' && <TheAtlasOfOutland />}
-        {activePage === 'systems' && <FelForgedVanguard />}
+        {activePage === 'defenders' && <DefendersOfAzeroth />}
+
+        {activePage === 'housing' && <TheHearthAndHome />}
+        {activePage === 'hardcore' && <TheIronSoul />}
+        {activePage === 'economy' && <TheEtherealTrade />}
+        {activePage === 'seasons' && <TheSeasonsOfOutland />}
+        {activePage === 'bard' && <TheBardicArts />}
+        {activePage === 'betrayal' && <ThePathOfBetrayal />}
+        {activePage === 'transmog' && <TheWeaversLoom />}
+        {activePage === 'followers' && <CompanionsOfConsequence />}
+        {activePage === 'darkmoon' && <TheDarkmoonCarnival />}
+        {activePage === 'lore' && <TheLibraryOfAlexandros />}
+
         {activePage === 'pinnacle' && <VaultOfArtifacts />}
         {activePage === 'legendaries' && <Legendaries />}
 

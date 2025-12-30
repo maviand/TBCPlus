@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Hammer, Crown, Shield, Sword, Scroll, Zap, Star, Layout, Flag, BookOpen, Clock, Map, Landmark, Coins, Anvil, Gem } from 'lucide-react';
+import { Users, Hammer, Crown, Shield, Sword, Scroll, Zap, Star, Layout, Flag, BookOpen, Clock, Map, Landmark, Coins, Anvil, Gem, Crosshair } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
 
 const TheGuildSanctum = () => {
@@ -20,6 +20,7 @@ const TheGuildSanctum = () => {
         { id: 'hall', label: 'The Great Hall', icon: <Crown size={16} /> },
         { id: 'departments', label: 'Departments', icon: <Layout size={16} /> },
         { id: 'workshops', label: 'Workshops', icon: <Hammer size={16} /> },
+        { id: 'talents', label: 'Guild Talents', icon: <Shield size={16} /> },
     ];
 
     const content = {
@@ -110,7 +111,34 @@ const TheGuildSanctum = () => {
                 image: "https://i.imgur.com/SbcisVa.png",
                 desc: "**Passive:** Cloth drops increased by 15% for guild members. \n**Active:** **[Banner of High morale]** - Place a banner granting +5% Movement Speed to the raid."
             }
-        ]
+        ],
+        talents: {
+            title: "The Guild Canvas",
+            desc: "A modular talent tree. Earn Accord Points (AP) to specialize your community into a military force, an economic empire, or a band of god-slayers.",
+            features: [
+                {
+                    name: "Path of Dominion",
+                    icon: <Shield className="w-8 h-8 text-red-600 relative z-10" />,
+                    bgImage: "https://i.imgur.com/ToWzcqR.jpeg",
+                    summary: "A doctrine of absolute control. Guilds that walk this path are the enforcers of their faction's will.",
+                    detail: "**Focus:** World PvP, Holding Territory, & Crowd Control. \n\n**Talents:** \n**The Long March:** Your crusades never tire. Mount speed increased by 10% in contested zones, allowing for rapid redeployment. \n**Vigilance:** The eyes of the guild are everywhere. Captured towers reveal stealth units within 100 yards, preventing ninja-caps. \n**Iron Tithe:** War requires funding. Every honorable kill grants 5 silver directly to the Guild Bank."
+                },
+                {
+                    name: "Path of Prosperity",
+                    icon: <Coins className="w-8 h-8 text-yellow-500 relative z-10" />,
+                    bgImage: "https://i.imgur.com/mHJaXnG.jpeg",
+                    summary: "The golden artery of the war effort. These guilds understand that gold is sharper than steel.",
+                    detail: "**Focus:** Economy, Crafting, & Logistics. \n\n**Talents:** \n**Market Savvy:** Insider trading. Auction House cuts are reduced by 50% for all members. \n**Aetherium Attunement:** Tapping into the leylines. Crafting criticals spawn a 'Mote of Pure Energy' that can be traded or sold. \n**Bulk Logistics:** Industrial scale efficiency. Crafting actions are 50% faster and have a chance to not consume reagents."
+                },
+                {
+                    name: "Path of Conquest",
+                    icon: <Crosshair className="w-8 h-8 text-purple-500 relative z-10" />,
+                    bgImage: "https://i.imgur.com/mDQcmb4.jpeg",
+                    summary: "For those who seek to dethrone gods. Conquest guilds live and die by the raid lockout.",
+                    detail: "**Focus:** Raiding, Dungeon Speed, & Boss Slaying. \n\n**Talents:** \n**Felweaver's Forge:** A pocket dimension anvil. Repair costs reduced by 20% and can repair inside instances. \n**Slayer's Insight:** Knowledge is power. Damage against Raid Bosses increased by 1%. \n**Warband Synergy:** The bond of brothers. If a raid member dies, they can be combat-resurrected instantly once per fight without counting towards the druid limit."
+                }
+            ]
+        }
     };
 
     return (
@@ -242,10 +270,40 @@ const TheGuildSanctum = () => {
                             ))}
                         </div>
                     )}
+
+                    {activeTab === 'talents' && (
+                        <div className="space-y-8">
+                            <div className="text-center mb-8">
+                                <h3 className="font-hero text-2xl text-[#f0e6d2] uppercase tracking-widest">{content.talents.title}</h3>
+                                <p className="text-[#aeb6bf] text-sm max-w-2xl mx-auto mt-2">{content.talents.desc}</p>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {content.talents.features.map((feat, i) => (
+                                    <div key={i} className="bg-[#1a1c22] border border-[#333] hover:border-[#c29c55] transition-colors p-6 rounded-lg group relative overflow-hidden">
+                                        <div className="absolute inset-0 z-0">
+                                            <img src={feat.bgImage} className="w-full h-full object-cover opacity-20 mix-blend-overlay group-hover:opacity-40 transition-opacity" />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-[#1a1c22] via-[#1a1c22]/90 to-transparent"></div>
+                                        </div>
+
+                                        <div className="relative z-10">
+                                            <div className="mb-4">{feat.icon}</div>
+                                            <h4 className="text-[#c29c55] font-hero text-lg uppercase mb-2 group-hover:underline decoration-[#c29c55] decoration-2 underline-offset-4">{feat.name}</h4>
+                                            <p className="text-[#888] text-xs leading-relaxed opacity-80 mb-4">{feat.summary}</p>
+                                            <div className="text-gray-300 text-xs leading-relaxed border-t border-white/10 pt-4">
+                                                {formatText(feat.detail)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
     );
+
 };
+
 
 export default TheGuildSanctum;
