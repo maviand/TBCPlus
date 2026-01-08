@@ -1070,7 +1070,7 @@ Kael'thas RP intro is skippable after the first kill.`,sscTkData:{title:"Tempest
 **Changes:** 
 Waves are heavily reduced (from 8 to 4 per boss). Jaina/Thrall are much stronger and don't die easily.`,hyjalData:{tabs:{summary:{title:"Executive Summary",icon:t.jsx(ye,{className:"w-4 h-4"})},systems:{title:"Systems & Architecture",icon:t.jsx($l,{className:"w-4 h-4"})},encounters:{title:"Boss Mechanics",icon:t.jsx(z,{className:"w-4 h-4"})}},summary:{rationale:`The original implementation was a scripting disaster. It relied on "Wait_Timer" loops rather than dynamic triggers, resulting in the notorious "AFK Simulator" where players spent more time waiting for waves to spawn than fighting. It failed to leverage the Warcraft III assets effectively, treating the greatest battle in Azeroth's history as a static tower defense minigame.`,pop:'We shift from "Time-Gating" to "Event-Gating".',issues:['Relied on "Wait_Timer" loops rather than dynamic triggers.',"Disjointed pockets broken by teleports destroyed narrative continuity.",'Trash waves had no "win condition" other than endurance/mana management.',"Bosses were largely tank-and-spank with simple checks."],changes:[{title:"Continuous Mesh",desc:'A winding trail physically connects the camps, utilizing zone streaming to solve memory issues and enable "Traversal Events" like rescuing defenders.'},{title:"Dynamic Biomes",desc:"Each boss sector acts as a visual biome (Ice, Fel, Magma) giving instant visual cues for resistance gear and consummables."},{title:"Narrative Agency",desc:"Jaina and Thrall are active casters with signature spells (Frost Nova Barrier, Chain Lightning), not liability escorts."}]},systems:{desc:"A complete structural overhaul of the pacing and trash mechanics to prioritize consequence over volume.",grid:[{element:"The Ascent",pain:"Disjointed teleports felt like loading into skirmish maps.",design:'A continuous winding trail physically connects the camps. We use aggressive "View Distance" fogging to manage framerates while allowing for Traversal Events between bases.',boost:"Feels like a true Siege."},{element:"Trash System",pain:"8 waves per boss was an excessive endurance test.",design:'Reduced to 4 waves but introduced "State-Machine" logic. e.g. Failing to plant wards in Wave 1 increases add counts in Wave 2. Performance directly impacts Boss Difficulty.',boost:"Active Mitigation rewarded."},{element:"Siege Engine",pain:"Escort AI is notoriously buggy and slow.",design:`The Siege Engine now moves on a Spline (invisible rail) rather than using "Follow AI". It moves at exactly 100% run speed so players don't have to stutter-step.`,boost:"Bug-free escort experience."}]},encounters:{desc:'Boss redesigns focus on specific mechanical checks that punish the "Tunnel Vision" meta.',grid:[{element:"Rage Winterchill",pain:"Tank-and-spank with Death & Decay.",design:'Added "Frostbound Sentinel" Shield Mechanic. Requires destroying shards to drop the shield. Forces Warlocks to swap targets, breaking their rotation macro.',boost:"Healer & Dispel checks."},{element:"Anetheron",pain:"Generic Dreadlord.",design:'Added "Corruption Bonds" (share damage unless spread >15 yds) and "Ethereal Nova" requiring LoS behind newly added physical ruins/pillars.',boost:"Punishes Chain Heal stack meta."},{element:"Kaz'rogal",pain:"Simple mana drain gear check.",design:'Added "Molten Guillotine" (Enrage). Requires destroying Cinder Shards to cancel. Creates a choice: Burn boss and risk enrage, or save Heroism for shards?',boost:"Tactical Burst Windows."},{element:"Azgalor",pain:"Doom fire RNG.",design:'At 10% HP, "Worldbreaker" fills the arena with death zones. Tyrande creates "Safe Platforms", finally giving NPCs a purpose beyond auto-attacking.',boost:"Panic Phase execution."},{element:"Archimonde",pain:"Falling damage and fire.",design:`New "Drain Phase": Attempts to drain Nordrassil spawning roots. Raid must split DPS between Boss and Roots. Runners collect "Tyrande's Tears" to buff the raid.`,boost:"High-mobility roles matter."}]}},philosophy:{tbc:"WAVE... AFTER... WAVE.",plus:"A fast-paced war zone. NPCs actually help."},bosses:["Rage Winterchill","Anetheron","Kaz'rogal","Azgalor","Archimonde"]},{name:"Black Temple",type:"25-Man Raid (Tier 6)",image:"https://i.imgur.com/uvSunjP.jpeg",lore:`Illidan's Fortress. 
 **Changes:** 
-The 'Mother Shahraz' shadow resist check is removed.`,blackTempleData:{title:"The Black Temple",overview:{rationale:"Perfection requires little editing. The Black Temple is widely considered the peak of Burning Crusade raiding, blending strong narrative stakes with a diverse set of encounters. Our changes are purely quality-of-life adjustments to remove artificial barriers.",issues:["The 'Attunement' chain, while lore-rich, was a massive barrier for alts.","Mother Shahraz required the entire raid to farm Shadow Resistance gear that was useless elsewhere.","The run back from the entrance after a wipe was excessively long."],environment:[{title:"Skybox",desc:"The fel storm raging above the temple sets the apocalyptic tone."},{title:"Architecture",desc:"A mix of open-air courtyards, claustrophobic sewers, and opulent harems."}]},bosses:[{tier:"The Citadel",bosses:[{name:"High Warlord Naj'entus",desc:"The gatekeeper. Requires massive raid-wide healing to survive the Spine burst."},{name:"Supremus",desc:"A massive Infernal. Kite him through the blue fire, but do not stand in it yourself."}]},{tier:"Halls of Anguish",bosses:[{name:"Shade of Akama",desc:"A narrative fight. Defend the channelers to free Akama's soul from Illidan's control."},{name:"Teron Gorefiend",desc:"The first 'Construct' fight. Players turned into Ghosts must master a new action bar to save the raid."},{name:"Gurtogg Bloodboil",desc:"A brutal gear check. Surviving 'Fel Rage' requires precise cooldown rotations from healers."},{name:"Reliquary of Souls",desc:"Three phases representing Essence of Suffering, Desire, and Anger. precise interrupt chains are critical."}]},{tier:"The Summit",bosses:[{name:"Mother Shahraz",desc:"Positioning is key. The 'Fatal Attraction' mechanic forces players to run in opposite directions. The Shadow Resist check has been removed."},{name:"The Illidari Council",desc:"Four health bars, one shared pool. Dealing with the Paladin's immunities and the Mage's AoE is the challenge."},{name:"Illidan Stormrage",desc:"The Betrayer himself. A 4-phase endurance fight involving Elementals, Flight, and a final duel with Maiev Shadowsong."}]}],wings:[{name:"Karabor Sewers",theme:"Dank, wet, and filled with Naga.",hazard:"Poison Clouds"},{name:"Sanctuary of Shadows",theme:"Elite Demon training grounds.",hazard:"Succubus Charm"},{name:"Temple Summit",theme:"Open air grandeur overlooking Shadowmoon.",hazard:"Falling off"}],misc:{npcs:[{name:"Akama",role:"Your guide. He opens the doors after specific bosses die."},{name:"Maiev Shadowsong",role:"Appears in the final phase to trap Illidan."}],loot:[{category:"Tier 6",desc:"Shoulders, Legs, and Chest tokens."},{category:"Warglaives",desc:"The Twin Blades of Azzinoth drop here. (Legendary)"}]}},philosophy:{tbc:"Perfect.",plus:"Just polish."},bosses:["Naj'entus","Supremus","Shade of Akama","Teron Gorefiend","Gurtogg","Reliquary","Mother Shahraz","Illidan Council","Illidan Stormrage"]},{name:"Sunwell Plateau",type:"25-Man Raid (Tier 6.5)",image:"https://i.imgur.com/ErIqzbU.jpeg",lore:`The Final Confrontation. 
+The 'Mother Shahraz' shadow resist check is removed. Entrance is now at the Main Gate (Siege Event).`,blackTempleData:{title:"The Black Temple (Classic+)",overview:{rationale:"The 'Sewer Entrance' killed the momentum before the first pull. The Black Temple should feel like a military siege, not a dungeon crawl. We have shifted the tone to mirror the Warcraft III fantasy: You are breaking in, not sneaking in.",issues:["Entrance was a hole in the wall (Sewer) instead of the Main Gate.","Inventory friction (Naj'entus Spines, Shadow Res gear) broke the flow.","Illidan mechanical anti-climax (Maiev trap bugs, rigid tank movement)."],environment:[{title:"The Main Gates",desc:"The raid begins at the Supremus courtyard. Players defend a Fel Orc Siege Ram piloted by Akama's Deathsworn against waves of defenders."},{title:"Visual Scale",desc:"Aligns with the cinematic trailer. A true assault on the Lord of Outland."}]},bosses:[{tier:"The Citadel",bosses:[{name:"High Warlord Naj'entus",desc:"The 'Spine' mechanic is no longer an inventory item. Targeted players get a 'Living Spine' debuff. Allies must pull it out (Interact Key), gaining a temporary weapon buff to shatter the boss's shield. Friction removed."},{name:"Supremus",desc:"The gatekeeper. Now fights alongside the initial siege event."}]},{tier:"The Halls of Anguish",bosses:[{name:"Shade of Akama",desc:"No longer a trash wave fight. The raid splits: Half enter the 'Spirit Realm' to damage the Shade, half defend Akama's body. At 20%, Akama breaks his chains and executes the Shade himself."},{name:"Teron Gorefiend",desc:"The first true Death Knight. Mechanics modernized for clarity."},{name:"Gurtogg Bloodboil",desc:"Relentless aggression. Focuses on healing throughput."},{name:"Reliquary of Souls",desc:"Phase 2 'Reflection' replaced with 'Madness Gauge'. DPS generate Madness; capping causes MC. Players must use 'Soul Mirrors' to vent Madness, dealing burst damage to themselves. Agency restored."}]},{tier:"The Summit",bosses:[{name:"Mother Shahraz",desc:"Shadow Resistance gear req REMOVED. Replaced with 'Shadow Links' (Positional checks). 'Saber Lash' targets nearest 3 players, allowing melee DPS to rotate defensive cooldowns to help soak."},{name:"Illidari Council",desc:"The elite guard. Shared health pool mechanics tightened."},{name:"Illidan Stormrage",desc:"Maiev is now a weapon, not a trap. Tanks drag Illidan to her for massive 'Crescent Steel' cleaves. Phase 4 Warlock tanks get a full 'Demon Form' ability bar (Leap, Volley). Narrative finale where raid pins him down."}]}],wings:[{name:"The Main Gate",theme:"Siege Warfare",hazard:"Fel Cannons"},{name:"Halls of Anguish",theme:"Interior Citadel",hazard:"Spirit Portals"},{name:"Temple Summit",theme:"Stormswept Terrace",hazard:"Fel Lightning"}],misc:{npcs:[{name:"Akama",role:"Your siege commander. He pilots the ram and executes his shade."},{name:"Maiev Shadowsong",role:"Active combatant. Tanks use her positioning for DPS."}],loot:[{category:"Warglaives",desc:"Updated to scale with TBC+ stats."},{category:"T6 Tokens",desc:"Standardized token drops."}]}},philosophy:{tbc:"Great raid, annoying friction.",plus:"Epic Siege. No gear checks, just skill checks."},bosses:["Naj'entus","Supremus","Shade of Akama","Teron Gorefiend","Gurtogg","Reliquary","Shahraz","Council","Illidan"]},{name:"Sunwell Plateau",type:"25-Man Raid (Tier 6.5)",image:"https://i.imgur.com/ErIqzbU.jpeg",lore:`The Final Confrontation. 
 **Changes:** 
 M'uru pushback is slightly reduced. Kil'jaeden transition phases are shorter. Sunwell Radiance (-20% Dodge) is REMOVED because tank gear in TBC+ is properly itemized.`,sunwellData:{title:"Sunwell Plateau",overview:{rationale:"Sunwell was the best raid in TBC technically, but it suffered from 'Artificial Difficulty' (Sunwell Radiance) and 'Class Stacking' (Chain Heal / Destro Lock). We want to keep the challenge but open the roster.",issues:["Sunwell Radiance (-20% Chance to Dodge) felt like a band-aid fix for tank scaling.","Leatherworking Drums were mandatory for every party member.","Recruiting Shaman just for Chain Heal was tedious."],environment:[{title:"The Holy Font",desc:"A pristine, high-elf sanctuary defiled by the Legion."},{title:"Burning Skies",desc:"The skybox slowly turns from blue to fel-green as you progress."}]},bosses:[{tier:"The Plateau",bosses:[{name:"Kalecgos",desc:"The first realm-split fight. The portal team works perfectly now (no desync)."},{name:"Brutallus",desc:"The ultimate gear check. 'Meteor Slash' burns look cooler."},{name:"Felmyst",desc:"Mass Dispel is still key, but the 'Encapsulate' target is clearer."}]},{tier:"The Gauntlet",bosses:[{name:"Eredar Twins",desc:"Sacrolash and Alytheess. Shadow and Fire. Conflagrate no longer disorients the tank."},{name:"M'uru / Entropius",desc:"The guild breaker. The 'void zone' pushback is reduced by 15% to allow melee to exist."}]},{tier:"The Sunwell",bosses:[{name:"Kil'jaeden",desc:"The Deceiver. Transition phases are 50% faster. Kalecgos's orb buffs are more potent."}]}],wings:[{name:"The Plateau",theme:"Elven Architecture",hazard:"Patrolling Robots"},{name:"The Shrine",theme:"Interior Temple",hazard:"Magic Feedback"}],misc:{npcs:[{name:"Kalecgos",role:"Aids you after his defeat."},{name:"Prophet Velen",role:"Cleanses M'uru."}],loot:[{category:"Tier 6.5",desc:"Sunwell Tier pieces (Wrists, Boots, Belt)."},{category:"Thori'dal",desc:"The Legendary Bow. Now creates its own magical ammo (no quiver needed)."}]}},philosophy:{tbc:" brutally hard.",plus:"Still brutally hard. As it should be."},bosses:["Kalecgos","Brutallus","Felmyst","Eredar Twins","M'uru","Kil'jaeden"]}],hyjal:[{name:"The Barrow Deeps",type:"5-Man Dungeon",image:"https://i.imgur.com/1OTRoOa.jpeg",lore:`When Tyrande Whisperwind freed Illidan Stormrage, she slaughtered the Watchers guarding the Barrow Deeps. Now, without the Wardens to maintain the dampening fields, the ancient horrors locked away for ten thousand years have woken up.
 
@@ -1855,76 +1855,75 @@ Weekly realm-wide targets posted here. 'Kill 50 Alliance in Nagrand' or 'Slay th
             *   **Titles:** "The Diplomat," "Justicar," "Peacekeeper."
 
             **TBC+ Philosophy**
-            Keep the content relevant for the hardcore players without making casual players feel underpowered in raids. You grind for cosmetic prestige, not for stats.`},{id:"void_trials",title:"Void-Shifted Trials",subtitle:"The Mage Tower 2.0",icon:t.jsx(Te,{className:"w-6 h-6"}),image:"https://i.imgur.com/r0Z0Hbz.jpeg",quote:"The Ethereum collects histories. Can you survive yours?",content:`**"A Reflection of Failure."**
+            Keep the content relevant for the hardcore players without making casual players feel underpowered in raids. You grind for cosmetic prestige, not for stats.`},{id:"void_trials",title:"Void-Shifted Trials",subtitle:"TBC Mythic+",icon:t.jsx(Te,{className:"w-6 h-6"}),image:"https://i.imgur.com/r0Z0Hbz.jpeg",quote:"The Void bleeds into reality. Can you survive the entropy?",content:`**"The Void Bleeds into Reality."**
 
-            Nexus-Prince Shaffar has opened the **Vault of Possibilities** in the Netherstorm. He challenges heroes to enter simulations of their greatest potential failures.
+            The Ethereals have tampered with the timeline, causing "Void Rifts" to open inside existing dungeons. This is our answer to the modern Mythic+ system, adapted for TBC.
 
-            **Solo Challenge**
-            A brutal, high-skill solo encounter tuned specifically for your Class Spec. Gear is normalized—skill is the only variable. You cannot out-gear this challenge; you must out-play it.
+            **The Void Stone**
+            Obtained from the final boss of any Heroic Dungeon. Activating a Void Stone at the entrance of a dungeon increases the health and damage of enemies by exponentially scaling modifiers.
 
-            **The Scenarios**
-            *   **Tanks (The Black Morass):** Hold the line against an endless Legion invasion. If a single demon passes, Medivh dies.
-            *   **Healers (The Collapsing Mine):** Keep a squad of reckless goblin sappers alive in a collapsing mine while they defuse bombs.
-            *   **DPS (The Dark Mirror):** Duel a "Dark Mirror" of yourself that uses your own abilities against you.
+            **Affixes of the Void**
+            Every week, the Void Rifts manifest different chaotic energies:
+            *   **Entropy:** All enemies inflict a stacking Shadow DoT.
+            *   **Gravity:** Periodically pulls all players toward a singularity, requiring constant movement.
+            *   **Echo:** Enemies spawn "Void Echoes" of themselves upon death that must be killed quickly.
 
-            **The Prize**
-            *   **Tier 2 "Void-Touched" Recolors:** The classic Tier 2 armor sets (Judgement, Bloodfang, Nemesis) reimagined with high-res textures and void effects.
-            *   **Class Artifact Weapons:** Unique weapon models that represent the pinnacle of your class fantasy.`},{id:"class_enclaves",title:"Class Enclaves",subtitle:"Sanctuaries for the Initiated",icon:t.jsx(re,{className:"w-6 h-6"}),image:"https://i.imgur.com/DGuTBch.jpeg",quote:"Some secrets are only for those with the will to keep them.",content:`**"A Clubhouse for Heroes."**
+            **The Rewards**
+            Completing a Void-Shifted dungeon grants **Badges of the Void** and offers a chest containing gear that scales up to Tier 6.5 equivalent levels. It keeps 5-man content relevant throughout the entire expansion.`},{id:"class_enclaves",title:"Class Enclaves",subtitle:"Sanctuaries",icon:t.jsx(re,{className:"w-6 h-6"}),image:"https://i.imgur.com/DGuTBch.jpeg",quote:"Some secrets are only for those with the will to keep them.",content:`**"A Home for Your Kind."**
 
-            Not a military garrison, but a secret sanctuary. These are small, flavor-rich locations in the world where only specific classes can enter.
+            We have expanded class identity beyond just mechanics. Every class now has a dedicated "Enclave"—a secret base of operations hidden within the world.
 
-            **Locations**
-            *   **Rogues:** The basement of Ravenholdt Manor (accessible via a hidden door in the wine cellar).
-            *   **Warlocks:** The Shadowbreak, a pocket dimension in the Twisting Nether (accessible via a portal in the Slaughtered Lamb).
-            *   **Paladins:** The Light’s Hope Chapel Crypts, where the ashes of the great lie.
-            *   **Druids:** The Emerald Dreamway, a lush path connecting the great trees of Azeroth.
-            *   **Hunters:** Nesingwary’s Lodge Private Trophy Room.
+            **The Sanctuaries**
+            *   **Warlocks (The Shattered Sanctum):** A captured Legion cruiser drifting in the Twisting Nether. Requires a ritual to summon the portal.
+            *   **Shamans (Throne of the Elements):** A fully restored ancestral ground in Nagrand, where the elements are at peace.
+            *   **Rogues (Ravenholdt Cellars):** The secret level beneath the manor. Yes, we finally added it.
+            *   **Paladins (Light's Hope Undercroft):** The hallowed grounds beneath the chapel, guarded by the Argent Dawn.
 
-            **Features**
-            *   **Class Vendors:** Selling unique cosmetic glyphs and reagents.
-            *   **The Dueling Circle:** A place to test builds against members of your own class.
-            *   **Dark Rumors:** NPCs that provide hints toward hidden world treasures or class-specific epic quests.`},{id:"adventure_guide",title:"The Adventure Guide",subtitle:"Dungeon Journal",icon:t.jsx(Ye,{className:"w-6 h-6"}),image:"https://i.imgur.com/aU00hfX.jpeg",quote:"Knowledge is the first weapon of the adventurer.",content:`**"Know Your Enemy."**
+            **Enclave Features**
+            *   **Mastery Challenges:** Specific solo-bosses that test your knowledge of your class (e.g., a Hunter challenge that requires kiting and trap usage).
+            *   **The Archives:** A library of class-specific lore books and "Legacy Sets" (transmog support).
+            *   **Target Dummies:** Boss-level dummies for DPS testing.`},{id:"adventure_guide",title:"The Adventure Guide",subtitle:"Scribe's Journal",icon:t.jsx(Ye,{className:"w-6 h-6"}),image:"https://i.imgur.com/aU00hfX.jpeg",quote:"Knowledge is the first weapon of the adventurer.",content:`**"Knowledge is Power."**
 
-            An in-game journal detailing the lore and loot of the dungeons. It serves as a centralized database for the adventurer.
+            The Adventure Guide is not a strategy guide; it is a cartographer's journal. It provides the tools you need to plan your expedition without breaking immersion.
 
-            **TBC+ Twist**
-            The guide does *not* explain mechanics or show boss abilities. That is for you to discover and the community to document. We believe the mystery of the encounter is part of the challenge.
+            **The Atlas**
+            *   **Interactive Maps:** View detailed floor plans of every dungeon and raid, including boss locations and patrol routes.
+            *   **Loot Tables:** A complete ledger of every item that drops, including drop rates and 3D model previews.
 
-            **Features**
-            *   **Lore:** Why are we killing this boss? What is their story?
-            *   **Loot Table:** accurately lists what drops, including drop rates.
-            *   **3D Model Viewer:** Inspect the boss model in detail before you face them.
-            *   **Cartography:** Detailed maps of the instance, including patrol routes of dangerous trash packs.`},{id:"qol_updates",title:"Quality of Life",subtitle:"Respecting Your Time",icon:t.jsx(Pg,{className:"w-6 h-6"}),image:"https://i.imgur.com/8WViTgN.png",quote:"We have removed the friction, not the challenge.",content:`**"Modern Comforts, Classic Soul."**
+            **The Bestiary**
+            *   **Boss Models:** View the enemy in full 3D.
+            *   **Lore Entries:** Read the history of the villain you are about to slay.
+            *   **Ability Ledger:** Lists the names and schools of boss spells (e.g., "Fireball - Fire Damage"), but *does not* explain the mechanic. You must still learn the fight, but you won't be blind to the tools they possess.`},{id:"qol_updates",title:"Quality of Life",subtitle:"Modern Comforts",icon:t.jsx(Pg,{className:"w-6 h-6"}),image:"https://i.imgur.com/8WViTgN.png",quote:"We have removed the friction, not the challenge.",content:`**"Modern Comforts, Classic Soul."**
 
-            We believe that difficulty should come from the encounter, not the interface. We have implemented a suite of features to streamline the "chores" of the game.
+            We have surgically removed the "tedium" while preserving the "friction" that makes the world feel real.
+
+            **Economic & Social**
+            *   **Guild Banks:** Fully integrated vast storage for guilds, with hierarchal permission tabs and logs.
+            *   **Instant Mail:** Mail between characters on the same account is now instant.
+            *   **The Calendar:** A built-in raid planner and event tracker.
 
             **Inventory Management**
-            *   **The Reagent Bank:** A massive, deposit-all tab for crafting materials.
-            *   **The Keyring:** It returns, holding all your instance keys and attunement items separate from your bag slots.
-            *   **Stack Sizes:** Increased to 200 for most materials. 
+            *   **The Token Keyring:** All currencies (Badges, Marks) are now stored in the Currency tab, not your bags.
+            *   **Reagent Pouch:** A dedicated infinite-scroll bag slot specifically for crafting materials.
+            *   **Increased Stacks:** Ore, cloth, and herbs now stack to 200.
 
-            **Combat & Interaction**
-            *   **AoE Looting:** Loot one corpse to loot all nearby enemies. Standard in modern games, essential for preventing carpal tunnel here.
-            *   **Training Dummies:** Added to all capital cities for DPS testing.
-            *   **Instant Mail:** Between characters on the same account.
+            **Combat Fidelity**
+            *   **Melee Leeway:** Adjusted to feel fair but responsive.
+            *   **Spell Batching:** Reduced to 10ms for snappy interrupts, removing the artificial lag of 2007.`},{id:"fun_factor",title:"The Fun Factor",subtitle:"Games Within the Game",icon:t.jsx(rs,{className:"w-6 h-6"}),image:"https://i.imgur.com/mOkInZc.jpeg",quote:"All work and no play makes the hero a dull boy.",content:`**"Games Within the Game."**
 
-            **Interface**
-            *   **Modern Nameplates:** With debuff tracking and cast bars.
-            *   **Raid Frames:** Fully customizable grid-style frames built-in (no addons required).`},{id:"fun_factor",title:"The Fun Factor",subtitle:"Games Within the Game",icon:t.jsx(rs,{className:"w-6 h-6"}),image:"https://i.imgur.com/mOkInZc.jpeg",quote:"All work and no play makes the hero a dull boy.",content:`**"Because It's A Game."**
+            Azeroth is a world to live in. We have added extensive systems for players who want to collect, customize, and compete outside of raids.
 
-            Azeroth is a world to be lived in, not just conquered. We've added activities that exist purely for the joy of play.
+            **The Ethereal Wardrobe (Transmog)**
+            Visit the Ethereals in Area 52 to alter the appearance of your armor. Rule of Cool applies: if you can equip it, you can look like it.
+            *   **Legacy Sets:** Collect old Tier sets to unlock their appearances account-wide.
+            *   **Weapon Illusions:** Apply elemental glows to your weapons.
 
-            **The High-Stakes Casino**
-            Located in the underbelly of Shattrath's Lower City.
-            *   **Death Roll Tables:** An in-game UI for the popular community game, with gold tracking to prevent scams.
-            *   **Mok'gora Duels:** Bet gold on one-on-one spectator duels in the arena.
+            **The Barber Shop**
+            Located in all major cities. Change your hair, face, horns, tusks, and even skin tone.
+            *   **Advanced Customization:** New hairstyles and jewelry options not available in 2007.
 
-            **Challenge Modes**
-            *   **The Iron Soul:** A toggle at character creation. If you die, you die. (Hardcore Support).
-            *   **The Turtle Mode:** Reduces XP gain by 50% but grants "Tokens of the Slow Path" every 10 levels, used to buy unique cosmetic outfits.
-
-            **Player Housing (The Shipyard)**
-            Construct and customize your own naval vessel. Use it to sail the Great Sea, fish for rare leviathans, or host guild meetings off the coast of Stranglethorn.`}],n=r.find(i=>i.id===e);return t.jsxs("div",{className:"min-h-screen bg-[#050505] text-stone-200 font-sans selection:bg-amber-900 selection:text-amber-100 overflow-x-hidden",children:[t.jsx("style",{children:`
+            **The Toy Box**
+            A collection tab for vanity items. Use your *Orb of Deception* or *Piccolo of the Flaming Fire* without wasting bag space.`}],n=r.find(i=>i.id===e);return t.jsxs("div",{className:"min-h-screen bg-[#050505] text-stone-200 font-sans selection:bg-amber-900 selection:text-amber-100 overflow-x-hidden",children:[t.jsx("style",{children:`
                 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
                 .font-hero { font-family: 'Cinzel', serif; }
                 .font-body { font-family: 'Lato', sans-serif; }
