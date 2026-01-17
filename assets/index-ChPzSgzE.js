@@ -2060,7 +2060,7 @@ Weekly realm-wide targets posted here. 'Kill 50 Alliance in Nagrand' or 'Slay th
             We believe preparation is key. You cannot swap specs instantly in combat or in the middle of a dungeon run. You must be at a **Rest Area** (Inn or City) or use a **Tome of the Clear Mind** (crafted by Scribes) to change your focus in the wild.
 
             **TBC+ Philosophy**
-            Convenience is added, but it retains an economic cost and reliance on player professions. It prevents "spec-swapping for every trash pack" while allowing a Paladin to tank a dungeon and heal a raid in the same evening.`},{id:"warbands",title:"War Bands",subtitle:"Account-Wide Progression",icon:e.jsx("img",{src:"https://i.imgur.com/ircqK4w.png",className:"w-6 h-6 object-cover"}),image:"https://i.imgur.com/Zj5uILD.jpeg",quote:"Blood runs thicker than water, but gold binds the company.",content:`**"The Company You Keep."**
+            Convenience is added, but it retains an economic cost and reliance on player professions. It prevents "spec-swapping for every trash pack" while allowing a Paladin to tank a dungeon and heal a raid in the same evening.`},{id:"warbands",title:"War Bands",subtitle:"Account-Wide Progression",icon:e.jsx("img",{src:"https://i.imgur.com/ircqK4w.png",className:"w-6 h-6 object-cover"}),image:"https://i.imgur.com/7AYI6Zh.jpeg",quote:"Blood runs thicker than water, but gold binds the company.",content:`**"The Company You Keep."**
 
             Your characters are no longer isolated loners; they are part of a mercenary company under your banner.
 
