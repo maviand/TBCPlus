@@ -2114,21 +2114,40 @@ Weekly realm-wide targets posted here. 'Kill 50 Alliance in Nagrand' or 'Slay th
             *   **Lore Entries:** Read the history of the villain you are about to slay.
             *   **Ability Ledger:** Lists the names and schools of boss spells (e.g., "Fireball - Fire Damage"), but *does not* explain the mechanic. You must still learn the fight, but you won't be blind to the tools they possess.`,relatedPage:"atlas"},{id:"qol_updates",title:"Quality of Life",subtitle:"Modern Comforts",icon:t.jsx(vc,{className:"w-6 h-6"}),image:"https://i.imgur.com/8WViTgN.png",quote:"We have removed the friction, not the challenge.",content:`**"Modern Comforts, Classic Soul."**
 
-            We have surgically removed the "tedium" while preserving the "friction" that makes the world feel real.
+            We have surgically removed the "tedium" while preserving the "friction" that makes the world feel real. Here are 25 specific improvements:
 
-            **Economic & Social**
-            *   **Guild Banks:** Fully integrated vast storage for guilds, with hierarchal permission tabs and logs.
-            *   **Instant Mail:** Mail between characters on the same account is now instant.
-            *   **The Calendar:** A built-in raid planner and event tracker.
+            **Major Systems**
+            *   **Guild Banks:** Fully integrated vast storage for guilds. Features permission-locked tabs, transaction logs, and gold deposits.
+            *   **The Calendar:** A built-in raid planner and event tracker. Guild Masters can schedule raids, invite members, and track sign-ups (Accepted/Declined/Tentative).
+            *   **Dual Specialization:** As detailed in its own section, swap between two specs for 1000g.
+            *   **Equipment Manager:** Built-in tool to save and swap gear sets (e.g., Tank Set, PvP Set) with one click.
 
-            **Inventory Management**
-            *   **The Token Keyring:** All currencies (Badges, Marks) are now stored in the Currency tab, not your bags.
-            *   **Reagent Pouch:** A dedicated infinite-scroll bag slot specifically for crafting materials.
-            *   **Increased Stacks:** Ore, cloth, and herbs now stack to 200.
+            **Inventory & Economy**
+            *   **The Reagent Bank:** A dedicated, infinite-scroll tab in your personal bank specifically for crafting materials.
+            *   **Increased Stack Sizes:** Ore, cloth, herbs, potions, and elixirs now stack to 20 or 200.
+            *   **The Token Keyring:** Currencies (Badges of Justice, PvP Marks) are now stored in the Currency tab, not bag slots.
+            *   **Account-Wide Gold:** Transfer gold instantly between your War Band characters via the War Chest.
+            *   **Mass Mail:** "Open All" button to collect all attachments instantly.
+            *   **Junk Seller:** A "Sell Greys" button at every vendor.
+            *   **Loot Trading:** A 2-hour window to trade soulbound raid drops with eligible party members.
+            *   **Auto-Loot:** Option to enable auto-loot by default (no Shift-click needed).
 
-            **Combat Fidelity**
-            *   **Melee Leeway:** Adjusted to feel fair but responsive.
-            *   **Spell Batching:** Reduced to 10ms for snappy interrupts, removing the artificial lag of 2007.`},{id:"fun_factor",title:"The Fun Factor",subtitle:"Games Within the Game",icon:t.jsx(er,{className:"w-6 h-6"}),image:"https://i.imgur.com/mOkInZc.jpeg",quote:"All work and no play makes the hero a dull boy.",content:`**"Games Within the Game."**
+            **Combat & Gameplay**
+            *   **Target of Target:** Enabled by default in UI settings.
+            *   **Enemy Cast Bars:** Built-in nameplate cast bars.
+            *   **Modern Raid Frames:** Grid-style unit frames available in the default UI.
+            *   **Training Dummies:** Boss-level (Skull) dummies added to all major cities for DPS testing.
+            *   **Debuff Limit Removed:** The 16-slot debuff limit on bosses is gone. DoT classes can play freely.
+            *   **Faster Weapon Skills:** Weapon skills start higher or level 5x faster. No more missing for hours.
+            *   **Reduced Spell Costs:** Raid buffs (Arcane Brilliance, Fortitude) require fewer reagents and last 60 minutes.
+
+            **Travel & Progression**
+            *   **Mounts at Level 30:** Apprentice Riding (60% speed) is now learnable at level 30 (down from 40).
+            *   **Instant Flight Paths:** Flight paths fly directly to the destination without landing at every stop.
+            *   **Reduced Hearthstone:** Cooldown lowered to 30 minutes (from 60).
+            *   **Summoning Stones:** Now function like Warlock rituals (click-to-summon) rather than just meeting points.
+            *   **Instant Quest Text:** Toggle option to display text instantly.
+            *   **Shared Reputations:** Wearing a "Classic" faction tabard in dungeons grants reputation (WotLK style) for that faction.`},{id:"fun_factor",title:"The Fun Factor",subtitle:"Games Within the Game",icon:t.jsx(er,{className:"w-6 h-6"}),image:"https://i.imgur.com/mOkInZc.jpeg",quote:"All work and no play makes the hero a dull boy.",content:`**"Games Within the Game."**
 
             Azeroth is a world to live in. We have added extensive systems for players who want to collect, customize, and compete outside of raids.
 
