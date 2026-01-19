@@ -692,7 +692,7 @@ Effect: Your Ranged Critical Strike damage is increased by ${t*.2}% for every 5 
 
 Increases your Ranged Attack Power by ${t*2}%. 
 
-While standing still, you gain 1 stack of "Focus" every second (up to ${t*2}).
+While standing still, you gain 1 stack of "Sniper's Focus" every second (up to ${t*2}).
 
 Each stack increases Armor Penetration by ${t*28}.
 
