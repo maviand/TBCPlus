@@ -2716,7 +2716,7 @@ One-Hand  Mace
 Equip: Increases critical strike rating by 20.
 Chance on hit: Grants 10 Rage or 10 Energy.
 Item Level 141
-Requires Level 70`,quality:"Legendary"},{name:"Tome of Fiery Redemption",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_offhand_hyjal_d_01.jpg",original:`Binds when picked up
+Requires Level 70`,quality:"Epic"},{name:"Tome of Fiery Redemption",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_offhand_hyjal_d_01.jpg",original:`Binds when picked up
 Held In Off-hand
 +16 Intellect
 Equip: Increases healing done by spells and effects by up to 30.
@@ -2789,24 +2789,20 @@ Equip: Increases attack power by 36.
 Item Level 128
 Requires Level 70`,quality:"Epic"}]},{name:"Hydross the Unstable",items:[{name:"Wildfury Greatstaff",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_staff_22.jpg",original:`Binds when picked up
 Two-Hand  Staff
-3.00 Speed
-150 - 280 Damage
-(71.7 damage per second)
-+50 Agility
-+50 Stamina
-Equip: Increases attack power by 100 in Cat, Bear, Dire Bear, and Moonkin forms.
-Item Level 128
-Requires Level 70`,rationale:"Add +22 Expertise Rating to solve the chronic threat-scaling issues for Feral Druids in 25-man environments.",after:`Binds when picked up
+500 Armor
++75 Stamina
+Durability 120 / 120
+Requires Level 70
+Equip: Increases your dodge rating by 54.
+Equip: Increases attack power by 992 in Cat, Bear, Dire Bear, and Moonkin forms only.`,rationale:"Add +22 Expertise Rating to solve the chronic threat-scaling issues for Feral Druids in 25-man environments.",after:`Binds when picked up
 Two-Hand  Staff
-3.00 Speed
-150 - 280 Damage
-(71.7 damage per second)
-+50 Agility
-+55 Stamina
+500 Armor
++65 Stamina
+Durability 120 / 120
+Requires Level 70
+Equip: Increases your dodge rating by 54.
 Equip: Increases expertise rating by 22.
-Equip: Increases attack power by 100 in Cat, Bear, Dire Bear, and Moonkin forms.
-Item Level 128
-Requires Level 70`,quality:"Epic"}]},{name:"High Astromancer Solarian",items:[{name:"Solarian's Sapphire",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_gem_14.jpg",original:`Binds when picked up
+Equip: Increases attack power by 992 in Cat, Bear, Dire Bear, and Moonkin forms only.`,quality:"Epic"}]},{name:"High Astromancer Solarian",items:[{name:"Solarian's Sapphire",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_gem_14.jpg",original:`Binds when picked up
 Trinket
 Equip: Increases attack power by 70.
 Use: Increases attack power by 300 for 15 sec.
@@ -2915,6 +2911,7 @@ Main Hand  Sword
 Equip: Increases spell critical strike rating by 24.
 Equip: Increases casting speed (haste) rating by 35.
 Equip: Increases damage and healing done by magical spells and effects by up to 259.
+Chance on spell hit: Calls down a Fel Meteor, dealing 450 to 550 Fire damage and increasing your spell haste rating by 200 for 10 sec.
 Item Level 151
 Requires Level 70`,quality:"Epic"},{name:"Apostle of Argus",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_staff_62.jpg",original:`Binds when picked up
 Two-Hand  Staff
@@ -3103,7 +3100,7 @@ Equip: Restores 12 mana per 5 sec.
 Equip: Increases healing done by spells and effects by up to 486.
 Equip: Your direct healing spells heal the target for an additional 200 health. If the target is below 50% health, this effect is doubled.
 Item Level 151
-Requires Level 70`,quality:"Legendary"},{name:"Black Bow of the Betrayer",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_weapon_bow_31.jpg",original:`Binds when picked up
+Requires Level 70`,quality:"Epic"},{name:"Black Bow of the Betrayer",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_weapon_bow_31.jpg",original:`Binds when picked up
 Ranged  Bow
 3.00 Speed
 200 - 370 Damage
