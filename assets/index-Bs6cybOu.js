@@ -2108,24 +2108,6 @@ Requires Level 70`,rationale:"Perfect mechanical design; increase the proc damag
 Trinket
 Equip: You gain an electrical charge each time you cause a spell critical strike. When you reach 3 charges, an electrical bolt is fired for 600 to 800 Nature damage (+15% of your Spell Power).
 Item Level 115
-Requires Level 70`,quality:"Epic"},{name:"Girdle of Truth",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_belt_26.jpg",original:`Binds when picked up
-Waist  Plate
-600 Armor
-+20 Strength
-+20 Stamina
-+15 Spirit
-Durability 55 / 55
-Equip: Increases defense rating by 15.
-Item Level 115
-Requires Level 70`,rationale:"Remove the 'Hybrid Tax' of Spirit; replace with raw Block Rating for Paladin tanks.",after:`Binds when picked up
-Waist  Plate
-600 Armor
-+20 Strength
-+20 Stamina
-Durability 55 / 55
-Equip: Increases defense rating by 15.
-Equip: Increases shield block rating by 20.
-Item Level 115
 Requires Level 70`,quality:"Epic"}]},{name:"Netherspite",items:[{name:"Spiteblade",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_sword_66.jpg",original:`Binds when picked up
 Main Hand  Sword
 2.70 Speed
@@ -3139,7 +3121,7 @@ Ranged  Bow
 +28 Stamina
 +20 Agility
 Equip: Increases attack power by 40.
-Equip: Your ranged attacks restore 12 mana.
+Equip: Your ranged attacks restore 2 focus.
 Item Level 151
 Requires Level 70`,quality:"Epic"}]},{name:"High Warlord Naj'entus",items:[{name:"Rising Tide",icon:"https://wow.zamimg.com/images/wow/icons/large/inv_axe_63.jpg",original:`Binds when picked up
 One-Hand  Axe
