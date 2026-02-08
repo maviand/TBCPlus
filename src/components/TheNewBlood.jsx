@@ -835,8 +835,7 @@ const TheNewBlood = ({ setPage, initialRace, setInitialRace }) => {
         image: 'https://wow.zamimg.com/uploads/screenshots/normal/431185-bloodhoof-bull.jpg'
       },
       heritageArmor: [
-        { name: 'Highmaul Gladiator', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_chest_plate_raidwarrior_e_01.jpg', image: 'https://wow.zamimg.com/uploads/screenshots/normal/433366.jpg' },
-        { name: 'Sorcerer-King Robes', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_chest_cloth_raidmage_e_01.jpg', image: 'https://wow.zamimg.com/uploads/screenshots/normal/433366.jpg' }
+        { name: 'Heritage of the Stonemaul', icon: 'https://i.imgur.com/PZEeeG3.png', image: 'https://i.imgur.com/PZEeeG3.png' }
       ],
       diplomacy: {
         'Orcs': 'Strained Brotherhood',
@@ -856,7 +855,8 @@ const TheNewBlood = ({ setPage, initialRace, setInitialRace }) => {
       ultimate: {
         name: 'Might of Goria',
         desc: 'Grow to massive size, becoming immune to CC and dealing 20% splash damage.',
-        imageUrl: 'https://i.imgur.com/LiqeKTS.jpeg'
+        videoUrl: 'https://i.imgur.com/NyzB5zp.mp4',
+        icon: 'https://i.imgur.com/TzTFKkO.png'
       },
       elevatorPitch: ['Massive Tank Model', '2-Headed Caster Option', 'Physical Dominance'],
       flavor: {
@@ -909,7 +909,7 @@ const TheNewBlood = ({ setPage, initialRace, setInitialRace }) => {
       ],
 
       racials: [
-        { name: 'Brute Force', icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_strength.jpg', desc: 'Increases the Strength of all party members by 1%. Your mere presence inspires confidence.' },
+        { name: 'Brute Force', icon: 'https://i.imgur.com/e2ZGgng.png', desc: 'Increases the Strength of all party members by 1%. Your mere presence inspires confidence.' },
         { name: 'Ogre\'s Might', icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_undyingstrength.jpg', desc: 'Active: Grow 20% larger. +15% Strength, -10% Intellect. (2m CD). "ME SMASH!" mode.' },
         { name: 'Titanic Build', icon: 'https://wow.zamimg.com/images/wow/icons/large/spell_nature_skinofearth.jpg', desc: 'Increases Total Stamina by 2%. You are hard to kill, simply because there is so much of you.' },
         { name: 'Thick Skinned', icon: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterscales_07.jpg', desc: 'Reduces Physical damage taken by 1%. Arrows just bounce off.' },
