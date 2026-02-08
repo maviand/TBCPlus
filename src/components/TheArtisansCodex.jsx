@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Hammer, FlaskConical, Utensils, Zap, HeartPulse, Fish,
-  Leaf, Scissors, Mountain, Star, Crown, PenTool, Gem, Wrench, Sword, Skull, BookOpen, Scroll, Feather, Shield, X
+  Leaf, Scissors, Mountain, Star, Crown, PenTool, Gem, Wrench, Sword, Skull, BookOpen, Scroll, Feather, Shield, X, Share2, Filter, Map, User, Users
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
+import WowTooltip from './WowTooltip';
 
 const TheArtisansCodex = () => {
   const [activeProfession, setActiveProfession] = useState('overview');
 
   // --- INSPECTION STATE ---
   const [selectedItem, setSelectedItem] = useState(null);
+  const [roleFilter, setRoleFilter] = useState('All'); // New Role Filter State
+  const [showFilters, setShowFilters] = useState(false);
 
   // Helper to parse bold text
   const formatText = (text) => {
-    if (!text) return null;
+    if (!text || typeof text !== 'string') return null;
     // Handle both literal newlines and escaped newlines (from JSON data)
     const lines = text.split(/\\n|\n/);
     return lines.map((line, lineIndex) => {
@@ -33,68 +36,9 @@ const TheArtisansCodex = () => {
     });
   };
 
-  // --- WOW TOOLTIP COMPONENT ---
-  const WowTooltip = ({ item }) => {
-    if (!item) return null;
-    const qualityColors = {
-      legendary: { text: 'text-[#ff8000]', border: 'border-[#ff8000]' },
-      epic: { text: 'text-[#a335ee]', border: 'border-[#a335ee]' },
-      rare: { text: 'text-[#0070dd]', border: 'border-[#0070dd]' },
-      uncommon: { text: 'text-[#1eff00]', border: 'border-[#1eff00]' },
-      common: { text: 'text-white', border: 'border-[#444]' }
-    };
-    const q = qualityColors[item.quality] || qualityColors.common;
 
-    return (
-      <div className={`bg-[#070710] border ${q.border} rounded-[4px] p-4 shadow-2xl max-w-[350px] w-full font-body text-[13px] leading-snug relative text-white border-opacity-60`}>
-        {/* Header */}
-        <div className={`font-bold text-[15px] mb-1 tracking-wide ${q.text}`}>{item.name}</div>
-        {item.quality !== 'artifact' && item.ilvl && <div className="text-[#ffd100] font-bold">Item Level {item.ilvl}</div>}
-        <div className="text-white">Binds when picked up</div>
-        {item.unique && <div className="text-white">Unique-Equipped</div>}
 
-        {/* Slot & Type */}
-        <div className="flex justify-between text-white mt-1">
-          <span>{item.slot}</span>
-          <span>{item.armorType}</span>
-        </div>
 
-        {/* Stats */}
-        <div className="my-2 space-y-0.5">
-          {item.armor && <div className="text-white">{item.armor} Armor</div>}
-          {item.damage && (
-            <div className="flex justify-between text-white font-medium gap-4">
-              <span>{item.damage} Damage</span>
-              <span>Speed {item.speed}</span>
-            </div>
-          )}
-          {item.dps && <div className="text-white mb-1">({item.dps} damage per second)</div>}
-          {item.stats && (typeof item.stats === 'string' ? item.stats.split('\n') : item.stats).map((stat, i) => (
-            <div key={i} className="text-white">{stat.startsWith('+') ? stat : `+ ${stat}`}</div>
-          ))}
-        </div>
-
-        {/* Requirements */}
-        <div className="mt-2 space-y-0.5">
-          {item.durability && <div className="text-white">Durability {item.durability} / {item.durability}</div>}
-          <div className="text-white">Requires Level 70</div>
-          {item.req && <div className="text-white">{item.req}</div>}
-        </div>
-
-        {/* Effects (Green Text) */}
-        <div className="text-[#1eff00] mt-3 space-y-2">
-          {item.effects && item.effects.map((effect, i) => (
-            <div key={i}>{effect}</div>
-          ))}
-        </div>
-
-        {/* Flavor Text */}
-        {item.flavor && (
-          <div className="text-[#ffd100]/80 italic mt-4 text-center">"{item.flavor}"</div>
-        )}
-      </div>
-    );
-  };
 
   // --- QUESTLINE DISPLAY ---
   const QuestlineCard = ({ questline }) => {
@@ -142,26 +86,43 @@ const TheArtisansCodex = () => {
   };
 
   // --- MODAL TOOLTIP COMPONENT ---
-  const InspectionWindow = ({ item, onClose }) => {
+  // --- MODAL TOOLTIP COMPONENT ---
+  const InspectionWindow = ({ item, theme = 'default', onClose }) => {
     if (!item) return null;
+
+    // Themed Backgrounds using conditional styles
+    const themeStyles = {
+      default: "bg-black/90",
+      engineering: "bg-[#001020]/95 bg-[url('https://www.transparenttextures.com/patterns/blueprint.png')]",
+      cooking: "bg-[#1a0f0f]/95",
+      inscription: "bg-[#1a1815]/95",
+    };
+
+    const activeStyle = themeStyles[theme] || themeStyles.default;
 
     return (
       <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4 overflow-y-auto py-10">
-        <div className="absolute inset-0 bg-black/90 backdrop-blur-md transition-opacity" onClick={onClose}></div>
-        <div className="relative z-10 flex flex-col md:flex-row items-start justify-center gap-0 md:gap-0 animate-in fade-in zoom-in duration-200 pointer-events-none">
-          {/* The Tooltip (Left or Top) */}
-          <div className="pointer-events-auto">
+        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
+        <div className={`relative z-10 p-12 rounded-xl shadow-2xl animate-in fade-in zoom-in duration-300 pointer-events-auto flex flex-col md:flex-row items-start gap-8 border border-white/10 ${activeStyle}`}>
+
+          {/* Decorative Elements based on theme */}
+          {theme === 'engineering' && <div className="absolute inset-0 pointer-events-none opacity-20 bg-[linear-gradient(0deg,transparent_24%,rgba(32,128,255,.3)_25%,rgba(32,128,255,.3)_26%,transparent_27%,transparent_74%,rgba(32,128,255,.3)_75%,rgba(32,128,255,.3)_76%,transparent_77%,transparent),linear-gradient(90deg,transparent_24%,rgba(32,128,255,.3)_25%,rgba(32,128,255,.3)_26%,transparent_27%,transparent_74%,rgba(32,128,255,.3)_75%,rgba(32,128,255,.3)_76%,transparent_77%,transparent)] bg-[length:50px_50px]"></div>}
+
+          {/* The Tooltip */}
+          <div className="relative z-20">
             <WowTooltip item={item} />
           </div>
 
-          {/* The Questline (Right or Bottom) - Only if it exists */}
+          {/* The Questline */}
           {item.questline && (
-            <div className="pointer-events-auto md:-ml-1 mt-4 md:mt-0">
+            <div className="relative z-20">
               <QuestlineCard questline={item.questline} />
             </div>
           )}
 
-          <button onClick={onClose} className="pointer-events-auto absolute -top-12 -right-12 text-white/50 hover:text-white transition-colors p-2"><X className="w-8 h-8" /></button>
+          <button onClick={onClose} className="absolute -top-4 -right-4 text-white/50 hover:text-white bg-black/50 rounded-full p-2 border border-white/20 transition-all hover:bg-black hover:rotate-90">
+            <X className="w-6 h-6" />
+          </button>
         </div>
       </div>
     );
@@ -196,13 +157,211 @@ const TheArtisansCodex = () => {
     );
   };
 
+  // --- COMPONENT: SYNERGY MAP ---
+  const SynergyMap = () => {
+    // --- STATE ---
+    const [hoveredNode, setHoveredNode] = useState(null);
+
+    // Define exact coordinates (Canvas height ~500px to fit all)
+    const nodes = {
+      // Gathering (Left Column)
+      mining: { x: 100, y: 100, label: 'Mining', icon: <Mountain size={16} />, desc: "The backbone of the war effort. Supplies **Ore** for Blacksmithing, **Gems** for Jewelcrafting, and **Volatile Minerals** for Engineering." },
+      herbalism: { x: 100, y: 250, label: 'Herbalism', icon: <Leaf size={16} />, desc: "Harvests nature's bounty. Provides **Herbs** for Alchemy, **Pigments** for Inscription, and **Fibrous Weaves** for Tailoring." },
+      skinning: { x: 100, y: 400, label: 'Skinning', icon: <Scissors size={16} />, desc: "Reclaims resources. Grants **Leather** for armors, **Hides** for Blacksmithing grips, and **Biological Parts** for Engineering." },
+
+      // Crafting (Middle Column)
+      blacksmithing: { x: 400, y: 60, label: 'Blacksmithing', icon: <Hammer size={16} />, desc: "Forges the frontline. Intersects with **Mining** for ore and **Skinning** for grips to create Plate Armor and Weapons." },
+      engineering: { x: 400, y: 120, label: 'Engineering', icon: <Wrench size={16} />, desc: "Weaponizes chaos. Combines **Mining** metals, **Herbalism** volatiles, and **Skinning** organics to build gadgets." },
+      jewelcrafting: { x: 400, y: 180, label: 'Jewelcrafting', icon: <Gem size={16} />, desc: "Refines light and stone. Uses **Mining** geodes and **Herbalism** polishing agents to cut gems and craft trinkets." },
+      inscription: { x: 400, y: 240, label: 'Inscription', icon: <PenTool size={16} />, desc: "Power in written form. Grinds **Herbalism** plants into pigments to create Glyphs and off-hand tomes." },
+      alchemy: { x: 400, y: 300, label: 'Alchemy', icon: <FlaskConical size={16} />, desc: "Mastery of transmutation. Mixes **Herbs** and **Minerals** to create potions, flasks, and transmute base materials." },
+      tailoring: { x: 400, y: 360, label: 'Tailoring', icon: <Feather size={16} />, desc: "Weaves magic into cloth. Uses **Herbalism** fibers and dropped cloth to create light armor and spellthreads." },
+      leatherworking: { x: 400, y: 420, label: 'Leatherworking', icon: <Shield size={16} />, desc: "Shapes the beast. Uses **Skins** and **Mining** studs to craft Mail/Leather armor and war drums." },
+
+      // Output (Right Column)
+      weapons: { x: 700, y: 80, label: 'Legendary Weapons', type: 'output', desc: "The ultimate instruments of war. Mastercrafts requiring specialized components from **multiple professions**." },
+      gear: { x: 700, y: 160, label: 'Epic Armor', type: 'output', desc: "Specialized protection. Crafted sets that rival raid drops, requiring materials from all gathering disciplines." },
+      consumables: { x: 700, y: 240, label: 'Raid Utility', type: 'output', desc: "The logistics of victory. Includes Drums (LW), Potions (Alc), and **Forgemaster's Bells** (BS)." },
+      housing: { x: 700, y: 320, label: 'Housing & Trophies', type: 'output', desc: "Home requires heart. **Blacksmiths** forge gates, **Tailors** weave rugs, **Engineers** build jukeboxes." },
+      bard: { x: 700, y: 400, label: 'Bardic Instruments', type: 'output', desc: "Music requires precision. **Jewelcrafters** cut prisms for light shows, **Tailors** sew costumes." },
+      pvp: { x: 700, y: 480, label: 'PvP Siege Engines', type: 'output', desc: "War requires heavy metal. **Engineers** build tanks, **Smiths** forge barricades for the Theater of War." }
+    };
+
+    // Define connections
+    const links = [
+      // Primary Mat Flow
+      { from: 'mining', to: 'blacksmithing' },
+      { from: 'mining', to: 'engineering' },
+      { from: 'mining', to: 'jewelcrafting' },
+      { from: 'skinning', to: 'leatherworking' },
+      { from: 'herbalism', to: 'alchemy' },
+      { from: 'herbalism', to: 'inscription' },
+      { from: 'herbalism', to: 'tailoring' },
+
+      // TBC+ Cross-Pollination Mat Flow
+      { from: 'skinning', to: 'blacksmithing' }, // Leather for Plate grips
+      { from: 'mining', to: 'leatherworking' }, // Ore for Mail/Studded
+      { from: 'herbalism', to: 'blacksmithing' }, // Oils/Acids
+      { from: 'herbalism', to: 'engineering' }, // Volatile Plants
+      { from: 'herbalism', to: 'jewelcrafting' }, // Polishing Agents
+
+      // Standard Outputs
+      { from: 'blacksmithing', to: 'weapons' },
+      { from: 'blacksmithing', to: 'gear' },
+      { from: 'blacksmithing', to: 'consumables' }, // Raid Utility
+
+      { from: 'engineering', to: 'weapons' },
+      { from: 'engineering', to: 'consumables' }, // Raid Utility
+
+      { from: 'jewelcrafting', to: 'gear' }, // Rings/Necks
+
+      { from: 'inscription', to: 'consumables' }, // Scrolls
+      { from: 'inscription', to: 'gear' }, // Off-hands
+
+      { from: 'alchemy', to: 'consumables' }, // Pots/Flasks
+
+      { from: 'tailoring', to: 'gear' },
+      { from: 'tailoring', to: 'consumables' }, // Raid Utility
+
+      { from: 'leatherworking', to: 'gear' },
+      { from: 'leatherworking', to: 'consumables' }, // Raid Utility
+
+      // New Cross-System Links
+      { from: 'blacksmithing', to: 'housing' }, // Gates/Furniture
+      { from: 'tailoring', to: 'housing' }, // Rugs/Banners
+      { from: 'engineering', to: 'housing' }, // Jukeboxes
+      { from: 'jewelcrafting', to: 'bard' }, // Prisms
+      { from: 'tailoring', to: 'bard' }, // Costumes
+      { from: 'engineering', to: 'pvp' }, // Siege Engines
+      { from: 'blacksmithing', to: 'pvp' }, // Barricades
+    ];
+
+    return (
+      <div className="relative w-full h-[600px] bg-[#0b0d10] border border-[#2f2f35] rounded-lg overflow-hidden mb-12 group select-none shadow-2xl">
+        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "url('https://i.imgur.com/ZwnPBx7.jpeg')", backgroundSize: 'cover' }}></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d10] to-transparent"></div>
+
+        <h3 className="absolute top-4 left-6 text-[#c29c55] font-hero uppercase tracking-widest text-sm z-10 flex items-center gap-2">
+          <Share2 className="w-4 h-4" /> Profession Ecology (TBC+)
+        </h3>
+
+        {/* SVG Wrapper for Lines */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="28" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#c29c55" opacity="0.5" />
+            </marker>
+          </defs>
+          {links.map((link, i) => {
+            const start = nodes[link.from];
+            const end = nodes[link.to];
+            if (!start || !end) return null;
+
+            // Bezier Curve Logic
+            const midX = (start.x + end.x) / 2;
+            const d = `M${start.x} ${start.y} C ${midX} ${start.y}, ${midX} ${end.y}, ${end.x} ${end.y}`;
+
+            return (
+              <path
+                key={i}
+                d={d}
+                fill="none"
+                stroke="#c29c55"
+                strokeWidth="1.5"
+                strokeOpacity="0.2" // Lower opacity for density
+                markerEnd="url(#arrowhead)"
+              />
+            );
+          })}
+        </svg>
+
+        {/* Nodes Layer */}
+        {Object.entries(nodes).map(([key, node]) => (
+          <div
+            key={key}
+            onMouseEnter={() => setHoveredNode(key)}
+            onMouseLeave={() => setHoveredNode(null)}
+            className={`absolute transform -translate-x-1/2 -translate-y-1/2 flex items-center gap-3 px-4 py-2 rounded-full border transition-all duration-300 hover:scale-110 hover:border-[#ff8000] hover:bg-black z-10 cursor-help
+              ${node.type === 'output' ? 'border-[#a335ee] bg-[#1a0f1a]' : 'border-[#c29c55] bg-[#1a1c22]'}
+              ${hoveredNode && hoveredNode !== key ? 'opacity-30 blur-[1px]' : 'opacity-100'}
+            `}
+            style={{ left: node.x, top: node.y }}
+          >
+            {node.icon && <span className={node.type === 'output' ? 'text-[#a335ee]' : 'text-[#c29c55]'}>{node.icon}</span>}
+            <span className={`font-hero text-xs ${node.type === 'output' ? 'text-[#f0e6d2]' : 'text-[#e0e0e0]'}`}>{node.label}</span>
+
+            {/* Tooltip */}
+            {hoveredNode === key && (
+              <div
+                className={`absolute w-64 bg-[#0b0d10] border border-[#ff8000] p-3 rounded shadow-[0_0_20px_rgba(0,0,0,0.8)] z-50 pointer-events-none animate-in fade-in zoom-in-95 duration-200
+                  ${node.y > 300 ? 'bottom-full mb-3' : 'top-full mt-3'}
+                  ${node.x < 200 ? 'left-0' : node.x > 600 ? 'right-0' : 'left-1/2 -translate-x-1/2'}
+                `}
+              >
+                <h5 className="text-[#ff8000] font-hero text-sm mb-1">{node.label}</h5>
+                <p className="text-[#aeb6bf] text-xs leading-relaxed">{formatText(node.desc)}</p>
+
+                {/* Arrow */}
+                <div
+                  className={`absolute w-3 h-3 bg-[#0b0d10] border-[#ff8000] transform rotate-45
+                    ${node.y > 300 ? '-bottom-1.5 border-b border-r' : '-top-1.5 border-t border-l'}
+                    ${node.x < 200 ? 'left-6' : node.x > 600 ? 'right-6' : 'left-1/2 -translate-x-1/2'}
+                  `}
+                ></div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        <div className="absolute bottom-4 right-6 text-stone-600 text-[10px] italic">
+          *Arrows indicate resource dependency & output flow
+        </div>
+      </div>
+    );
+  };
+
+  // --- COMPONENT: SKILL TREE ---
+  const SkillTree = ({ specs }) => (
+    <div className="relative p-6 bg-[#0b0d10] border border-[#2f2f35] rounded-lg">
+      <h4 className="font-hero text-[#f0e6d2] mb-8 text-center uppercase tracking-widest border-b border-[#2f2f35] pb-4">Specialization Paths</h4>
+      <div className="flex flex-col md:flex-row justify-between relative gap-8">
+        {/* Connecting Line */}
+        <div className="hidden md:block absolute top-6 left-10 right-10 h-[2px] bg-[#2f2f35] -z-0"></div>
+
+        {specs.map((spec, i) => (
+          <div key={i} className="relative z-10 flex-1 group">
+            <div className="w-12 h-12 mx-auto bg-[#1a1c22] border-2 border-[#2f2f35] rounded-full flex items-center justify-center mb-4 group-hover:border-[#c29c55] group-hover:scale-110 transition-all shadow-xl">
+              <span className="text-[#c29c55] font-bold text-lg">{i + 1}</span>
+            </div>
+            <div className="text-center bg-[#151515] p-4 rounded border border-[#white]/5 group-hover:border-[#c29c55]/30 transition-colors h-full min-h-[140px]">
+              <h5 className="text-[#f0e6d2] font-hero text-sm mb-1">{spec.name}</h5>
+              <p className="text-[10px] text-[#ff8000] uppercase tracking-widest mb-2">{spec.title}</p>
+              <p className="text-xs text-[#aeb6bf] leading-relaxed">{formatText(spec.desc)}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   // --- DATA: PROFESSIONS ---
+  // --- AUDIO CUES (Placeholder) ---
+  const playSound = (type) => {
+    // In a real app, this would play a sound file based on the profession type
+    // console.log(`Playing sound for: ${type}`); 
+  };
+
+  useEffect(() => {
+    playSound(activeProfession);
+  }, [activeProfession]);
+
   const professions = {
     overview: {
       id: 'overview',
       name: 'The Mission',
       title: 'Hands of the Hero',
-      icon: <BookOpen className="w-6 h-6" />,
+      icon: "https://i.imgur.com/clxd8OC.jpeg",
+      image: "https://i.imgur.com/BCDgtZk.jpeg",
       desc: '**Philosophy:** In The Burning Crusade, a character’s profession is not merely a revenue stream or a spreadsheet of passive stats; it is a pillar of their identity within the world. A Master Blacksmith should feel different from a Grand Master Alchemist in the heat of battle.\n\nOur mission is to shift professions from **Obligation** to **Opportunity**.',
       philosophy: {
         tbc: "**The 2007 Landscape:** \nProfessions were often binary: you either had the 'bis' profession (Drums/Ring Enchants) or you were playing sub-optimally. Gathering professions were purely economic, and secondary professions were chores.",
@@ -225,9 +384,16 @@ const TheArtisansCodex = () => {
     },
     alchemy: {
       id: 'alchemy',
+      famousArtisan: { name: "Grand Master Alchemist Gribble", title: "Explosive Genius", location: "Honor Hold" },
+      trainers: [
+        { name: "Alliance: Alchemist Gribble", loc: "Honor Hold, Hellfire Peninsula" },
+        { name: "Horde: Apothecary Antonivich", loc: "Thrallmar, Hellfire Peninsula" },
+        { name: "Neutral: Lorokeem", loc: "Shattrath City" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "60x Golden Sansam, 40x Mountain Silversage, 20x Crystal Vials" },
       name: 'Alchemy',
       title: 'The Philosopher\'s Legacy',
-      icon: <img src="/TBCPlus/images/icons/professions/alchemy.png" alt="Alchemy" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/alchemy.png",
       image: 'https://i.imgur.com/2IgNFRu.jpeg',
       desc: 'Alchemy is transformed from a passive craft into a science of risk and reward. A master Alchemist is a tactical genius, deploying cauldrons and volatile concoctions to turn the tide.',
       philosophy: {
@@ -267,9 +433,31 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Trinket',
             unique: true,
-            stats: '+50 Stamina\n+45 Intellect',
-            effects: ['Equip: Increases the effectiveness of your potions by 20%.', 'Use: Inject a healing potion into a friendly target from up to 40 yards away. (2 Min Cooldown)'],
-            flavor: "It never seems to run dry, only to shimmer with liquid light."
+            stats: '+65 Stamina\n+65 Intellect',
+            effects: ['Equip: Increases the effectiveness of your potions by 25%.', 'Use: Inject a healing potion into a friendly target from up to 40 yards away. (2 Min Cooldown)'],
+            flavor: "It never seems to run dry, only to shimmer with liquid light.",
+            questline: {
+              title: "The Elixir of Life",
+              description: "You seek to bottle life itself. A potion that does not run dry, but refills from the ambient energy of the world.",
+              steps: [
+                { phase: "Phase 1: The Vial", name: "Karazhan Glass", desc: "Collect 'Ghostly Glass' from the banquet hall of Karazhan." },
+                { name: "Raid: Maiden", desc: "Purify the glass in the 'Holy Water' of the Maiden of Virtue.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Use the Pit Lord's blood to test the seal. It must not leak.", isRaid: true },
+                { name: "Glassblowing", desc: "Forge the vial in the fires of Hellfire Citadel.", reward: "Empty Everlasting Phial (Rare)" },
+                { phase: "Phase 2: The Catalyst", name: "Serpentshrine", desc: "The waters here have healing properties." },
+                { name: "Raid: Hydross", desc: "Collect 'Purified Droplets' from the Duke of Water.", isRaid: true },
+                { name: "Raid: Vashj", desc: "Steal the 'Vial of Eternity' (Replica).", isRaid: true },
+                { name: "Distillation", desc: "Brew the base potion using Netherbloom and Mana Thistle.", reward: "Potion of Endless Healing (Epic)" },
+                { phase: "Phase 3: The Spark", name: "Hyjal", desc: "Life finds a way." },
+                { name: "Raid: Archimonde", desc: "Harvest the 'Dew of Nordrassil' from the World Tree.", isRaid: true },
+                { name: "Raid: Illidan", desc: "The 'Tears of the Betrayer'. Potent reagents.", isRaid: true },
+                { name: "Infusion", desc: "The potion glows with an inner light.", reward: "The Vial of Endless Triage (T6 Epic)" },
+                { phase: "Phase 4: Immortality", name: "Sunwell", desc: "The font of power." },
+                { name: "Raid: Brutallus", desc: "His blood burns, but it also invigorates.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Bathe the vial in the Sunwell.", isRaid: true },
+                { name: "The Alchemist", desc: "You have conquered death." }
+              ]
+            }
           }
         },
         {
@@ -282,9 +470,31 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Held In Off-hand',
             unique: true,
-            stats: '+40 Strength\n+40 Agility\n+40 Intellect',
+            stats: '+55 Strength\n+55 Agility\n+55 Intellect',
             effects: ['Equip: The duration of your flasks is doubled.', 'Use: Consume the flask to gain all secondary stats for 20 sec. Acts as a Guardian Elixir. (5 Min Cooldown)'],
-            flavor: "A universe in a bottle."
+            flavor: "A universe in a bottle.",
+            questline: {
+              title: "Titan's Blood",
+              description: "The Titans shaped worlds. You seek to distill their essence into a flask that grants the drinker godlike power.",
+              steps: [
+                { phase: "Phase 1: The Mold", name: "Earth-Shaper", desc: "Find a 'Titan Mold' in the Badlands." },
+                { name: "Raid: The Curator", desc: "He guards the Menagerie. Take his 'Arcane Battery'.", isRaid: true },
+                { name: "Raid: Gruul", desc: "Gruul is a degenerate giant. His 'Eye' holds power.", isRaid: true },
+                { name: "Forging", desc: "Create the flask casing from Hardened Adamantite.", reward: "Titan-Forged Flask (Rare)" },
+                { phase: "Phase 2: The Essence", name: "Tempest Keep", desc: "The Naaru ship holds Titan technology." },
+                { name: "Raid: Void Reaver", desc: "Extract 'Fel-Reaver Oil' for the base.", isRaid: true },
+                { name: "Raid: Kael'thas", desc: "The 'Verdant Sphere' is a perfect stopper.", isRaid: true },
+                { name: "Mixing", desc: "Mix the ingredients. Do not shake.", reward: "Flask of Ancient Power (Epic)" },
+                { phase: "Phase 3: The Soul", name: "Hyjal", desc: "The World Tree connects to the soul of Azeroth." },
+                { name: "Raid: Archimonde", desc: "Prevent him from draining the tree.", isRaid: true },
+                { name: "Raid: Illidan", desc: "The 'Skull of Gul'dan'. Analyze it.", isRaid: true },
+                { name: "Synthesis", desc: "The flask hums with the song of creation.", reward: "Flask of the Titan's Soul (T6 Epic)" },
+                { phase: "Phase 4: Divinity", name: "Sunwell", desc: "Pure energy." },
+                { name: "Raid: Twins", desc: "Harmony and Discord.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Drink from the Sunwell.", isRaid: true },
+                { name: "Godhood", desc: "You are a Titan now." }
+              ]
+            }
           }
         },
         {
@@ -297,18 +507,51 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Trinket',
             unique: true,
-            stats: '+60 Stamina\n+60 Spirit',
-            effects: ['Equip: Increases the effect that mana and healing potions have on the wearer by 40%.', 'Use: Your next non-combat potion has no cooldown. (10 Min Cooldown)'],
-            flavor: "It weeps for the mana you lost."
+            stats: '+80 Stamina\n+80 Spirit',
+            effects: ['Equip: Increases the effect that mana and healing potions have on the wearer by 50%.', 'Use: Your next non-combat potion has no cooldown. (10 Min Cooldown)'],
+            flavor: "It weeps for the mana you lost.",
+            questline: {
+              title: "The Magnum Opus",
+              description: "The ultimate goal of alchemy is not gold, but transformation. You seek to transmute sorrow into power.",
+              steps: [
+                { phase: "Phase 1: Sorrow", name: "Karazhan Opera", desc: "Collect 'Tears of the Actress' from the Opera Event." },
+                { name: "Raid: Moroes", desc: "The Castellan's sorrow is eternal. Collect his 'Pocket Watch'.", isRaid: true },
+                { name: "Raid: Nightbane", desc: "The Dragon's charred bones hold 'Ancient Grief'.", isRaid: true },
+                { name: "Condensation", desc: "Distill the sorrow into a liquid form.", reward: "Vial of Tears (Rare)" },
+                { phase: "Phase 2: Transformation", name: "Lady Vashj", desc: "She is the Siren of the deep." },
+                { name: "Raid: Hydross", desc: "Purify the tears in the waters of life.", isRaid: true },
+                { name: "Raid: Vashj", desc: "The 'Siren's Scale'. Essential.", isRaid: true },
+                { name: "Transmutation", desc: "Turn the water into mana.", reward: "Transmuted Tear (Epic)" },
+                { phase: "Phase 3: Acceptance", name: "Hyjal", desc: "Accept the past." },
+                { name: "Raid: Archimonde", desc: "Receive a 'Token of Remembrance'.", isRaid: true },
+                { name: "Raid: Illidan", desc: "The 'Memory of Tyrande'.", isRaid: true },
+                { name: "Solidification", desc: "The tear hardens into a gem.", reward: "The Siren's Tear (T6 Epic)" },
+                { phase: "Phase 4: Hope", name: "Sunwell", desc: "The Light brings hope." },
+                { name: "Raid: M'uru", desc: "From darkness, light.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "The final transmutation.", isRaid: true },
+                { name: "Fullmetal", desc: "You have found the truth." }
+              ]
+            }
           }
         }
       ]
     },
     blacksmithing: {
       id: 'blacksmithing',
+      famousArtisan: { name: "Krudran Wildhammer", title: "Thane of The Hinterlands", location: "Wildhammer Stronghold" },
+      trainers: [
+        { name: "Alliance: Humphry", loc: "Honor Hold" },
+        { name: "Horde: Rohok", loc: "Thrallmar" },
+        { name: "Neutral: Barien", loc: "Scryer's Tier" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "120x Fel Iron Bar, 40x Adamantite Bar, 20x Primal Fire" },
+      armorSets: [
+        { name: "Battlegear of the Unyielding", image: "https://i.imgur.com/uTlkQeP.jpeg", desc: "Plate Tank Set" },
+        { name: "Flameguard's Plate", image: "https://i.imgur.com/ZNgl6A4.jpeg", desc: "Fire Res Set" }
+      ],
       name: 'Blacksmithing',
       title: 'Master of War',
-      icon: <img src="/TBCPlus/images/icons/professions/blacksmithing.png" alt="Blacksmithing" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/blacksmithing.png",
       image: 'https://i.imgur.com/omtzxB9.jpeg',
       desc: 'The smith is the backbone of the war effort. This redesign introduces crafting qualities and "deployable" heavy weaponry for raids.',
       philosophy: {
@@ -340,11 +583,33 @@ const TheArtisansCodex = () => {
             slot: 'Off Hand',
             unique: true,
             armorType: 'Shield',
-            armor: '6500',
-            stats: '220 Block\n+55 Stamina',
+            armor: '7200',
+            stats: '350 Block Value\n+85 Stamina',
             durability: 120,
-            effects: ['Equip: Increases defense rating by 30.', 'Equip: On block, emit a resonant hum reducing damage taken by nearby enemies by 5%.', 'Use: Become an immobile fortress, reducing all damage taken by 50% for 10 sec. (5 Min Cooldown)'],
-            flavor: "The King stood alone. Now, so do you."
+            effects: ['Equip: Increases defense rating by 40.', 'Equip: On block, emit a resonant hum reducing damage taken by nearby enemies by 5%.', 'Use: Become an immobile fortress, reducing all damage taken by 50% for 10 sec. (5 Min Cooldown)'],
+            flavor: "The King stood alone. Now, so do you.",
+            questline: {
+              title: "The Unmovable Object",
+              description: "A shield that can withstand the collapse of a star. You will forge it from the hardest materials in the cosmos.",
+              steps: [
+                { phase: "Phase 1: The Frame", name: "Netherspite", desc: "His scales deflect all magic. Harvest them." },
+                { name: "Raid: Gruul", desc: "His skin is stone. Skin it.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "His armor is fel-hardened. Take it.", isRaid: true },
+                { name: "Smithing", desc: "Forge the frame. It weighs a ton.", reward: "Adamantite Tower Shield (Rare)" },
+                { phase: "Phase 2: Reinforcement", name: "The Void", desc: "Void Reaver's armor is space-age alloy." },
+                { name: "Raid: Void Reaver", desc: "Melt down his chassis.", isRaid: true },
+                { name: "Raid: Fathom-Lord", desc: "His shield is legendary. Claim it.", isRaid: true },
+                { name: "Tempering", desc: "Temper the shield in liquid nether.", reward: "Bulwark of the Void (Epic)" },
+                { phase: "Phase 3: Unbreaking", name: "Hyjal", desc: "The World Tree stands eternal." },
+                { name: "Raid: Archimonde", desc: "Withstand his blows.", isRaid: true },
+                { name: "Raid: Supremus", desc: "He is made of infernal rock. Break him.", isRaid: true },
+                { name: "Mastery", desc: "The shield cannot be broken.", reward: "Bulwark of the Adamant King (T6 Epic)" },
+                { phase: "Phase 4: The King", name: "Sunwell", desc: "Face the Deceiver." },
+                { name: "Raid: Brutallus", desc: "Bounce his blades.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Protect your world.", isRaid: true },
+                { name: "Iron Will", desc: "You are the wall." }
+              ]
+            }
           }
         },
         {
@@ -362,9 +627,31 @@ const TheArtisansCodex = () => {
             speed: '3.80',
             dps: '171.1',
             durability: 120,
-            stats: '+65 Strength\n+50 Stamina',
-            effects: ['Equip: Increases critical strike rating by 45.', 'Equip: Increases Haste Rating by 30.', 'Chance on Hit: Shatters the target\'s armor, reducing it by 500. Stacks up to 3 times.'],
-            flavor: "Forged in Fel Fire."
+            stats: '+85 Strength\n+65 Stamina\n+40 Hit Rating',
+            effects: ['Equip: Increases critical strike rating by 55.', 'Equip: Increases Haste Rating by 45.', 'Chance on Hit: Shatters the target\'s armor, reducing it by 500. Stacks up to 3 times.'],
+            flavor: "Forged in Fel Fire.",
+            questline: {
+              title: "The Worldbreaker",
+              description: "A hammer forged to shatter worlds. Its head is the skull of a dragon, dipped in Fel iron.",
+              steps: [
+                { phase: "Phase 1: The Head", name: "Nightbane", desc: "Use the skull of Nightbane as the hammer head." },
+                { name: "Raid: Gruul", desc: "The Gronn-Slayer. Learn his technique.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "Quench the head in his blood.", isRaid: true },
+                { name: "Forging", desc: "Mount the skull on a shaft of Khorium.", reward: "Skull-Crusher (Rare)" },
+                { phase: "Phase 2: The Fire", name: "Phoenix Fire", desc: "Infuse the hammer with eternal fire." },
+                { name: "Raid: Al'ar", desc: "The ashes burn forever.", isRaid: true },
+                { name: "Raid: Kael'thas", desc: "The Sun King's power.", isRaid: true },
+                { name: "Imbuing", desc: "The hammer burns your hands.", reward: "Dragon-Fire Mace (Epic)" },
+                { phase: "Phase 3: The Shattering", name: "Hyjal", desc: "Break the legion." },
+                { name: "Raid: Rage Winterchill", desc: "Shatter the ice.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Break the Betrayer.", isRaid: true },
+                { name: "Completion", desc: "The earth trembles.", reward: "Drakefist Hammer (T6 Epic)" },
+                { phase: "Phase 4: Apocalypse", name: "Sunwell", desc: "End it." },
+                { name: "Raid: Felmyst", desc: "Bring he down.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Shatter the Deceiver.", isRaid: true },
+                { name: "Legend", desc: "You have broken the world." }
+              ]
+            }
           }
         },
         {
@@ -379,16 +666,45 @@ const TheArtisansCodex = () => {
             unique: true,
             stats: '',
             effects: ['Use: Permanently adds a Prismatic Socket to a Legendary quality item. This does not stack with other sockets. (One use only)'],
-            flavor: "A hole in reality, filled with potential."
+            flavor: "A hole in reality, filled with potential.",
+            questline: {
+              title: "The Void-Smith",
+              description: "To punch a hole in reality requires precision. You will build a drill capable of piercing the fabric of existence.",
+              steps: [
+                { phase: "Phase 1: The Drill", name: "Curator", desc: "His tools are precise. Take them." },
+                { name: "Raid: Prince Malchezaar", desc: "He opens portals. Learn how.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: "His prison is unbreakable. Break it.", isRaid: true },
+                { name: "Engineering", desc: "Build the drill bit.", reward: "Adamantite Drill (Rare)" },
+                { phase: "Phase 2: The Void", name: "Netherstorm", desc: "The void is close here." },
+                { name: "Raid: Void Reaver", desc: "His engine drives the drill.", isRaid: true },
+                { name: "Raid: Solarian", desc: "She knows the stars.", isRaid: true },
+                { name: "Tuning", desc: "Tune the drill to the frequency of reality.", reward: "Dimensional Auger (Epic)" },
+                { phase: "Phase 3: Pierce", name: "Hyjal", desc: "Pierce time." },
+                { name: "Raid: Archimonde", desc: "His will is a barrier. Drill through it.", isRaid: true },
+                { name: "Raid: Illidan", desc: "See what he sees.", isRaid: true },
+                { name: "Success", desc: "You have created a socket.", reward: "The Universal Socket (T6 Epic)" },
+                { phase: "Phase 4: Empty", name: "Sunwell", desc: "The void consumes." },
+                { name: "Raid: M'uru", desc: "The Void God.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Fill the hole.", isRaid: true },
+                { name: "Metallurgy", desc: "Everything has a socket." }
+              ]
+            }
           }
         }
       ]
     },
     enchanting: {
       id: 'enchanting',
+      famousArtisan: { name: "High Enchanter Bardolan", title: "The Violet Eye", location: "Karazhan" },
+      trainers: [
+        { name: "Alliance: Johan", loc: "Honor Hold" },
+        { name: "Horde: Felannia", loc: "Thrallmar" },
+        { name: "Neutral: High Enchanter Bardolan", loc: "Shattrath City" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "200x Arcane Dust, 40x Greater Planar Essence, 10x Large Prismatic Shard" },
       name: 'Enchanting',
       title: 'Warden of the Soul',
-      icon: <img src="/TBCPlus/images/icons/professions/enchanting.png" alt="Enchanting" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/enchanting.png",
       image: 'https://i.imgur.com/FApg0VK.jpeg',
       desc: 'Enchanters are the masters of magical essence, capable of binding the chaotic energies of the Nether into physical form. In this expanded vision, Enchanters do not merely apply stats to gear; they actively manipulate the magical fabric of the world.\n\nFrom dismantling magical barriers in dungeons to weaving temporary runes of immense power, the Enchanter is the ultimate magical utilitarian. They bridge the gap between the raw power of a Mage and the binding will of a Warlock.',
       philosophy: {
@@ -418,8 +734,8 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Held In Off-hand',
             unique: true,
-            stats: '+45 Intellect\n+45 Spirit',
-            effects: ['Equip: Your healing spells have a chance to grant the target a "Soul Shell" absorbing 1000 damage.', 'Use: Sacrifice 10% of your total health to instantly restore 20% mana to a friendly target. (3 Min Cooldown)'],
+            stats: '+70 Intellect\n+70 Spirit',
+            effects: ['Equip: Your healing spells have a chance to grant the target a "Soul Shell" absorbing 1500 damage.', 'Use: Sacrifice 10% of your total health to instantly restore 25% mana to a friendly target. (3 Min Cooldown)'],
             flavor: "A fair trade.",
             questline: {
               title: "The Binding of Souls",
@@ -462,8 +778,8 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Trinket',
             unique: true,
-            stats: '+45 Spell Critical Strike Rating',
-            effects: ['Equip: Your elemental spells have a chance to trigger a secondary blast of the opposite element.', 'Use: Overload the prism, increasing spell critical strike chance by 100% for 5 sec. (5 Min Cooldown)'],
+            stats: '+60 Spell Critical Strike Rating\n+40 Spell Hit Rating',
+            effects: ['Equip: Your elemental spells have a chance to trigger a secondary blast of the opposite element.', 'Use: Overload the prism, increasing spell critical strike chance by 100% for 6 sec. (5 Min Cooldown)'],
             flavor: "Fire, Frost, and Fury.",
             questline: {
               title: "The Elemental Convergence",
@@ -506,8 +822,8 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Finger',
             unique: true,
-            stats: '+35 Stamina\n+40 Intellect',
-            effects: ['Equip: Increases spell power by 45.', 'Equip: Disenchanting yields double materials.', 'Use: Create a "Runic Ward" at your feet. Allies standing inside have the mana cost of all spells reduced by 25%. (5 Min Cooldown)'],
+            stats: '+55 Stamina\n+55 Intellect',
+            effects: ['Equip: Increases spell power by 55.', 'Equip: Disenchanting yields double materials.', 'Use: Create a "Runic Ward" at your feet. Allies standing inside have the mana cost of all spells reduced by 25%. (5 Min Cooldown)'],
             flavor: "The circle is complete.",
             questline: {
               title: "The Runic Circle",
@@ -544,9 +860,16 @@ const TheArtisansCodex = () => {
     },
     engineering: {
       id: 'engineering',
+      famousArtisan: { name: "Sparky Uberthruster", title: "Area 52 Chief", location: "Netherstorm" },
+      trainers: [
+        { name: "Alliance: Lebowski", loc: "Honor Hold" },
+        { name: "Horde: Mack Diver", loc: "Zabra'jin" },
+        { name: "Neutral: Xyrol", loc: "Area 52" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "90x Fel Iron Casing, 40x Handful of Fel Iron Bolts, 20x Adamantite Bar" },
       name: 'Engineering',
       title: 'Architect of the Future',
-      icon: <img src="/TBCPlus/images/icons/professions/engineering.png" alt="Engineering" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/engineering.png",
       image: 'https://i.imgur.com/kmLvKh4.jpeg',
       desc: 'Engineers are the visionary architects of the impossible, blending arcane volatility with mechanical precision. In Outland, where the laws of physics are fraying, Engineers do not merely build gadgets—they weaponize the very fabric of reality.\n\nFrom the chaotic, fel-infused workshops of Shadowmoon Valley to the sleek, mana-driven bio-domes of Netherstorm, the Engineer is a master of adaptation. Whether it is deploying a pocket-sized gravity well to crush a legion of demons or rewinding time itself to undo a fatal mistake, the modern Engineer is defined by a single creed: **"If it didn\'t explode, you didn\'t use enough power."**',
       philosophy: {
@@ -581,8 +904,8 @@ const TheArtisansCodex = () => {
             damage: '340 - 510',
             speed: '2.90',
             dps: '146.6',
-            stats: '+25 Agility',
-            effects: ['Equip: Increases attack power by 40.', 'Use: Fire a tactical nuke at the target area. Deals 3000 to 4000 Fire damage to all enemies in 10 yds. (10 Min Cooldown)'],
+            stats: '+45 Agility\n+30 Hit Rating',
+            effects: ['Equip: Increases attack power by 80.', 'Use: Fire a tactical nuke at the target area. Deals 4000 to 5000 Fire damage to all enemies in 10 yds. (10 Min Cooldown)'],
             flavor: "If brute force doesn't work, you aren't using enough.",
             icon: <img src="https://i.imgur.com/7suSoyA.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
@@ -631,8 +954,8 @@ const TheArtisansCodex = () => {
             ilvl: 164,
             slot: 'Trinket',
             unique: true,
-            stats: '+50 Intellect',
-            effects: ['Equip: Engineering cooldowns reduced by 20%.', 'Use: Rewind time 4 seconds, restoring your Health and Mana to their previous values. (5 Min Cooldown)'],
+            stats: '+75 Intellect',
+            effects: ['Equip: Engineering cooldowns reduced by 25%.', 'Use: Rewind time 4 seconds, restoring your Health and Mana to their previous values. (5 Min Cooldown)'],
             flavor: "Did that just happen? Or did it un-happen?",
             icon: <img src="https://i.imgur.com/hne8n9Q.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
@@ -640,7 +963,7 @@ const TheArtisansCodex = () => {
               description: "You aren't finding a trinket; you are building a time machine. Requires precision engineering, temporal stability, and a complete disregard for the laws of causality.",
               steps: [
                 // PHASE 1: TEMPORAL ANCHOR (T4)
-                { phase: "Phase 1: The Anchor", name: "Sands of Time", desc: "Sift through the sands of the Black Morass to find 20x 'Chronal Shruken Heads'." },
+                { phase: "Phase 1: The Anchor", name: "Sands of Time", desc: "Sift through the sands of the Black Morass to find 20x 'Chronal Shrunken Heads'." },
                 { name: "Bronze Framework", desc: "Craft the outer casing using 15x Khorium Bars and Hardened Adamantite." },
                 { name: "Raid: The Timelock", desc: "Disassemble Moroes's pocket watch to recover the 'Spring of Eternal Ticking'.", isRaid: true },
                 { name: "Raid: Gronn-Scale Case", desc: "Harvest 'Gronn-Hide' from Gruul to shield the device from physical impact.", isRaid: true },
@@ -683,8 +1006,8 @@ const TheArtisansCodex = () => {
             unique: true,
             armorType: 'Cloth',
             armor: '200',
-            stats: '+50 Stamina\n+50 Intellect',
-            effects: ['Equip: Slightly increases stealth detection.', 'Use: Project a Personal Force Field absorbing 5000 damage. Lasts 30 sec. (3 Min Cooldown)'],
+            stats: '+65 Stamina\n+65 Intellect',
+            effects: ['Equip: Massively increases stealth detection.', 'Use: Project a Personal Force Field absorbing 8000 damage. Lasts 30 sec. (3 Min Cooldown)'],
             flavor: "I can see... everything.",
             icon: <img src="https://i.imgur.com/2HcXIoa.jpeg" className="w-full h-full object-cover" alt="icon" />,
             questline: {
@@ -727,9 +1050,16 @@ const TheArtisansCodex = () => {
     },
     jewelcrafting: {
       id: 'jewelcrafting',
+      famousArtisan: { name: "Hamanar", title: "Grand Master", location: "Shattrath City" },
+      trainers: [
+        { name: "Alliance: Tatiana", loc: "Honor Hold" },
+        { name: "Horde: Kalinda", loc: "Thrallmar" },
+        { name: "Neutral: Hamanar", loc: "Aldor Rise" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "40x Golden Draenite, 40x Shadow Draenite, 20x Adamantite Powder" },
       name: 'Jewelcrafting',
       title: 'Shaper of Light',
-      icon: <img src="/TBCPlus/images/icons/professions/jewelcrafting.png" alt="Jewelcrafting" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/jewelcrafting.png",
       image: 'https://i.imgur.com/vERt1RC.jpeg',
       desc: 'Jewelcrafters cut the gems that power the heroes of Azeroth. They deal in precision, light, and the hidden power within stones.',
       philosophy: {
@@ -757,12 +1087,34 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Prism of Infinite Facets',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Trinket',
             unique: true,
             stats: '+3 Prismatic Sockets',
             effects: ['Equip: Increases the stat bonus of all gems socketed in this item by 20%.', 'Use: Swap the stats of your socketed gems for 1 minute. (5 Min Cooldown)'],
-            flavor: "Perfection is a process, not a destination."
+            flavor: "Perfection is a process, not a destination.",
+            questline: {
+              title: "The Perfect Cut",
+              description: "Light is infinite. A perfect diamond can trap it forever. You will cut a gem that contains a universe.",
+              steps: [
+                { phase: "Phase 1: Rough Stone", name: "Gruul", desc: "He is made of earth. Find the raw diamond." },
+                { name: "Raid: Aran", desc: "He knows magic. Learn to see the facets.", isRaid: true },
+                { name: "Raid: Prince Malchezaar", desc: "His treasure holds the tools.", isRaid: true },
+                { name: "Cutting", desc: "Make the first cut.", reward: "Rough Diamond Prism (Rare)" },
+                { phase: "Phase 2: Refraction", name: "Tempest Keep", desc: "The crystals here sing." },
+                { name: "Raid: Solarian", desc: "She is the Astromancer. Use her star map.", isRaid: true },
+                { name: "Raid: Al'ar", desc: "Fire polishes the stone.", isRaid: true },
+                { name: "Polishing", desc: "The gem begins to valid.", reward: "Polished Prism (Epic)" },
+                { phase: "Phase 3: Brilliance", name: "Hyjal", desc: "The light of the World Tree." },
+                { name: "Raid: Archimonde", desc: "Trap his shadow in the light.", isRaid: true },
+                { name: "Raid: Illidan", desc: "The Betrayer's vision.", isRaid: true },
+                { name: "Perfection", desc: "It is flawless.", reward: "Prism of Infinite Facets (T6 Epic)" },
+                { phase: "Phase 4: Infinity", name: "Sunwell", desc: "Infinite power." },
+                { name: "Raid: M'uru", desc: "The darken naaru.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Reflect his evil.", isRaid: true },
+                { name: "Master Cutter", desc: "You have cut the perfect gem." }
+              ]
+            }
           }
         },
         {
@@ -772,12 +1124,33 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'The Amulet of Lost Kings',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Neck',
             unique: true,
-            stats: '+45 Stamina\n+35 Critical Strike Rating',
+            stats: '+75 Stamina\n+50 Critical Strike Rating',
             effects: ['Equip: Your attacks have a chance to summon a Spectral Guardian to fight for you.', 'Use: Link your soul to a friendly target, transferring 20% of damage they take to you. (3 Min Cooldown)'],
-            flavor: "Heavy is the head, and the neck."
+            flavor: "Heavy is the head, and the neck.",
+            questline: {
+              title: "The Crown Jewels",
+              description: "Kings rise and fall. Their jewels remain. You will gather the lost regalia of Outland's fallen monarchs.",
+              steps: [
+                { phase: "Phase 1: The Prince", name: "Karazhan Chess", desc: "Win the game. Take the King piece." },
+                { name: "Raid: Prince Malchezaar", desc: "He is a prince. Take his ring.", isRaid: true },
+                { name: "Raid: Magtheridon", desc: " Lord of Outland.", isRaid: true },
+                { name: "Setting", desc: "Melt the gold.", reward: "Regal Amulet (Rare)" },
+                { phase: "Phase 2: The Queen", name: "Lady Vashj", desc: "Queen of the Naga." },
+                { name: "Raid: Vashj", desc: "Her crown jewels.", isRaid: true },
+                { name: "Raid: Kael'thas", desc: "The Sun King. His signet.", isRaid: true },
+                { name: "Crafting", desc: "Forge the amulet.", reward: "Royal Pendant (Epic)" },
+                { phase: "Phase 3: The Betrayer", name: "Black Temple", desc: "Lord of the Illidari." },
+                { name: "Raid: Illidan", desc: "His pendant.", isRaid: true },
+                { name: "Raid: Archimonde", desc: "Commander of the Legion.", isRaid: true },
+                { name: "Coronation", desc: "You are the king now.", reward: "The Amulet of Lost Kings (T6 Epic)" },
+                { phase: "Phase 4: The God", name: "Sunwell", desc: "The Deceiver." },
+                { name: "Raid: Kil'jaeden", desc: "Steal his power.", isRaid: true },
+                { name: "Legacy", desc: " Long live the king." }
+              ]
+            }
           }
         },
         {
@@ -787,21 +1160,54 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Focus of the Naaru',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Relic',
             unique: true,
-            stats: '+30 Spell Power',
-            effects: ['Prismatic Socket', 'Equip: Your class abilities have a chance to trigger "Light\'s Favor," restoring 300 mana or energy.'],
-            flavor: "It sings when you hold it."
+            stats: '+55 Spell Power\n+15 Mana per 5 sec',
+            effects: ['Prismatic Socket', 'Equip: Your class abilities have a chance to trigger "Light\'s Favor," restoring 600 mana or energy.'],
+            flavor: "It sings when you hold it.",
+            questline: {
+              title: "Shard of the Light",
+              description: "The Naaru are beings of pure energy. You will craft a setting to hold a shard of their very essence.",
+              steps: [
+                { phase: "Phase 1: The Steed", name: "Attumen", desc: "His mount is spectral. Take the essence." },
+                { name: "Raid: Maiden", desc: "She is pure virtue. Take a shard.", isRaid: true },
+                { name: "Raid: Nightbane", desc: "Darkness defines the light.", isRaid: true },
+                { name: "Crafting", desc: "Create the setting.", reward: "Glimmering Relic (Rare)" },
+                { phase: "Phase 2: The Ship", name: "Tempest Keep", desc: "Made of crystal." },
+                { name: "Raid: Al'ar", desc: "Phoenix fire.", isRaid: true },
+                { name: "Raid: Solarian", desc: "Star energy.", isRaid: true },
+                { name: "Infusion", desc: "Infuse with light.", reward: "Radiant Relic (Epic)" },
+                { phase: "Phase 3: The Tree", name: "Hyjal", desc: "Nature's light." },
+                { name: "Raid: Archimonde", desc: "Protect the light.", isRaid: true },
+                { name: "Raid: Illidan", desc: "Redeem the light.", isRaid: true },
+                { name: "Focus", desc: "The relic sings.", reward: "Focus of the Naaru (T6 Epic)" },
+                { phase: "Phase 4: The Fallen", name: "Sunwell", desc: "M'uru." },
+                { name: "Raid: M'uru", desc: "Restore him.", isRaid: true },
+                { name: "Raid: Kil'jaeden", desc: "Banish the dark.", isRaid: true },
+                { name: "Naaru", desc: "You are the light." }
+              ]
+            }
           }
         }
       ]
     },
     tailoring: {
       id: 'tailoring',
+      famousArtisan: { name: "Hama", title: "Grand Master", location: "Shattrath City" },
+      trainers: [
+        { name: "Alliance: Hama", loc: "Aldor Rise" },
+        { name: "Horde: Dalinna", loc: "Thrallmar" },
+        { name: "Neutral: Eralan", loc: "Scryer's Tier" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "120x Netherweave Cloth, 40x Arcane Dust, 10x Primal Mana" },
+      armorSets: [
+        { name: "Frozen Shadoweave", image: "https://i.imgur.com/0sgpPtf.jpeg", desc: "Shadow Dmg Set" },
+        { name: "Primal Mooncloth", image: "https://i.imgur.com/M2mFqxL.jpeg", desc: "Healing Set" }
+      ],
       name: 'Tailoring',
       title: 'Weaver of Magic',
-      icon: <img src="/TBCPlus/images/icons/professions/tailoring.png" alt="Tailoring" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/tailoring.png",
       image: 'https://i.imgur.com/0sgpPtf.jpeg',
       desc: 'Tailors are the weavers of reality, pulling threads from the very fabric of the Nether to stitch together garments of immense power. They do not merely clothe the heroes of Azeroth; they armor them in magic itself.\n\nFrom the void-soaked looms of Shadowmoon to the star-threads of the Netherstorm, the modern Tailor is a master of the arcane arts, capable of creating banners that turn the tide of war and cloaks that defy the laws of physics.',
       philosophy: {
@@ -813,8 +1219,8 @@ const TheArtisansCodex = () => {
         desc: 'The Loom is where magic meets form. Crafting quality relies on **Finesse**, the ability to weave spells into thread.\n\n**Masterwork (iLvl +3):** The fabric feels lighter, yet stronger. Enhanced stats.\n**Flawless (iLvl +7):** Shimmers with latent energy, as if the cloth itself is alive. Grants the highest possible stats and unique visual auras.'
       },
       raidUtility: [
-        { name: 'Banner of Arcane Warding', quality: 'epic', type: 'Deployable', desc: 'Unfurls a shimmering silk banner inscribed with abjuration runes. It pulses with protective energy, granting +100 All Resistances to all raid members within 30 yards for 15 seconds. Essential for surviving magical storms.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "A shield of silk.", effects: ["Use: Place a banner. +100 All Resist for 15 sec. (5 Min Cooldown)"] },
-        { name: 'Banner of Swift Threads', quality: 'epic', type: 'Deployable', desc: 'Plants a banner woven from wind-infused cloth. It whips violently in the air, inspiring allies and increasing attack and casting speed by 5% for all raid members within 30 yards. Lasts 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Wind in your sails.", effects: ["Use: Place a banner. +5% Haste for 15 sec. (5 Min Cooldown)"] },
+        { name: 'Banner of Arcane Warding', quality: 'epic', type: 'Deployable', desc: 'Unfurls a shimmering silk banner inscribed with abjuration runes. It pulses with protective energy, granting +100 All Resistances to all raid members within 30 yards for 15 seconds. Essential for surviving magical storms.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "A shield of silk.", effects: ["Use: Place a banner. +100 All Resist for 15 sec. (5 Min Cooldown)"] },
+        { name: 'Banner of Swift Threads', quality: 'epic', type: 'Deployable', desc: 'Plants a banner woven from wind-infused cloth. It whips violently in the air, inspiring allies and increasing attack and casting speed by 5% for all raid members within 30 yards. Lasts 15 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Wind in your sails.", effects: ["Use: Place a banner. +5% Haste for 15 sec. (5 Min Cooldown)"] },
         { name: 'Manaweave Net', quality: 'rare', type: 'Throwable', desc: 'Hurls a net woven from solidified mana at the target. It roots the enemy for 4 seconds and siphons 500 mana, transferring it to the caster.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Stick around.", effects: ["Use: Net target. Root 4s, Drain 500 Mana. (2 Min Cooldown)"] },
         { name: 'Magic Carpet', quality: 'epic', type: 'Mount', desc: 'Unrolls a luxurious, enchanted carpet capable of flight. It responds to the rider\'s mental commands, offering a smooth and stylish journey through the skies of Outland.', ilvl: 70, slot: 'Mount', stats: '', flavor: "A whole new world.", effects: ["Use: Summons a flying magic carpet. Requires Artisan Riding."] },
         { name: 'Bag of Endless Pockets', quality: 'epic', type: 'Container', desc: 'A deceptively small bag that utilizes non-Euclidean geometry to hold more items than should physically be possible. Contains 28 slots.', ilvl: 70, slot: 'Bag', stats: '', flavor: "It's bigger on the inside.", effects: ["Unique-Equipped."] },
@@ -829,13 +1235,13 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Mantle of the Void-Touched',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Back',
             unique: true,
             armorType: 'Cloth',
             armor: '180',
-            stats: '+35 Stamina\n+25 Intellect',
-            effects: ['Equip: Increases Shadow and Frost spell power by 65.', 'Equip: Your Shadow and Frost spells have a chance to summon a Void Tendril to fight for you.', 'Use: Fade into the void, instantly reducing your threat to zero. (3 Min Cooldown)'],
+            stats: '+60 Stamina\n+50 Intellect',
+            effects: ['Equip: Increases Shadow and Frost spell power by 95.', 'Equip: Your Shadow and Frost spells have a chance to summon a Void Tendril to fight for you.', 'Use: Fade into the void, instantly reducing your threat to zero. (3 Min Cooldown)'],
             flavor: "The darkness embraces you.",
             questline: {
               title: "Threads of the Void",
@@ -875,13 +1281,13 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Sunfire Drape of the Phoenix',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Back',
             unique: true,
             armorType: 'Cloth',
             armor: '180',
-            stats: '+35 Stamina\n+25 Intellect',
-            effects: ['Equip: Increases Fire and Arcane spell power by 65.', 'Equip: Your critical strikes have a chance to grant "Phoenix Fire," increasing casting speed by 20% for 10 sec.', 'Use: Rise from the ashes. Rebirth yourself with 50% health. (30 Min Cooldown)'],
+            stats: '+60 Stamina\n+50 Intellect',
+            effects: ['Equip: Increases Fire and Arcane spell power by 95.', 'Equip: Your critical strikes have a chance to grant "Phoenix Fire," increasing casting speed by 25% for 12 sec.', 'Use: Rise from the ashes. Rebirth yourself with 50% health. (30 Min Cooldown)'],
             flavor: "Burn brighter.",
             questline: {
               title: "The Phoenix's Plumage",
@@ -921,13 +1327,13 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Cloak of the Lunar Eclipse',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Back',
             unique: true,
             armorType: 'Cloth',
             armor: '180',
-            stats: '+40 Stamina\n+35 Intellect',
-            effects: ['Equip: Increases healing done by up to 110.', 'Equip: Your healing spells have a chance to grant the target "Starlight\'s Grace," healing them for 200 every sec for 10 sec.', 'Use: Instantly restore 2000 Mana to yourself and your target. (5 Min Cooldown)'],
+            stats: '+70 Stamina\n+60 Intellect',
+            effects: ['Equip: Increases healing done by up to 180.', 'Equip: Your healing spells have a chance to grant the target "Starlight\'s Grace," healing them for 300 every sec for 10 sec.', 'Use: Instantly restore 3000 Mana to yourself and your target. (5 Min Cooldown)'],
             flavor: "Elune guide you.",
             questline: {
               title: "The Moon's Grace",
@@ -964,9 +1370,16 @@ const TheArtisansCodex = () => {
     },
     inscription: {
       id: 'inscription',
+      famousArtisan: { name: "Professor Palin", title: "Darkmoon Faire", location: "Terokkar Forest" },
+      trainers: [
+        { name: "Alliance: Thoth", loc: "Exodar" },
+        { name: "Horde: Pained Soul", loc: "Silvermoon City" },
+        { name: "Neutral: Scribe Master", loc: "Shattrath Lower City" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "200x Alabaster Pigment, 100x Resilient Parchment" },
       name: 'Inscription',
       title: 'The Architect of Magic',
-      icon: <img src="/TBCPlus/images/icons/professions/inscription.png" alt="Inscription" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/inscription.png",
       image: 'https://i.imgur.com/bV47vOI.jpeg',
       desc: 'Scribes are the architects of magic, rewriting the laws of reality with ink and parchment. In TBC Plus, Inscription is reimagined as an ancient discipline revived by the Sha\'tar and the Blood Elves.\n\nFrom crafting powerful Darkmoon Cards that twist fate to inscribing Glyphs that fundamentally alter how spells function, Scribes are the silent authors of victory.',
       philosophy: {
@@ -978,8 +1391,8 @@ const TheArtisansCodex = () => {
         desc: 'Scribes manipulate magic through the purity of their ink and the steadiness of their hand. \n\n**Glyph Resonance:** Glyphs now come in three tiers of potency—**Standard**, **Ancient**, and **Primordial**. Higher tiers unlock new visual effects or deeper mechanical changes to spells, allowing for true customization of your class fantasy.'
       },
       raidUtility: [
-        { name: 'Scroll of Heroic Tales', quality: 'epic', type: 'Deployable', desc: 'Unfurls a scroll detailing the legendary deeds of ancient heroes. Reading it aloud inspires 20 raid members, granting the "Battle Shout" effect (+305 Attack Power) for 2 minutes.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Legends never die.", effects: ["Use: Inspires raid. +305 Attack Power. (5 Min Cooldown)"] },
-        { name: 'Rune of Warding', quality: 'epic', type: 'Deployable', desc: 'Draws a complex rune of protection on the ground. Allies standing within the rune take 15% reduced damage from Area of Effect spells. The rune fades after 20 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Stand your ground.", effects: ["Use: Place rune. -15% AoE Damage taken. (5 Min Cooldown)"] },
+        { name: 'Scroll of Heroic Tales', quality: 'epic', type: 'Deployable', desc: 'Unfurls a scroll detailing the legendary deeds of ancient heroes. Reading it aloud inspires 25 raid members, granting the "Battle Shout" effect (+305 Attack Power) for 2 minutes.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Legends never die.", effects: ["Use: Inspires raid. +305 Attack Power. (5 Min Cooldown)"] },
+        { name: 'Rune of Warding', quality: 'epic', type: 'Deployable', desc: 'Draws a complex rune of protection on the ground. Allies standing within the rune take 15% reduced damage from Area of Effect spells. The rune fades after 20 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Stand your ground.", effects: ["Use: Place rune. -15% AoE Damage taken. (5 Min Cooldown)"] },
         { name: 'Scroll of Recall', quality: 'uncommon', type: 'Consumable', desc: 'A single-use parchment inscribed with teleportation sigils. Reading it instantly transports the caster to their bound Hearthstone location.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "There and back again.", effects: ["Use: Teleport to Hearthstone location. (20 Min Cooldown)"] },
         { name: 'Scroll of Unlocking', quality: 'uncommon', type: 'Consumable', desc: 'A magically charged scroll capable of manipulating tumblers and wards. Unlocks any door or chest requiring up to 375 Lockpicking skill.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Knock knock.", effects: ["Use: Opens locked objects."] },
         { name: 'Contract of Vitality', quality: 'rare', type: 'Consumable', desc: 'A binding contract signed in blood. Instantly sacrifices 20% of the user\'s maximum health to conjure a pittance of gold coins.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Sign here.", effects: ["Use: Sacrifice 20% Life for Gold. (1 Hour Cooldown)"] },
@@ -994,15 +1407,15 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'The Quill of the Guardian',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Two-Hand',
             unique: true,
             armorType: 'Staff',
             damage: '150 - 290',
             speed: '2.40',
             dps: '91.6',
-            stats: '+60 Intellect\n+55 Stamina\n+45 Haste Rating',
-            effects: ['Equip: Increases spell power by 290.', 'Equip: Your spells have a chance to duplicate themselves at 50% effectiveness.', 'Use: Scribble a rune of power on the air, increasing damage done by 15% for 20 sec. (3 Min Cooldown)'],
+            stats: '+85 Intellect\n+75 Stamina\n+60 Haste Rating',
+            effects: ['Equip: Increases spell power by 345.', 'Equip: Your spells have a chance to duplicate themselves at 50% effectiveness.', 'Use: Scribble a rune of power on the air, increasing damage done by 20% for 20 sec. (3 Min Cooldown)'],
             flavor: "The pen is mightier.",
             questline: {
               title: "The Guardian's Legacy",
@@ -1042,11 +1455,11 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'The Deck of Fates',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Trinket',
             unique: true,
-            stats: '+55 Strength\n+55 Agility\n+55 Intellect',
-            effects: ['Equip: Every 10 sec, you draw a card granting a random secondary stat buff.', 'Use: Force a "Joker" card, activating all possible buffs for 10 sec. (2 Min Cooldown)'],
+            stats: '+75 All Primary Stats',
+            effects: ['Equip: Every 10 sec, you draw a card granting a random secondary stat buff (Crit, Haste, Expertise).', 'Use: Force a "Joker" card, activating all possible buffs for 15 sec. (2 Min Cooldown)'],
             flavor: "Pick a card. Any card.",
             questline: {
               title: "The Hand of Fate",
@@ -1086,15 +1499,15 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Brush of Reality',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Main Hand',
             unique: true,
             armorType: 'Dagger',
             damage: '105 - 180',
             speed: '1.80',
             dps: '79.2',
-            stats: '+40 Stamina\n+40 Intellect',
-            effects: ['Equip: Increases healing done by up to 550.', 'Equip: Your Glyphs are 10% more effective.', 'Use: Rewrite an enemy\'s fate, dispelling all magical buffs on them. (1 Min Cooldown)'],
+            stats: '+60 Stamina\n+60 Intellect',
+            effects: ['Equip: Increases healing done by up to 700.', 'Equip: Your Glyphs are 15% more effective.', 'Use: Rewrite an enemy\'s fate, dispelling all magical buffs on them. (1 Min Cooldown)'],
             flavor: "Art is subjective.",
             questline: {
               title: "The Art of War",
@@ -1131,9 +1544,16 @@ const TheArtisansCodex = () => {
     },
     mining: {
       id: 'mining',
+      famousArtisan: { name: "Foreman Gritz", title: "Deep Miner", location: "Hellfire Citadel Mines" },
+      trainers: [
+        { name: "Alliance: Hurnak Grimord", loc: "Honor Hold" },
+        { name: "Horde: Makaru", loc: "Thrallmar" },
+        { name: "Neutral: Gelber", loc: "Honor Hold Mine (Outside)" }
+      ],
+      shoppingList: { title: "Prospector's Kit", mats: "100x Fel Iron Ore, 40x Adamantite Ore, 20x Khorium Ore" },
       name: 'Mining',
       title: 'Earth-Warder\'s Codex',
-      icon: <img src="/TBCPlus/images/icons/professions/mining.png" alt="Mining" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/mining.png",
       image: 'https://i.imgur.com/HeAA9bY.jpeg',
       desc: 'Miners act as battlefield engineers, constructing barricades and finding weaknesses in the earth itself.',
       philosophy: {
@@ -1149,25 +1569,25 @@ const TheArtisansCodex = () => {
         desc: "Your hardened skin and tireless endurance grant you **+60 Stamina**."
       },
       raidUtility: [
-        { name: 'Earthen Barricade', quality: 'epic', type: 'Deployable', desc: 'Conjures a massive, destructible wall of stone from the ground. It completely blocks line of sight, providing critical cover for the raid. Lasts 20 seconds or until destroyed.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Hold the line.", effects: ["Use: Summons a LoS-blocking wall. (5 Min Cooldown)"] },
-        { name: 'Smelting Brazier', quality: 'epic', type: 'Deployable', desc: 'Deploys a portable forge burning with intense heat. Nearby allies can interact with the brazier to temper their weapons, gaining +100 Attack Power for 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Fresh from the forge.", effects: ["Use: Place brazier. Interaction grants +100 AP. (5 Min Cooldown)"] },
+        { name: 'Earthen Barricade', quality: 'epic', type: 'Deployable', desc: 'Conjures a massive, destructible wall of stone from the ground. It completely blocks line of sight, providing critical cover for the raid. Lasts 20 seconds or until destroyed.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Hold the line.", effects: ["Use: Summons a LoS-blocking wall. (5 Min Cooldown)"] },
+        { name: 'Smelting Brazier', quality: 'epic', type: 'Deployable', desc: 'Deploys a portable forge burning with intense heat. Nearby allies can interact with the brazier to temper their weapons, gaining +100 Attack Power for 15 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Fresh from the forge.", effects: ["Use: Place brazier. Interaction grants +100 AP. (5 Min Cooldown)"] },
         { name: 'Seismic Charge', quality: 'rare', type: 'Explosive', desc: 'Plants a shaped charge that detonates with a controlled seismic shock. The blast instantly clears all Fear and Stun effects from the user.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Ground shaking.", effects: ["Use: Break Fear and Stun. (5 Min Cooldown)"] },
         { name: 'Miner\'s Canary', quality: 'uncommon', type: 'Deployable', desc: 'Deploys a small cage containing a sensitive canary. The bird chirps frantically if any stealthed or invisible enemies venture within 20 yards.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Chirp chirp.", effects: ["Use: Detect Stealth nearby."] },
         { name: 'Thermal Vent', quality: 'rare', type: 'Deployable', desc: 'Drills a bore-hole into a subterranean steam pocket. The venting steam knocks the first enemy to cross it high into the air, disrupting their movement.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Place a knock-up trap. (2 Min Cooldown)"] },
-        { name: 'Rock Elemental Geode', quality: 'ref', type: 'Consumable', desc: 'Crushes a rare geode to release a bound Rock Elemental. This sturdy guardian taunts nearby enemies and fights for the miner for 1 minute.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "A loyal friend.", effects: ["Use: Summon Rock Elemental Guardian. (10 Min Cooldown)"] }
+        { name: 'Rock Elemental Geode', quality: 'epic', type: 'Consumable', desc: 'Crushes a rare geode to release a bound Rock Elemental. This sturdy guardian taunts nearby enemies and fights for the miner for 1 minute.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "A loyal friend.", effects: ["Use: Summon Rock Elemental Guardian. (10 Min Cooldown)"] }
       ],
       masterwork: {
         name: 'The Core-Hound\'s Toothpick',
         quality: 'legendary',
-        ilvl: 164,
+        ilvl: 154,
         slot: 'Main Hand',
         unique: true,
         armorType: 'Axe',
         damage: '205 - 310',
         speed: '2.60',
         dps: '99.0',
-        stats: '+35 Strength\n+35 Stamina',
-        effects: ['Equip: Increases Mining skill by 20.', 'Equip: Allows you to mine deposits while mounted.', 'Use: Strike the earth to unearth a "Volcanic Geode" containing rare gems. (10 Min Cooldown)'],
+        stats: '+55 Strength\n+55 Stamina',
+        effects: ['Equip: Increases Mining skill by 25.', 'Equip: Allows you to mine deposits while mounted.', 'Use: Strike the earth to unearth a "Volcanic Geode" containing rare gems. (10 Min Cooldown)'],
         flavor: "Sharp enough to pick a dragon's teeth.",
         questline: {
           title: "The Earth-Warder's Path",
@@ -1207,9 +1627,16 @@ const TheArtisansCodex = () => {
     },
     skinning: {
       id: 'skinning',
+      famousArtisan: { name: "Hemet Nesingwary", title: "The Big Game Hunter", location: "Nagrand" },
+      trainers: [
+        { name: "Alliance: Jelena Nightstar", loc: "Honor Hold" },
+        { name: "Horde: Moorutu", loc: "Thrallmar" },
+        { name: "Neutral: Seymour", loc: "Shattrath City" }
+      ],
+      shoppingList: { title: "Tanner's Bundle", mats: "200x Knothide Leather Scraps, 50x Knothide Leather, 20x Thick Clefthoof Leather" },
       name: 'Skinning',
       title: 'Hunter\'s Compendium',
-      icon: <img src="/TBCPlus/images/icons/professions/skinning.png" alt="Skinning" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/skinning.png",
       image: 'https://i.imgur.com/2KkDULp.jpeg',
       desc: 'Skinning is now about trophy hunting, harvesting organs for alchemy, and tracking legendary beasts.',
       philosophy: {
@@ -1225,8 +1652,8 @@ const TheArtisansCodex = () => {
         desc: "Your knowledge of critical weak points grants you **+40 Critical Strike Rating**."
       },
       raidUtility: [
-        { name: 'War Horn of the Wilds', quality: 'epic', type: 'Deployable', desc: 'Places a resonant primal horn on the battlefield. When sounded by an ally, it unleashes a guttural roar that inspires bloodlust, granting +5% Physical Critical Strike chance to the party for 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "The hunt begins.", effects: ["Use: Place War Horn. Interaction grants +5% Phys Crit. (5 Min Cooldown)"] },
-        { name: 'Pheromone Marker', quality: 'epic', type: 'Throwable', desc: 'Hurls a vial of concentrated pheromones at the target. The scent marks them as prey, increasing all Physical damage taken by the target by 5% for 20 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "They can't hide.", effects: ["Use: Mark target. Enemies take +5% Phys Damage. (5 Min Cooldown)"] },
+        { name: 'War Horn of the Wilds', quality: 'epic', type: 'Deployable', desc: 'Places a resonant primal horn on the battlefield. When sounded by an ally, it unleashes a guttural roar that inspires bloodlust, granting +5% Physical Critical Strike chance to the party for 15 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "The hunt begins.", effects: ["Use: Place War Horn. Interaction grants +5% Phys Crit. (5 Min Cooldown)"] },
+        { name: 'Pheromone Marker', quality: 'epic', type: 'Throwable', desc: 'Hurls a vial of concentrated pheromones at the target. The scent marks them as prey, increasing all Physical damage taken by the target by 5% for 20 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "They can't hide.", effects: ["Use: Mark target. Enemies take +5% Phys Damage. (5 Min Cooldown)"] },
         { name: 'Hide of the Beast', quality: 'rare', type: 'Consumable', desc: 'Drapes a magically treated hide over the user, engaging a powerful camouflage to reduce detection radius. Persists for 10 minutes or until an aggressive action is taken.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Blend in.", effects: ["Use: Greatly reduce aggro radius. (10 Min Cooldown)"] },
         { name: 'Beast Lure', quality: 'uncommon', type: 'Deployable', desc: 'Sets up a musk-scented lure that attracts all neutral and aggressive beasts within 50 yards. Useful for pulling specific camps or creating a distraction.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Here kitty kitty.", effects: ["Use: Attracts nearby beasts. (5 Min Cooldown)"] },
         { name: 'Scent Mask', quality: 'rare', type: 'Consumable', desc: 'Applies a pungent paste that masks the user\'s natural scent. Reduces the range at which enemies can detect you for 10 minutes. Persists through water.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "You smell like nothing.", effects: ["Use: Reduce enemy detection range."] },
@@ -1235,11 +1662,11 @@ const TheArtisansCodex = () => {
       masterwork: {
         name: 'Ak\'tar\'s Primal Heart',
         quality: 'legendary',
-        ilvl: 164,
+        ilvl: 154,
         slot: 'Trinket',
         unique: true,
-        stats: '+120 Attack Power',
-        effects: ['Equip: Allows the tracking of Hidden Beasts.', 'Use: Consume the essence of the heart, transforming into a Primal Stalker. Increases damage by 15% and run speed by 30% for 20 sec. (5 Min Cooldown)'],
+        stats: '+180 Attack Power',
+        effects: ['Equip: Allows the tracking of Hidden Beasts.', 'Use: Consume the essence of the heart, transforming into a Primal Stalker. Increases damage by 20% and run speed by 40% for 20 sec. (5 Min Cooldown)'],
         flavor: "Still beating.",
         questline: {
           title: "The Ultimate Hunt",
@@ -1279,9 +1706,16 @@ const TheArtisansCodex = () => {
     },
     herbalism: {
       id: 'herbalism',
+      famousArtisan: { name: "Ruada", title: "Keeper of the Grove", location: "Cenarion Refuge" },
+      trainers: [
+        { name: "Alliance: Rorelien", loc: "Honor Hold" },
+        { name: "Horde: Ruak Stronghorn", loc: "Thrallmar" },
+        { name: "Neutral: Flora Silverleaf", loc: "Cenarion Expedition" }
+      ],
+      shoppingList: { title: "Botanist's Pack", mats: "60x Felweed, 40x Dreaming Glory, 20x Mana Thistle" },
       name: 'Herbalism',
       title: 'The Emerald Compendium',
-      icon: <img src="/TBCPlus/images/icons/professions/herbalism.png" alt="Herbalism" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/herbalism.png",
       image: 'https://i.imgur.com/klgJfWJ.jpeg',
       desc: 'Herbalists manipulate the battlefield with rapid-growth flora, creating cover and cleansing zones.',
       philosophy: {
@@ -1297,8 +1731,8 @@ const TheArtisansCodex = () => {
         desc: "Your connection to nature grants **+2000 Health Regeneration** over 5 sec (Passive) and **+40 Healing/Spell Power**."
       },
       raidUtility: [
-        { name: 'Field of Cleansing Moss', quality: 'epic', type: 'Deployable', desc: 'Rapidly grows a patch of purified moss. Allies standing within the area are cleansed of one Poison and one Disease effect every 2 seconds. Lasts 15 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Pure ground.", effects: ["Use: Grow moss. Cleanses Poison/Disease AoE. (5 Min Cooldown)"] },
-        { name: 'Thicket of Obscuring Growth', quality: 'epic', type: 'Deployable', desc: 'Seeds a dense, magical thicket that instantly obscures vision. Allies standing inside have their threat reduced by 10% per second. Lasts 10 seconds.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "Fade into the green.", effects: ["Use: Grow thicket. Reduces threat/aggro. (5 Min Cooldown)"] },
+        { name: 'Field of Cleansing Moss', quality: 'epic', type: 'Deployable', desc: 'Rapidly grows a patch of purified moss. Allies standing within the area are cleansed of one Poison and one Disease effect every 2 seconds. Lasts 15 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Pure ground.", effects: ["Use: Grow moss. Cleanses Poison/Disease AoE. (5 Min Cooldown)"] },
+        { name: 'Thicket of Obscuring Growth', quality: 'epic', type: 'Deployable', desc: 'Seeds a dense, magical thicket that instantly obscures vision. Allies standing inside have their threat reduced by 10% per second. Lasts 10 seconds.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "Fade into the green.", effects: ["Use: Grow thicket. Reduces threat/aggro. (5 Min Cooldown)"] },
         { name: 'Sun-Touched Petal', quality: 'rare', type: 'Consumable', desc: 'Consumes a petal infused with solar energy. The rush of warmth increases movement speed by 20% for 10 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Photosynthesis.", effects: ["Use: +20% Speed for 10 sec. (2 Min Cooldown)"] },
         { name: 'Spore Cloud', quality: 'rare', type: 'Throwable', desc: 'Hurls a volatile mushroom that ruptures on impact. The releasing cloud disorients all enemies within 5 yards for 3 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Choke on it.", effects: ["Use: Disorient enemies in 5 yds. (2 Min Cooldown)"] },
         { name: 'Dreamfoil Essence', quality: 'rare', type: 'Consumable', desc: 'Drags the essence from a Dreamfoil leaf. Drinking it creates a lucid state, restoring 1500 mana over 10 seconds. Effect is broken by damage.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Liquid dreams.", effects: ["Use: Restore 1500 Mana. (2 Min Cooldown)"] },
@@ -1307,11 +1741,11 @@ const TheArtisansCodex = () => {
       masterwork: {
         name: 'Verdant Keeper\'s Charm',
         quality: 'legendary',
-        ilvl: 164,
+        ilvl: 154,
         slot: 'Trinket',
         unique: true,
-        stats: '+65 Spirit',
-        effects: ['Equip: Grants a chance to find additional herbs when gathering.', 'Use: Summon a Tranquil Treant for 30 sec that pulses healing to your party. (5 Min Cooldown)'],
+        stats: '+85 Spirit\n+40 Intellect',
+        effects: ['Equip: Grants a chance to find additional herbs when gathering.', 'Use: Summon a Tranquil Treant for 45 sec that pulses healing to your party. (5 Min Cooldown)'],
         flavor: "Life finds a way.",
         questline: {
           title: "The World-Seed",
@@ -1332,7 +1766,7 @@ const TheArtisansCodex = () => {
             // PHASE 3: THE DREAM (T6)
             { phase: "Phase 3: The Dream", name: "Nordrassil", desc: "Graft a branch of Nordrassil (Mount Hyjal) onto your plant." },
             { name: "Raid: Archimonde", desc: "Defend the graft from the Defiler.", isRaid: true },
-            { name: "Raid: Illidan", desc: "Cleansse the 'Corrupted Earth' of Shadowmoon using the plant.", isRaid: true },
+            { name: "Raid: Illidan", desc: "Cleanse the 'Corrupted Earth' of Shadowmoon using the plant.", isRaid: true },
             { name: "Symbiosis", desc: "You are one with the dream.", reward: "Verdant Keeper's Charm (T6 Epic)" },
 
             // PHASE 4: SUNLIGHT (SWP)
@@ -1351,9 +1785,20 @@ const TheArtisansCodex = () => {
     },
     leatherworking: {
       id: 'leatherworking',
+      famousArtisan: { name: "Darmari", title: "Grand Master", location: "Shattrath" },
+      trainers: [
+        { name: "Alliance: Brumman", loc: "Honor Hold" },
+        { name: "Horde: Barim", loc: "Thrallmar" },
+        { name: "Neutral: Darmari", loc: "Lower City" }
+      ],
+      shoppingList: { title: "Grand Master Kit", mats: "200x Knothide Leather, 40x Fel Scales, 20x Primal Earth" },
+      armorSets: [
+        { name: "Windscale Armor", image: "https://i.imgur.com/2KkDULp.jpeg", desc: "Nature Res Mail" },
+        { name: "Nethercleft Armor", image: "https://i.imgur.com/HeAA9bY.jpeg", desc: "Tanking Leather" }
+      ],
       name: 'Leatherworking',
       title: 'The Primal Pact',
-      icon: <img src="/TBCPlus/images/icons/professions/leatherworking.png" alt="Leatherworking" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/leatherworking.png",
       image: 'https://i.imgur.com/ZNgl6A4.jpeg',
       desc: 'Leatherworking is now about "Primal Rhythms"—powerful, exclusive buffs that force a choice.',
       philosophy: {
@@ -1365,7 +1810,7 @@ const TheArtisansCodex = () => {
         desc: 'The beat of the drum echoes the heartbeat of the land. You can only attune your soul to **ONE** Rhythm at a time, defining your role in the raid:\n\n**Drums of the Primal Hunt:** A frantic beat that drives allies to attack with blinding speed (Haste).\n**Drums of the Earth Warder:** A deep, slow rhythm that hardens skin and resolve (Armor/Stamina).\n**Drums of the Serpent:** A flowing, liquid rhythm that refreshes the mind (Mana/Spirit).'
       },
       raidUtility: [
-        { name: 'Drums of War', quality: 'epic', type: 'Consumable', desc: 'Increases melee, ranged, and spell casting speed by 5% for all party members. Lasts 30 sec.', ilvl: 141, slot: 'Consumable', stats: '', flavor: "The rhythm of conquerors.", effects: ["Use: +5% Haste for 30 sec (2 Min Cooldown)."] },
+        { name: 'Drums of War', quality: 'epic', type: 'Consumable', desc: 'Increases melee, ranged, and spell casting speed by 5% for all raid members. Lasts 30 sec.', ilvl: 115, slot: 'Consumable', stats: '', flavor: "The rhythm of conquerors.", effects: ["Use: +5% Haste for 30 sec (2 Min Cooldown). Causes Tinnitus."] },
         { name: 'Primal Rhythms', quality: 'epic', type: 'Ability', desc: 'Grants access to the Primal Rhythms. Activating this ability applies a raid-wide buff determined by your specialization (Haste, Armor, or Mana).', ilvl: 70, slot: 'Ability', stats: '', flavor: "The beat of war.", effects: ["Use: Grants a powerful raid-wide buff. (5 Min Cooldown)"] },
         { name: 'Leather Tents', quality: 'rare', type: 'Deployable', desc: 'Deploys a finely stitched leather tent. Allies resting inside gain the "Rested" status immediately, allowing for rapid logouts and health regeneration.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Home is where you pitch it.", effects: ["Use: Deploys a tent. Grant Rested + HP Regen."] },
         { name: 'Drums of Panic', quality: 'rare', type: 'Consumable', desc: 'Beats a terrifying rhythm on drums of flayed skin. The sound induces primal fear in up to 5 nearby enemies, causing them to flee for 2 seconds.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Run away!", effects: ["Use: AoE Fear (5 targets) for 2 sec. (5 Min Cooldown)"] },
@@ -1380,13 +1825,13 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Bindings of the Dragonflight',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Wrist',
             unique: true,
             armorType: 'Mail',
             armor: '550',
-            stats: '+40 Strength\n+40 Intellect',
-            effects: ['Equip: Reduces magic damage taken by 5%.', 'Use: Breath of the Dragon - Unleash a cone of elemental damage based on your highest resistance. (2 Min Cooldown)'],
+            stats: '+60 Strength\n+60 Intellect',
+            effects: ['Equip: Reduces magic damage taken by 8%.', 'Use: Breath of the Dragon - Unleash a cone of elemental damage based on your highest resistance. (2 Min Cooldown)'],
             flavor: "Hardened by fire.",
             questline: {
               title: "The Dragonstalker",
@@ -1426,13 +1871,13 @@ const TheArtisansCodex = () => {
           legendary: {
             name: 'Storm-Caller\'s Grips',
             quality: 'legendary',
-            ilvl: 164,
+            ilvl: 154,
             slot: 'Hands',
             unique: true,
             armorType: 'Mail',
             armor: '600',
-            stats: '+45 Agility\n+45 Intellect',
-            effects: ['Equip: Your attacks have a chance to trigger Chain Lightning.', 'Use: Summon a localized storm cloud, dealing Nature damage to all enemies in 10 yards. (3 Min Cooldown)'],
+            stats: '+65 Agility\n+65 Intellect',
+            effects: ['Equip: Your attacks have a chance to trigger Chain Lightning.', 'Use: Summon a localized storm cloud, dealing massive Nature damage to all enemies in 10 yards. (3 Min Cooldown)'],
             flavor: "Ride the lightning.",
             questline: {
               title: "Thunderstruck",
@@ -1477,8 +1922,8 @@ const TheArtisansCodex = () => {
             unique: true,
             armorType: 'Leather',
             armor: '300',
-            stats: '+45 Agility\n+45 Stamina',
-            effects: ['Equip: Critical strikes grant a stack of "Primal Fury". At 5 stacks, your next special attack unleashes a Spirit Beast strike.', 'Use: Call of the Wild - Increases Agility by 150 for 15 sec. (5 Min Cooldown)'],
+            stats: '+65 Agility\n+65 Stamina',
+            effects: ['Equip: Critical strikes grant a stack of "Primal Fury". At 5 stacks, your next special attack unleashes a Spirit Beast strike.', 'Use: Call of the Wild - Increases Agility by 200 for 20 sec. (5 Min Cooldown)'],
             flavor: "Hunt or be hunted.",
             questline: {
               title: "The Pack Leader",
@@ -1515,9 +1960,16 @@ const TheArtisansCodex = () => {
     },
     fishing: {
       id: 'fishing',
+      famousArtisan: { name: "Nat Pagle", title: "Master Angler", location: "Pagle's Point" },
+      trainers: [
+        { name: "Alliance: Diktynna", loc: "Honor Hold" },
+        { name: "Horde: Lui'mala", loc: "Thrallmar" },
+        { name: "Neutral: Old Man Barlo", loc: "Shattrath City" }
+      ],
+      shoppingList: { title: "Angler's Tackle", mats: "100x Barbed Gill Trout, 40x Spotted Feltail, 1x Huge Spotted Feltail" },
       name: 'Fishing',
       title: 'The Angler\'s Almanac',
-      icon: <img src="/TBCPlus/images/icons/professions/fishing.png" alt="Fishing" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/fishing.png",
       image: 'https://i.imgur.com/gqzTA4j.jpeg',
       desc: 'Fishing is now an active sport with a "Fighting Fish" mini-game and deep-sea leviathans. It offers **Environmental Manipulation** mechanics to stealth past enemies or save allies.',
       philosophy: {
@@ -1543,7 +1995,7 @@ const TheArtisansCodex = () => {
         damage: '200 - 300',
         speed: '3.00',
         dps: '83.3',
-        stats: '+50 Fishing Skill',
+        stats: '+50 Fishing Skill\n+60 Stamina',
         effects: ['Equip: Water Walking.', 'Use: Cast "Recall", teleporting you to your hearthstone location. (30 Min Cooldown)'],
         flavor: "Wait for it...",
         questline: {
@@ -1584,9 +2036,16 @@ const TheArtisansCodex = () => {
     },
     firstaid: {
       id: 'firstaid',
+      famousArtisan: { name: "Doctor Gregory", title: "Chief Surgeon", location: "Theramore (Lore)" },
+      trainers: [
+        { name: "Alliance: Burko", loc: "Temple of Telhamat" },
+        { name: "Horde: Aresella", loc: "Falcon Watch" },
+        { name: "Neutral: Mildred", loc: "Shattrath City" }
+      ],
+      shoppingList: { title: "Field Medic Supply", mats: "120x Netherweave Cloth, 40x Heavy Netherweave Bandage" },
       name: 'First Aid',
       title: 'Combat Medic\'s Codex',
-      icon: <img src="/TBCPlus/images/icons/professions/firstaid.png" alt="First Aid" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/firstaid.png",
       image: 'https://i.imgur.com/NUZb092.jpeg',
       desc: 'First Aid is no longer just bandages. It is **Battlefield Triage**. We have introduced "Active Trauma Management" with effects that are usable in combat and by non-healers.',
       philosophy: {
@@ -1608,8 +2067,8 @@ const TheArtisansCodex = () => {
         ilvl: 164,
         slot: 'Trinket',
         unique: true,
-        stats: '+65 Spirit',
-        effects: ['Equip: Increases the healing of your bandages by 30%.', 'Use: "Hippocratic Oath" - Prevents death from damage that would normally kill you, instead restoring you to 20% HP. (5 Min Cooldown)'],
+        stats: '+85 Spirit\n+45 Intellect',
+        effects: ['Equip: Increases the healing of your bandages by 40%.', 'Use: "Hippocratic Oath" - Prevents death from damage that would normally kill you, instead restoring you to 30% HP. (5 Min Cooldown)'],
         flavor: "Do no harm.",
         questline: {
           title: "The Universal Cure",
@@ -1649,9 +2108,16 @@ const TheArtisansCodex = () => {
     },
     cooking: {
       id: 'cooking',
+      famousArtisan: { name: "The Rokk", title: "Master Chef", location: "Shattrath City" },
+      trainers: [
+        { name: "Alliance: Gaston", loc: "Honor Hold" },
+        { name: "Horde: Baxter", loc: "Thrallmar" },
+        { name: "Neutral: The Rokk", loc: "Shattrath City" }
+      ],
+      shoppingList: { title: "Chef's Pantry", mats: "20x Clefthoof Meat, 20x Warp Flesh, 50x Nagrand Cherry" },
       name: 'Cooking',
       title: 'The Gourmand\'s Lexicon',
-      icon: <img src="/TBCPlus/images/icons/professions/cooking.png" alt="Cooking" className="w-[18px] h-[18px] object-contain" />,
+      icon: "/TBCPlus/images/icons/professions/cooking.png",
       image: 'https://i.imgur.com/fJYnwk5.jpeg',
       desc: 'Cooking becomes a social pillar. **"The Hearth\'s Morale"** encourages social interaction with deployed feasts and interactive buff sharing.',
       philosophy: {
@@ -1673,8 +2139,8 @@ const TheArtisansCodex = () => {
         ilvl: 164,
         slot: 'Trinket',
         unique: true,
-        stats: '+40 All Stats',
-        effects: ['Use: "Taste of Argus" - Increases all primary stats by 5% for 15 sec. Acts as a food buff override. (10 Min Cooldown)'],
+        stats: '+55 All Stats',
+        effects: ['Use: "Taste of Argus" - Increases all primary stats by 8% for 20 sec. Acts as a food buff override. (10 Min Cooldown)'],
         flavor: "A dash of magic.",
         questline: {
           title: "The Lost Recipes",
@@ -1711,6 +2177,110 @@ const TheArtisansCodex = () => {
         { name: 'Brewer', title: 'Potent Potables', desc: '**Perk:** "Strong Stomach" reduces drunk effects.' },
         { name: 'Artisan', title: 'Perfectionist', desc: '**Perk:** "The Perfect Meal" creates "mini-flask" foods.' }
       ]
+    },
+    thievery: {
+      id: 'thievery',
+      famousArtisan: { name: "The Shadow", title: "Grandmaster Thief", location: "Lower City, Shattrath" },
+      trainers: [
+        { name: "Alliance: The Unseen", loc: "Stormwind (Lore)" },
+        { name: "Horde: The Ghost", loc: "Orgrimmar (Lore)" },
+        { name: "Neutral: Griftah", loc: "Lower City" }
+      ],
+      shoppingList: { title: "Burglar's Kit", mats: "1x Titanium Skeleton Key, 20x Flash Powder, 10x Blinding Dust" },
+      name: 'Thievery',
+      title: 'Shadow Economy',
+      icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_note_02.jpg",
+      image: "https://i.imgur.com/e3gT4gJ.jpeg",
+      desc: 'Lockpicking is no longer just a utility skill; it is a full-fledged "Shadow Profession". Rogues (and Engineers with skeleton keys) can now undertake **Heists**, crack high-security vaults, and sell their services on the black market.',
+      philosophy: {
+        tbc: "**The 2007 Landscape:** \nLockpicking was leveled by clicking boxes in a tower for 3 hours. Once maxed, it opened the occasional dungeon door or junkbox. It wasn't a profession; it was a chore.",
+        plus: "**The Vision for Plus:** \nThievery is a game within a game. \n\n1. **The Safe-Cracking Minigame:** Opening a high-level vault now requires listening to tumblers (audio cues) and finding the \\\"sweet spot\\\". \n2. **Heist Contracts:** Players can pick up daily \\\"Contracts\\\" from the Shadows in Shattrath. \\\"Steal the Commander's Badge from inside Gruul's Lair without being seen.\\\"\n3. **Black Market:** Stolen goods can be fenced for \\\"Shadow Coins\\\", a currency used to buy exclusive rogue-themed cosmetics and stealth consumables."
+      },
+      coreSystem: {
+        title: 'Heist Mechanics',
+        desc: 'The shadows are your workshop. \n\n**Heat Level:** Committing crimes (getting caught pickpocketing, tripping alarms) raises your "Heat". At high Heat, guards will attack you on sight even in neutral cities.\n**Fencing:** Stolen "Grey" items like *Pocket Lint* or *Shiny Baubles* are no longer vendor trash. They are "Hot Goods" to be sold to specific Fences for 5x their normal value.'
+      },
+      raidUtility: [
+        { name: 'Skeleton Key Set', quality: 'epic', type: 'Tool', desc: 'A masterwork set of picks. Allows opening of locks up to skill 400. (Requires Thievery or Engineering).', ilvl: 70, slot: 'Main Hand', stats: '', flavor: "Open sesame.", effects: ["Passive: +25 Lockpicking Skill."] },
+        { name: 'Smoke Bomb', quality: 'rare', type: 'Consumable', desc: 'Smashes a vial of thick chemicals, creating a cloud of smoke for 10 seconds. Enemies outside the smoke cannot target allies inside. Enemies inside are silenced.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Ninja vanish!", effects: ["Use: Create LoS smoke cloud. (5 Min Cooldown)"] },
+        { name: 'Grappling Hook', quality: 'rare', type: 'Tool', desc: 'A sturdy iron hook with 30 yards of rope. Allows climbing of designated walls in dungeons and raids to bypass trash packs.', ilvl: 1, slot: 'Tool', stats: '', flavor: "Going up.", effects: ["Use: Climb wall."] },
+        { name: 'Dossier: High Value Target', quality: 'uncommon', type: 'Contract', desc: 'Reveals the potential loot table of a humanoid target before you pickpocket them. "Knowledge is profit."', ilvl: 1, slot: 'Consumable', stats: '', flavor: "Checking the list.", effects: ["Use: Assess target's pockets."] },
+        { name: 'Bag of Counterfeit Gold', quality: 'rare', type: 'Consumable', desc: 'A heavy sack filled with painted lead coins. Can be thrown to distract guards or bribe greedy humanoids to look the other way for 1 minute.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Fools gold.", effects: ["Use: Bribe or Distract."] }
+      ],
+      specs: [
+        { name: 'Burglar', title: 'Infiltrator', desc: '**Perk:** "Ghost Walk" increases stealth movement speed.' },
+        { name: 'Fence', title: 'Merchant', desc: '**Perk:** "Silver Tongue" sells stolen goods for +20% value.' },
+        { name: 'Safecracker', title: 'Technician', desc: '**Perk:** "Tumbler Master" auto-opens boxes < Skill 300.' }
+      ]
+    },
+    survival: {
+      id: 'survival',
+      famousArtisan: { name: "Stalker Og'orp", title: "Wilderness Expert", location: "Blade's Edge Mountains" },
+      trainers: [
+        { name: "Alliance: Tracker Val'zon", loc: "Telhamat" },
+        { name: "Horde: Hunter Kagg", loc: "Garadar" },
+        { name: "Neutral: Hemet Nesingwary", loc: "Nagrand" }
+      ],
+      shoppingList: { title: "Survivalist's Gear", mats: "5x Flint and Tinder, 10x Simple Wood, 20x Heavy Leather" },
+      name: 'Survival',
+      title: 'Wilderness Expert',
+      icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_clothscrap_05.jpg",
+      image: "https://i.imgur.com/uTlkQeP.jpeg",
+      desc: 'Survival is a new **Secondary Profession** available to everyone. It is essential for navigating the harsh, alien environments of Outland, from the nether-storms of Area 52 to the toxic fungi of Zangarmarsh.',
+      philosophy: {
+        tbc: "**The 2007 Landscape:** \nThe only 'survival' mechanic was buying water from a mage. The world was static.",
+        plus: "**The Vision for Plus:** \nOutland shouldn't just be a backdrop; it should try to kill you. \n\n1. **Campfires 2.0:** Survivalists craft distinct campsites. A *Nether-Resistant Tent* allows your party to regenerate health even inside a magical storm.\n2. **Tracking:** Survivalists can track rare elites, resource nodes, and even enemy player movement (in PvP zones) via physical clues like broken twigs.\n3. **Trapping:** Non-hunters can craft basic traps to snare or slow enemies, adding a layer of control to every class."
+      },
+      coreSystem: {
+        title: 'Environmental Hazards',
+        desc: 'The world is dangerous. Survival mitigates it. \n\n**Storms:** In Netherstorm, magical lightning strikes randomly. Survival gear grounds it.\n**Toxin:** In Zangarmarsh, spore clouds reduce healing. Survival masks filter it.\n**Heat:** In Shadowmoon, lava heat deals DoT. Survival salves block it.'
+      },
+      raidUtility: [
+        { name: 'Portable Campsite', quality: 'uncommon', type: 'Deployable', desc: 'Sets up a basic camp with a fire and tent. Grants "Rested" XP gain and increases Health/Mana regen by 50% while sitting near it. Lasts 10 min.', ilvl: 1, slot: 'Consumable', stats: '', flavor: "Home sweet home.", effects: ["Use: Create Rested area."] },
+        { name: 'Ever-Burning Torch', quality: 'rare', type: 'Tool', desc: 'A torch treated with alchemical pitch. Cannot be extinguished by water or wind. Increases Spirit by 20 when held.', ilvl: 70, slot: 'Off Hand', stats: '', flavor: "Light the way.", effects: ["Equip: +20 Spirit."] },
+        { name: 'Camouflage Net', quality: 'rare', type: 'Consumable', desc: 'Drapes a net of local foliage over the user. Reduces detection range by enemies. Moving breaks the effect.', ilvl: 1, slot: 'Consumable', stats: '', flavor: "You are a bush.", effects: ["Use: Hide."] },
+        { name: 'Bear Trap', quality: 'uncommon', type: 'Deployable', desc: 'A heavy iron trap. Snaps on the first enemy to walk over it, dealing physical damage and rooting them for 4 seconds.', ilvl: 60, slot: 'Consumable', stats: '', flavor: "Snap.", effects: ["Use: Place trap."] },
+        { name: 'Spiked Pit', quality: 'epic', type: 'Deployable', desc: 'Digs a concealed pitfall trap. Enemies falling in take damage and are stunned for 3 seconds. Takes 5 seconds to set up.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Watch your step.", effects: ["Use: Dig pit. (3 Min Cooldown)"] }
+      ],
+      specs: [
+        { name: 'Mountaineer', title: 'Climber', desc: '**Perk:** "Surefooted" increases movement speed on steep terrain.' },
+        { name: 'Trapper', title: 'Hunter', desc: '**Perk:** "Master Trapper" increases trap duration by 20%.' },
+        { name: 'Guide', title: 'Leader', desc: '**Perk:** "Pathfinder" increases group mount speed by 10%.' }
+      ]
+    },
+    archeology: {
+      id: 'archeology',
+      famousArtisan: { name: "Professor Thaddeus", title: "Xeno-Archeologist", location: "Eco-Dome Midrealm, Netherstorm" },
+      trainers: [
+        { name: "Alliance: Harrison Jones", loc: "Stormwind (Lore)" },
+        { name: "Horde: Belloc Brightblade", loc: "Orgrimmar" },
+        { name: "Neutral: The Curator", loc: "Karazhan (Lore)" }
+      ],
+      shoppingList: { title: "Excavation Tools", mats: "1x High-Quality Brush, 1x Mining Pick, 5x Scroll of Intellect" },
+      name: 'Archeology',
+      title: 'Seeker of Truth',
+      icon: "https://wow.zamimg.com/images/wow/icons/large/trade_archaeology.jpg",
+      image: "https://i.imgur.com/FApg0VK.jpeg",
+      desc: 'Archeology is the study of the Titans, the Apexis, and the Draenei. It is a gathering profession that yields **Utility Artifacts** rather than crafting materials.',
+      philosophy: {
+        tbc: "**The 2007 Landscape:** \nDidn't exist until Cataclysm.",
+        plus: "**The Vision for Plus:** \nWe want Archeology to be the 'Lore Profession'. \n\n1. **Dig Sites:** These are not just random spawns. They are micro-dungeons. Excavating a site might spawn a guardian or open a secret room.\n2. **Artifacts of Power:** You don't just put these in a museum. The *Staff of the First King* is a powerful leveling weapon that scales with you.\n3. **Deciphering:** Translating texts grants buffs. Reading a 'Tablet of Shielding' gives you a visible shield for 1 hour."
+      },
+      coreSystem: {
+        title: 'The Solvers Puzzle',
+        desc: 'Relics are rarely whole. You find fragments. \n\n**Keystones:** Specific fragments act as keys. Fitting them together requires solving a geometric puzzle in the UI.\n**Cursed Objects:** Some artifacts carry ancient curses. Handling a "Bleeding Idol" without proper gloves will drain your health until you purify it.'
+      },
+      raidUtility: [
+        { name: 'Canopic Jar', quality: 'epic', type: 'Container', desc: 'An ancient jar used to store organs. In TBC Plus, it functions as a "Soulstone" for one item. If you die, the item inside does not lose durability.', ilvl: 70, slot: 'Bag', stats: '', flavor: "Preserved for eternity.", effects: ["Use: Protect item from durability loss."] },
+        { name: 'Tablet of Wisdom', quality: 'rare', type: 'Consumable', desc: 'A stone tablet inscribed with Apexis runes. Reading it grants +40 Intellect for 1 hour. The tablet crumbles after reading.', ilvl: 70, slot: 'Consumable', stats: '', flavor: "Knowledge is power.", effects: ["Use: +40 Int scroll."] },
+        { name: 'Rod of Sun-Navigation', quality: 'epic', type: 'Tool', desc: 'A Titan device that points toward the nearest treasure chest or rare spawn.', ilvl: 70, slot: 'Trinket', stats: '', flavor: "It knows the way.", effects: ["Use: Locate Treasure."] },
+        { name: 'Puzzle Box of Yogg-Saron', quality: 'legendary', type: 'Toy', desc: 'A box that whispers. Solving it is impossible, but trying drives nearby enemies insane (Fear effect).', ilvl: 80, slot: 'Trinket', stats: '', flavor: "Open me.", effects: ["Use: AoE Fear. User takes Shadow damage."] }
+      ],
+      specs: [
+        { name: 'Xeno-Archeologist', title: 'Alien Tech', desc: '**Perk:** "Apexis Knowledge" uses crystals to power devices.' },
+        { name: 'Historian', title: 'Academic', desc: '**Perk:** "Lorewalker" grants XP for discovering locations.' },
+        { name: 'Tomb Raider', title: 'Adventurer', desc: '**Perk:** "Fortune and Glory" finds more gold in ruins.' }
+      ]
     }
   };
 
@@ -1725,7 +2295,7 @@ const TheArtisansCodex = () => {
         
         .parchment-texture {
           background-color: #0b0d10;
-          background-image: url('https://i.imgur.com/i9PDsfK.jpeg');
+          background-image: url('https://i.imgur.com/fOzone3.png');
           background-size: cover;
         }
 
@@ -1746,16 +2316,16 @@ const TheArtisansCodex = () => {
 
       {/* --- UNIFIED HEADER --- */}
       <UnifiedHeader
-        icon="https://i.imgur.com/wgME57L.jpeg"
-        background="https://i.imgur.com/3nlvCpa.jpeg"
-        section="Burning Crusade Plus"
-        sub="Profession Overhaul"
+        icon="https://i.imgur.com/Jney6fs.png"
+        background="https://i.imgur.com/pC9wKLs.jpeg"
+        section="Professions"
+        sub="Master Your Craft"
         title="The Artisan's Codex"
-        quote="The hammer, the quill, and the vial. Tools of creation in a world of destruction."
+        quote="The greatest works are not born of genius, but of relentless discipline."
       />
 
       {/* --- NAV SPACER --- */}
-      <div className="h-[400px] flex items-center justify-center relative">
+      <div className="py-4 flex items-center justify-center relative">
         <div className="text-center z-10 animate-fade-in-up">
           <h2 className="font-hero text-5xl lg:text-7xl text-[#c29c55] mb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">FORGE YOUR LEGACY</h2>
           <p className="font-body text-[#aeb6bf] text-lg max-w-2xl mx-auto">The world has changed. The artisans of Outland have unlocked secrets long forgotten. Will you master the new crafts?</p>
@@ -1764,7 +2334,11 @@ const TheArtisansCodex = () => {
 
       {/* --- INSPECTION WINDOW RENDER --- */}
       {selectedItem && (
-        <InspectionWindow item={selectedItem} onClose={() => setSelectedItem(null)} />
+        <InspectionWindow
+          item={selectedItem}
+          theme={activeProfession === 'engineering' ? 'engineering' : activeProfession === 'cooking' ? 'cooking' : activeProfession === 'inscription' ? 'inscription' : 'default'}
+          onClose={() => setSelectedItem(null)}
+        />
       )}
 
       <div className="container mx-auto px-4 py-8 min-h-screen">
@@ -1772,41 +2346,181 @@ const TheArtisansCodex = () => {
         <div className="flex flex-col lg:flex-row gap-12 animate-fade-in">
 
           {/* Sidebar Selector */}
-          <aside className="lg:w-1/4">
-            <div className="sticky top-52 parchment-texture border border-[#2f2f35] rounded p-1 shadow-2xl">
-              <div className="bg-[#050403]/80 p-4 rounded-sm">
-                <h3 className="font-hero text-[#8a7b62] text-xs uppercase tracking-[0.2em] mb-6 text-center border-b border-[#2f2f35] pb-2">Select Discipline</h3>
-                <div className="space-y-1">
-                  {Object.entries(professions).map(([key, prof]) => (
-                    <button
-                      key={key}
-                      onClick={() => { setActiveProfession(key); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                      className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 flex items-center gap-3 border-l-2 group ${activeProfession === key
-                        ? 'bg-[#c29c55]/10 border-[#c29c55] text-[#f0e6d2]'
-                        : 'border-transparent hover:bg-[#1a1c22] text-[#8a7b62] hover:text-[#c29c55] hover:border-[#c29c55]/50'
-                        }`}
-                    >
-                      <span className={`transition-colors ${activeProfession === key ? 'text-[#c29c55]' : 'text-[#5c5c63] group-hover:text-[#c29c55]'}`}>
-                        {React.cloneElement(prof.icon, { size: 18, className: "w-[18px] h-[18px] object-contain" })}
-                      </span>
-                      <span className="font-hero text-sm tracking-wide uppercase">{prof.name}</span>
-                    </button>
-                  ))}
+          <aside className="lg:w-1/4 space-y-8">
+            <div className="sticky top-52">
+              {/* 1. Profession Selector */}
+              <div className="parchment-texture border border-[#2f2f35] rounded p-1 shadow-2xl mb-8">
+                <div className="bg-[#050403]/80 p-4 rounded-sm">
+                  <h3 className="font-hero text-[#8a7b62] text-xs uppercase tracking-[0.2em] mb-6 text-center border-b border-[#2f2f35] pb-2">Select Discipline</h3>
+                  <div className="space-y-1">
+                    {Object.entries(professions).map(([key, prof]) => (
+                      <button
+                        key={key}
+                        onClick={() => { setActiveProfession(key); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 flex items-center gap-3 border-l-2 group ${activeProfession === key
+                          ? 'bg-[#c29c55]/10 border-[#c29c55] text-[#f0e6d2]'
+                          : 'border-transparent hover:bg-[#1a1c22] text-[#8a7b62] hover:text-[#c29c55] hover:border-[#c29c55]/50'
+                          }`}
+                      >
+                        <span className={`transition-colors ${activeProfession === key ? 'text-[#c29c55]' : 'text-[#5c5c63] group-hover:text-[#c29c55]'}`}>
+                          {typeof prof.icon === 'string' ? (
+                            <div className="w-[18px] h-[18px] rounded-full overflow-hidden shadow-sm">
+                              <img src={prof.icon} alt={prof.name} className="w-full h-full object-cover" />
+                            </div>
+                          ) : (
+                            React.isValidElement(prof.icon) ? React.cloneElement(prof.icon, { size: 18, className: "w-[18px] h-[18px] object-contain" }) : null
+                          )}
+                        </span>
+                        <span className="font-hero text-sm tracking-wide uppercase">{prof.name}</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* SYSTEM TOOLS */}
+                  <div className="mt-8 pt-6 border-t border-[#2f2f35]">
+                    <h3 className="font-hero text-[#8a7b62] text-xs uppercase tracking-[0.2em] mb-4 text-center">System Tools</h3>
+                    <div className="space-y-1">
+                      <button onClick={() => setActiveProfession('work_orders')} className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 flex items-center gap-3 border-l-2 group ${activeProfession === 'work_orders' ? 'bg-[#c29c55]/10 border-[#c29c55] text-[#f0e6d2]' : 'border-transparent hover:bg-[#1a1c22] text-[#8a7b62] hover:text-[#c29c55]'}`}>
+                        <Scroll size={18} />
+                        <span className="font-hero text-sm tracking-wide uppercase">Work Orders</span>
+                      </button>
+                      <button onClick={() => setActiveProfession('linked_alts')} className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 flex items-center gap-3 border-l-2 group ${activeProfession === 'linked_alts' ? 'bg-[#c29c55]/10 border-[#c29c55] text-[#f0e6d2]' : 'border-transparent hover:bg-[#1a1c22] text-[#8a7b62] hover:text-[#c29c55]'}`}>
+                        <Users size={18} />
+                        <span className="font-hero text-sm tracking-wide uppercase">Linked Alts</span>
+                      </button>
+                      <button onClick={() => setActiveProfession('reagent_calc')} className={`w-full text-left px-4 py-3 rounded-sm transition-all duration-200 flex items-center gap-3 border-l-2 group ${activeProfession === 'reagent_calc' ? 'bg-[#c29c55]/10 border-[#c29c55] text-[#f0e6d2]' : 'border-transparent hover:bg-[#1a1c22] text-[#8a7b62] hover:text-[#c29c55]'}`}>
+                        <FlaskConical size={18} />
+                        <span className="font-hero text-sm tracking-wide uppercase">Reagent Calc</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              {/* 2. Role Filter Toggle */}
+              {activeProfession !== 'overview' && (
+                <div className="bg-[#1a1c22] border border-[#2f2f35] p-4 rounded shadow-lg">
+                  <h4 className="font-hero text-[#c29c55] text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <Filter className="w-3 h-3" /> Filter Perks
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {['All', 'Tank', 'Healer', 'DPS', 'Utility'].map(role => (
+                      <button
+                        key={role}
+                        onClick={() => setRoleFilter(role)}
+                        className={`text-[10px] uppercase font-bold px-3 py-1 rounded border transition-all ${roleFilter === role ? 'bg-[#c29c55] text-black border-[#c29c55]' : 'bg-transparent text-[#5c5c63] border-[#2f2f35] hover:border-[#c29c55]'}`}
+                      >
+                        {role}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </aside>
 
           {/* Content Area */}
           <main className="lg:w-3/4">
             {(() => {
+              // --- SYSTEM TOOLS RENDERING ---
+              if (activeProfession === 'work_orders') {
+                return (
+                  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="bg-[#0b0d10] border border-[#c29c55] p-8 rounded-sm text-center">
+                      <h2 className="font-hero text-3xl text-[#f0e6d2] mb-4">Guild Work Orders</h2>
+                      <p className="text-[#aeb6bf] max-w-xl mx-auto mb-8">Fulfill requests from your guildmates to earn gold and reputation. High quality crafts grant bonus rewards.</p>
+                      <div className="grid grid-cols-1 gap-4">
+                        {[
+                          { item: "Bulwark of the Ancient King", requester: "Kungen", tip: "500g", status: "Open" },
+                          { item: "Potion of Endless Healing x20", requester: "Athene", tip: "100g", status: "In Progress" },
+                          { item: "Stormherald", requester: "Pat", tip: "1200g", status: "Open" }
+                        ].map((order, i) => (
+                          <div key={i} className="bg-[#1a1c22] p-4 rounded border border-[#2f2f35] flex justify-between items-center hover:border-[#c29c55] transition-colors">
+                            <div className="text-left">
+                              <div className="font-bold text-[#f0e6d2]">{order.item}</div>
+                              <div className="text-xs text-[#5c5c63]">Requested by <span className="text-[#c29c55]">{order.requester}</span></div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <span className="text-[#ffd700] font-mono font-bold">{order.tip}</span>
+                              <button className="bg-[#c29c55] text-black px-4 py-1 rounded text-xs font-bold uppercase hover:bg-[#ffaa00]">Craft</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (activeProfession === 'linked_alts') {
+                return (
+                  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="bg-[#0b0d10] border border-[#c29c55] p-8 rounded-sm text-center">
+                      <h2 className="font-hero text-3xl text-[#f0e6d2] mb-4">Warband Professions</h2>
+                      <p className="text-[#aeb6bf] max-w-xl mx-auto mb-8">View and utilize the cooldowns of all characters on your account.</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {[
+                          { name: "MyBankAlt", profs: ["Alchemy (Transmute)", "Jewelcrafting"], cds: ["Transmute: Primal Might (Ready)", "Brilliant Glass (2h)"] },
+                          { name: "MainTank", profs: ["Mining", "Blacksmithing"], cds: ["None"] }
+                        ].map((alt, i) => (
+                          <div key={i} className="bg-[#1a1c22] p-6 rounded border border-[#2f2f35] text-left">
+                            <h3 className="font-hero text-[#c29c55] text-lg mb-2">{alt.name}</h3>
+                            <div className="space-y-4">
+                              <div>
+                                <div className="text-xs text-[#5c5c63] uppercase tracking-widest mb-1">Professions</div>
+                                {alt.profs.map(p => <div key={p} className="text-[#e0e0e0] text-sm">{p}</div>)}
+                              </div>
+                              <div>
+                                <div className="text-xs text-[#5c5c63] uppercase tracking-widest mb-1">Cooldowns</div>
+                                {alt.cds.map(cd => <div key={cd} className={`text-xs ${cd.includes('Ready') ? 'text-[#1eff00]' : 'text-[#aeb6bf]'}`}>{cd}</div>)}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              if (activeProfession === 'reagent_calc') {
+                return (
+                  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                    <div className="bg-[#0b0d10] border border-[#c29c55] p-8 rounded-sm text-center">
+                      <h2 className="font-hero text-3xl text-[#f0e6d2] mb-4">Reagent Calculator</h2>
+                      <p className="text-[#aeb6bf] max-w-xl mx-auto mb-8">Plan your crafting projects and track material acquisition.</p>
+                      <div className="bg-[#1a1c22] p-8 rounded border border-[#2f2f35] flex items-center justify-center h-64">
+                        <div className="text-center">
+                          <FlaskConical size={48} className="text-[#333] mx-auto mb-4" />
+                          <p className="text-[#5c5c63]">Select a recipe to begin calculation...</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
               const prof = professions[activeProfession];
+              if (!prof) return <div className="p-8 text-center text-red-500">Error loading profession data. Please select another.</div>;
+
+              // Smart Filter Logic
+              const filteredItems = prof.raidUtility ? prof.raidUtility.filter(item => {
+                if (roleFilter === 'All') return true;
+                const text = (item.desc + (item.effects ? item.effects.join(' ') : '') + item.name + (item.type || '')).toLowerCase();
+
+                if (roleFilter === 'Tank') return text.includes('armor') || text.includes('stamina') || text.includes('defense') || text.includes('taunt') || text.includes('threat') || text.includes('health') || text.includes('shield') || text.includes('prot') || text.includes('absorb');
+                if (roleFilter === 'Healer') return text.includes('heal') || text.includes('restore') || text.includes('mana') || text.includes('spirit') || text.includes('cleanse') || text.includes('dispel') || text.includes('regen') || text.includes('medicine');
+                if (roleFilter === 'DPS') return text.includes('damage') || text.includes('attack power') || text.includes('spell power') || text.includes('crit') || text.includes('haste') || text.includes('bleed') || text.includes('strength') || text.includes('agility') || text.includes('intellect') || text.includes('fire') || text.includes('shadow') || text.includes('shot') || text.includes('strike');
+                if (roleFilter === 'Utility') return text.includes('speed') || text.includes('mount') || text.includes('locate') || text.includes('fear') || text.includes('stun') || text.includes('root') || text.includes('silence') || text.includes('stealth') || text.includes('unlock') || text.includes('climb') || text.includes('trap') || text.includes('lure') || text.includes('bag') || text.includes('swim') || text.includes('fall');
+
+                return false;
+              }) : [];
               return (
                 <div className="space-y-10">
 
                   {/* Hero Header Card */}
                   <div className="relative rounded-sm overflow-hidden border border-[#c29c55] shadow-[0_0_30px_rgba(0,0,0,0.5)] bg-[#0b0d10] group min-h-[300px]">
-                    {/* Optional Artwork Background */}
+                    {/* Background Image */}
                     {prof.image && (
                       <div className="absolute inset-0 z-0">
                         <img
@@ -1814,14 +2528,19 @@ const TheArtisansCodex = () => {
                           alt={`${prof.name} background`}
                           className="w-full h-full object-cover opacity-60 transition-all duration-700"
                         />
-                        {/* Gradient overlay to ensure text pops */}
                         <div className="absolute inset-0 bg-gradient-to-r from-[#000000] via-[#000000]/80 to-transparent"></div>
                       </div>
                     )}
 
                     <div className="relative z-10 p-8 md:p-12 max-w-2xl">
                       <div className="flex items-center gap-4 mb-4">
-                        {React.cloneElement(prof.icon, { className: `w-8 h-8 text-[#c29c55] object-contain` })}
+                        {typeof prof.icon === 'string' ? (
+                          <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg border-2 border-[#c29c55]">
+                            <img src={prof.icon} alt={prof.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          React.isValidElement(prof.icon) ? React.cloneElement(prof.icon, { className: `w-12 h-12 text-[#c29c55] object-contain` }) : null
+                        )}
                         <h2 className="font-hero text-4xl lg:text-5xl text-[#f0e6d2]">{prof.name}</h2>
                       </div>
                       <p className="font-hero text-sm text-[#c29c55] uppercase tracking-[0.25em] mb-6 border-l-2 border-[#c29c55] pl-3">{prof.title}</p>
@@ -1831,10 +2550,13 @@ const TheArtisansCodex = () => {
                     </div>
                   </div>
 
+                  {/* Overview Specific: Synergy Map */}
+                  {activeProfession === 'overview' && <SynergyMap />}
+
                   {/* Architect's Notes (Philosophy) */}
                   {prof.philosophy && (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                      <div className="bg-[#1a1c22] border border-[#2f2f35] p-6 rounded-sm shadow-lg z-10 relative">
+                      <div className="bg-[#1a1c22] border border-[#2f2f35] p-6 rounded-sm shadow-lg z-10 relative group hover:border-[#8a7b62] transition-colors">
                         <div className="flex items-center gap-3 mb-4 border-b border-[#2f2f35] pb-2">
                           <Scroll className="text-[#5c5c63] w-5 h-5" />
                           <h4 className="font-hero text-lg text-[#8a7b62]">Historical Context</h4>
@@ -1843,7 +2565,7 @@ const TheArtisansCodex = () => {
                           {formatText(prof.philosophy.tbc)}
                         </p>
                       </div>
-                      <div className="bg-[#0b0d10] border border-[#c29c55] p-6 rounded-sm shadow-lg relative overflow-hidden z-10">
+                      <div className="bg-[#0b0d10] border border-[#c29c55] p-6 rounded-sm shadow-lg relative overflow-hidden z-10 group hover:shadow-[0_0_20px_#c29c5520] transition-shadow">
                         <div className="absolute top-0 right-0 p-4 opacity-10">
                           <Feather className="w-24 h-24 text-[#c29c55]" />
                         </div>
@@ -1858,112 +2580,165 @@ const TheArtisansCodex = () => {
                     </div>
                   )}
 
-                  {/* Core System */}
-                  <div className="parchment-texture border border-[#2f2f35] p-1 rounded-sm">
-                    <div className="bg-[#050403]/90 p-8 rounded-sm">
-                      <div className="flex items-center gap-3 mb-6 border-b border-[#2f2f35] pb-4">
-                        <Star className="text-[#c29c55] w-5 h-5" />
-                        <h3 className="font-hero text-xl text-[#f0e6d2] tracking-widest uppercase">Core System: <span className="text-[#c29c55]">{prof.coreSystem.title}</span></h3>
-                      </div>
-                      <p className="font-body text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
-                        {formatText(prof.coreSystem.desc)}
-                      </p>
-
-                      {/* WotLK Style Passive Bonus */}
-                      {prof.passiveBonus && (
-                        <div className="bg-[#1a1c22] border border-[#c29c55]/30 p-4 rounded flex items-start gap-4">
-                          <div className="p-2 bg-black rounded border border-[#c29c55] text-[#c29c55]">
-                            <Shield className="w-6 h-6" />
-                          </div>
-                          <div>
-                            <h5 className="font-hero text-[#c29c55] text-sm uppercase tracking-widest mb-1">Profession Passive: {prof.passiveBonus.name}</h5>
-                            <p className="text-[#aeb6bf] text-sm leading-relaxed">{formatText(prof.passiveBonus.desc)}</p>
+                  {/* Data Enrichment: Trainers & Famous Artisans */}
+                  {(prof.trainers || prof.famousArtisan) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {/* Trainers */}
+                      {prof.trainers && (
+                        <div className="bg-[#151515] p-6 rounded border border-white/5">
+                          <h4 className="text-[#c29c55] font-hero text-sm uppercase mb-4 flex items-center gap-2"><Map className="w-4 h-4" /> Grand Master Trainers</h4>
+                          <ul className="space-y-2">
+                            {prof.trainers.map((t, i) => (
+                              <li key={i} className="text-xs text-[#aeb6bf] border-b border-white/5 pb-1 last:border-0">
+                                <strong className="text-[#e0e0e0]">{t.name}</strong> <br />
+                                <span className="text-[#5c5c63]">{t.loc}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {/* Famous Artisan */}
+                      {prof.famousArtisan && (
+                        <div className="bg-[#151515] p-6 rounded border border-white/5 relative overflow-hidden">
+                          <div className="absolute top-0 right-0 opacity-10"><User className="w-24 h-24" /></div>
+                          <h4 className="text-[#ff8000] font-hero text-sm uppercase mb-4 flex items-center gap-2"><Crown className="w-4 h-4" /> Notable Artisan</h4>
+                          <div className="relative z-10">
+                            <h5 className="text-lg text-[#f0e6d2] font-bold">{prof.famousArtisan.name}</h5>
+                            <p className="text-xs text-[#c29c55] uppercase tracking-widest mb-2">{prof.famousArtisan.title}</p>
+                            <p className="text-xs text-[#aeb6bf]">Location: {prof.famousArtisan.location}</p>
                           </div>
                         </div>
                       )}
                     </div>
-                  </div>
+                  )}
 
-                  {/* Raid Utility */}
-                  <div className="bg-[#0b0d10] border border-[#2f2f35] p-6 rounded-sm relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-4 opacity-5">
-                      <Sword className="w-24 h-24" />
+                  {/* Shopping List (Materials) */}
+                  {prof.shoppingList && (
+                    <div className="bg-[#0b0d10] border border-dashed border-[#5c5c63] p-4 rounded text-center opacity-80 hover:opacity-100 transition-opacity">
+                      <h5 className="text-[#5c5c63] font-hero text-xs uppercase mb-2">Estimated Materials: {prof.shoppingList.title}</h5>
+                      <p className="text-[#c29c55] font-mono text-xs">{prof.shoppingList.mats}</p>
                     </div>
-                    <h4 className="font-hero text-lg text-[#c29c55] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
-                      <Sword className="w-5 h-5" /> Raid Utility
-                    </h4>
-                    <div className="space-y-4">
-                      {prof.raidUtility.map((item, i) => (
-                        <WowItem key={i} item={item} />
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
-                  {/* Specializations & Legendaries */}
-                  <div>
-                    <h4 className="font-hero text-2xl text-[#f0e6d2] mb-6 flex items-center gap-2">
-                      <Crown className="w-6 h-6 text-[#ff8000]" /> Specializations & Masterworks
-                    </h4>
-
-                    {/* Rendering logic for Per-Spec vs Single Masterwork */}
-                    {prof.masterwork ? (
-                      // Single Masterwork Layout (Gathering/Secondary)
-                      <div className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                          {prof.specs.map((spec, i) => (
-                            <div key={i} className="bg-[#1a1c22] border-t-2 border-[#2f2f35] p-6 rounded-sm shadow-lg">
-                              <h4 className="font-hero text-lg text-[#f0e6d2] mb-1">{spec.name}</h4>
-                              <span className="font-hero text-[10px] text-[#5c5c63] uppercase tracking-widest mb-4 block">{spec.title}</span>
-                              <p className="font-body text-xs text-[#aeb6bf] whitespace-pre-line leading-relaxed">
-                                {formatText(spec.desc)}
-                              </p>
+                  {/* Armor Sets Gallery */}
+                  {prof.armorSets && (
+                    <div className="bg-[#0b0d10] border border-[#2f2f35] p-6 rounded-sm">
+                      <h4 className="text-[#c29c55] font-hero text-sm uppercase mb-4 flex items-center gap-2">
+                        <Shield className="w-4 h-4" /> Signature Armor Sets
+                      </h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {prof.armorSets.map((set, i) => (
+                          <div key={i} className="group relative h-48 rounded overflow-hidden border border-[#2f2f35] hover:border-[#c29c55] transition-colors">
+                            <img src={set.image} alt={set.name} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-500 hover:scale-105" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                            <div className="absolute bottom-4 left-4 z-10">
+                              <h5 className="text-[#f0e6d2] font-bold text-lg leading-none mb-1">{set.name}</h5>
+                              <p className="text-[#c29c55] text-xs uppercase tracking-widest">{set.desc}</p>
                             </div>
-                          ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+
+                  {/* Core System */}
+                  {prof.coreSystem && (
+                    <div className="parchment-texture border border-[#2f2f35] p-1 rounded-sm">
+                      <div className="bg-[#050403]/90 p-8 rounded-sm">
+                        <div className="flex items-center gap-3 mb-6 border-b border-[#2f2f35] pb-4">
+                          <Star className="text-[#c29c55] w-5 h-5" />
+                          <h3 className="font-hero text-xl text-[#f0e6d2] tracking-widest uppercase">Core System: <span className="text-[#c29c55]">{prof.coreSystem.title}</span></h3>
                         </div>
+                        <p className="font-body text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
+                          {formatText(prof.coreSystem.desc)}
+                        </p>
+
+                        {/* WotLK Style Passive Bonus */}
+                        {prof.passiveBonus && (
+                          <div className="bg-[#1a1c22] border border-[#c29c55]/30 p-4 rounded flex items-start gap-4">
+                            <div className="p-2 bg-black rounded border border-[#c29c55] text-[#c29c55]">
+                              <Shield className="w-6 h-6" />
+                            </div>
+                            <div>
+                              <h5 className="font-hero text-[#c29c55] text-sm uppercase tracking-widest mb-1">Profession Passive: {prof.passiveBonus.name}</h5>
+                              <p className="text-[#aeb6bf] text-sm leading-relaxed">{formatText(prof.passiveBonus.desc)}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Raid Utility - Filtered by Role (Conceptual) */}
+                  {prof.raidUtility && (
+                    <div className="bg-[#0b0d10] border border-[#2f2f35] p-6 rounded-sm relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 opacity-5">
+                        <Sword className="w-24 h-24" />
+                      </div>
+                      <h4 className="font-hero text-lg text-[#c29c55] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
+                        <Sword className="w-5 h-5" /> Raid Utility
+                      </h4>
+                      <div className="space-y-4">
+                        {filteredItems.length > 0 ? (
+                          filteredItems.map((item, i) => (
+                            <WowItem key={i} item={item} />
+                          ))
+                        ) : (
+                          <div className="text-center py-8 text-[#5c5c63] italic">
+                            No {roleFilter} perks found for this profession.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Specializations & Masterworks */}
+                  {prof.specs && (
+                    <div>
+                      <h4 className="font-hero text-2xl text-[#f0e6d2] mb-6 flex items-center gap-2">
+                        <Crown className="w-6 h-6 text-[#ff8000]" /> Specializations & Masterworks
+                      </h4>
+
+                      {/* NEW SKILL TREE UI */}
+                      <div className="mb-8">
+                        <SkillTree specs={prof.specs} />
+                      </div>
+
+                      {/* Unified Masterworks Section */}
+                      {(prof.masterwork || prof.specs.some(s => s.legendary)) && (
                         <div className="bg-[#0b0d10] border border-[#ff8000]/30 p-6 rounded-sm relative overflow-hidden">
                           <div className="absolute top-0 right-0 p-4 opacity-5">
                             <Crown className="w-24 h-24 text-[#ff8000]" />
                           </div>
                           <h4 className="font-hero text-lg text-[#ff8000] mb-6 flex items-center gap-2 border-b border-[#2f2f35] pb-2">
-                            <Crown className="w-5 h-5" /> Grand Masterwork Reward
+                            <Crown className="w-5 h-5" /> Grand Masterwork Rewards
                           </h4>
-                          <div className="max-w-2xl">
-                            <WowItem item={prof.masterwork} isLegendary={true} />
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+                            {/* If single masterwork (gathering) */}
+                            {prof.masterwork && (
+                              <WowItem item={prof.masterwork} isLegendary={true} />
+                            )}
+
+                            {/* If multiple legendaries (crafting) */}
+                            {prof.specs.map(s => s.legendary).filter(Boolean).map((item, i) => (
+                              <WowItem key={i} item={item} isLegendary={true} />
+                            ))}
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      // Per-Spec Legendary Layout (Crafting)
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {prof.specs.map((spec, i) => (
-                          <div key={i} className="flex flex-col gap-4">
-                            <div className="bg-[#1a1c22] border-t-2 border-[#2f2f35] p-6 rounded-sm shadow-lg h-full flex flex-col">
-                              <h4 className="font-hero text-lg text-[#f0e6d2] mb-1">{spec.name}</h4>
-                              <span className="font-hero text-[10px] text-[#5c5c63] uppercase tracking-widest mb-4 block">{spec.title}</span>
-                              <p className="font-body text-xs text-[#aeb6bf] whitespace-pre-line leading-relaxed mb-4">
-                                {formatText(spec.desc)}
-                              </p>
-                              <div className="border-t border-[#2f2f35] pt-4 mt-auto">
-                                {spec.legendary && (
-                                  <>
-                                    <span className="text-[10px] text-[#ff8000] font-hero uppercase tracking-widest block mb-2">Legendary Reward</span>
-                                    <WowItem item={spec.legendary} isLegendary={true} />
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
+                  )}
 
                 </div>
               );
-            })()}
+            })()
+            }
           </main>
         </div>
       </div>
+
     </div>
   );
 };

@@ -20,9 +20,9 @@ const UnifiedHeader = ({ icon: Icon, section, sub, title, quote, onClose, backgr
             <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center gap-4">
                     {/* Icon Box */}
-                    <div className="w-12 h-12 bg-[#1a1c22] border border-[#c29c55] rounded flex items-center justify-center shadow-[0_0_15px_rgba(194,156,85,0.2)] shrink-0 overflow-hidden">
+                    <div className="w-12 h-12 bg-[#1a1c22] border border-[#c29c55] rounded-md flex items-center justify-center shadow-lg shadow-black/50 shrink-0 overflow-hidden">
                         {typeof Icon === 'string' ? (
-                            <img src={Icon} alt="" className="w-full h-full object-cover" />
+                            <img src={Icon} alt="" className="w-full h-full object-cover scale-125" />
                         ) : React.isValidElement(Icon) ? (
                             <div className="text-[#c29c55] flex items-center justify-center w-full h-full">
                                 {React.cloneElement(Icon, { className: `${Icon.props.className || ''} w-6 h-6` })}

@@ -25,7 +25,7 @@ export const hunterTalents = {
 
             // Row 5
             { id: "spirit-bond", name: "Spirit Bond", icon: "ability_druid_demoralizingroar", row: 4, col: 0, maxPoints: 2, description: (rank) => `While your pet is active, you and your pet regenerate ${rank * 1}% of total health every 10 sec.` },
-            { id: "intimidation", name: "Intimidation", icon: "ability_devour", row: 4, col: 1, maxPoints: 1, description: (rank) => `Command your pet to intimidate the target, causing a high amount of threat and stunning the target for 3 sec. If the target is immune to Stun effects, they instead take 10% increased damage from your pet for 10 sec. 1.5 min cooldown. Costs 0 Focus.` },
+            { id: "beast-mastery", name: "Beast Mastery", icon: "ability_hunter_beastmastery", row: 4, col: 1, maxPoints: 1, description: (rank) => `You master the art of Beast training, teaching you the ability to tame Exotic pets and increasing your total amount of Pet Skill Points by 4.` },
             { id: "bestial-discipline", name: "Bestial Discipline", icon: "spell_nature_abolishmagic", row: 4, col: 3, maxPoints: 2, description: (rank) => `Increases the Focus regeneration of your pets by ${rank * 50}%.` },
 
             // Row 6
@@ -34,11 +34,11 @@ export const hunterTalents = {
 
             // Row 7
             { id: "ferocious-inspiration", name: "Ferocious Inspiration", icon: "ability_hunter_ferociousinspiration", row: 6, col: 0, maxPoints: 3, description: (rank) => `When your pet scores a critical hit, all party members have damage increased by 3% for 10 sec, and you instantly regenerate ${rank * 3.33} Focus.` },
-            { id: "bestial-wrath", name: "Bestial Wrath", icon: "ability_druid_ferociousbite", row: 6, col: 1, maxPoints: 1, prereq: "intimidation", description: (rank) => `Send your pet into a rage causing 50% additional damage for 18 sec. The Hunter also goes into a rage causing 10% additional damage and reducing Focus costs of all spells by 20% for 18 sec. While enraged, both you and your pet do not feel pity or remorse or fear and cannot be stopped unless killed. Instantly restores 50 Focus to you and your pet.` },
+            { id: "bestial-wrath", name: "Bestial Wrath", icon: "ability_druid_ferociousbite", row: 6, col: 1, maxPoints: 1, prereq: "beast-mastery", description: (rank) => `Send your pet into a rage causing 50% additional damage for 18 sec. The Hunter also goes into a rage causing 10% additional damage and reducing Focus costs of all spells by 20% for 18 sec. While enraged, both you and your pet do not feel pity or remorse or fear and cannot be stopped unless killed. Instantly restores 50 Focus to you and your pet.` },
             { id: "catlike-reflexes", name: "Catlike Reflexes", icon: "ability_hunter_catlikereflexes", row: 6, col: 2, maxPoints: 3, description: (rank) => `Increases your chance to dodge by ${rank * 1}% and your pet's chance to dodge by an additional ${rank * 3}%.` },
 
             // Row 8
-            { id: "serpents-swiftness", name: "Serpent's Swiftness", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_serpentswiftness.jpg", row: 7, col: 2, maxPoints: 5, description: (rank) => `Increases ranged attack speed by ${rank * 4}% and your pet's melee attack speed by ${rank * 4}%.` },
+            { id: "serpents-swiftness", name: "Serpent's Swiftness", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_serpentswiftness.jpg", row: 7, col: 2, maxPoints: 5, description: (rank) => `“One mind. Two bodies. A thousand cuts.”\n\nIncreases Ranged and Pet Attack Speed by ${rank * 4}%. \n\nEach time your Pet hits a target, your Cast Time on your next Steady Shot or Aimed Shot is reduced by 0.1 sec (Stacks up to ${rank} times).` },
 
             // Row 9
             {
@@ -59,19 +59,19 @@ Guardian: The beast takes 90% reduced damage from AoE effects.` },
             { id: "lethal-shots", name: "Lethal Shots", icon: "ability_searingarrow", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your critical strike chance with ranged weapons by ${rank * 1}%.` },
 
             // Row 2
-            { id: "improved-hunters-mark", name: "Imp. Hunter's Mark", icon: "ability_hunter_snipershot", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases the melee, ranged, and pet attack power bonus of your Hunter's Mark ability by ${rank * 20}%.` },
+            { id: "improved-hunters-mark", name: "Imp. Hunter's Mark", icon: "ability_hunter_snipershot", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases the Ranged Attack Power bonus of your Hunter's Mark by ${rank * 20}%. Your pet deals ${rank * 1}% increased damage and has ${rank * 4}% increased Movement Speed when moving toward or attacking a target affected by your Hunter's Mark. Additionally, your Raptor Strike damage is increased by ${rank * 2}% against marked targets.` },
             { id: "efficiency", name: "Thrill of the Hunt", icon: "spell_frost_wizardmark", row: 1, col: 2, maxPoints: 5, description: (rank) => `Your critical strikes with ranged attacks have a ${rank * 10}% chance to reduce the Focus cost of your next Aimed Shot or Multi-Shot by 20.` },
 
             // Row 3
             { id: "go-for-the-throat", name: "Go for the Throat", icon: "ability_hunter_goforthethroat", row: 2, col: 0, maxPoints: 2, description: (rank) => `Your ranged critical hits cause your pet to generate ${rank * 25} Focus.` },
-            { id: "improved-arcane-shot", name: "Imp. Arcane Shot", icon: "ability_impalingbolt", row: 2, col: 1, maxPoints: 5, description: (rank) => `Reduces the cooldown of your Arcane Shot by ${rank * 0.2} sec.` },
+            { id: "improved-arcane-shot", name: "Imp. Arcane Shot", icon: "ability_impalingbolt", row: 2, col: 1, maxPoints: 5, description: (rank) => `Reduces the cooldown of Arcane Shot by ${rank * 0.2} sec. Your Arcane Shot now applies 'Tracer Round' to the target.\nEffect: Your next 3 Auto Shots fired at this target are replicated as Arcane bolts, dealing ${rank * 6}% additional damage as Arcane damage. These bolts cannot be Dodged or Parried.` },
             { id: "aimed-shot", name: "Aimed Shot", icon: "inv_spear_07", row: 2, col: 2, maxPoints: 1, description: (rank) => `An aimed shot that increases ranged damage by 70 and reduces healing done to that target by 50%. Instant Cast. Costs 50 Focus.` },
             { id: "rapid-killing", name: "Rapid Killing", icon: "ability_hunter_rapidkilling", row: 2, col: 3, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Rapid Fire ability by ${rank * 1} min. In addition, after killing an opponent that yields experience or honor, your next Aimed Shot, Arcane Shot or Auto Shot causes ${rank * 10}% additional damage.` },
 
             // Row 4
             { id: "marked-for-death", name: "Marked for Death", icon: "ability_hunter_snipershot", row: 3, col: 0, maxPoints: 2, description: (rank) => `Your ranged attacks deal ${rank * 2}% more damage to targets affected by your Hunter's Mark.` },
             { id: "improved-stings", name: "Improved Stings", icon: "ability_hunter_quickshot", row: 3, col: 1, maxPoints: 3, description: (rank) => `Increases the damage done by your Serpent Sting and Wyvern Sting by ${rank * 10}% and the focus drained by your Viper Sting by ${rank * 10}%.` },
-            { id: "mortal-shots", name: "Mortal Shots", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_piercedamage.jpg", row: 3, col: 2, maxPoints: 5, prereq: "aimed-shot", description: (rank) => `Increases your ranged weapon critical strike damage bonus by ${rank * 6}%.` },
+            { id: "mortal-shots", name: "Mortal Shots", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_piercedamage.jpg", row: 3, col: 2, maxPoints: 5, prereq: "aimed-shot", description: (rank) => `Increases your ranged critical strike damage bonus by ${rank * 6}%. Your critical strikes compromise the target's structural integrity, applying 'Shattered Defenses.'\nEffect: Your next Aimed Shot or Arcane Shot against this target ignores 100% of the target's Armor.` },
 
             // Row 5
             { id: "concussive-barrage", name: "Concussive Barrage", icon: "spell_arcane_starfire", row: 4, col: 0, maxPoints: 3, description: (rank) => `Your successful Auto Shot attacks have a ${rank * 2}% chance to Daze the target for 4 sec.` },
@@ -80,7 +80,7 @@ Guardian: The beast takes 90% reduced damage from AoE effects.` },
 
             // Row 6
             { id: "combat-experience", name: "Combat Experience", icon: "ability_hunter_combatexperience", row: 5, col: 0, maxPoints: 5, description: (rank) => `Increases your total Agility by ${rank * 2}% and your total Haste by ${rank * 2}%.` },
-            { id: "ranged-weapon-specialization", name: "Ranged Weapon Spec", icon: "inv_weapon_rifle_06", row: 5, col: 3, maxPoints: 5, description: (rank) => `Increases the damage you deal with ranged weapons by ${rank * 1}%.` },
+            { id: "ranged-weapon-specialization", name: "Ranged Weapon Spec", icon: "inv_weapon_rifle_06", row: 5, col: 3, maxPoints: 5, description: (rank) => `Increases the damage you deal with ranged weapons by ${rank * 1}%. Mastery of ballistics allows you to punish enemies from afar with 'Terminal Velocity.'\nEffect: Your Ranged Critical Strike damage is increased by ${rank * 0.2}% for every 5 yards you are away from the target (up to a maximum of 10% at max range).` },
 
             // Row 7
             { id: "careful-aim", name: "Careful Aim", icon: "ability_hunter_zenarchery", row: 6, col: 0, maxPoints: 3, description: (rank) => `Increases your Ranged Attack Power by an amount equal to ${rank * 10}% of your total Agility.` },
@@ -88,10 +88,10 @@ Guardian: The beast takes 90% reduced damage from AoE effects.` },
             { id: "improved-barrage", name: "Improved Barrage", icon: "ability_upgrademoonglaive", row: 6, col: 2, maxPoints: 3, prereq: "barrage", description: (rank) => `Increases the critical strike chance of your Multi-Shot ability by ${rank * 4}% and gives your Volley ability a ${rank * 33}% chance to be uninterrupted by damage.` },
 
             // Row 8
-            { id: "master-marksman", name: "Master Marksman", icon: "ability_hunter_mastermarksman", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases your ranged attack power by ${rank * 2}%.` },
+            { id: "master-marksman", name: "Master Marksman", icon: "ability_hunter_mastermarksman", row: 7, col: 1, maxPoints: 5, description: (rank) => `“Hold your breath. Steady...”\n\nIncreases your Ranged Attack Power by ${rank * 2}%. \n\nWhile standing still, you gain 1 stack of "Sniper's Focus" every second (up to ${rank * 2}).\n\nEach stack increases Armor Penetration by ${rank * 28}.\n\nMoving removes 1 stack per second (instead of all at once).` },
 
             // Row 9
-            { id: "silencing-shot", name: "Silencing Shot", icon: "ability_theblackarrow", row: 8, col: 1, maxPoints: 1, prereq: "master-marksman", description: (rank) => `A shot that deals 50% weapon damage and silences the target for 3 sec. Costs 0 Focus. Off-GCD.` },
+            { id: "silencing-shot", name: "Silencing Shot", icon: "ability_theblackarrow", row: 8, col: 1, maxPoints: 1, prereq: "master-marksman", description: (rank) => `A shot that deals 50% weapon damage and silences the target for 3 sec. Costs 0 Focus Stacks. Off-GCD.\n\nOverride: If the shot successfully interrupts a spell cast, or if the target is permanently immune to silence effects (e.g., Raid Bosses), the Hunter gains "Apex Precision."\n\nApex Precision: Your next Aimed Shot or Multi-Shot has its cast time reduced by 50% and its critical strike chance increased by 20%. This effect lasts 10 seconds.` },
         ]
     },
     survival: {
@@ -107,8 +107,8 @@ Guardian: The beast takes 90% reduced damage from AoE effects.` },
 
             // Row 2
             { id: "entrapment", name: "Entrapment", icon: "spell_nature_stranglevines", row: 1, col: 0, maxPoints: 3, description: (rank) => `Gives your Immolation Trap, Frost Trap, Explosive Trap, and Snake Trap a ${rank * 8}% chance to entrap the target, preventing them from moving for 4 sec.` },
-            { id: "deflection", name: "Deflection", icon: "ability_parry", row: 1, col: 1, maxPoints: 3, description: (rank) => `Increases your Parry chance by ${rank * 1}%.` },
-            { id: "improved-wing-clip", name: "Imp. Wing Clip", icon: "ability_rogue_trip", row: 1, col: 2, maxPoints: 5, description: (rank) => `Gives your Wing Clip ability a ${rank * 4}% chance to immobilize the target for 5 sec.` },
+            { id: "deflection", name: "Deflection", icon: "ability_parry", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases your Parry chance by ${rank * 1}%. When you Parry an attack, your next Raptor Strike or Mongoose Bite becomes a critical strike and Disarms the target for 3 seconds.` },
+            { id: "improved-wing-clip", name: "Imp. Wing Clip", icon: "ability_rogue_trip", row: 1, col: 2, maxPoints: 3, description: (rank) => `Reduces the Mana cost of Wing Clip by ${rank * 10}%. Successfully landing a Wing Clip removes all Movement Impairing Effects (Slows) from you and increases your Movement Speed by ${rank * 10}% for 4 seconds.` },
 
             // Row 3
             { id: "clever-traps", name: "Clever Traps", icon: "spell_nature_timestop", row: 2, col: 0, maxPoints: 2, description: (rank) => `Increases the duration of Freezing and Frost trap effects by ${rank * 15}% and the damage of Immolation and Explosive trap effects by ${rank * 15}%.` },
@@ -136,7 +136,7 @@ Guardian: The beast takes 90% reduced damage from AoE effects.` },
             { id: "expose-weakness", name: "Expose Weakness", icon: "ability_rogue_findweakness", row: 6, col: 2, maxPoints: 3, prereq: "lightning-reflexes", description: (rank) => `Your Ranged criticals have a ${rank * 33}% chance to apply an Expose Weakness effect to the target. Expose Weakness increases the attack power of all attackers against that target by 25% of your Agility for 7 sec. Also reduces the Focus cost of your next Multi-Shot by 50%.` },
 
             // Row 8
-            { id: "master-tactician", name: "Master Tactician", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_mastertactitian.jpg", row: 7, col: 1, maxPoints: 5, description: (rank) => `Your successful ranged attacks have a 6% chance to increase your critical strike chance with all attacks by ${rank * 2}% for 8 sec.` },
+            { id: "master-tactician", name: "Master Tactician", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_mastertactitian.jpg", row: 7, col: 1, maxPoints: 5, description: (rank) => `“Confuse the enemy. Never let them know where the next strike comes from.”\n\nMelee to Ranged: Landing a Melee Attack (Raptor Strike/Mongoose Bite) grants you ${rank * 20}% Critical Strike chance on your next Arcane Shot or Explosive Shot.\n\nRanged to Melee: Landing a Ranged Critical Strike grants you ${rank * 6}% increased Dodge and Parry for 5 seconds.` },
 
             // Row 9 
             { id: "black-arrow", name: "Black Arrow", icon: "spell_shadow_painspike", row: 8, col: 1, maxPoints: 1, prereq: "master-tactician", description: (rank) => `Fires an arrow that deals Shadow damage over 15 seconds. While Black Arrow is active, your periodic damage ticks have a chance to reset the cooldown of Explosive Shot. Also debuffs the target for +8% Nature and Fire damage taken from the Hunter. 30 sec Cooldown. Costs 35 Focus.` },
@@ -173,7 +173,7 @@ export const mageTalents = {
             // Row 5
             { id: "improved-counterspell", name: "Imp. Counterspell", icon: "spell_frost_iceshock", row: 4, col: 0, maxPoints: 2, description: (rank) => `Gives your Counterspell a ${rank * 50}% chance to silence the target for 4 sec.` },
             { id: "presence-of-mind", name: "Presence of Mind", icon: "spell_nature_enchantarmor", row: 4, col: 1, maxPoints: 1, description: (rank) => `When activated, your next Mage spell with a casting time less than 10 sec becomes an instant cast spell. 2.5 min cooldown.` },
-            { id: "arcane-mind", name: "Arcane Mind", icon: "spell_shadow_charm", row: 4, col: 3, maxPoints: 5, description: (rank) => `Increases your total Intellect by ${rank * 3}%.` },
+            { id: "arcane-mind", name: "Arcane Mind", icon: "spell_shadow_charm", row: 4, col: 3, maxPoints: 5, description: (rank) => `“You don't just think faster. You exist faster.”\n\nIncreases your total Intellect by ${rank * 3}%. \n\nYour Intellect now grants Spell Haste Rating. (Conversion: ${rank * 1}% of your Intellect is converted into Spell Haste).` },
             { id: "prismatic-cloak", name: "Prismatic Cloak", icon: "spell_arcane_prismaticcloak", row: 5, col: 0, maxPoints: 2, description: (rank) => `Reduces all damage taken by ${rank * 2}% and reduces the fade time of your Invisibility spell by ${rank * 1} sec.` },
 
             // Row 6
@@ -186,7 +186,7 @@ export const mageTalents = {
             { id: "spell-power", name: "Spell Power", icon: "spell_arcane_arcane02", row: 6, col: 2, maxPoints: 2, description: (rank) => `Increases critical strike damage bonus of all spells by ${rank * 25}%.` },
 
             // Row 8
-            { id: "mind-mastery", name: "Mind Mastery", icon: "spell_arcane_mindmastery", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases spell damage by up to ${rank * 5}% of your total Intellect.` },
+            { id: "mind-mastery", name: "Mind Mastery", icon: "spell_arcane_mindmastery", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases spell damage by ${rank * 3}% of your total Intellect and your Mana Shield now absorbs damage equal to ${rank * 60}% of your Intellect and drains ${rank * 10}% less Mana per point of damage absorbed.\n\nPassive: While Mana Shield is active, you are immune to Pushback on all spells.` },
 
             // Row 9 
             { id: "alter-time", name: "Alter Time", icon: "spell_mage_altertime", row: 8, col: 1, maxPoints: 1, description: (rank) => `Instantly alters the fabric of time, taking a snapshot of your current Mana and Location. After 10 sec or when cast again, you are returned to that location and mana amount. 3 min cooldown.` },
@@ -199,7 +199,7 @@ export const mageTalents = {
         talents: [
             // Row 1
             { id: "improved-fireball", name: "Imp. Fireball", icon: "spell_fire_flamebolt", row: 0, col: 1, maxPoints: 5, description: (rank) => `Reduces the casting time of your Fireball spell by ${rank * 0.1} sec.` },
-            { id: "impact", name: "Impact", icon: "spell_fire_meteorstorm", row: 0, col: 2, maxPoints: 5, description: (rank) => `Gives your Fire spells a ${rank * 3}% chance to stun the target for 2 sec.` },
+            { id: "impact", name: "Impact", icon: "spell_fire_meteorstorm", row: 0, col: 2, maxPoints: 5, description: (rank) => `Gives your Fire spells a ${rank * 2}% chance to stun the target for 2 sec. If the target is immune to Stun, the force of the spell Ruptures their armor, causing them to take ${rank * 1}% increased Fire damage from the Mage for 10 seconds. This effect refreshes on new Impacts.` },
 
             // Row 2
             { id: "ignite", name: "Ignite", icon: "spell_fire_incinerate", row: 1, col: 0, maxPoints: 5, description: (rank) => `Your critical strikes from Fire damage spells cause the target to burn for an additional ${rank * 8}% of your spell's damage over 4 sec.` },
@@ -219,8 +219,8 @@ export const mageTalents = {
 
             // Row 5
             { id: "cauterize", name: "Cauterize", icon: "spell_fire_playingwithfire", row: 4, col: 0, maxPoints: 3, description: (rank) => `Increases fire damage by ${rank * 1}%. In addition, an attack that would otherwise kill you instead heals you to 40% of your maximum health. However, you will burn for 12% of your maximum health every second for 4 sec. 1 min Internal Cooldown.` },
-            { id: "critical-mass", name: "Critical Mass", icon: "spell_nature_wispheal", row: 4, col: 1, maxPoints: 3, description: (rank) => `Increases the critical strike chance of your Fire spells by ${rank * 2}%.` },
-            { id: "meteor", name: "Meteor", icon: "spell_fire_meteorstorm", row: 4, col: 2, maxPoints: 1, prereq: "blast-wave", description: (rank) => `Calls down a meteor that strikes the target location after 3 seconds, dealing high Fire damage split evenly among targets within 8 yards, and applying a burning ground effect. 45s CD.` },
+            { id: "critical-mass", name: "Critical Mass", icon: "spell_nature_wispheal", row: 4, col: 1, maxPoints: 3, description: (rank) => `Increases the critical strike chance of your Fire spells by ${rank * 2}%. Your non-periodic Fire critical strikes generate 'Thermal Runaway,' reducing the cast time of your next Scorch by ${rank * 33}%.` },
+            { id: "meteor", name: "Meteor", icon: "https://wow.zamimg.com/images/wow/icons/large/spell_mage_meteor.jpg", row: 4, col: 2, maxPoints: 1, prereq: "blast-wave", description: (rank) => `Calls down a meteor that strikes the target location after 3 seconds, dealing high Fire damage split evenly among targets within 8 yards, and applying a burning ground effect. 45s CD.` },
 
             // Row 6
             { id: "blazing-speed", name: "Blazing Speed", icon: "spell_fire_burningspeed", row: 5, col: 0, maxPoints: 2, description: (rank) => `Gives you a ${rank * 5}% chance when hit by a melee or ranged attack to increase your movement speed by 50% and dispel all movement impairing effects. Lasts 8 sec.` },
@@ -233,10 +233,10 @@ export const mageTalents = {
             { id: "molten-fury", name: "Molten Fury", icon: "spell_fire_moltenblood", row: 6, col: 2, maxPoints: 2, description: (rank) => `Increases damage of all spells against targets with less than 20% health by ${rank * 10}%.` },
 
             // Row 8
-            { id: "empowered-fireball", name: "Emp. Fireball", icon: "spell_fire_flamebolt", row: 7, col: 2, maxPoints: 5, description: (rank) => `Your Fireball spell gains an additional ${rank * 3}% of your bonus spell damage effects.` },
+            { id: "empowered-fireball", name: "Emp. Fireball", icon: "spell_fire_flamebolt", row: 7, col: 2, maxPoints: 5, description: (rank) => `Your Fireball spell gains an additional ${rank * 3}% of your bonus spell damage effects and your Fireball now deals Spellfire Damage (Arcane + Fire).` },
 
             // Row 9 
-            { id: "living-bomb", name: "Living Bomb", icon: "spell_fire_sae", row: 8, col: 1, maxPoints: 1, prereq: "combustion", description: (rank) => `The target becomes a Living Bomb, taking Fire damage over 12 sec. After 12 sec or when the spell is dispelled, the target explodes dealing Fire damage to all enemies within 10 yards.` },
+            { id: "living-bomb", name: "Living Bomb", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_mage_livingbomb.jpg", row: 8, col: 1, maxPoints: 1, prereq: "combustion", description: (rank) => `The target becomes a Living Bomb, taking Fire damage over 12 sec. After 12 sec or when the spell is dispelled, the target explodes dealing Fire damage to all enemies within 10 yards.` },
         ]
     },
     frost: {
@@ -250,7 +250,7 @@ export const mageTalents = {
             { id: "elemental-precision", name: "Elemental Precision", icon: "spell_ice_magicdamage", row: 0, col: 2, maxPoints: 3, description: (rank) => `Reduces the mana cost of your Frost spells by ${rank * 1}% and gives your Frost spells a ${rank * 1}% chance to hit.` },
 
             // Row 2
-            { id: "ice-shards", name: "Ice Shards", icon: "spell_frost_iceshard", row: 1, col: 0, maxPoints: 5, description: (rank) => `Increases the critical strike damage bonus of your Frost spells by ${rank * 20}%.` },
+            { id: "ice-shards", name: "Ice Shards", icon: "spell_frost_iceshard", row: 1, col: 0, maxPoints: 5, description: (rank) => `“Cold focuses the mind. Heat unleashes it.”\n\nIncreases the Critical Strike damage bonus of your Frost Spells by ${rank * 20}%. \n\nWhen you score a Critical Strike with a Frost spell, you gain "Prismatic Focus" for 10 seconds. Prismatic Focus: Your next Fire or Arcane spell gains +25% Critical Strike Chance and also benefits from the +${rank * 20}% Crit Damage Bonus of this talent.` },
             { id: "frostbite", name: "Frostbite", icon: "spell_frost_frostarmor", row: 1, col: 1, maxPoints: 3, description: (rank) => `Gives your Chill effects a ${rank * 5}% chance to freeze the target for 5 sec.` },
             { id: "improved-frost-nova", name: "Imp. Frost Nova", icon: "spell_frost_freezingbreath", row: 1, col: 2, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Frost Nova spell by ${rank * 2} sec.` },
             { id: "permafrost", name: "Permafrost", icon: "spell_frost_wisp", row: 1, col: 3, maxPoints: 3, description: (rank) => `Increases the duration of your Chill effects by ${rank * 1} sec and reduces the target's speed by an additional ${rank * 4}%.` },
@@ -268,20 +268,20 @@ export const mageTalents = {
             // Row 5
             { id: "deep-freeze", name: "Deep Freeze", icon: "ability_mage_deepfreeze", row: 4, col: 1, maxPoints: 1, description: (rank) => `Stuns the target for 5 sec. Only usable on Frozen targets. If the target is immune to stuns (Bosses), it deals massive Frost damage instead. 30 sec cooldown.` },
             { id: "improved-cone-of-cold", name: "Imp. Cone of Cold", icon: "spell_frost_glacier", row: 4, col: 2, maxPoints: 3, description: (rank) => `Increases the damage dealt by your Cone of Cold spell by ${rank * 10}%.` },
-            { id: "shattered-barrier", name: "Shattered Barrier", icon: "spell_frost_frozensection", row: 4, col: 0, maxPoints: 2, description: (rank) => `Your Ice Barrier now gains additional absorption equal to ${rank * 40}% of your Spell Power. When your Ice Barrier is destroyed, it freezes all enemies within 10 yards for 4 sec.` },
+            { id: "shattered-barrier", name: "Shattered Barrier", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_mage_shattershield.jpg", row: 6, col: 0, maxPoints: 2, prereq: "ice-barrier", description: (rank) => `Your Ice Barrier now gains additional absorption equal to ${rank * 40}% of your Spell Power. When your Ice Barrier is destroyed, it freezes all enemies within 10 yards for 4 sec.` },
             { id: "frozen-orb", name: "Frozen Orb", icon: "spell_frost_frozenorb", row: 4, col: 3, maxPoints: 1, prereq: "improved-blizzard", description: (rank) => `Launches an orb of swirling ice forward, dealing Frost damage every second to nearby enemies for 10 seconds and slowing them. Grants 1 charge of Fingers of Frost the first time it hits a target. 1 min CD.` },
 
             // Row 6
             { id: "ice-floes", name: "Ice Floes", icon: "spell_frost_icefloes", row: 5, col: 0, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Cone of Cold, Cold Snap, Ice Barrier and Ice Block spells by ${rank * 10}%.` },
             { id: "fingers-of-frost", name: "Fingers of Frost", icon: "spell_frost_frostblast", row: 5, col: 2, maxPoints: 3, description: (rank) => `Your Chill effects have a ${rank * 5}% chance to grant you the Fingers of Frost effect, causing your next 2 spells to treat the target as if it were Frozen.` },
-            { id: "brain-freeze", name: "Brain Freeze", icon: "spell_frost_brainfreeze", row: 5, col: 3, maxPoints: 2, description: (rank) => `Your Frostbolt has a ${rank * 5}% chance to make your next Fireball or Frostfire Bolt instant cast and cost no mana.` },
+            { id: "brain-freeze", name: "Brain Freeze", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_mage_brainfreeze.jpg", row: 4, col: 0, maxPoints: 2, description: (rank) => `Your Frostbolt has a ${rank * 5}% chance to make your next Fireball or Frostfire Bolt instant cast and cost no mana.` },
 
             // Row 7
             { id: "ice-barrier", name: "Ice Barrier", icon: "spell_ice_lament", row: 6, col: 1, maxPoints: 1, prereq: "cold-snap", description: (rank) => `Instantly shields you, absorbing damage. Lasts 1 min. While the shield holds, spells will not be interrupted.` },
             { id: "arctic-winds", name: "Arctic Winds", icon: "spell_frost_arcticwinds", row: 6, col: 2, maxPoints: 5, description: (rank) => `Increases all Frost damage caused by ${rank * 1}% and reduces the chance melee and ranged attacks will hit you by ${rank * 1}%. Your Chill effects have a ${rank * 3}% chance to grant you Glacial Spike. Your next Ice Lance treats the target as Frozen.` },
 
             // Row 8
-            { id: "empowered-frostbolt", name: "Emp. Frostbolt", icon: "spell_frost_frostbolt02", row: 7, col: 1, maxPoints: 5, description: (rank) => `Reduces the casting time of your Frostbolt spell by ${rank * 0.1} sec and increases your critical strike chance with it by ${rank * 1}%. Increases the damage of your Frostbolt by an amount equal to ${rank * 5}% of your Intellect.` },
+            { id: "empowered-frostbolt", name: "Emp. Frostbolt", icon: "spell_frost_frostbolt02", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases the damage of Frostbolt by ${rank * 2}%. Your Frostbolt treats targets that are immune to movement impairing effects (Bosses) or below 35% Health as if they were Frozen.` },
 
             // Row 9 
             { id: "summon-water-elemental", name: "Summon Water Elemental", icon: "spell_frost_summonwaterelemental_2", row: 8, col: 1, maxPoints: 1, description: (rank) => `Summons a Water Elemental to fight for you. It lasts until dismissed or killed.` },
@@ -297,16 +297,23 @@ export const paladinTalents = {
         background: "https://i.imgur.com/jXu8owF.jpeg",
         talents: [
             // Row 1
-            { id: "divine-strength", name: "Divine Strength", icon: "spell_holy_auraoflight", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases your Strength by ${rank * 2}%.` },
-            { id: "divine-intellect", name: "Divine Intellect", icon: "spell_nature_sleep", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your total Intellect by ${rank * 2}%.` },
+            { id: "divine-strength", name: "Divine Strength", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_golemthunderclap.jpg", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases your Strength by ${rank * 2}% and reduces the duration of all Stun, Silence, and Disarm effects used against you by ${rank * 1}%.` },
+            { id: "divine-intellect", name: "Divine Intellect", icon: "spell_nature_sleep", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your total Intellect by ${rank * 2}% and your auto-attacks deal additional Holy Damage equal to ${rank * 1}% of your Intellect.` },
 
             // Row 2
             { id: "spiritual-focus", name: "Spiritual Focus", icon: "spell_arcane_blink", row: 1, col: 1, maxPoints: 5, description: (rank) => `Gives your Flash of Light and Holy Light spells a ${rank * 14}% chance to not lose casting time when you take damage.` },
-            { id: "improved-seal-of-righteousness", name: "Imp. Seal of Righteousness", icon: "ability_thunderbolt", row: 1, col: 2, maxPoints: 5, description: (rank) => `Increases the damage done by your Seal of Righteousness and Judgement of Righteousness by ${rank * 3}%.` },
+            { id: "improved-seal-of-righteousness", name: "Imp. Seal of Righteousness", icon: "ability_thunderbolt", row: 1, col: 2, maxPoints: 5, description: (rank) => `Increases the damage of your Seal of the Righteous by ${rank * 3}% and ${rank * 4}% of the Holy Damage dealt by your Seal and Judgement of Righteousness is returned to you as Health. If you are at full health, this healing is granted to the nearest injured party member instead.` },
 
             // Row 3
             { id: "healing-light", name: "Healing Light", icon: "spell_holy_holybolt", row: 2, col: 0, maxPoints: 3, description: (rank) => `Increases the amount healed by your Holy Light and Flash of Light spells by ${rank * 4}%.` },
-            { id: "aura-mastery", name: "Aura Mastery", icon: "spell_holy_auramastery", row: 2, col: 1, maxPoints: 1, description: (rank) => `Empowers your active Aura for 10 seconds, granting a unique effect based on the Aura currently active. Sharing this effect does not remove the passive Aura benefit.` },
+            {
+                id: "aura-mastery", name: "Aura Mastery", icon: "spell_holy_auramastery", row: 2, col: 1, maxPoints: 1, prereq: "spiritual-focus", description: (rank) => `Empowers your active Aura for 10 seconds, granting a specific Mastery effect:
+
+Devotion Aura: Barriers of light shield your allies, reducing all damage taken by 20%.
+Retribution Aura: Divine wrath is magnified, increasing damage reflected by 100% and causing it to splash to nearby enemies.
+Concentration Aura: The mind becomes a fortress of will, granting immunity to all Silence and Interrupt effects.
+Resistance Auras: The Light purges elemental corruption, reducing magic damage taken of the corresponding element by 15%.
+Sanctity Aura: Radiates holy power, increasing all damage dealt by party members by 3%.` },
             { id: "improved-lay-on-hands", name: "Imp. Lay on Hands", icon: "spell_holy_layonhands", row: 2, col: 2, maxPoints: 2, description: (rank) => `Gives the target of your Lay on Hands spell a ${rank * 15}% bonus to their armor value from items for 2 min. In addition, the cooldown for your Lay on Hands spell is reduced by ${rank * 10} min.` },
             { id: "unyielding-faith", name: "Unyielding Faith", icon: "spell_holy_unyieldingfaith", row: 2, col: 3, maxPoints: 2, description: (rank) => `Reduces the chance you will be afflicted by Fear and Disorient effects by ${rank * 5}%.` },
 
@@ -329,7 +336,7 @@ export const paladinTalents = {
             { id: "blessed-life", name: "Blessed Life", icon: "spell_holy_blessedlife", row: 6, col: 2, maxPoints: 3, description: (rank) => `All attacks against you have a ${rank * 3}% chance to cause half damage.` },
 
             // Row 8
-            { id: "holy-guidance", name: "Holy Guidance", icon: "spell_holy_holyguidance", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases your spell damage and healing by ${rank * 7}% of your total Intellect.` },
+            { id: "holy-guidance", name: "Holy Guidance", icon: "spell_holy_holyguidance", row: 7, col: 1, maxPoints: 5, description: (rank) => `“The Light does not stop at one soul; it reflects to the next.”\n\nIncreases Spell Damage and Healing by ${rank * 7}% of your Intellect. \n\nYour Flash of Light and Holy Light now splash ${rank * 3}% of their healing to the injured ally nearest to your target. If you cast on yourself, the splash amount is doubled (${rank * 6}%) to a nearby ally.` },
 
             // Row 9 
             { id: "beacon-of-light", name: "Beacon of Light", icon: "ability_paladin_beaconoflight", row: 8, col: 1, maxPoints: 1, description: (rank) => `The target becomes a Beacon of Light. Any heals you cast on other party or raid members will also heal the Beacon for 50% of the amount healed.` },
@@ -341,16 +348,16 @@ export const paladinTalents = {
         background: "https://i.imgur.com/tbZ5OcF.jpeg",
         talents: [
             // Row 1
-            { id: "improved-devotion-aura", name: "Imp. Devotion Aura", icon: "spell_holy_devotionaura", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the armor bonus of your Devotion Aura by ${rank * 8}%.` },
+            { id: "improved-devotion-aura", name: "Imp. Devotion Aura", icon: "spell_holy_devotionaura", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the armor bonus of your Devotion Aura by ${rank * 5}%. Allies affected by your Devotion Aura receive ${rank * 1}% increased healing from all sources.` },
             { id: "redoubt", name: "Redoubt", icon: "ability_defend", row: 0, col: 2, maxPoints: 5, description: (rank) => `Damaging melee or ranged attacks against you have a 10% chance to increase your chance to block by ${rank * 6}%. Lasts 10 sec or 5 blocks.` },
 
             // Row 2
             { id: "precision", name: "Precision", icon: "ability_rogue_ambush", row: 1, col: 0, maxPoints: 3, description: (rank) => `Increases your chance to hit with melee weapons and spells by ${rank * 1}%.` },
             { id: "guardians-favor", name: "Guardian's Favor", icon: "spell_holy_sealofprotection", row: 1, col: 1, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Blessing of Protection by ${rank * 60} sec and increases the duration of your Blessing of Freedom by ${rank * 3} sec.` },
-            { id: "toughness", name: "Toughness", icon: "spell_holy_devotion", row: 1, col: 3, maxPoints: 5, description: (rank) => `Increases your armor value from items by ${rank * 2}%.` },
+            { id: "sanctified-plating", name: "Sanctified Plating", icon: "spell_holy_devotion", row: 1, col: 3, maxPoints: 5, description: (rank) => `Increases your Armor value from items by ${rank * 1}% and ${rank * 0.4}% of your Armor value is converted into Spell Damage.` },
 
             // Row 3
-            { id: "hammer-of-the-righteous", name: "Hammer of Righteous", icon: "ability_paladin_hammeroftherighteous", row: 2, col: 0, maxPoints: 1, description: (rank) => `Hammer the current target and up to 2 additional nearby targets for 4 times your main hand DPS as Holy damage. 6 sec Cooldown.` },
+            { id: "hammer-of-the-righteous", name: "Hammer of Righteous", icon: "ability_paladin_hammeroftherighteous", row: 2, col: 0, maxPoints: 1, prereq: "precision", description: (rank) => `Hammer the current target and up to 2 additional nearby targets for 4 times your main hand DPS as Holy damage. 6 sec Cooldown.` },
             { id: "improved-righteous-fury", name: "Imp. Righteous Fury", icon: "spell_holy_sealoffury", row: 2, col: 1, maxPoints: 3, description: (rank) => `While Righteous Fury is active, all damage taken is reduced by ${rank * 2}% and generates ${rank * 16}% increased threat.` },
             { id: "shield-specialization", name: "Shield Specialization", icon: "inv_shield_06", row: 2, col: 2, maxPoints: 3, prereq: "redoubt", description: (rank) => `Increases the amount of damage absorbed by your shield by ${rank * 10}%.` },
             { id: "anticipation", name: "Anticipation", icon: "spell_magic_lesserinvisibilty", row: 2, col: 3, maxPoints: 5, description: (rank) => `Increases your Defense skill by ${rank * 4}. In addition, whenever you Dodge, Parry, or Block an attack, you have a ${rank * 20}% chance to gain the 'Anticipation' effect, reducing the mana cost of your next Holy Shield, Consecration, or Judgement by 100%.` },
@@ -367,14 +374,14 @@ export const paladinTalents = {
 
             // Row 6
             { id: "sacred-duty", name: "Sacred Duty", icon: "spell_holy_divineintervention", row: 5, col: 0, maxPoints: 2, description: (rank) => `Increases your total Stamina by ${rank * 3}% and reduces the cooldown of your Divine Shield spell by ${rank * 30} sec.` },
-            { id: "one-handed-weapon-specialization", name: "One-Handed Spec.", icon: "inv_sword_20", row: 5, col: 2, maxPoints: 5, description: (rank) => `Increases all damage you deal when a one-handed melee weapon is equipped by ${rank * 1}%.` },
+            { id: "one-handed-weapon-specialization", name: "One-Handed Spec.", icon: "inv_sword_20", row: 5, col: 2, maxPoints: 3, description: (rank) => `Increases all damage you deal when a one-handed melee weapon is equipped by ${rank * 2}%.` },
 
             // Row 7
             { id: "holy-shield", name: "Holy Shield", icon: "spell_holy_blessingofprotection", row: 6, col: 1, maxPoints: 1, prereq: "blessing-of-sanctuary", description: (rank) => `Increases block chance by 30% for 10 sec and deals 79 Holy damage for each attack blocked. Damage caused generates 20% additional threat. 4 charges.` },
             { id: "ardent-defender", name: "Ardent Defender", icon: "spell_holy_ardentdefender", row: 6, col: 2, maxPoints: 5, description: (rank) => `When you have less than 35% health, all damage taken is reduced by ${rank * 6}%.` },
 
             // Row 8
-            { id: "combat-expertise", name: "Combat Expertise", icon: "spell_holy_weaponmastery", row: 7, col: 2, maxPoints: 5, description: (rank) => `Increases your expertise by ${rank * 1} and your total Stamina by ${rank * 2}%.` },
+            { id: "combat-expertise", name: "Combat Expertise", icon: "spell_holy_weaponmastery", row: 7, col: 2, maxPoints: 5, description: (rank) => `“The best defense is a relentless offense.”\n\nIncreases your total Stamina by ${rank * 2}% and Expertise by ${rank * 1}. \n\nWhenever you deal Holy Damage with a melee attack (Seal of Righteousness/Blood/Corruption), you gain a stack of "Holy Ward." \n\nHoly Ward: Increases your Block Value by ${rank * 1}% and Armor by ${rank * 0.4}% for 6 seconds. Stacks up to 5 times.` },
 
             // Row 9 
             { id: "avengers-shield", name: "Avenger's Shield", icon: "spell_holy_avengersshield", row: 8, col: 1, maxPoints: 1, prereq: "holy-shield", description: (rank) => `Hurls a holy shield at the enemy, dealing 270 to 330 Holy damage, Dazing them and then jumping to additional nearby enemies. Affects 3 total targets. Duration 10 sec.` },
@@ -387,13 +394,13 @@ export const paladinTalents = {
         talents: [
             // Row 1
             { id: "improved-judgement", name: "Imp. Judgement", icon: "spell_holy_righteousfury", row: 0, col: 0, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Judgement spell by ${rank * 1} sec.` },
-            { id: "improved-blessing-of-might", name: "Imp. Blessing of Might", icon: "spell_holy_fistofjustice", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the attack power bonus of your Blessing of Might by ${rank * 4}%.` },
+            { id: "improved-blessing-of-might", name: "Imp. Blessing of Might", icon: "spell_holy_fistofjustice", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the attack power bonus of your Blessing of Might by ${rank * 4}%. Your Blessing of Might grants 'Siegebreaker,' causing the target's attacks to ignore ${rank * 154} Armor.` },
             { id: "benediction", name: "Benediction", icon: "spell_frost_windwalkon", row: 0, col: 2, maxPoints: 3, description: (rank) => `Reduces the Mana cost of your Judgement and Seal spells by ${rank * 5}%.` },
 
             // Row 2
             { id: "divine-purpose", name: "Divine Purpose", icon: "spell_holy_divinepurpose", row: 1, col: 0, maxPoints: 2, description: (rank) => `Increases your total Strength by ${rank * 2}%. In addition, your Strength attribute increases your Spell Power by an amount equal to ${rank * 40}% of your Strength.` },
             { id: "improved-seal-of-the-crusader", name: "Imp. Seal of Crusader", icon: "spell_holy_holysmite", row: 1, col: 1, maxPoints: 3, description: (rank) => `In addition to the normal effect, your Judgement of the Crusader increases the critical strike chance of all attacks against that target by an additional ${rank * 1}%.` },
-            { id: "deflection", name: "Deflection", icon: "ability_parry", row: 1, col: 2, maxPoints: 5, description: (rank) => `Increases your Parry chance by ${rank * 1}%.` },
+            { id: "deflection", name: "Deflection", icon: "ability_parry", row: 1, col: 2, maxPoints: 5, description: (rank) => `Increases your Parry chance by ${rank * 1}%. When you Parry an attack, the attacker suffers 'Dazzling Light,' reducing their Chance to Hit by ${rank * 0.2}% and increasing their miss chance with spells by ${rank * 0.2}% for 6 sec. Stacks 3 times.` },
 
             // Row 3
             { id: "vindication", name: "Vindication", icon: "spell_holy_vindication", row: 2, col: 0, maxPoints: 3, description: (rank) => `Gives the Paladin's damaging attacks a chance to reduce the target's attributes by ${rank * 5}% for 15 sec.` },
@@ -403,7 +410,7 @@ export const paladinTalents = {
 
             // Row 4
             { id: "eye-for-an-eye", name: "Eye for an Eye", icon: "spell_holy_eyeforaneye", row: 3, col: 0, maxPoints: 2, description: (rank) => `All spell criticals against you cause ${rank * 15}% of the damage taken to be returned to the caster as well.` },
-            { id: "imp-retribution-aura", name: "Imp. Retribution Aura", icon: "spell_holy_auraoflight", row: 3, col: 2, maxPoints: 2, description: (rank) => `Increases the damage done by your Retribution Aura by ${rank * 25}%.` },
+            { id: "imp-retribution-aura", name: "Imp. Retribution Aura", icon: "spell_holy_auraoflight", row: 3, col: 2, maxPoints: 2, description: (rank) => `Increases the damage done by your Retribution Aura by ${rank * 25}% and your Retribution Aura now adds ${rank * 5}% of your Shield Block Value to its damage reflection.` },
             { id: "crusade", name: "Crusade", icon: "spell_holy_crusade", row: 3, col: 3, maxPoints: 3, description: (rank) => `Increases all damage caused by ${rank * 1}% and all damage caused against Demon, Undead, Humanoids and Elementals by an additional ${rank * 1}%.` },
 
             // Row 5
@@ -421,7 +428,7 @@ export const paladinTalents = {
             { id: "divine-storm", name: "Divine Storm", icon: "ability_paladin_divinestorm", row: 6, col: 1, maxPoints: 1, prereq: "vengeance", description: (rank) => `An instant weapon attack that causes 110% of weapon damage to up to 4 enemies within 8 yards. Heals up to 3 party members for 25% of the damage caused. 10 sec Cooldown.` },
 
             // Row 8
-            { id: "fanaticism", name: "Fanaticism", icon: "spell_holy_fanaticism", row: 7, col: 1, maxPoints: 5, prereq: "divine-storm", description: (rank) => `Increases the critical strike chance of all Judgements capable of a critical hit by ${rank * 3}% and reduces threat caused by all actions by ${rank * 6}% except when under the effects of Righteous Fury.` },
+            { id: "fanaticism", name: "Fanaticism", icon: "spell_holy_fanaticism", row: 7, col: 1, maxPoints: 5, prereq: "divine-storm", description: (rank) => `“Strike until the heresy is purged.”\n\nIncreases the critical strike chance of Judgements by ${rank * 3}%. \n\nWhen your Judgement Crits, you enter a state of Fervor, increasing your Melee Attack Speed by ${rank * 6}% for 10 seconds. \n\nWhile in Fervor, your Crusader Strike cooldown is reduced by 1 second.` },
 
             // Row 9 
             { id: "crusader-strike", name: "Crusader Strike", icon: "spell_holy_crusaderstrike", row: 8, col: 1, maxPoints: 1, description: (rank) => `An instant strike that causes 110% weapon damage and refreshes all Judgements on the target.` },
@@ -470,7 +477,7 @@ export const priestTalents = {
             { id: "reflective-shield", name: "Reflective Shield", icon: "spell_holy_powerwordshield", row: 6, col: 2, maxPoints: 3, description: (rank) => `Causes ${rank * 20 + 20}% of the damage absorbed by your Power Word: Shield to be reflected back at the attacker. This reflected damage causes high threat.` },
 
             // Row 8
-            { id: "enlightenment", name: "Enlightenment", icon: "spell_arcane_mindmastery", row: 7, col: 1, maxPoints: 5, prereq: "power-infusion", description: (rank) => `Increases your total Stamina, Intellect and Spirit by ${rank * 1}%.` },
+            { id: "enlightenment", name: "Enlightenment", icon: "spell_arcane_mindmastery", row: 7, col: 1, maxPoints: 5, prereq: "power-infusion", description: (rank) => `“Balance is not a concept. It is a weapon.”\n\nIncreases your total Stamina, Intellect, and Spirit by ${rank * 1}%. \n\nThe Zen State:\nAbove 75% Mana: You gain 10% increased Spell Damage and Healing. (The Confidence).\nBelow 25% Mana: Your Mana Regeneration is increased by 50%. (The Desperation).` },
 
             // Row 9 
             { id: "pain-suppression", name: "Pain Suppression", icon: "spell_holy_painsupression", row: 8, col: 1, maxPoints: 1, prereq: "enlightenment", description: (rank) => `Instantly reduces the target's threat by 5% and reduces all damage taken by 40% for 8 sec. 2 min cooldown.` },
@@ -489,7 +496,7 @@ export const priestTalents = {
             // Row 2
             { id: "serendipity", name: "Serendipity", icon: "spell_holy_serendipity", row: 1, col: 0, maxPoints: 3, description: (rank) => `Your Flash Heal and Binding Heal spells reduce the cast time of your next Greater Heal or Prayer of Healing by ${rank * 6 + (rank === 3 ? 2 : 0)}%. Stacks up to 2 times.` },
             { id: "spell-warding", name: "Spell Warding", icon: "spell_holy_spellwarding", row: 1, col: 1, maxPoints: 2, description: (rank) => `Reduces all spell damage taken by ${rank * 5}%.` },
-            { id: "divine-fury", name: "Divine Fury", icon: "spell_holy_sealofwrath", row: 1, col: 2, maxPoints: 5, description: (rank) => `Reduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by ${rank * 0.1} sec.` },
+            { id: "divine-fury", name: "Divine Fury", icon: "spell_holy_sealofwrath", row: 1, col: 2, maxPoints: 5, description: (rank) => `“The Light is swift to heal, and swifter to strike.”\n\nReduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by ${rank * 0.1} sec. \n\nCasting Smite/Holy Fire grants a ${rank * 20}% chance to gain "Mercy," reducing the cast time of your next Heal/Greater Heal by an additional 20%.\n\nCasting Heal/Greater Heal grants a ${rank * 20}% chance to gain "Wrath," making your next Smite/Holy Fire Instant Cast.` },
 
             // Row 3
             { id: "holy-nova", name: "Holy Nova", icon: "spell_holy_holynova", row: 2, col: 0, maxPoints: 1, description: (rank) => `Causes an explosion of holy light around the caster, causing Holy damage to all enemy targets within 10 yards and healing all party members within 10 yards. Enemies hit are slowed by 25% for 4 sec. Allies healed gain 10% movement speed for 2 sec.` },
@@ -516,7 +523,7 @@ export const priestTalents = {
             { id: "blessed-resilience", name: "Blessed Resilience", icon: "spell_holy_blessedresillience", row: 6, col: 2, maxPoints: 3, description: (rank) => `Critical hits against you have a ${rank * 20}% chance to prevent you from being physically critically hit again for 6 sec.` },
 
             // Row 8
-            { id: "empowered-healing", name: "Empowered Healing", icon: "spell_holy_greaterheal", row: 7, col: 1, maxPoints: 5, prereq: "lightwell", description: (rank) => `Your Greater Heal spell gains an additional ${rank * 4}% and your Flash Heal and Binding Heal gain an additional ${rank * 2}% of your bonus healing effects.` },
+            { id: "empowered-healing", name: "Empowered Healing", icon: "spell_holy_greaterheal", row: 7, col: 1, maxPoints: 5, prereq: "lightwell", description: (rank) => `“The Light lingers long after the prayer is finished.”\n\nIncreases the healing of Greater Heal and Flash Heal by ${rank * 4}% of your Spell Power and your Greater Heal applies "Divine Aegis" to the target. \n\nDivine Aegis: If your Greater Heal Overheals the target, the overhealed amount (up to ${rank * 4}% of the target's HP) is converted into a Holy Shield that lasts 15 seconds.` },
 
             // Row 9 
             { id: "circle-of-healing", name: "Circle of Healing", icon: "spell_holy_circleofrenewal", row: 8, col: 1, maxPoints: 1, prereq: "empowered-healing", description: (rank) => `Heals up to 5 friendly party or raid members within 15 yards of the target.` },
@@ -534,7 +541,7 @@ export const priestTalents = {
             // Row 2
             { id: "shadow-affinity", name: "Shadow Affinity", icon: "spell_shadow_shadowward", row: 1, col: 0, maxPoints: 3, description: (rank) => `Reduces the threat generated by your Shadow spells by ${rank * 8}%.` },
             { id: "improved-shadow-word-pain", name: "Imp. Shadow Word: Pain", icon: "spell_shadow_shadowwordpain", row: 1, col: 1, maxPoints: 2, description: (rank) => `Increases the duration of your Shadow Word: Pain spell by ${rank * 3} sec.` },
-            { id: "shadow-focus", name: "Shadow Focus", icon: "spell_shadow_burningspirit", row: 1, col: 2, maxPoints: 5, description: (rank) => `Reduces your target's chance to resist your Shadow spells by ${rank * 2}%.` },
+            { id: "shadow-focus", name: "Shadow Focus", icon: "spell_shadow_burningspirit", row: 1, col: 2, maxPoints: 5, description: (rank) => `“Your will is stronger than their resistance.”\n\nIncreases your Shadow Spell Hit Chance by ${rank * 1}% and your Shadow spells have a 4% chance (100% on a Killing Blow) to enter a "Shadow Trance." \n\nShadow Trance: Your next spell (Holy or Shadow) costs 0 Mana and is uninterruptible.` },
 
             // Row 3
             { id: "improved-psychic-scream", name: "Imp. Psychic Scream", icon: "spell_shadow_psychicscream", row: 2, col: 0, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Psychic Scream spell by ${rank * 2} sec.` },
@@ -564,7 +571,7 @@ export const priestTalents = {
 
             // Row 8
             { id: "shadowy-insight", name: "Shadowy Insight", icon: "spell_shadow_shadowwordpain", row: 7, col: 0, maxPoints: 2, description: (rank) => `Your Shadow Word: Pain and Vampiric Touch periodic damage has a ${rank * 2}% chance to reset the cooldown of your Mind Blast and cause your next Mind Blast to be Instant Cast and cost no mana.` },
-            { id: "misery", name: "Misery", icon: "spell_shadow_misery", row: 7, col: 2, maxPoints: 5, description: (rank) => `Your Shadow Word: Pain, Mind Flay and Vampiric Touch spells also cause the target to take an additional ${rank * 1}% spell damage.` },
+            { id: "misery", name: "Misery", icon: "spell_shadow_misery", row: 7, col: 2, maxPoints: 5, description: (rank) => `“To fight the darkness is to feed it.”\n\nYour Mind Flay, SW:P, and Vampiric Touch increase Spell Damage taken by the target by ${rank * 1}% and targets affected by your Misery suffer from "Psychic Feedback." \n\nPsychic Feedback: Whenever the target attacks or casts a spell, they take Shadow Damage equal to 5% of your Spell Power.` },
 
             // Row 9 
             { id: "vampiric-touch", name: "Vampiric Touch", icon: "spell_holy_stoicism", row: 8, col: 1, maxPoints: 1, prereq: "shadowform", description: (rank) => `Causes damage over 15 sec and causes all party members to gain mana equal to 5% of any Shadow spell damage you deal.` },
@@ -612,7 +619,7 @@ export const rogueTalents = {
             { id: "deadened-nerves", name: "Deadened Nerves", icon: "ability_rogue_deadenednerves", row: 6, col: 2, maxPoints: 3, description: (rank) => `You instantly take 10% less damage from all sources. However, 50% of the damage prevented is applied to you as a Nature damage DoT over 10 seconds. While this DoT is active, your Energy regeneration is increased by ${rank * 5}%.` },
 
             // Row 8
-            { id: "imp-find-weakness", name: "Find Weakness", icon: "ability_rogue_findweakness", row: 7, col: 2, maxPoints: 5, description: (rank) => `Your finishing moves increase the damage of all offensive abilities by ${rank * 2}% for 10 sec.` },
+            { id: "imp-find-weakness", name: "Find Weakness", icon: "ability_rogue_findweakness", row: 7, col: 2, maxPoints: 5, description: (rank) => `“Confidence is a slow and insidious killer. I am the sudden one.”\n\nYour finishing moves have a ${rank * 20}% chance to expose a weakness in the target's armor. \n\nThe Weakness: For the next 10 seconds, your Mutilate and Backstab ignore ${rank * 20}% of the target's Armor if the target is below 35% Health OR acts as if the target is Poisoned even if they are not.` },
 
             // Row 9 
             { id: "mutilate", name: "Mutilate", icon: "ability_rogue_shadowstrikes", row: 8, col: 1, maxPoints: 1, prereq: "poison-bomb", description: (rank) => `Instantly attacks with both weapons for 100% weapon damage plus 44 with each weapon. Damage is increased by 50% against Poisoned targets. Awards 2 combo points.` },
@@ -657,7 +664,7 @@ export const rogueTalents = {
             { id: "nerves-of-steel", name: "Nerves of Steel", icon: "ability_rogue_nervesofsteel", row: 6, col: 2, maxPoints: 2, description: (rank) => `Increases your chance to resist Stun and Fear effects by ${rank * 5}%.` },
 
             // Row 8
-            { id: "combat-potency", name: "Combat Potency", icon: "inv_weapon_shortblade_38", row: 7, col: 2, maxPoints: 5, description: (rank) => `Gives your successful off-hand melee attacks a ${rank * 20}% chance to generate 3 Energy.` },
+            { id: "combat-potency", name: "Combat Potency", icon: "inv_weapon_shortblade_38", row: 7, col: 2, maxPoints: 5, description: (rank) => `“A storm of steel.”\n\nGives your off-hand melee attacks a ${rank * 4}% chance to generate 15 Energy. \n\nWhenever this effect triggers, the remaining cooldown on your Blade Flurry and Adrenaline Rush is reduced by ${rank * 0.2} second.` },
 
             // Row 9 
             { id: "crimson-tempest", name: "Crimson Tempest", icon: "https://wow.zamimg.com/images/wow/icons/large/inv_knife_1h_cataclysm_c_05.jpg", row: 8, col: 1, maxPoints: 1, prereq: "adrenaline-rush", description: (rank) => `Finishing move that slashes all enemies within 10 yards, dealing Physical damage and causing victims to bleed for additional damage over 12 sec.` },
@@ -702,10 +709,10 @@ export const rogueTalents = {
             { id: "cheat-death", name: "Cheat Death", icon: "ability_rogue_cheatdeath", row: 6, col: 2, maxPoints: 3, prereq: "deadliness", description: (rank) => `Passive: Fatal attacks instead reduce you to 10% health. Active: When triggered, you fade into shadows, reducing all damage taken by 90% for 3 sec. 90 sec Internal Cooldown.` },
 
             // Row 8
-            { id: "sinister-calling", name: "Sinister Calling", icon: "ability_rogue_sinistercalling", row: 7, col: 1, maxPoints: 5, prereq: "marked-for-death", description: (rank) => `Increases your total Agility by ${rank * 3}% and increases the percentage damage bonus of Backstab and Hemorrhage by an additional ${rank * 2}%.` },
+            { id: "sinister-calling", name: "Sinister Calling", icon: "ability_rogue_sinistercalling", row: 7, col: 1, maxPoints: 5, prereq: "marked-for-death", description: (rank) => `“The shadows whisper your name.”\n\nIncreases your total Agility by ${rank * 3}%. \n\nYour Hemorrhage and Backstab apply "Sinister Calling" to the target. \n\nSinister Calling: Increases Nature and Frost damage taken by the target by ${rank * 1}% (Stacks up to 3 times).` },
 
             // Row 9 
-            { id: "shadowstep", name: "Shadowstep", icon: "ability_rogue_shadowstep", row: 8, col: 1, maxPoints: 1, description: (rank) => `Step through the shadows and reappear behind your enemy, increasing the damage of your next ability by 20% and your movement speed by 70% for 3 sec.` },
+            { id: "shadowstep", name: "Shadowstep", icon: "ability_rogue_shadowstep", row: 8, col: 1, maxPoints: 1, description: (rank) => `Attempts to step through the shadows and reappear behind your enemy, increasing movement speed by 70% for 3 sec.\n\nThe Upgrade Effect: Upon reappearing, you are infused with Void Momentum for a fleeting moment.\n\nVoid Momentum: For the next 1.5 seconds, your next Ambush, Backstab, or Hemorrhage has its critical strike chance increased by 100%.` },
         ]
     }
 };
@@ -743,6 +750,7 @@ export const shamanTalents = {
 
             // Row 6
             { id: "elemental-precision", name: "Elemental Precision", icon: "spell_nature_elementalprecision_1", row: 5, col: 0, maxPoints: 3, description: (rank) => `Increases your chance to hit with Fire, Frost, and Nature spells by ${rank * 2}% and reduces the threat caused by Fire, Frost, and Nature spells by ${rank * 4}%.` },
+            { id: "totemic-projection", name: "Totemic Projection", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_shaman_totemrelocation.jpg", row: 6, col: 0, maxPoints: 1, prereq: "elemental-precision", description: (rank) => `Teleports your active totems to the target location. 10s Cooldown. Instant.` },
             { id: "lightning-mastery", name: "Lightning Mastery", icon: "spell_lightning_lightningbolt01", row: 5, col: 2, maxPoints: 5, prereq: "call-of-thunder", description: (rank) => `Reduces the cast time of your Lightning Bolt and Chain Lightning spells by ${rank * 0.1} sec. Gives your Lightning Bolt and Chain Lightning spells a ${rank * 2}% chance to cast a second, similar spell on the same target at no additional cost that deals half damage and causes no threat.` },
 
             // Row 7
@@ -762,14 +770,14 @@ export const shamanTalents = {
         background: "https://i.imgur.com/HPk3cb1.jpeg",
         talents: [
             // Row 1
-            { id: "ancestral-knowledge", name: "Ancestral Knowledge", icon: "spell_shadow_grimward", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases your total Intellect by ${rank * 1}%.` },
+            { id: "improved-shields", name: "Improved Shields", icon: "spell_nature_lightningshield", row: 0, col: 0, maxPoints: 2, description: (rank) => `Increases the damage done by your Lightning Shield orbs by ${rank * 10}%, increases the amount of mana gained from your Water Shield orbs by ${rank * 10}% and increases the amount of healing done by your Earth Shield orbs by ${rank * 5}%.` },
+            { id: "ancestral-knowledge", name: "Ancestral Knowledge", icon: "spell_shadow_grimward", row: 0, col: 1, maxPoints: 3, description: (rank) => `Your exposure to the elements sharpens your mind and body. Increases your Intellect by ${rank === 1 ? 4 : rank === 2 ? 7 : 10}%. Additionally, ${rank * 10}% of your Intellect is converted into Attack Power.` },
             { id: "shield-specialization", name: "Shield Specialization", icon: "inv_shield_06", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your chance to block attacks with a shield by ${rank * 1}% and increases the amount blocked by ${rank * 5}%.` },
 
             // Row 2
             { id: "guardian-totems", name: "Guardian Totems", icon: "spell_nature_stoneskintotem", row: 1, col: 0, maxPoints: 2, description: (rank) => `Increases the amount of armor increased by your Stoneskin Totem and Windwall Totem by ${rank * 10}% and reduces the cooldown of your Grounding Totem by ${rank * 1} sec.` },
             { id: "thundering-strikes", name: "Thundering Strikes", icon: "spell_nature_thunderclap", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases your critical strike chance with your weapon and spells by ${rank * 1}%.` },
             { id: "improved-ghost-wolf", name: "Imp. Ghost Wolf", icon: "spell_nature_spiritwolf", row: 1, col: 2, maxPoints: 2, description: (rank) => `Reduces the cast time of your Ghost Wolf spell by ${rank * 1.5} sec and allows it to be used indoors. While in Ghost Wolf form, movement impairing effects cannot reduce your speed below 100%.` },
-            { id: "improved-lightning-shield", name: "Imp. Lightning Shield", icon: "spell_nature_lightningshield", row: 1, col: 3, maxPoints: 3, description: (rank) => `Increases the damage done by your Lightning Shield orbs by ${rank * 5}%.` },
 
             // Row 3
             { id: "enhancing-totems", name: "Enhancing Totems", icon: "spell_nature_earthbindtotem", row: 2, col: 0, maxPoints: 2, description: (rank) => `Increases the effect of your Strength of Earth and Grace of Air Totems by ${rank * 8}% and your Strength of Earth and Windfury Totems persist on party members for ${rank * 5} sec after the totem is destroyed or replaced.` },
@@ -905,17 +913,17 @@ export const warlockTalents = {
         talents: [
             // Row 1
             { id: "improved-healthstone", name: "Imp. Healthstone", icon: "inv_stone_04", row: 0, col: 0, maxPoints: 2, description: (rank) => `Increases the amount of Health restored by your Healthstone by ${rank * 10}%.` },
-            { id: "demonic-instructor", name: "Demonic Instructor", icon: "spell_shadow_summonimp", row: 0, col: 1, maxPoints: 3, description: (rank) => `Increases the effect of your Imp's Firebolt, Fire Shield, and Blood Pact spells by ${rank * 10}%.` },
+            { id: "fel-synergy", name: "Fel Synergy", icon: "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_felmending.jpg", row: 0, col: 1, maxPoints: 2, description: (rank) => `Your Summoned Demon shares a Bond of Soul with you. When you deal damage, you have a ${rank * 50}% chance to heal your demon for ${rank * 15}% of the damage dealt.` },
             { id: "demonic-embrace", name: "Demonic Embrace", icon: "spell_shadow_metamorphosis", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your total Stamina by ${rank * 3}% but reduces your total Spirit by ${rank * 1}%.` },
 
             // Row 2
-            { id: "improved-health-funnel", name: "Imp. Health Funnel", icon: "spell_shadow_lifedrain", row: 1, col: 0, maxPoints: 2, description: (rank) => `Increases the amount of Health transferred by your Health Funnel spell by ${rank * 10}%.` },
-            { id: "improved-voidwalker", name: "Imp. Voidwalker", icon: "spell_shadow_summonvoidwalker", row: 1, col: 1, maxPoints: 3, description: (rank) => `Increases the effectiveness of your Voidwalker's Torment, Consume Shadows, Sacrifice and Suffering spells by ${rank * 10}%.` },
+            { id: "demonic-instructor", name: "Demonic Instructor", icon: "spell_shadow_summonimp", row: 1, col: 0, maxPoints: 3, description: (rank) => `Increases the effectiveness of your Imp, Voidwalker, and Succubus abilities by ${rank * 10}%.` },
+            { id: "improved-health-funnel", name: "Imp. Health Funnel", icon: "spell_shadow_lifedrain", row: 1, col: 1, maxPoints: 2, description: (rank) => `Increases the amount of Health transferred by your Health Funnel spell by ${rank * 10}%.` },
             { id: "fel-intellect", name: "Fel Intellect", icon: "spell_holy_magicalsentry", row: 1, col: 2, maxPoints: 3, description: (rank) => `Increases the maximum Mana of your Imp, Voidwalker, Succubus, and Felhunter by ${rank * 5}%.` },
             { id: "demonic-aegis", name: "Demonic Aegis", icon: "spell_shadow_ragingscream", row: 1, col: 3, maxPoints: 3, description: (rank) => `Increases the effectiveness of your Demon Skin and Demon Armor spells by ${rank * 10}%.` },
 
             // Row 3
-            { id: "improved-succubus", name: "Imp. Succubus", icon: "spell_shadow_summonsuccubus", row: 2, col: 0, maxPoints: 3, description: (rank) => `Increases the effect of your Succubus's Lash of Pain and Soothing Kiss spells by ${rank * 10}%, and increases the duration of your Succubus's Seduction and Lesser Invisibility spells by ${rank * 10}%.` },
+            { id: "hand-of-guldan", name: "Hand of Gul'dan", icon: "https://wow.zamimg.com/images/wow/icons/large/inv_summerfest_firespirit.jpg", row: 2, col: 0, maxPoints: 1, prereq: "demonic-instructor", description: (rank) => `Summons a falling meteor down upon the enemy target, dealing 1533 Shadowflame damage and erupts an aura of magic within 4 yards, causing all targets within it to have a 10% increased  chance to be critically hit by the abilities of any Warlock demon pets. The aura lasts for 15 sec.` },
             { id: "fel-domination", name: "Fel Domination", icon: "spell_nature_removecurse", row: 2, col: 1, maxPoints: 1, description: (rank) => `Your next Summon Imp, Voidwalker, Succubus, or Felhunter spell has its casting time reduced by 5.5 sec and its Mana cost reduced by 50%.` },
             { id: "fel-stamina", name: "Fel Stamina", icon: "spell_shadow_antishadow", row: 2, col: 2, maxPoints: 3, description: (rank) => `Increases the maximum Health of your Imp, Voidwalker, Succubus, and Felhunter by ${rank * 5}%.` },
             { id: "improved-enslave-demon", name: "Imp. Enslave Demon", icon: "spell_shadow_enslavedemon", row: 2, col: 3, maxPoints: 2, description: (rank) => `Reduces the Attack Speed and Casting Speed penalty of your Enslaved Demon by ${rank * 10}%. Reduces the chance your Enslaved Demon will resist Enslave Demon by ${rank * 10}%.` },
@@ -934,14 +942,14 @@ export const warlockTalents = {
             { id: "master-demonologist", name: "Master Demonologist", icon: "spell_shadow_shadowpact", row: 5, col: 2, maxPoints: 5, prereq: "unholy-power", description: (rank) => `Grant effects to Warlock and Demon while active:\n• Imp: -${rank * 4}% Threat\n• Voidwalker: -${rank * 2}% Phys Dmg\n• Succubus: +${rank * 2}% All Dmg\n• Felhunter: +${rank * 0.2} All Res\n• Felguard: +${rank * 1}% Dmg & -${rank * 1}% Phys Dmg` },
 
             // Row 7
-            { id: "soul-link", name: "Soul Link", icon: "spell_shadow_gathershadows", row: 6, col: 1, maxPoints: 1, prereq: "demonic-pact", description: (rank) => `When active, 20% of all damage taken by the caster is taken by your Imp, Voidwalker, Succubus, Felhunter, or Felguard instead.` },
+            { id: "summon-felguard", name: "Summon Felguard", icon: "spell_shadow_summonfelguard", row: 6, col: 1, maxPoints: 1, prereq: "demonic-pact", description: (rank) => `Summons a Felguard to fight for the caster.` },
             { id: "demonic-knowledge", name: "Demonic Knowledge", icon: "spell_shadow_improvedvampiricembrace", row: 6, col: 2, maxPoints: 3, description: (rank) => `Your summoned demons gain ${rank * 33}% of your Hit Rating, ${rank * 33}% of your Resilience, and ${rank * 15}% of your Haste Rating.` },
 
             // Row 8
-            { id: "demonic-tactics", name: "Demonic Tactics", icon: "spell_shadow_demonictactics", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases melee and spell critical strike chance for you and your summoned demon by ${rank * 1}%.` },
+            { id: "demonic-tactics", name: "Demonic Tactics", icon: "spell_shadow_demonictactics", row: 7, col: 1, maxPoints: 5, description: (rank) => `“My servant creates the opening. I deliver the oblivion.”\n\nIncreases melee and spell critical strike chance for you and your summoned demon by ${rank * 1}%. \n\nWhenever your summoned Demon lands a Critical Strike, you gain "Tactical Advantage." \n\nTactical Advantage: Your next Shadow Bolt or Incinerate has its cast time reduced by ${rank * 6}%. (Stacks up to 3 times. Using a spell consumes all stacks).` },
 
             // Row 9 
-            { id: "summon-felguard", name: "Summon Felguard", icon: "spell_shadow_summonfelguard", row: 8, col: 1, maxPoints: 1, prereq: "soul-link", description: (rank) => `Summons a Felguard to fight for the caster.` },
+            { id: "soul-link", name: "Soul Link", icon: "spell_shadow_gathershadows", row: 8, col: 1, maxPoints: 1, description: (rank) => `Passive Effect: While your summoned demon is active, 20% of all damage taken by the caster is transferred to the demon. Additionally, the caster and their demon deal 5% increased damage.\n\nActive Effect: Activate to initiate a Fel Transfusion. Instantly sacrifice 25% of your demon's current health to grant yourself a shield that absorbs damage equal to 150% of the health sacrificed. This shield lasts 15 seconds. While the shield holds, your demon gains Demonic Frenzy, increasing its attack speed and casting speed by 30%.` },
         ]
     },
     destruction: {
@@ -984,7 +992,7 @@ export const warlockTalents = {
             { id: "soul-leech", name: "Soul Leech", icon: "spell_shadow_soulleech_3", row: 6, col: 2, maxPoints: 3, description: (rank) => `Gives your Shadow Bolt, Shadowburn, Soul Fire, Incinerate, Searing Pain and Conflagrate spells a ${rank * 10}% chance to return health equal to 20% of the damage caused.` },
 
             // Row 8
-            { id: "shadow-and-flame", name: "Shadow and Flame", icon: "spell_shadow_shadowandflame", row: 7, col: 1, maxPoints: 5, description: (rank) => `Your Shadow Bolt and Incinerate spells gain an additional ${rank * 4}% of your bonus spell damage effects.` },
+            { id: "shadow-and-flame", name: "Shadow and Flame", icon: "spell_shadow_shadowandflame", row: 7, col: 1, maxPoints: 5, description: (rank) => `“To understand chaos, you must embrace both darkness and fire.”\n\nYour Shadow Bolt and Incinerate gain an additional ${rank * 4}% of your bonus spell damage effects. \n\nCasting Shadow Bolt grants "Flame's Hunger": Your next Incinerate has +${rank * 5}% Critical Strike Damage. \n\nCasting Incinerate grants "Shadow's Embrace": Your next Shadow Bolt costs ${rank * 10}% less Mana and pierces ${rank * 4}% of the target's resistances.` },
 
             // Row 9 
             { id: "shadowfury", name: "Shadowfury", icon: "spell_shadow_shadowfury", row: 8, col: 1, maxPoints: 1, description: (rank) => `Shadowfury is unleashed, causing Shadow damage and stunning all enemies within 12 yds for 2 sec. Targets also take 20% increased Fire damage for 6 sec. Instant Cast. 20 sec Cooldown.` },
@@ -1005,12 +1013,13 @@ export const warriorTalents = {
 
             // Row 2
             { id: "vanguards-momentum", name: "Vanguard's Momentum", icon: "ability_warrior_charge", row: 1, col: 0, maxPoints: 2, description: (rank) => `Increases Rage generated by Charge by ${rank * 3}. Additionally, your Intervene ability now safeguards the target, placing a shield on them that absorbs damage equal to ${rank * 15}% of your Attack Power plus ${rank * 5}% of your Maximum Health. Lasts 6 sec.` },
-            { id: "iron-will", name: "Iron Will", icon: "spell_magic_magearmor", row: 1, col: 1, maxPoints: 5, description: (rank) => `Reduces the chance you will be afflicted by Stun, Charm and Disorient effects by an additional ${rank * 3}%.` },
+            { id: "iron-will", name: "Iron Will", icon: "spell_magic_magearmor", row: 1, col: 1, maxPoints: 5, description: (rank) => `Reduces the duration of Stun and Charm effects by ${rank * 3}%. Reduces the effectiveness of Movement Speed Slows and Snare effects by ${rank * 4}%.` },
             { id: "improved-thunder-clap", name: "Imp. Thunder Clap", icon: "ability_thunderbolt", row: 1, col: 2, maxPoints: 3, description: (rank) => `Reduces the cost of your Thunder Clap ability by ${rank * 2} rage points and increases the damage by ${rank * 20}% and the slowing effect by an additional ${rank * 6}%.` },
 
             // Row 3
             { id: "improved-overpower", name: "Imp. Overpower", icon: "inv_sword_05", row: 2, col: 0, maxPoints: 2, description: (rank) => `Increases the critical strike chance of your Overpower ability by ${rank * 25}%.` },
-            { id: "second-wind", name: "Second Wind", icon: "ability_hunter_harass", row: 2, col: 1, maxPoints: 2, description: (rank) => `Whenever you are struck by a Stun or Immobilize effect, you generate ${rank * 10} rage and ${rank * 2.5}% of your total health over 10 sec.` },
+            { id: "colossus-smash", name: "Colossus Smash", icon: "ability_warrior_colossussmash", row: 2, col: 1, maxPoints: 1, prereq: "iron-will", description: (rank) => `Smashes the enemy's armor, dealing (306.263% of Attack Power) Physical damage and increasing damage you deal to them by 30% for 10 sec. 45 sec Cooldown.` },
+            { id: "second-wind", name: "Second Wind", icon: "ability_hunter_harass", row: 2, col: 3, maxPoints: 2, description: (rank) => `Whenever you are struck by a Stun or Immobilize effect, you generate ${rank * 10} rage and ${rank * 2.5}% of your total health over 10 sec.` },
             { id: "deep-wounds", name: "Deep Wounds", icon: "ability_backstab", row: 2, col: 2, maxPoints: 3, description: (rank) => `Your critical strikes cause the opponent to bleed, dealing ${rank * 20}% of your melee weapon's average damage over 12 sec.` },
 
             // Row 4
@@ -1020,7 +1029,7 @@ export const warriorTalents = {
 
             // Row 5
             { id: "death-wish", name: "Death Wish", icon: "spell_shadow_deathpact", row: 4, col: 1, maxPoints: 1, description: (rank) => `When activated, gives you immunity to Fear effects, and increases your physical damage by 20%, but increases all damage taken by 5%. Lasts 30 sec.` },
-            { id: "weapon-mastery", name: "Weapon Mastery", icon: "ability_warrior_weaponmastery", row: 4, col: 2, maxPoints: 5, description: (rank) => `Your mastery over the instruments of war adapts to the weapon you wield:\n• Axes & Polearms: Increases your chance to get a critical strike by ${rank * 1}%.\n• Swords: Grants a ${rank * 1}% chance to grant an extra attack on the same target.\n• Maces: Your attacks ignore 10% of opponent's Armor and have a ${rank * 1}% chance to stun the target for 3 sec.` }, // Shortened for array readability, will use full desc in logic if needed or just this text. The prompt gave specific text, I should use that.
+            { id: "weapon-mastery", name: "Weapon Mastery", icon: "ability_warrior_weaponmastery", row: 4, col: 2, maxPoints: 5, description: (rank) => `Your mastery over the instruments of war adapts to the weapon you wield:\n• Axes & Polearms: Increases your chance to get a critical strike by ${rank * 1}%.\n• Swords: Grants a ${rank * 1}% chance to grant an extra attack on the same target.\n• Maces: Your attacks ignore ${rank * 154} of opponent's Armor and have a ${rank * 1}% chance to stun the target for 3 sec.` }, // Shortened for array readability, will use full desc in logic if needed or just this text. The prompt gave specific text, I should use that.
 
             // Row 6
             { id: "improved-intercept", name: "Imp. Intercept", icon: "ability_rogue_sprint", row: 5, col: 0, maxPoints: 2, description: (rank) => `Reduces the cooldown of your Intercept ability by ${rank * 5} sec.` },
@@ -1033,7 +1042,7 @@ export const warriorTalents = {
 
 
             // Row 8
-            { id: "improved-mortal-strike", name: "Imp. Mortal Strike", icon: "ability_warrior_savageblow", row: 7, col: 1, maxPoints: 5, prereq: "mortal-strike", description: (rank) => `Reduces the cooldown of your Mortal Strike ability by ${rank * 0.2} sec and increases the damage it causes by ${rank * 1}%.` },
+            { id: "improved-mortal-strike", name: "Imp. Mortal Strike", icon: "ability_warrior_savageblow", row: 7, col: 1, maxPoints: 5, prereq: "mortal-strike", description: (rank) => `“No armor is thick enough. No shield is strong enough.”\n\nReduces the cooldown of your Mortal Strike ability by ${rank * 0.2} sec and increases the damage it causes by ${rank * 2}%. \n\nYour Mortal Strike applies "Shattered Armor" to the target for 10 seconds. \n\nShattered Armor: Reducing the target's armor by ${rank * 1}%.` },
 
             // Row 9 
             { id: "bladestorm", name: "Bladestorm", icon: "ability_warrior_bladestorm", row: 8, col: 1, maxPoints: 1, prereq: "improved-mortal-strike", description: (rank) => `Become an unstoppable storm of destructive force, hitting up to 4 nearby targets with both weapons every 1 second for 4 seconds. Immune to CC during Bladestorm. 1.5 min CD.` },
@@ -1049,7 +1058,7 @@ export const warriorTalents = {
             { id: "cruelty", name: "Cruelty", icon: "ability_rogue_eviscerate", row: 0, col: 2, maxPoints: 5, description: (rank) => `Increases your critical strike chance with melee weapons by ${rank * 1}%.` },
 
             // Row 2
-            { id: "improved-demoralizing-shout", name: "Imp. Demoralizing Shout", icon: "ability_warrior_warcry", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases the melee attack power reduction of your Demoralizing Shout by ${rank * 8}%.` },
+            { id: "improved-demoralizing-shout", name: "Imp. Demoralizing Shout", icon: "ability_warrior_warcry", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases the melee attack power reduction of your Demoralizing Shout by ${rank * 8}%. Your melee attacks against targets affected by your Demoralizing Shout have a ${rank * 1}% increased Critical Strike chance.` },
             { id: "unbridled-wrath", name: "Unbridled Wrath", icon: "spell_nature_stoneclawtotem", row: 1, col: 2, maxPoints: 5, description: (rank) => `Gives you a ${rank * 40}% chance to generate an additional rage point when you deal melee damage with a weapon.` },
 
             // Row 3
@@ -1078,7 +1087,7 @@ export const warriorTalents = {
             { id: "improved-whirlwind", name: "Imp. Whirlwind", icon: "ability_whirlwind", row: 6, col: 2, maxPoints: 2, description: (rank) => `Increases the damage of your Whirlwind ability by ${rank * 10}%.` },
 
             // Row 8
-            { id: "improved-berserker-stance", name: "Imp. Berserker Stance", icon: "ability_racial_avatar", row: 7, col: 2, maxPoints: 5, description: (rank) => `Increases attack power by ${rank * 2}% and reduces threat caused by ${rank * 2}% while in Berserker Stance.` },
+            { id: "improved-berserker-stance", name: "Imp. Berserker Stance", icon: "ability_racial_avatar", row: 7, col: 2, maxPoints: 5, description: (rank) => `“Blood for blood.”\n\nIncreases attack power by ${rank * 2}% while in Berserker Stance. \n\nWhile in Berserker Stance, damage taken grants you "Rage of the Berserker." \n\nRage of the Berserker: Increases your Attack Speed by ${rank * 0.6}% for 10 seconds. Stacks up to 5 times.` },
 
             // Row 9 
             { id: "titanic-grip", name: "Titanic Grip", icon: "ability_warrior_titansgrip", row: 8, col: 1, maxPoints: 1, prereq: "bloodthirst", description: (rank) => `Allows you to equip two-handed axes, maces and swords in one hand. While you have a two-handed weapon equipped in one hand, your physical damage dealt is reduced by 10%.` },
@@ -1096,7 +1105,7 @@ export const warriorTalents = {
 
             // Row 2
             { id: "shield-specialization", name: "Shield Specialization", icon: "inv_shield_06", row: 1, col: 1, maxPoints: 5, description: (rank) => `Increases your chance to block attacks with a shield by ${rank * 1}% and has a ${rank * 20}% chance to generate 1 rage when a block occurs.` },
-            { id: "toughness", name: "Toughness", icon: "spell_holy_devotion", row: 1, col: 2, maxPoints: 5, description: (rank) => `Increases your armor value from items by ${rank * 2}%.` },
+            { id: "toughness", name: "Toughness", icon: "spell_holy_devotion", row: 1, col: 2, maxPoints: 5, description: (rank) => `Increases your Armor value from items by ${rank * 2}% and increases your Attack Power by 3 for every ${600 - (rank * 100)} Armor you possess.` },
 
             // Row 3
             { id: "last-stand", name: "Last Stand", icon: "spell_holy_ashestoashes", row: 2, col: 0, maxPoints: 1, description: (rank) => `When activated, this ability temporarily grants you 30% of your maximum hit points for 20 sec. After the effect expires, the health is lost. 5 min cooldown.` },
@@ -1124,7 +1133,7 @@ export const warriorTalents = {
             { id: "focused-rage", name: "Focused Rage", icon: "ability_warrior_focusedrage", row: 6, col: 2, maxPoints: 3, description: (rank) => `Reduces the rage cost of your offensive abilities by ${rank * 1}.` },
 
             // Row 8
-            { id: "vitality", name: "Vitality", icon: "spell_nature_undyingstrength", row: 7, col: 1, maxPoints: 5, description: (rank) => `Increases your total Stamina by ${rank * 1}% and your total Strength by ${rank * 2}%.` },
+            { id: "vitality", name: "Vitality", icon: "spell_nature_undyingstrength", row: 7, col: 1, maxPoints: 5, description: (rank) => `“Your will is as unbreakable as your shield.”\n\nIncreases your total Stamina by ${rank * 1}% and your total Strength by ${rank * 2}%. \n\nYour Shield Block ability now also reduces Magic Damage taken by ${rank * 4}% for its duration.` },
 
             // Row 9 
             { id: "devastate", name: "Devastate", icon: "inv_sword_11", row: 8, col: 1, maxPoints: 1, description: (rank) => `Sunder the target's armor, causing the Sunder Armor effect. In addition, Devastate deals 50% weapon damage plus bonus damage per stack of Sunder Armor. Critical hits with Devastate reset the cooldown of Shield Slam.` },

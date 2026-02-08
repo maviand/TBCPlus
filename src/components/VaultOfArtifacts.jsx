@@ -3,16 +3,38 @@ import {
   Sword, Shield, Crosshair, Zap, Skull, Heart,
   Flame, Droplet, Star, Crown, Gem, ChevronRight,
   BookOpen, Medal, Play, Eye, ChevronDown, Ghost,
-  Hammer, Feather, Scissors, Leaf, Axe, PawPrint
+  Hammer, Feather, Scissors, Leaf, Axe, PawPrint,
+  Trophy, RotateCcw, ZoomIn, Info
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
+import WowTooltip from './WowTooltip';
 
 const VaultOfArtifacts = () => {
+  // Tab state removed
+
   const [activeClass, setActiveClass] = useState('warrior');
   const [activeSpec, setActiveSpec] = useState('arms');
   const [relicPhase, setRelicPhase] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState({});
 
-  // Helper function for bold text formatting
+  // STATE: Model Viewer (Vault #2)
+  const [inspecting, setInspecting] = useState(null);
+  const [rotation, setRotation] = useState(0);
+
+  const toggleStep = (stepIndex) => {
+    const key = `${activeClass}-${activeSpec}-${stepIndex}`;
+    setCompletedSteps(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const classColorsHash = {
+    'warrior': '#C79C6E', 'paladin': '#F58CBA', 'hunter': '#ABD473',
+    'rogue': '#FFF569', 'priest': '#FFFFFF', 'shaman': '#0070DE',
+    'mage': '#40C7EB', 'warlock': '#8787ED', 'druid': '#FF7D0A'
+  };
+
   const formatText = (text) => {
     if (!text) return null;
     const lines = text.split('\n');
@@ -20,7 +42,7 @@ const VaultOfArtifacts = () => {
       const parts = line.split(/(\*\*.*?\*\*)/g);
       const content = parts.map((part, partIndex) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={partIndex} className="text-amber-400 font-cinzel tracking-wide">{part.slice(2, -2)}</strong>;
+          return <strong key={partIndex} className="text-amber-400 font-hero tracking-wide">{part.slice(2, -2)}</strong>;
         }
         return part;
       });
@@ -33,134 +55,72 @@ const VaultOfArtifacts = () => {
     });
   };
 
-  // Reusable WoW Tooltip Component
-  const WowTooltip = ({ item, phaseLabel }) => {
-    const qualityColor = item.quality === 'legendary' ? 'text-[#ff8000]' : 'text-[#a335ee]';
-    const borderColor = 'border-[#a3a3a3]';
-
-    return (
-      <div className={`bg-[#070710] border ${borderColor} rounded-[5px] p-2 shadow-2xl max-w-[350px] w-full font-sans text-[12px] leading-snug relative text-white`}>
-        <div className="flex justify-between items-start mb-0.5">
-          <h3 className={`font-bold text-[14px] ${qualityColor} flex-1 mr-2`}>
-            {item.name}
-          </h3>
-          {phaseLabel && <span className="text-white text-[12px] whitespace-nowrap pt-0.5">{phaseLabel}</span>}
-        </div>
-        <div className="text-[#ffd100] mb-0.5">Item Level {item.ilvl}</div>
-        <div className="mb-0.5">Binds when picked up</div>
-        {item.unique && <div className="mb-0.5">Unique</div>}
-        {item.slot && (
-          <div className="flex justify-between mb-0.5">
-            <span>{item.slot}</span>
-            {item.type && <span>{item.type}</span>}
-          </div>
-        )}
-        {item.damage && (
-          <div className="flex justify-between mb-0.5">
-            <span>{item.damage} Damage</span>
-            <span>Speed {item.speed}</span>
-          </div>
-        )}
-        {item.dps && <div className="mb-0.5">({item.dps} damage per second)</div>}
-        {item.stats && item.stats.map((stat, i) => (
-          <div key={i} className="mb-0.5">{stat}</div>
-        ))}
-        {item.classes && (
-          <div className="mb-0.5">Classes: <span className="text-white">{item.classes}</span></div>
-        )}
-        <div className="mb-2">Requires Level 70</div>
-        <div className="space-y-1">
-          {item.effects && item.effects.map((effect, i) => {
-            const isFlavor = effect.startsWith('"');
-            const isUse = effect.startsWith('Use:');
-            const isEquip = effect.startsWith('Equip:');
-            const isChance = effect.startsWith('Chance on');
-
-            if (isFlavor) return <div key={i} className="text-[#ffd100] mt-2 italic text-[11px] text-center">"{effect.replace(/"/g, '')}"</div>;
-
-            if (isUse || isEquip || isChance) {
-              const splitIdx = effect.indexOf(':');
-              const label = effect.substring(0, splitIdx + 1);
-              const val = effect.substring(splitIdx + 1);
-              return (
-                <div key={i} className="text-[#1eff00]">
-                  <span className="font-normal text-white">{label}</span>{val}
-                </div>
-              )
-            }
-            return <div key={i} className="text-[#1eff00]">{effect}</div>;
-          })}
-        </div>
-      </div>
-    );
-  };
-
   // --- PINNACLE QUEST DATA ---
   const pinnacleData = {
     warrior: {
       name: 'Warrior',
-      icon: <img src="https://i.imgur.com/seZs5WM.png" className="w-5 h-5 object-contain" alt="Warrior" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_warrior.png?2c4dad" className="w-5 h-5 object-contain" alt="Warrior" />,
       specs: {
         arms: {
           name: 'Arms',
           icon: 'https://i.imgur.com/tgSiYFd.png',
-          title: 'The Master of the Blade',
+          title: 'The Blademaster',
           desc: 'For the Arms warrior, the weapon is an extension of the soul. Your journey requires mastery of technique.',
           steps: [
-            '**Phase 1 - A Test of Steel:** Khadgar sends you to a solo scenario in the Ring of Trials in Nagrand. Face three ethereal weaponsmasters who mimic player tactics.',
-            '**Phase 2 - Sharpened by Fel Iron:** Gather Fel Iron Ore and forge a Whetstone to challenge an elite Bone-Gnasher in the Blade\'s Edge Mountains.',
-            '**Phase 3 - The Unstoppable Force:** Use the Grip of the World-Breaker to calibrate a Fel Cannon in Shadowmoon Valley, using it to blast open a Legion gate.',
-            '**Phase 4 - The Duelist\'s Soul:** Duel an echo of Grom Hellscream at the Throne of Kil\'jaeden. You must Bladestorm his adds and Mortal Strike his heals.'
+            '**Phase 1 - A Test of Steel:** Khadgar sends you to a solo scenario in the Ring of Trials. Face three ethereal weaponsmasters who mimic player tactics perfectly.',
+            '**Phase 2 - Sharpened by Fel Iron:** Gather Fel Iron Ore and forge a Whetstone to challenge an elite Bone-Gnasher in the *Fissure of Souls*.',
+            '**Phase 3 - The Unstoppable Force:** Use the "Grip of the World-Breaker" to calibrate a Fel Cannon in Shadowmoon Valley, using it to blast open a Legion gate.',
+            '**Phase 4 - The Duelist\'s Soul:** Duel a "Time-Lost Echo of Grom Hellscream" at the Throne of Kil\'jaeden. You must "Bladestorm" his adds and "Mortal Strike" his heals.'
           ],
           reward: {
             name: 'Sigil of the Blademaster',
             phases: [
               { ilvl: 115, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+40 Strength'], effects: ['Equip: Your Mortal Strike has a 10% chance to make your next Slam instant.'] },
               { ilvl: 128, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+50 Strength'], effects: ['Equip: Your Mortal Strike has a 15% chance to make your next Slam instant.', 'Use: Instantly grants you 20 rage. (2 min cooldown)'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+60 Strength'], effects: ['Equip: Improves critical strike rating by 25.', 'Equip: Your Mortal Strike has a 20% chance to make your next Slam instant.', 'Use: Instantly grants you 30 rage. (2 min cooldown)'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', unique: true, stats: ['+75 Strength'], effects: ['Equip: Improves critical strike rating by 35.', 'Equip: Your Mortal Strike has a 25% chance to make your next Slam instant.', 'Equip: Your critical strikes with weapons have a chance to grant you "Decisive Moment", making your next Mortal Strike cost no rage and deal 20% additional damage.', '"A weapon is only as strong as the hand that wields it."'] }
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+60 Strength'], effects: ['Equip: Improves critical strike rating by 25 (1.13% @ L70).', 'Equip: Your Mortal Strike has a 20% chance to make your next Slam instant.', 'Use: Instantly grants you 30 rage. (2 min cooldown)'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', unique: true, stats: ['+75 Strength'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Improves critical strike rating by 35 (1.58% @ L70).', 'Equip: Your Mortal Strike has a 25% chance to make your next Slam instant.', 'Equip: Your critical strikes with weapons have a chance to grant you "Decisive Moment", making your next Mortal Strike cost no rage and deal 20% additional damage.', '"A weapon is only as strong as the hand that wields it."'] }
             ]
           }
         },
         fury: {
           name: 'Fury',
           icon: 'https://i.imgur.com/wJbmNeR.png',
-          title: 'The Unrelenting Berserker',
+          title: 'The Berserker',
           desc: 'Rage is not chaos; it is fuel. You must learn to burn without consuming yourself.',
           steps: [
-            '**Phase 1 - The Endless Onslaught:** Survive 3 minutes in the Circle of Blood against infinite waves of ogres.',
+            '**Phase 1 - The Endless Onslaught:** Survive 3 minutes in the *Fissure of Souls* blood pit against infinite waves of demons.',
             '**Phase 2 - Heart of the Rage:** Survive the "Burning Blood" effect at the Throne of Kil\'jaeden by dealing damage to heal yourself.',
-            '**Phase 3 - The Eye of the Storm:** Survive a 2-minute onslaught of phase-shifting ethereals in Tempest Keep using Whirlwind to clear them.',
+            '**Phase 3 - The Eye of the Storm:** Navigate a gauntlet of moving tornados in the *Iron Soul* dungeon using Intercept and Whirlwind.',
             '**Phase 4 - The Berserker\'s Zenith:** Face a manifestation of your own rage. Spend Rage frantically to weaken it before it explodes.'
           ],
           reward: {
             name: 'Sigil of the Unrelenting',
             phases: [
               { ilvl: 115, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+40 Strength'], effects: ['Equip: Melee attacks have a chance to grant 15 AP for 10s (Stacks 5x).'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+50 Strength'], effects: ['Equip: Improves haste rating by 20.', 'Equip: Melee attacks have a chance to grant 20 AP for 10s (Stacks 5x).'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+60 Strength'], effects: ['Equip: Improves haste rating by 30.', 'Equip: Melee attacks have a chance to grant 25 AP for 10s (Stacks 10x).'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', unique: true, stats: ['+75 Strength'], effects: ['Equip: Improves haste rating by 40.', 'Equip: Melee attacks have a chance to grant 30 AP for 10s (Stacks 10x).', 'Equip: When you activate Death Wish or Recklessness, you gain 300 Armor Penetration for the duration.', '"Let the anger flow, but never let it rule you."'] }
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+50 Strength'], effects: ['Equip: Improves haste rating by 20 (1.27% @ L70).', 'Equip: Melee attacks have a chance to grant 20 AP for 10s (Stacks 5x).'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', unique: true, stats: ['+60 Strength'], effects: ['Equip: Improves haste rating by 30 (1.90% @ L70).', 'Equip: Melee attacks have a chance to grant 25 AP for 10s (Stacks 10x).'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', unique: true, stats: ['+75 Strength'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Improves haste rating by 40 (2.53% @ L70).', 'Equip: Improves proficiency rating by 20 (Expertise).', 'Equip: Melee attacks have a chance to grant 30 AP for 10s (Stacks 10x).', 'Equip: When you activate Death Wish or Recklessness, your attacks ignore 300 of your opponent\'s armor for the duration.', '"Let the anger flow, but never let it rule you."'] }
             ]
           }
         },
         protection: {
           name: 'Protection',
           icon: 'https://i.imgur.com/FhuhqTX.png',
-          title: 'The Unbreakable Bulwark',
+          title: 'The Bulwark',
           desc: 'You are the shield that guards the realms of men. You do not falter.',
           steps: [
-            '**Phase 1 - The Protector:** Protect a generic Mag\'har orphan from waves of ravagers using Taunt and Intervene.',
-            '**Phase 2 - The Adamant Shield:** Reflect "Shatter" attacks from a Gronn-Lord\'s Chosen using Shield Block timings.',
+            '**Phase 1 - The Protector:** Protect a caravan in Nagrand from waves of Wolf-Riders using Taunt and Intervene.',
+            '**Phase 2 - The Adamant Shield:** Reflect "Shatter" attacks from a Colossus in the *Iron Soul* dungeon using Shield Block.',
             '**Phase 3 - Holding the Tide:** Tank "Mal\'ganis\'s Echo" for 90 seconds in Hyjal, managing defensive cooldowns.',
-            '**Phase 4 - The Last Bastion:** Hold the line against 3 minutes of demons on Quel\'Danas without a healer.'
+            '**Phase 4 - The Last Bastion:** Hold the line against 3 minutes of demons on the *Fissure of Souls* bridge without a healer.'
           ],
           reward: {
             name: 'Scale of Azzinoth',
             phases: [
               { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+45 Stamina'], effects: ['Equip: Increases block value by 100.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+55 Stamina', '+20 Def Rating'], effects: ['Equip: Increases block value by 150.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+65 Stamina', '+30 Def Rating'], effects: ['Equip: Chance on block to increase armor by 2000 for 10s.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+85 Stamina', '+40 Def Rating'], effects: ['Equip: Increases block value by 300.', 'Use: Activate "Great Shield", reducing all damage taken by 50% for 12 sec. (3 min CD)', '"The indomitable barrier."'] }
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+55 Stamina'], effects: ['Equip: Increases defense rating by 20 (0.85% @ L70).', 'Equip: Increases the block value of your shield by 150.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+65 Stamina'], effects: ['Equip: Increases defense rating by 30 (1.27% @ L70).', 'Equip: Chance on block to increase armor by 2000 for 10s.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+85 Stamina'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Increases defense rating by 40 (1.69% @ L70).', 'Equip: Increases the block value of your shield by 300.', 'Use: Activate "Great Shield", reducing all damage taken by 50% for 12 sec. (3 min cooldown)', '"The indomitable barrier."'] }
             ]
           }
         }
@@ -168,26 +128,26 @@ const VaultOfArtifacts = () => {
     },
     paladin: {
       name: 'Paladin',
-      icon: <img src="https://i.imgur.com/tbPW0IM.png" className="w-5 h-5 object-contain" alt="Paladin" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_paladin.png?4d2aad" className="w-5 h-5 object-contain" alt="Paladin" />,
       specs: {
         holy: {
           name: 'Holy',
           icon: 'https://i.imgur.com/nbn8UHD.jpeg',
           title: 'The Light\'s Mercy',
-          desc: 'The Light burns the unworthy, but heals the faithful. Mastery lies in balancing these natures.',
+          desc: 'The Light does not merely heal; it burns away the corruption of the world. You are the beacon in the endless dark.',
           steps: [
-            '**Phase 1 - Cleansing the Waters:** Cleanse the corrupted pools of Zangarmarsh while fending off Naga assault.',
-            '**Phase 2 - The Broken Vindicator:** Heal a wounded draenei Vindicator at the Throne of the Elements before his soul is claimed by the void.',
-            '**Phase 3 - Shadow and Light:** Survive the shadow damage pulses in the Crypts of Auchindoun while keeping a beacon lit.',
-            '**Phase 4 - Redemption:** Redeem the soul of a fallen Exarch by healing him through his "Guilt" phase.'
+            '**Phase 1 - The Dimming Naaru:** Travel to Oshu\'gun and cleanse the void energies manifesting as "Darkened Sparks" around K\'ure, preventing his total collapse.',
+            '**Phase 2 - The Iron Soul:** Venture into the *Iron Soul* dungeon. Recover the "Tear of the Naaru" from the corrupted Construct Governor, purifying it with Holy Light during the encounter.',
+            '**Phase 3 - Battlefield Medic:** Enter the *Fissure of Souls*. Keep a squad of "Defender" troops alive against a constant onslaught of Legion fire for 5 minutes.',
+            '**Phase 4 - The Sunwell\'s Grace:** Bring the purified Tear to the Sunwell. Channel pure light into it until it crystallizes into the Libram of the Dawn, rejecting the Void entirely.'
           ],
           reward: {
             name: 'Libram of the Dawn',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45 and damage done by up to 15 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 10 mana per 5 sec.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55 and damage done by up to 19 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 15 mana per 5 sec.', 'Use: Next Flash of Light is instant.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65 and damage done by up to 22 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 20 mana per 5 sec.', 'Use: Next Holy Shock has no cooldown (10s dur).'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases healing done by up to 80 and damage done by up to 27 for all magical spells and effects.', 'Equip: Casting Holy Light Restores 25 mana per 5 sec.', 'Equip: Crits with Holy Light apply "Light\'s Grace", healing for 15% of amount over 9 sec.', 'Use: Releases the Light within yourself, healing 5 injured allies instantly and an injured ally every 1 sec for 20 sec within 40 yds.', '"The Light does not abandon its champions."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45.', 'Equip: Holy Light grants 10 mana per cast.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55.', 'Use: Your next Flash of Light heals for 100% more and is instant.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65.', 'Equip: Holy Shock criticals reset the cooldown of Holy Light.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Increases healing done by up to 80.', 'Equip: Your Illumination talent returns 100% of mana cost on criticals.', 'Use: "Dawn\'s Light" - Unleashes a wave of light after a 1.5s cast, healing all allies within 40yds for (150% of Spell Power) and removing all magical debuffs. (3 min cooldown)', '"The Light does not abandon its champions."'] }
             ]
           }
         },
@@ -195,20 +155,20 @@ const VaultOfArtifacts = () => {
           name: 'Protection',
           icon: 'https://i.imgur.com/tcWwZXg.png',
           title: 'The Sacred Shield',
-          desc: 'A shield of faith is stronger than steel. You must become the sanctuary.',
+          desc: 'A shield of faith is stronger than steel. You must become the sanctuary that protects the weak from the burning shadow.',
           steps: [
-            '**Phase 1 - Shield of the Sha\'tar:** Defend the refugees in lower city Shattrath from an Arakkoa ambush.',
-            '**Phase 2 - Iron Will:** Block the blows of a Fel Reaver Prototype in Netherstorm to test your mitigation.',
-            '**Phase 3 - The Narrow Pass:** Hold the bridge at Karazhan alone against undead waves.',
-            '**Phase 4 - Gaze of the Dragonkiller:** Withstand the gaze of Gruul by correctly timing Holy Shield and cooldowns.'
+            '**Phase 1 - Defenders of Azeroth:** Report to the purely defensive faction "The Defenders". Hold the bridge at Karazhan alone against waves of undead for 5 minutes.',
+            '**Phase 2 - The Fel Reaver:** Tank a Fel Reaver Prototype in Netherstorm, using "Righteous Defense" to redirect its orbital strikes away from civilians.',
+            '**Phase 3 - The Mountain:** Survive the gaze of Gruul the Dragonkiller. Time your Holy Shield perfectly to mitigate his "Hateful Strike" mechanics.',
+            '**Phase 4 - The Last Bastion:** Defend a generic Mag\'har orphan from an infinite legion of demons on the Isle of Quel\'Danas. You cannot win, you just have to survive long enough.'
           ],
           reward: {
             name: 'Aegis of the Just',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+45 Stamina'], effects: ['Equip: Increases block rating by 20.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+55 Stamina'], effects: ['Equip: Increases block rating by 30.', 'Use: Consecration heals you for 50 per tick.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+65 Stamina'], effects: ['Equip: Increases damage and healing done by magical spells and effects by up to 25.', 'Equip: Increases block rating by 40.', 'Equip: Blocking reflects 50 Holy dmg.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+80 Stamina'], effects: ['Equip: Increases damage and healing done by magical spells and effects by up to 40.', 'Equip: Increases block rating by 50.', 'Equip: Avenger\'s Shield silences 2 extra targets and hits 5 targets total.', 'Use: Become immune to fear, polymorph, and stun effects for 10s.', '"Faith is my shield."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+45 Stamina'], effects: ['Equip: Increases the block value of your shield by 100.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+55 Stamina'], effects: ['Equip: Increases the block value of your shield by 150.', 'Use: Consecration heals you for 50 per tick.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+65 Stamina'], effects: ['Equip: Increases the block value of your shield by 200.', 'Equip: Blocking an attack deals 100 Holy damage to the attacker.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+80 Stamina'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Increases the block value of your shield by 300.', 'Equip: Avenger\'s Shield now silences 2 extra targets.', 'Use: "Divine Fortress" - Become immune to all Fear, Polymorph, and Stun effects, and reduce damage taken by 40% for 12 sec. (3 min cooldown)', '"Faith is my shield."'] }
             ]
           }
         },
@@ -216,20 +176,20 @@ const VaultOfArtifacts = () => {
           name: 'Retribution',
           icon: 'https://i.imgur.com/dpHn8vW.png',
           title: 'The Hand of Justice',
-          desc: 'Retribution is swift and final. You are the judge, jury, and executioner.',
+          desc: 'Retribution is swift and final. You are the judge, jury, and executioner of the wicked.',
           steps: [
-            '**Phase 1 - The Purge:** Slay 50 demons in 5 minutes at the Legion Hold.',
-            '**Phase 2 - The Mentor\'s Test:** Duel the shade of Uther the Lightbringer at his tomb.',
-            '**Phase 3 - Breaking the Seal:** Use Crusader Strike to break the magical seals of a Legion portal.',
-            '**Phase 4 - Judgment Day:** Defeat a Pit Lord using only Holy damage abilities to finish him.'
+            '**Phase 1 - The Purge:** Slay 50 demons in the *Fissure of Souls* battleground, collecting their "Fel Hearts" as proof of judgment.',
+            '**Phase 2 - The Mentor\'s Test:** Travel to Uther\'s Tomb. Duel the shade of Uther the Lightbringer, proving that your zeal matches his own.',
+            '**Phase 3 - Breaking the Seal:** Use "Crusader Strike" to shatter the magical seals protecting a Legion portal in Shadowmoon Valley.',
+            '**Phase 4 - Ashbringer\'s Legacy:** Defeat a Pit Lord using only Holy damage abilities to finish him, channeling the spirit of the Ashbringer.'
           ],
           reward: {
             name: 'Shard of the Ashbringer',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Strength'], effects: ['Equip: Your melee attacks have a chance to blast enemy for 150 Holy damage.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Strength', '+20 Crit'], effects: ['Equip: Your melee attacks have a chance to blast enemy for 250 Holy damage.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Strength', '+30 Crit'], effects: ['Equip: Your melee attacks have a chance to blast enemy for 350 Holy damage and increase Strength by 100 for 10s.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Strength', '+40 Crit'], effects: ['Equip: Your melee attacks have a chance to blast target for 700 Holy damage.', 'Equip: Your attacks have a chance to increase Strength by 250 for 15s (Ashbringer\'s Wrath).', 'Use: Deal (174.3% of Attack Power)% Radiant damage to all enemies within 12 yd in front of you, and reducing movement speed by 50% for 6 sec.', '"The Light\'s vengeance."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Strength'], effects: ['Equip: Melee attacks chance to deal 150 Holy damage.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Strength'], effects: ['Equip: Melee attacks chance to deal 250 Holy damage.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Strength'], effects: ['Equip: Melee attacks chance to deal 350 Holy damage.', 'Equip: Divine Storm heals for 50% more.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Strength'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Improves proficiency rating by 20 (Expertise).', 'Equip: Melee attacks chance to deal 700 Holy damage.', 'Equip: Your Crusader Strike applies "Ashbringer\'s Wrath", increasing Holy damage taken by the target by 5% (Stacks 3 times).', 'Use: "Wake of Ashes" - Deals (200% AP) Radiant damage to enemies in front of you and slows them by 50%. (2 min cooldown)', '"The Light\'s vengeance."'] }
             ]
           }
         }
@@ -237,68 +197,68 @@ const VaultOfArtifacts = () => {
     },
     hunter: {
       name: 'Hunter',
-      icon: <img src="https://i.imgur.com/En31Y4t.png" className="w-5 h-5 object-contain" alt="Hunter" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_hunter.png?7a3ba5" className="w-5 h-5 object-contain" alt="Hunter" />,
       specs: {
-        bm: {
+        beast: {
           name: 'Beast Mastery',
-          icon: 'https://i.imgur.com/O9XtjlG.png',
-          title: 'The Pack Lord',
-          desc: 'One heart, two bodies. You and your beast are a single predatory entity.',
+          icon: 'https://i.imgur.com/qtQxThz.png',
+          title: 'The Pack Leader',
+          desc: 'A hunter is never alone. You are the alpha, and your will is the command of the wild.',
           steps: [
-            '**Phase 1 - The Alpha:** Prove your dominance by taming the Ghost Wolf of Nagrand (scenario only).',
-            '**Phase 2 - Tracking the Fel:** Track the elusive Felstalker Matriarch through the Zangarmarsh swamps.',
-            '**Phase 3 - The Arena of Beasts:** Survive the Ring of Blood with only your pet to tank for you.',
-            '**Phase 4 - The Beastmaster:** Defeat the Legion\'s Houndmaster, controlling his pets with Scare Beast.'
+            '**Phase 1 - The Alpha:** Tame the "Ghost of Loque\'nahak" in Sholazar Basin, proving your dominance over the spirits of beasts.',
+            '**Phase 2 - The Great Hunt:** Track and kill King Krush in a solo scenario where you must use your pet to tank while managing threat.',
+            '**Phase 3 - Bond of Iron:** Equip your pet with "Fel-Infused Armor" crafted from materials in the *Fissure of Souls*.',
+            '**Phase 4 - The Beast Within:** Defeat a gauntlet of 5 elite beasts in the Ring of Blood without using any ranged weapons—only your pet and traps.'
           ],
           reward: {
-            name: 'Talisman of the Alpha',
+            name: 'Fang of the Alpha',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Pet damage increased by 5%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Increases attack power by 50.', 'Equip: Pet damage increased by 8%.', 'Use: Pet grows large, dealing 20% more damage for 15s.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases attack power by 60.', 'Equip: Improves hit rating by 20.', 'Equip: Pet damage increased by 10%.', 'Use: Bestial Wrath cooldown reduced by 30s.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Improves hit rating by 30.', 'Equip: Pet damage increased by 15%.', 'Equip: Kill Command has a 50% chance to reset the cooldown of Bestial Wrath.', '"We hunt as one."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Your pet deals 10% more damage.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Your pet deals 15% more damage.', 'Use: Bestial Wrath lasts 5 sec longer.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Your pet deals 20% more damage.', 'Equip: Kill Command has a 50% chance to reset the cooldown of Bestial Wrath.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Your pet deals 30% more damage.', 'Equip: Your pet gains 50% AoE damage reduction.', 'Use: "Stampede" - Summon all your stabled pets to fight for you for 12 sec. (5 min cooldown)', '"Hunt as one."'] }
             ]
           }
         },
-        mm: {
+        marks: {
           name: 'Marksmanship',
-          icon: 'https://i.imgur.com/qtQxThz.png',
+          icon: 'https://i.imgur.com/Gj3Hq4Y.png',
           title: 'The Deadeye',
-          desc: 'One shot, one kill. Patience is your weapon.',
+          desc: 'One shot, one kill. Patience is your ally, and silence is your friend.',
           steps: [
-            '**Phase 1 - Precision:** Hit 10 distinct targets in 10s at the archery range.',
-            '**Phase 2 - The Long Shot:** Snipe the Eredar Warlock from 60 yards away without being detected.',
-            '**Phase 3 - The Duel:** Duel the Ranger Captain in Silvermoon (simulation).',
-            '**Phase 4 - Blind Shot:** Hit the weak point of a Void Walker while blinded.'
+            '**Phase 1 - The Long Shot:** Hit a target dummy from 100 yards away in Nagrand using a sniper mechanic.',
+            '**Phase 2 - Cold Precision:** Defeat a rogue-like boss in the *Iron Soul* dungeon who stealths frequently. You must use Flare and Hunter\'s Mark effectively.',
+            '**Phase 3 - The Perfect Trap:** Lure a Fel Reaver into a sequence of massive traps in Hellfire Peninsula.',
+            '**Phase 4 - No Scope:** Win a sniper duel against the ghost of Alleria Windrunner (Echo) at the Sunwell.'
           ],
           reward: {
-            name: 'Quiver of the Windrunners',
+            name: 'Scope of the Void-Stalker',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Ranged attacks ignore 50 Armor.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Ranged attacks ignore 100 Armor.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Ranged attacks ignore 200 Armor.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+55 Agility'], effects: ['Equip: Generates magical arrows.', 'Equip: Ranged attacks ignore 400 Armor (ArP).', 'Use: Deal 272% Physical damage to your target and leaving behind a trail of wind for 5 sec that increases the movement speed of allies by 50%.', '"The legacy of the windrunners."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases range of all shots by 5 yards.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases range by 7 yards.', 'Use: Your next Aimed Shot is instant.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Increases range by 10 yards.', 'Equip: Chimera Shot deals 20% more damage.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Increases range by 15 yards.', 'Equip: You can shoot while moving.', 'Use: "Trueshot Aura" - Grants 10% AP to the raid and guarantees critical hits for you for 10 sec. (3 min cooldown)', '"Never miss."'] }
             ]
           }
         },
         surv: {
           name: 'Survival',
-          icon: 'https://i.imgur.com/xHx9U5j.jpeg',
-          title: 'The Trapper',
-          desc: 'Explosives, traps, venom. You win before the fight begins.',
+          icon: 'https://i.imgur.com/Bi3IA08.png',
+          title: 'The Ranger',
+          desc: 'Explosives, traps, and guerilla warfare. You adapt to any environment.',
           steps: [
-            '**Phase 1 - The Minefield:** Navigate the goblin minefield in Area 52 using Disengage.',
-            '**Phase 2 - The Invisible Stalker:** Trap an invisible Panthara using Flares and Freezing Traps.',
-            '**Phase 3 - Ambush:** Survive a Rogue ambush by kiting through your own traps.',
-            '**Phase 4 - The Master Assassin:** Defeat the leader of the Syndicate using only instants and traps.'
+            '**Phase 1 - Volatile Compounds:** Collect volatile reagents from the Netherstorm eco-domes to craft "Masterwork Explosives".',
+            '**Phase 2 - The Gauntlet:** Run through a trapped hallway in *Iron Soul* specifically designed to test your disarm trap and feign death skills.',
+            '**Phase 3 - Guerilla Warfare:** Defeat a heavily armored elite in Blade\'s Edge by kiting him through 20 consecutive explosive traps.',
+            '**Phase 4 - Close Quarters:** Survive 3 minutes in melee combat against a Fury Warrior NPC using only Mongoose Bite, Traps, and Raptor Strike.'
           ],
           reward: {
-            name: 'Kit of the Wilds',
+            name: 'Satchel of Endless Munitions',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+20 Agility'], effects: ['Equip: Trap duration increased by 2s.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Trap duration increased by 3s.', 'Use: Launch a Frost Trap at a target location.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility', '+20 Stamina'], effects: ['Equip: Trap cooldowns reduced by 4s.', 'Use: Wyvern Sting is now instant cast.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+40 Agility', '+30 Stamina'], effects: ['Equip: Explosive Shot deals 30% splash damage to nearby targets.', 'Equip: Critical strike chance increased by 50% against any target below 20% health.', '"Watch your step."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Trap cooldowns reduced by 4 sec.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Trap cooldowns reduced by 6 sec.', 'Use: Throw 3 explosive traps at once.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Trap cooldowns reduced by 8 sec.', 'Equip: Explosive Shot has a 30% chance to trigger "Lock and Load".'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Trap cooldowns reduced by 10 sec.', 'Equip: Black Arrow deals 100% more damage.', 'Use: "Cluster Bomb" - Rain explosives on the target area dealing massive Fire damage. (2 min cooldown)', '"Watch your step."'] }
             ]
           }
         }
@@ -306,68 +266,68 @@ const VaultOfArtifacts = () => {
     },
     rogue: {
       name: 'Rogue',
-      icon: <img src="https://i.imgur.com/kQJfCCO.png" className="w-5 h-5 object-contain" alt="Rogue" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_rogue.png?6673d3" className="w-5 h-5 object-contain" alt="Rogue" />,
       specs: {
-        ass: {
+        assassination: {
           name: 'Assassination',
-          icon: 'https://wowmeta.com/_app/immutable/assets/classic-rogue-assassination.BssFEmMX.png',
-          title: 'The Poisoner',
-          desc: 'A whisper in the dark, a knife in the ribs. Lethality is an art.',
+          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          title: 'The Slayer',
+          desc: 'Poison is your perfume, and shadows are your cloak. Death comes before they even know you are there.',
           steps: [
-            '**Phase 1 - Rare Venoms:** Collect venom sacs from the spiders of Terokkar Forest.',
-            '**Phase 2 - The Lab Infiltration:** Infiltrate the Shadow Council alchemy lab without breaking stealth.',
-            '**Phase 3 - Tainted Supply:** Poison the Legion\'s water supply in Shadowmoon Valley.',
-            '**Phase 4 - The Perfect Kill:** Assassinate a Felguard Captain without alerting his guards.'
+            '**Phase 1 - The Perfect Poison:** Harvest venom from the "Queen Maiev\'s Spider" in Terokkar Forest without being detected.',
+            '**Phase 2 - Silence:** Infiltrate the *Iron Soul* dungeon and assassinate a specific target in a crowded room without alerting any guards.',
+            '**Phase 3 - Blood Pact:** Defeat a Blood Council member in the *Fissure of Souls* using only bleeds and poisons.',
+            '**Phase 4 - The King Slayer:** Re-enact the assassination of King Llane in a Caverns of Time scenario.'
           ],
           reward: {
-            name: 'Vial of the Kingslayer',
+            name: 'Vial of the Unseen',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Poisons apply "Kingsbane" stack, dealing nature damage over time.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Kingsbane stacks up to 5 times.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Envenom consumes Kingsbane to deal instant Nature damage per stack.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Your poisons apply "Kingsbane", dealing escalating Nature damage.', 'Use: Envenom consumes Kingsbane to deal damage equal to the remaining DoT.', '"The King is dead."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases poison application chance by 10%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases poison application chance by 15%.', 'Use: Your next Mutilate guarantees a critical hit.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Increases poison damage by 20%.', 'Equip: Envenom grants 100% chance to apply poisons for 5s.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Poison damage can critically hit.', 'Equip: Vendetta lasts 10s longer.', 'Use: "Toxic Cloud" - Vanish in a cloud of poison, choking enemies for Nature damage. (3 min cooldown)', '"The last thing they never saw."'] }
             ]
           }
         },
         combat: {
           name: 'Combat',
-          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
-          title: 'The Duelist',
-          desc: 'Face your enemy steel to steel. No hiding, just skill.',
+          icon: 'https://i.imgur.com/wJbmNeR.png',
+          title: 'The Swashbuckler',
+          desc: 'Toe to toe, blade to blade. You don\'t need to hide to win.',
           steps: [
-            '**Phase 1 - The Arena:** Win 3 consecutive duels in the Ring of Blood.',
-            '**Phase 2 - Disarm:** Disarm 10 traps in the Mana Tombs while under fire.',
-            '**Phase 3 - The Blademaster:** Defeat a burning blade master in a pure melee duel (no vanishing).',
-            '**Phase 4 - 100 Parries:** Successfully parry 100 attacks within a time limit.'
+            '**Phase 1 - Pirate\'s Life:** Win a bar brawl in Booty Bay against 5 goblins simultaneously.',
+            '**Phase 2 - Steel Dancer:** Parry 10 attacks in a row from a blademaster in Nagrand.',
+            '**Phase 3 - Cannon Barrage:** Survive a bombardment in the *Fissure of Souls* while dodging fel fire.',
+            '**Phase 4 - Killing Spree:** Defeat 3 elite mobs in under 20 seconds using Adrenaline Rush and Blade Flurry.'
           ],
           reward: {
-            name: 'Compass of the Dreadblades',
+            name: 'Dice of the Grand Admiral',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Saber Slash has a chance to strike twice.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Saber Slash grants 1 extra Combo Point on proc.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Run Through has a 20% chance to refund 20 Energy.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Saber Slash (Proc) hits for 100% weapon damage and grants 1 Combo point.', 'Use: Curse of the Dreadblades - Your generators cost 50% less Energy for 12 sec.', '"Fear the blades."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Chance on hit to gain 10% attack speed.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Chance on hit to gain 15% attack speed.', 'Use: Roll the Bones (Grants a random combat buff).'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Sword Specialization proc chance doubled.', 'Equip: Sinister Strike has a chance to strike twice.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Adrenaline Rush cooldown reduced by 60s.', 'Equip: Your attacks cleave to 1 nearby target for 50% damage.', 'Use: "Broadside" - Call a cannon barrage on your location. (5 min cooldown)', '"Fortune favors the bold."'] }
             ]
           }
         },
-        sub: {
+        subtlety: {
           name: 'Subtlety',
-          icon: 'https://wowmeta.com/_app/immutable/assets/rogue.BcZrWFcx.png',
+          icon: 'https://i.imgur.com/Gj3Hq4Y.png',
           title: 'The Shadow',
-          desc: 'You are nowhere and everywhere. A phantom of death.',
+          desc: 'You are a ghost. You strike from the darkness and return to it before the body hits the floor.',
           steps: [
-            '**Phase 1 - Ghost Walk:** Move through the ruins of Auchindoun unseen by truesight guards.',
-            '**Phase 2 - The Key:** Pickpocket the master key from the Nexus-Prince.',
-            '**Phase 3 - Ambush:** Ambush a warlock while he is summoning a demon.',
-            '**Phase 4 - Vanish:** Vanish from the sight of a Fel Reaver and survive.'
+            '**Phase 1 - Shadow Walk:** Navigate the *Iron Soul* dungeon without taking damage, using Shadowstep and Distract.',
+            '**Phase 2 - The unseen Blade:** Backstab "Kael\'thas Sunstrider" (Echo) 50 times during his monologue phase in Magisters\' Terrace.',
+            '**Phase 3 - Dance of Death:** Maintain "Shadow Dance" uptime for 60 seconds total in a fight against a training dummy.',
+            '**Phase 4 - Soul Thief:** Steal a specific item from a demon lord\'s pocket in the *Fissure of Souls* and escape.'
           ],
           reward: {
-            name: 'Fang of the Devourer',
+            name: 'Cloak of the Night',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Shadowstep increases next attack damage by 10%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Your attacks have a chance to activate "Devourer\'s Bite", dealing Shadow Damage.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Devourer\'s Bite grants 10 Energy.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Shadowstep damage bonus increased by 20%.', 'Use: Goremaw\'s Bite - Deal Shadow damage and restore 50 Energy.', '"The shadows hunger."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Stealth level increased by 5.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Stealth level increased by 10.', 'Use: Instantly enter Stealth combat.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Backstab deals 20% more damage.', 'Equip: Shadow Dance lasts 2s longer.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: You regenerate 5 Energy every second while in Stealth.', 'Equip: Shadowstep has 2 charges.', 'Use: "Shadow Clone" - Summon a shadow copy of yourself that mimics your opening attacks. (3 min cooldown)', '"Darkness is my ally."'] }
             ]
           }
         }
@@ -375,68 +335,68 @@ const VaultOfArtifacts = () => {
     },
     priest: {
       name: 'Priest',
-      icon: <img src="https://i.imgur.com/aj1CVrE.png" className="w-5 h-5 object-contain" alt="Priest" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_priest.png?e0a7df" className="w-5 h-5 object-contain" alt="Priest" />,
       specs: {
-        disc: {
+        discipline: {
           name: 'Discipline',
           icon: 'https://i.imgur.com/yKNBawv.png',
-          title: 'The Shield of the Soul',
-          desc: 'Willpower is stronger than steel. To protect others, you must first master your own mind.',
+          title: 'The Inquisitor',
+          desc: 'The mind is weak, but faith is strong. You shield the faithful and break the will of the heretic.',
           steps: [
-            '**Phase 1 - The Unbreaking Will:** Maintain a barrier around a meditating Farseer in Nagrand while under constant bombardment from Voidwalkers.',
-            '**Phase 2 - The Penitent:** Convert a corrupted Scarlet Crusader in Tyr\'s Hand not by force, but by surviving their onslaught until they run out of mana.',
-            '**Phase 3 - Power Word: Barrier:** Defend a breach in the Exodar\'s hull, rotating cooldowns to mitigate massive environmental damage waves.',
-            '**Phase 4 - The Ascendant:** Reflect the shadow magic of a Void Lord back at him using perfectly timed absorbs and reflections.'
+            '**Phase 1 - Penance:** Heal a target from 1% to 100% using only Penance in the Library of Stormwind while under "Silenced" debuff intervals.',
+            '**Phase 2 - Power Word: Shield:** Mitigate 1,000,000 damage total in the *Iron Soul* dungeon.',
+            '**Phase 3 - Pain Suppression:** Survive a one-shot mechanic from a raid boss by timing your cooldown perfectly.',
+            '**Phase 4 - Evangelism:** Convert 10 Scarlet Crusade zealots to the grandiose Light in Tyr\'s Hand.'
           ],
           reward: {
-            name: 'Codex of Discipline',
+            name: 'Censer of the High Inquisitor',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45 and damage done by up to 15.', 'Equip: Power Word: Shield absorbs 150 more damage.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Power Word: Shield absorbs 250 more damage.', 'Use: Your next Penance channels 30% faster.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Power Word: Shield absorbs 400 more damage.', 'Equip: Reduces the weakened soul effect duration by 2 sec.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Power Word: Shield absorbs 600 more damage.', 'Equip: Pain Suppression applies to your entire party at 50% effectiveness.', 'Use: Create a Power Word: Barrier at your location reducing damage taken by 25% for all allies inside. (3 min cooldown)', '"The mind is the only fortress that matters."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Shield absorption increased by 10%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Shield absorption increased by 15%.', 'Use: Your next Power Word: Shield absorbs double.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Penance channels 1 extra tick.', 'Equip: Rapture returns 20% more mana.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Power Infusion serves you and your target.', 'Equip: Atonement heals for 20% more.', 'Use: "Barrier of Will" - Creates a massive bubble reducing damage taken by 25% for all allies inside. (3 min cooldown)', '"Discipline is the bridge between thought and accomplishment."'] }
             ]
           }
         },
         holy: {
           name: 'Holy',
           icon: 'https://i.imgur.com/2JfVmju.png',
-          title: 'The Beacon of Light',
-          desc: 'You are a conduit of the Light\'s purest grace. Where there is death, you bring rebirth.',
+          title: 'The Savior',
+          desc: 'Even in death, there is life. You are the miracle that defies the grave.',
           steps: [
-            '**Phase 1 - The Leper\'s Comfort:** Heal a group of irradiated gnomes in Gnomeregan\'s depths, cleansing their stacks of undefined radiation.',
-            '**Phase 2 - The Purge:** Cleanse a plague cauldron in the Western Plaguelands while keeping the defending Argent Dawn soldiers alive.',
-            '**Phase 3 - The Spirit of Redemption:** Sacrifice yourself (spirit form) to heal a raid through an otherwise fatal explosion in Auchindoun.',
-            '**Phase 4 - The Miracle:** Channel a massive resurrection spell in the Black Temple to raise the spirits of the fallen Illidari for one final charge.'
+            '**Phase 1 - Spirit of Redemption:** Heal a party for 20 seconds while in Spirit of Redemption form in a scripted scenario.',
+            '**Phase 2 - Circle of Healing:** Hit 6 injured allies with a single Circle of Healing in a raid environment.',
+            '**Phase 3 - Lightwell:** Force teammates to actually click your Lightwell (Scripted NPC logic).',
+            '**Phase 4 - Guardian Spirit:** Save a tank from a killing blow in *Fissure of Souls* using Guardian Spirit.'
           ],
           reward: {
-            name: 'Sigil of Serenity',
+            name: 'Staff of the Naaru',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45.', 'Equip: Renew heals for 10% more.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55.', 'Equip: Circle of Healing heals 1 extra target.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65.', 'Equip: Your Spirit of Redemption duration is increased by 10 sec.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases healing done by up to 80.', 'Equip: Circle of Healing has no cooldown.', 'Use: Places a Guardian Spirit on a target, preventing death and increasing healing received by 40% for 10s. (3 min cooldown)', '"Light, grant me one final miracle."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Spirit increased by 40.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Spirit increased by 50.', 'Use: Gain 500 mana immediately.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Circle of Healing heals 1 extra target.', 'Equip: Prayer of Mending jumps to 1 extra target.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Your Spirit of Redemption form lasts 10s longer and you can act normally (but are still immune).', 'Use: "Divine Hymn" - Channeled heal that restores massive health to all raid members. (5 min cooldown)', '"The Light preserves."'] }
             ]
           }
         },
         shadow: {
           name: 'Shadow',
-          icon: 'https://i.imgur.com/cgUNFcU.png',
-          title: 'The Void Cultist',
-          desc: 'To defeat the darkness, you must understand it. You walk the line between genius and insanity.',
+          icon: 'https://i.imgur.com/iGZVgov.png',
+          title: 'The Cultist',
+          desc: 'The Void whisppers truths that the Light fears to speak. You listen.',
           steps: [
-            '**Phase 1 - Embrace the Madness:** Meditate at the Altar of Shadows in Shadowmoon Valley until your sanity meter nearly depletes, then stabilize it.',
-            '**Phase 2 - Mind Games:** Use Mind Control to force elite mobs in the Arcatraz to fight each other, managing diminishing returns.',
-            '**Phase 3 - Soul Harvest:** Drain the souls of 50 demons in the Legion Hold without moving, using fear and shields to survive.',
-            '**Phase 4 - Avatar of the Void:** Assume Shadowform and maintain it permanently during a boss fight where holy damage is constant.'
+            '**Phase 1 - Mind Flay:** Channel Mind Flay uninterrupted for 30 seconds on a training dummy while moving (using the artifact).',
+            '**Phase 2 - Shadowform:** Maintain Shadowform while taking massive Holy damage in the Scarlet Monastery.',
+            '**Phase 3 - Vampiric Embrace:** Heal your party for 50,000 health solely through damage dealt in a dungeon.',
+            '**Phase 4 - Surrender to Madness:** Generate enough Insanity to stay in Voidform for 60 seconds.'
           ],
           reward: {
-            name: 'Orb of Madness',
+            name: 'Heart of the Void',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Shadow Bolt casts 0.1s faster.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Reset the cooldown of your Shadow Word: Death.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Vampiric Touch restores 2% more mana per tick.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Mind Flay has a chance to stun the target for 1s (Insanity).', 'Use: Disperse into pure void energy, taking 90% less damage and regenerating 50% mana over 6s. You can cast while dispersed. (5 min cooldown)', '"The void does not consume mere shadows."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Shadow damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Shadow damage increased by 8%.', 'Use: Reset the cooldown of Mind Blast.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Shadow Word: Pain grants Insanity on tick.', 'Equip: Vampiric Touch deals 10% more damage.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: You can cast while moving during Voidform.', 'Equip: Mind Flay becomes "Mind Spike" (Instant cast).', 'Use: "Void Eruption" - Explode for massive Shadow damage and enter Voidform immediately. (2 min cooldown)', '" Embrace the madness."'] }
             ]
           }
         }
@@ -444,68 +404,68 @@ const VaultOfArtifacts = () => {
     },
     shaman: {
       name: 'Shaman',
-      icon: <img src="https://i.imgur.com/OaLY1Ck.png" className="w-5 h-5 object-contain" alt="Shaman" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_shaman.png?613d94" className="w-5 h-5 object-contain" alt="Shaman" />,
       specs: {
-        ele: {
+        elemental: {
           name: 'Elemental',
-          icon: 'https://i.imgur.com/8ChsJBV.png',
-          title: 'The Storm Caller',
-          desc: 'The elements respond to your call. You are the lightning rod.',
-          steps: [
-            '**Phase 1 - Eye of the Storm:** Stand at the peak of the Throne of the Elements and channel a lightning storm, destroying targets called out by the spirits.',
-            '**Phase 2 - Ride the Lightning:** A scenario where you must use Ghost Wolf and travel instantaneously between lightning rods to generate charge.',
-            '**Phase 3 - Earth Shock:** Interrupt a caster boss 10 times in a row. Missing one reset the encounter.',
-            '**Phase 4 - Elemental Overload:** Survive a phase where you have infinite mana but take 300% increased damage. Kill the boss before he kills you.'
-          ],
-          reward: {
-            name: 'Totem of the Sky',
-            phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Lightning Bolt damage increased by 5%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Free casting for 6 sec.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Lightning Bolt has a 10% chance to cast a second bolt instantly.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Your Elemental Overload chance is doubled.', 'Equip: Chain Lightning has no cooldown.', '"I am the thunder."'] }
-            ]
-          }
-        },
-        enh: {
-          name: 'Enhancement',
           icon: 'https://i.imgur.com/38aMS1Y.png',
-          title: 'The Storm Hammer',
-          desc: 'Earth and air fused into kinetic destruction. Strike as one with the elements.',
+          title: 'The Stormcaller',
+          desc: 'Lightning strikes at your command. The earth trembles beneath your feet.',
           steps: [
-            '**Phase 1 - Forging the Hammer:** Collect Fel Iron and Elementium to re-forge Doomhammer\'s handle in the Hellfire Citadel forge.',
-            '**Phase 2 - Windfury Mastery:** Maintain a flurry of attacks on a training dummy, keeping Windfury active for 60 seconds straight.',
-            '**Phase 3 - Spirit Walk:** Navigate the Spirit World (Nagrand) with your Feral Spirits, solving riddles given by wolf ancestors.',
-            '**Phase 4 - The Earthbreaker:** Tank an elite Gronn using Shamanistic Rage and Earth Shock to hold threat and survive.'
+            '**Phase 1 - Overload:** Trigger Elemental Overload 20 times in 1 minute.',
+            '**Phase 2 - Thunderstorm:** Knock 10 enemies off a cliff in Arathi Basin.',
+            '**Phase 3 - Lava Burst:** Land a guaranteed crit Lava Burst on a frozen target in *Iron Soul*.',
+            '**Phase 4 - The Elements:** Solo an Elite Earth Elemental in Nagrand using only Earth Shock.'
           ],
           reward: {
-            name: 'Echo of the Doomhammer',
+            name: 'Totem of the Storm',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Agility'], effects: ['Equip: Chance to strike for extra Nature damage.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Windfury Weapon +10% damage.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+45 Agility'], effects: ['Equip: Stormstrike hits 1 extra target.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+55 Agility'], effects: ['Equip: Your melee attacks manifest a "Spirit Hammer" visual that strikes for Nature damage.', 'Use: Empower the hammer, maximizing Windfury procs for 10s.', '"It was forged in fire, but it knows the storm."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Lightning Bolt damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Lightning Bolt damage increased by 8%.', 'Use: Next Chain Lightning hits 10 targets.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Lava Burst cooldown reduced by 2s.', 'Equip: Elemental Overload chance increased by 5%.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Your spells have a chance to summon a Greater Elemental to fight for you.', 'Equip: You can cast Lightning Bolt while moving.', 'Use: "Stormkeeper" - Your next 3 Lightning Bolts are instant and deal 150% damage. (2 min cooldown)', '"I am the storm."'] }
             ]
           }
         },
-        resto: {
-          name: 'Restoration',
-          icon: 'https://i.imgur.com/2msDhl4.png',
-          title: 'The Tidecaller',
-          desc: 'Water is life. You control the ebb and flow of existence.',
+        enhancement: {
+          name: 'Enhancement',
+          icon: 'https://i.imgur.com/8ChsJBV.png',
+          title: 'The Stormbringer',
+          desc: 'Imbue your weapons with the elements and strike with the force of a hurricane.',
           steps: [
-            '**Phase 1 - Call of Rain:** Summon a rainstorm in the Blade\'s Edge Mountains to extinguish a Legion fire spreading near a village.',
-            '**Phase 2 - Purification:** Cleanse the corrupted waters of Coilfang Reservoir by channeling into the pumps while defending against Naga.',
-            '**Phase 3 - Tidal Wave:** Heal a raid through a "Tidal Wave" boss mechanic where moving resets your cast bars. Stutter stepping is key.',
-            '**Phase 4 - The Lifebinder:** Link your spirit to the World Tree in Mount Hyjal, sharing health with it to prevent its destruction.'
+            '**Phase 1 - Windfury:** Proc Windfury Weapon 5 times in a row (RNG test in scenario).',
+            '**Phase 2 - Feral Spirit:** Keep your Spirit Wolves alive for their full duration against an AoE boss in *Fissure of Souls*.',
+            '**Phase 3 - Stormstrike:** Reset the cooldown of Stormstrike using Static Shock.',
+            '**Phase 4 - Doomhammer:** Wield the Doomhammer (replica) and defeat a demon lord.'
           ],
           reward: {
-            name: 'Totem of the Tide',
+            name: 'Core of the Elements',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45.', 'Equip: Chain Heal jumps to 1 extra target.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55.', 'Use: Your next Healing Wave is instant.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65.', 'Equip: Earth Shield has 3 extra charges.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases healing done by up to 80.', 'Equip: Chain Heal has no target limit (diminishes after 5 targets).', 'Use: Summon a Mana Tide Totem that restores 20% mana to party over 10s. (3 min cooldown)', '"Water washes away all pain."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Windfury Weapon damage increased by 10%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Windfury Weapon damage increased by 15%.', 'Use: Your next Stormstrike deals Nature damage.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Maelstrom Weapon stacks up to 10 times.', 'Equip: Lava Lash spreads Flame Shock.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Windfury Weapon has no internal cooldown.', 'Equip: Feral Spirits last indefinitely but deal 50% less damage (Perma-pets).', 'Use: "Ascendance" - Transform into an Air Ascendant, allowing auto-attacks to bypass armor and have 30y range. (3 min cooldown)', '"Strike with the wind."'] }
+            ]
+          }
+        },
+        restoration: {
+          name: 'Restoration',
+          icon: 'https://i.imgur.com/38aMS1Y.png', // Reusing placeholder, ideally distinct
+          title: 'The Tidecaller',
+          desc: 'Water is life. You guide the healing rains to wash away the wounds of war.',
+          steps: [
+            '**Phase 1 - Chain Heal:** Heal 4 targets with a single Chain Heal.',
+            '**Phase 2 - Mana Tide:** Restore 10,000 mana to your party using Mana Tide Totem.',
+            '**Phase 3 - Earth Shield:** Keep Earth Shield active on a tank taking heavy damage for 2 minutes.',
+            '**Phase 4 - Spirit Link:** Save a party from a wipe mechanic using Spirit Link Totem.'
+          ],
+          reward: {
+            name: 'Vial of the Living Current',
+            phases: [
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Chain Heal healing increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Chain Heal healing increased by 10%.', 'Use: Next Healing Wave is instant.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Riptide has 2 charges.', 'Equip: Earth Shield heals correctly when below 20% hp.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Chain Heal has no target cap (diminishing returns apply).', 'Equip: Rain of Healing follows the Shaman.', 'Use: "High Tide" - Your next 3 Chain Heals bounce twice as far and heal for 50% more. (2 min cooldown)', '"The tides obey."'] }
             ]
           }
         }
@@ -513,68 +473,68 @@ const VaultOfArtifacts = () => {
     },
     mage: {
       name: 'Mage',
-      icon: <img src="https://i.imgur.com/qn2djXW.png" className="w-5 h-5 object-contain" alt="Mage" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_mage.png?7cb113" className="w-5 h-5 object-contain" alt="Mage" />,
       specs: {
         arcane: {
           name: 'Arcane',
-          icon: 'https://i.imgur.com/Zt0BQe6.png',
-          title: 'The Archmage',
-          desc: 'Arcane is the fabric of the universe. You tug at the threads of reality.',
+          icon: 'https://i.imgur.com/TRNTMys.png',
+          title: 'The Arcanist',
+          desc: 'Magic is order imposed upon chaos. You calculate every variable.',
           steps: [
-            '**Phase 1 - The Violet Library:** Decipher the Archmage\'s scrolls in Karazhan within a time limit to learn the "Greater Arcane Blast" spell.',
-            '**Phase 2 - Ley Line Mastery:** Stand on ley line nexuses in Netherstorm, soaking energy while managing a mana addiction meter.',
-            '**Phase 3 - The Conservationist:** Defeat a boss with 10 million HP without ever dropping below 80% mana.',
-            '**Phase 4 - The Duel:** Defeat a mirror image of yourself that uses all your cooldowns against you.'
+            '**Phase 1 - Mana Management:** Maintain 80% mana for 2 minutes while casting Arcane Blast.',
+            '**Phase 2 - Arcane Power:** Burst down a target in 10 seconds using Arcane Power.',
+            '**Phase 3 - Blink:** Blink through a wall in *Iron Soul* to bypass a trap.',
+            '**Phase 4 - Evolution:** Transform 5 enemies into sheep simultaneously.'
           ],
           reward: {
-            name: 'Crystal of the Ley',
+            name: 'Crystal of Infinite Potential',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Arcane Blast mana cost reduced by 5%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Recover 1500 mana immediately.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Arcane Missiles has a 100% chance to not consume mana (Clearcasting).'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Arcane Blast stacks up to 8 times.', 'Use: Presence of Mind becomes passive for 15 sec. (3 min cooldown)', '"Reality is mine to shape."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Arcane Blast damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Arcane Blast damage increased by 8%.', 'Use: Restore 3000 mana.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Clearcasting chance increased by 10%.', 'Equip: Arcane Missiles can move while channeling.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Arcane Power cooldown reduced by 50%.', 'Equip: Evocation is instant.', 'Use: "Overpower" - Your Arcane Blasts are instant cast for 10 sec. (3 min cooldown)', '"Unlimited power."'] }
             ]
           }
         },
         fire: {
           name: 'Fire',
-          icon: 'https://i.imgur.com/TRNTMys.png',
+          icon: 'https://i.imgur.com/Zt0BQe6.png',
           title: 'The Pyromancer',
-          desc: 'Some just want to watch the world burn. You are the spark.',
+          desc: 'Some just want to watch the world burn. You carry the match.',
           steps: [
-            '**Phase 1 - The Eternal Flame:** Carry a sacred flame from Blackrock Mountain to the Dark Portal without letting it extinguish.',
-            '**Phase 2 - Feeding the Fire:** Deal critical strikes to a fire elemental to make it grow larger, then kite it into a frozen door to melt it.',
-            '**Phase 3 - Hot Streak:** Maintain a "Hot Streak" buff for 60 seconds by critically striking targets repeatedly.',
-            '**Phase 4 - Living Bomb:** You become the bomb. Run into the center of a Legion army and detonate, dealing damage equal to your remaining mana.'
+            '**Phase 1 - Hot Streak:** Get 3 Hot Streaks in a row.',
+            '**Phase 2 - Combustion:** Do 100k damage in a single Combustion window.',
+            '**Phase 3 - Dragon\'s Breath:** Disorient 5 targets at once.',
+            '**Phase 4 - Phoenix Reborn:** Survive a killing blow with Cauterize.'
           ],
           reward: {
-            name: 'Ember of Felo\'melorn',
+            name: 'Ember of the Phoenix',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Fireball damage +5%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Convert 5% of damage done by Fire spells into a protective shield.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Hot Streak now stacks up to 2 times.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Hot Streak now stacks up to 3 times.', 'Use: Phoenix Flames - Hurls a Phoenix dealing Fire damage and granting 1 stack of Hot Streak.', '"Flamestrike!"'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Critical strike rating increased by 20.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Critical strike rating increased by 30.', 'Use: Next Pyroblast is instant.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Hot Streak requires only 1 crit.', 'Equip: Living Bomb has no target limit.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Combustion can be cast while moving.', 'Equip: You can cast Scorch while moving.', 'Use: "Phoenix Flames" - Summon a Phoenix that fights for you and pulses Fire damage. (5 min cooldown)', '"Burn brighter."'] }
             ]
           }
         },
         frost: {
           name: 'Frost',
-          icon: 'https://i.imgur.com/oR1e4BK.png',
-          title: 'The Frostlord',
-          desc: 'Cold, calculating, and inevitable. You are the winter storm.',
+          icon: 'https://i.imgur.com/Zt0BQe6.png', // Placeholder
+          title: 'The Lich',
+          desc: 'Cold calculation. You slow their advance until they shatter.',
           steps: [
-            '**Phase 1 - The Crossing:** Freeze the waters of the Deadwind Pass to allow refugees to cross while you hold off ghosts.',
-            '**Phase 2 - Shatter:** Execute a "Shatter" combo on 50 frozen targets in under 2 minutes.',
-            '**Phase 3 - Blizzard Control:** Kite an elite Giant around a localized Blizzard for 3 minutes without getting hit once.',
-            '**Phase 4 - The Lich:** Ascend to a temporary Lich form and dominate the wills of undead minions to serve you.'
+            '**Phase 1 - Shatter:** Crit a frozen target with Ice Lance.',
+            '**Phase 2 - Kite Master:** Kite a melee elite for 2 minutes without getting hit.',
+            '**Phase 3 - Deep Freeze:** Stun a boss during a critical cast.',
+            '**Phase 4 - Water Elemental:** Keep your Elemental alive through a dungeon.'
           ],
           reward: {
-            name: 'Shard of Ebonchill',
+            name: 'Shard of the Frozen Throne',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Frostbolt damage +5%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Your Frost spells have a chance to grant "Brain Freeze", causing your next Flurry to be instant cast.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Ebonchill remembers your spells, duplicating every 10th Frostbolt.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Frostbolt has a chance to store an Icicle.', 'Use: Glacial Spike - Consumes 5 Icicles to deal massive Frost damage and freeze the target.', '"Winter is here."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Frostbolt damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Frostbolt damage increased by 8%.', 'Use: Reset cooldown of Icy Veins.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Fingers of Frost chance increased.', 'Equip: Brain Freeze makes Fireball instant.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Ice Lance hits 2 targets.', 'Equip: You can cast Ice Block on allies.', 'Use: "Glacial Spike" - Launch a massive spike dealing 300% SP damage. (1 min cooldown)', '"Winter is coming."'] }
             ]
           }
         }
@@ -582,68 +542,68 @@ const VaultOfArtifacts = () => {
     },
     warlock: {
       name: 'Warlock',
-      icon: <img src="https://i.imgur.com/MHcMLJx.png" className="w-5 h-5 object-contain" alt="Warlock" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_warlock.png?de29f3" className="w-5 h-5 object-contain" alt="Warlock" />,
       specs: {
-        aff: {
+        affliction: {
           name: 'Affliction',
           icon: 'https://i.imgur.com/ZAsJNiE.jpeg',
-          title: 'The Soul Reaper',
-          desc: 'Agony, corruption, unstable magic. You slowly unravel the soul.',
+          title: 'The Harvester',
+          desc: 'Agony is a slow teacher, but a thorough one.',
           steps: [
-            '**Phase 1 - Cursed Earth:** Spread corruption across the farmlands of Shadowmoon, wilting plans to uncover hidden demons.',
-            '**Phase 2 - Drain Life:** Survive a gauntlet of damage solely using Drain Life and Siphon Life efficiently.',
-            '**Phase 3 - The Plaguebringer:** Infect a raid dummy with every DoT possible and maintain them for 5 minutes perfectly.',
-            '**Phase 4 - Soul Harvest:** Use "Soul Shatter" to instantly kill a boss at 1% health, trapping its soul in your shard.'
+            '**Phase 1 - Unstable Affliction:** Cover 5 targets with UA without getting interrupted.',
+            '**Phase 2 - Drain Soul:** Execute a target with Drain Soul ticks.',
+            '**Phase 3 - Fear Juggling:** Juggle 3 feared targets at once.',
+            '**Phase 4 - Soul Swap:** Move dots from one target to another INSTANTLY.'
           ],
           reward: {
-            name: 'Skull of Corruption',
+            name: 'Skull of the Man\'ari',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Corruption ticks 10% faster.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Instantly apply Corruption to all enemies within 30 yds.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Unstable Affliction dispel backlash damage doubled.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Your DoTs can effectively deal critical damage (150%).', 'Equip: Drain Soul executes targets below 25% health.', '"Their souls are mine."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: DoT damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: DoT damage increased by 8%.', 'Use: Instantly apply Corruption to all enemies in 30yds.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Corruption ticks 20% faster.', 'Equip: Haunt lasts 5s longer.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Your DoTs can critically hit.', 'Equip: Drain Soul can move.', 'Use: "Reap Souls" - Doubles the tick rate of all your DoTs for 10 sec. (2 min cooldown)', '"Their souls are mine."'] }
             ]
           }
         },
-        demo: {
+        demonology: {
           name: 'Demonology',
-          icon: 'https://i.imgur.com/iGZVgov.png',
-          title: 'The Demon Commander',
+          icon: 'https://i.imgur.com/ZAsJNiE.jpeg',
+          title: 'The Master Summoner',
           desc: 'You do not serve the Legion. The Legion serves you.',
           steps: [
-            '**Phase 1 - The Summoning:** Perform a ritual to summon a Pit Lord, pressing the correct runes in sequence.',
-            '**Phase 2 - My Life for Yours:** Use Health Funnel to keep your Felguard alive against a raid boss for 2 minutes.',
-            '**Phase 3 - Metamorphosis:** While in Demon Form, defeat a paladin champion using only demon abilities.',
-            '**Phase 4 - The Master:** Command three demons simultaneously (Imp, Voidwalker, Succubus) to solve a puzzle in the Black Temple.'
+            '**Phase 1 - Metamorphosis:** Tank a boss in Meta form.',
+            '**Phase 2 - Felguard:** Have your Felguard hold aggro against 3 mobs.',
+            '**Phase 3 - Hand of Gul\'dan:** Summon imps on cooldown.',
+            '**Phase 4 - Wilfred Fizzlebang:** Summon a Doomguard without dying.'
           ],
           reward: {
-            name: 'Bond of the Fel',
+            name: 'Thal\'kiel\'s Visage',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Pet Stamina and Intellect +10%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Sacrifice your pet to gain a shield equal to its max HP.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Hand of Gul\'dan summons 3 wild imps.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Metamorphosis is now a permanent toggle (reduced effectiveness, full effectiveness on cooldown).', 'Use: Summons a Demonic Tyrant to fight by your side for 20 sec. The Tyrant casts Demonfire, dealing 450 to 520 Fire damage to your target. While the Tyrant is active, your summoned demon gains Demonic Authority, increasing its Attack Power and Spell Damage by 20% and allowing its attacks to ignore 50% of the target\'s armor.', '"I am the legion."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Pet damage increased by 10%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Pet damage increased by 15%.', 'Use: Summon 2 Wild Imps.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Hand of Gul\'dan summons 4 imps.', 'Equip: Metamorphosis duration +10s.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: You can have 2 demons active at once.', 'Equip: Demonic Empowerment is passive.', 'Use: "Thal\'kiel\'s Consumption" - Deal damage equal to 10% of your pets\' total HP. (1.5 min cooldown)', '"Obey."'] }
             ]
           }
         },
         destro: {
           name: 'Destruction',
-          icon: 'https://i.imgur.com/67hJXkU.png',
-          title: 'The Chaos Bringer',
-          desc: 'Fel fire burns hotter than any natural flame. Unleash chaos.',
+          icon: 'https://i.imgur.com/ZAsJNiE.jpeg',
+          title: 'The Cataclysm',
+          desc: 'Fire and brimstone. You are the end of days.',
           steps: [
-            '**Phase 1 - Shadowfury:** Stun 5 charging Fel Orcs instantly with a perfectly timed Shadowfury.',
-            '**Phase 2 - Incinerate:** Maintain the "Backdraft" buff for 10 spellcasts in a row.',
-            '**Phase 3 - Chaos Bolt:** Cast Chaos Bolt through a magical barrier that reflects all other spells.',
-            '**Phase 4 - Cataclysm:** Channel a spell that destroys the terrain of the arena, forcing you to fight on floating debris.'
+            '**Phase 1 - Chaos Bolt:** Crit for 10k damage.',
+            '**Phase 2 - Rain of Fire:** Generate burning embers from AoE.',
+            '**Phase 3 - Shadowburn:** Snipe 3 low hp targets in a row.',
+            '**Phase 4 - Havoc:** Cleave a Chaos Bolt to a secondary target.'
           ],
           reward: {
-            name: 'Eye of the Legion',
+            name: 'Scepter of Sargeras',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Shadow Bolt critical strike damage bonus increased by 10%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Next Chaos Bolt costs 0 shards and is instant.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Conflagrate consumes the Immolate effect but refreshes its duration instead of removing it.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Chaos Bolt penetrates all absorption effects and invulnerabilities.', 'Equip: Rain of Fire deals 100% more damage and stuns targets.', '"Burn it all."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Chaos Bolt damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Chaos Bolt damage increased by 8%.', 'Use: Conflagrate has 3 charges.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Incinerate cast time reduced 20%.', 'Equip: Rain of Fire casts while moving.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Chaos Bolt penetrates all absorption shields.', 'Equip: Havoc has no cooldown but costs Soul Shards.', 'Use: "Dimensional Rift" - Tear open a portal that fires Chaos Bolts automatically. (3 charges)', '"Burn it all."'] }
             ]
           }
         }
@@ -651,76 +611,99 @@ const VaultOfArtifacts = () => {
     },
     druid: {
       name: 'Druid',
-      icon: <img src="https://i.imgur.com/t9FOweo.png" className="w-5 h-5 object-contain" alt="Druid" />,
+      icon: <img src="https://warcraft.wiki.gg/images/ClassIcon_druid.png?51e7c5" className="w-5 h-5 object-contain" alt="Druid" />,
       specs: {
         balance: {
           name: 'Balance',
           icon: 'https://i.imgur.com/xqYw2gI.png',
-          title: 'The Starseer',
-          desc: 'The moon and the stars are your guides. Maintain the balance of nature.',
+          title: 'The Archdruid',
+          desc: 'The stars align at your command.',
           steps: [
-            '**Phase 1 - Moonfire:** Use Moonfire to destroy corruption spores in Zangarmarsh before they touch the ground.',
-            '**Phase 2 - Eclipse:** Alternate between Nature and Arcane spells perfectly to maintain a high-energy Eclipse state for 2 minutes.',
-            '**Phase 3 - Starfall:** Call down stars to blindly hit invisible stalkers in the Violet Hold.',
-            '**Phase 4 - Malorne\'s Antler:** Channel the power of the White Stag to banish Archimonde\'s echo from Hyjal.'
+            '**Phase 1 - Solar Eclipse:** Keep Moonfire on 3 targets.',
+            '**Phase 2 - Starfall:** Pull 20 mobs and survive.',
+            '**Phase 3 - Typhoon:** Interrupt a cast with a knockback.',
+            '**Phase 4 - Moonkin Form:** Dance with other Moonkins.'
           ],
           reward: {
-            name: 'Idol of the Moon',
+            name: 'Scythe of Elune',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 35.', 'Equip: Moonfire duration increased by 3s.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 45.', 'Use: Starfall cooldown reduced by 30s.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 55.', 'Equip: Wrath casts 0.2s faster.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases damage done by magical spells and effects by up to 70.', 'Equip: Starfall hits all enemies in combat (no range limit).', 'Equip: Starsurge instant cast chance increased to 20%.', '"The stars favor the patient."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: Starfire damage increased by 5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: Starfire damage increased by 8%.', 'Use: Grant Solar Eclipse.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Starsurge is instant.', 'Equip: Moonfire hits 2 targets.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Starfall hits all targets in 40yds.', 'Equip: You can cast in Moonkin Form while moving.', 'Use: "New Moon" - Drop a moon on the target. (15 sec recharge)', '"Balanced as all things should be."'] }
             ]
           }
         },
         feral: {
           name: 'Feral',
-          icon: 'https://i.imgur.com/su1345k.jpeg',
+          icon: 'https://i.imgur.com/xqYw2gI.png',
           title: 'The Apex Predator',
-          desc: 'Nature is red in tooth and claw. You are the king of the jungle.',
+          desc: 'Tooth and claw.',
           steps: [
-            '**Phase 1 - The Stalk:** Stalk a Clefthoof Matriarch in Nagrand for 10 minutes without being seen, staying downwind.',
-            '**Phase 2 - Bear Form:** Tank a mounting number of ogres in the Ring of Blood, using swipe and maul to hold threat.',
-            '**Phase 3 - Shred:** Position yourself constantly behind a spinning construct boss to land Shred attacks.',
-            '**Phase 4 - Primal Rage:** Defeat Goldrinn\'s avatar in a test of pure DPS brutality.'
+            '**Phase 1 - Rip:** Bleed a target for 30 seconds.',
+            '**Phase 2 - Shred:** Shred from behind.',
+            '**Phase 3 - Survival Instincts:** Tank a heavy hit.',
+            '**Phase 4 - Berserk:** Spam Mangle.'
           ],
           reward: {
-            name: 'Idol of the Claw',
+            name: 'Fangs of Ashamane',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+30 Agility'], effects: ['Equip: Increases attack power by 40.', 'Equip: Energy regen increased by 5%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+35 Agility'], effects: ['Equip: Increases attack power by 50.', 'Use: Instantly restore 60 energy.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Increases attack power by 60.', 'Equip: Bleed damage increased by 20%.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Increases attack power by 80.', 'Equip: Mangle cooldown removed.', 'Use: Ashamane\'s Frenzy: Unleash a frenzy of claws, dealing (200% of Attack Power) Physical damage over 3 sec and granting 3 Combo Points to your target. (1.5 min cooldown).', '"Fang and claw."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Agility'], effects: ['Equip: Energy regen increased.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Agility'], effects: ['Equip: Combo points generate faster.', 'Use: Tiger\'s Fury.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Agility'], effects: ['Equip: Bleeds can crit.', 'Equip: 5 CP finishers refund 25 energy.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Agility'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: Cat Form has 150% movement speed.', 'Equip: Shred applies Rake.', 'Use: "Ashamane\'s Frenzy" - Unleash a flurry of bleeds. (1 min cooldown)', '"The wild god returns."'] }
             ]
           }
         },
-        resto: {
-          name: 'Restoration',
-          icon: 'https://i.imgur.com/8WViTgN.png',
-          title: 'The World Tree\'s Tender',
-          desc: 'Growth, rebirth, serenity. You are the roots that hold the world together.',
+        guardian: {
+          name: 'Guardian',
+          icon: 'https://i.imgur.com/xqYw2gI.png',
+          title: 'The Guardian',
+          desc: 'The unmovable object.',
           steps: [
-            '**Phase 1 - Regrowth:** Heal a burning ancient in Felwood, countering the fire damage with HoTs.',
-            '**Phase 2 - Swiftmend:** React to random spikes of damage on 5 NPCs instantly using Swiftmend.',
-            '**Phase 3 - Tree of Life:** Remain in Tree Form for an entire dungeon run, managing the movement speed penalty.',
-            '**Phase 4 - Tranquility:** Channel Tranquility to silence a battlefield, preventing all fighting for 10 seconds.'
+            '**Phase 1 - Maul:** Hold aggro on 5 mobs.',
+            '**Phase 2 - Frenzied Regen:** Heal to full.',
+            '**Phase 3 - Ironfur:** Reach 20k Armor.',
+            '**Phase 4 - Thrash:** Bleed everyone.'
           ],
           reward: {
-            name: 'Idol of the Grove',
+            name: 'Claws of Ursoc',
             phases: [
-              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+25 Intellect'], effects: ['Equip: Increases healing done by up to 45.', 'Equip: Rejuvenation mana cost reduced by 10%.'] },
-              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+30 Intellect'], effects: ['Equip: Increases healing done by up to 55.', 'Use: Make your next Regrowth instant.'] },
-              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+35 Intellect'], effects: ['Equip: Increases healing done by up to 65.', 'Equip: Lifebloom blooms for 50% more.'] },
-              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+45 Intellect'], effects: ['Equip: Increases healing done by up to 80.', 'Equip: Rejuvenation automatically jumps to a nearby injured target when it expires.', 'Use: Tranquility is instant cast and makes you immune to damage while channeling. (5 min cooldown)', '"Life finds a way."'] }
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+45 Stamina'], effects: ['Equip: Bear Form Stamina +10%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+55 Stamina'], effects: ['Equip: Bear Form Armor +10%.', 'Use: Enrage.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+65 Stamina'], effects: ['Equip: Mangle hits 3 targets.', 'Equip: Thrash stacks 5 times.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+80 Stamina'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: You absorb 25% of magic damage.', 'Equip: Growl is AoE.', 'Use: "Rage of the Sleeper" - Reflect damage and leech health. (1.5 min cooldown)', '"The bear sleeps no more."'] }
+            ]
+          },
+        },
+        resto: {
+          name: 'Restoration',
+          icon: 'https://i.imgur.com/xqYw2gI.png',
+          title: 'The Lifebinder',
+          desc: 'A leaf on the wind.',
+          steps: [
+            '**Phase 1 - Rejuvenation:** Blanket the raid.',
+            '**Phase 2 - Wild Growth:** Heal 5 people.',
+            '**Phase 3 - Tree of Life:** Dance.',
+            '**Phase 4 - Tranq:** Save the raid.'
+          ],
+          reward: {
+            name: 'G\'Hanir, the Mother Tree',
+            phases: [
+              { ilvl: 115, quality: 'epic', slot: 'Trinket', stats: ['+40 Intellect'], effects: ['Equip: HoT healing +5%.'] },
+              { ilvl: 128, quality: 'epic', slot: 'Trinket', stats: ['+50 Intellect'], effects: ['Equip: HoT healing +8%.', 'Use: Swiftmend no longer consumes HoT.'] },
+              { ilvl: 141, quality: 'epic', slot: 'Trinket', stats: ['+60 Intellect'], effects: ['Equip: Rejuv has 2 charges.', 'Equip: Lifebloom blooms on every tick.'] },
+              { ilvl: 164, quality: 'legendary', slot: 'Trinket', stats: ['+75 Intellect'], effects: ['Unique-Equipped: Pinnacle Artifact', 'Equip: You can cast while moving in Tree Form.', 'Equip: HoTs last 100% longer.', 'Use: "Flourish" - Extend all HoTs by 10s. (1 min cooldown)', '"Life finds a way."'] }
             ]
           }
         }
       }
-    }
+    },
   };
 
-  // Safe state management
+  // World Legendaries data removed (Moved to dedicated Legendaries.jsx component)
+
+
   useEffect(() => {
     if (pinnacleData[activeClass] && !pinnacleData[activeClass].specs[activeSpec]) {
       setActiveSpec(Object.keys(pinnacleData[activeClass].specs)[0]);
@@ -738,7 +721,7 @@ const VaultOfArtifacts = () => {
     <div className="min-h-screen bg-[#0c0a09] text-stone-200 font-sans selection:bg-amber-900 selection:text-amber-100 overflow-x-hidden">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
-        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-hero { font-family: 'Cinzel', serif; }
         .font-body { font-family: 'Lato', sans-serif; }
         
         .obsidian-texture {
@@ -749,16 +732,19 @@ const VaultOfArtifacts = () => {
 
       {/* --- HEADER --- */}
       <UnifiedHeader
-        icon="https://i.imgur.com/1oJTl0R.jpeg"
+        icon="https://i.imgur.com/3AyjhHT.jpeg"
         background="https://i.imgur.com/NECUWJJ.jpeg"
         section="Pinnacle Quests"
         sub="The Path of the Master"
-        title="Class Artifacts"
-        quote="Undertake a class-specific Pinnacle Quest to unlock a Soul-Sigil."
+        title="Artifacts of Power"
+        quote="From the hands of heroes to the legends of eternity."
       />
 
       <div className="container mx-auto px-4 py-12 min-h-screen">
+
+        {/* --- CONTENT --- */}
         <div className="animate-fade-in">
+
           <div className="text-center mb-12">
             <p className="font-body text-stone-400 max-w-3xl mx-auto text-lg leading-relaxed">
               Undertake a class-specific <strong className="text-amber-500">Pinnacle Quest</strong> to unlock a Soul-Sigil.
@@ -772,12 +758,17 @@ const VaultOfArtifacts = () => {
               <button
                 key={key}
                 onClick={() => { setActiveClass(key); }}
-                className={`flex items-center gap-2 px-6 py-3 rounded border transition-all ${activeClass === key
-                  ? `bg-amber-900/20 border-amber-600 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]`
+                className={`flex items-center gap-2 px-6 py-3 rounded border transition-all duration-300 relative overflow-hidden group ${activeClass === key
+                  ? `bg-opacity-20 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]`
                   : 'bg-[#151515] border-stone-800 text-stone-500 hover:border-stone-600'
                   }`}
+                style={{
+                  borderColor: activeClass === key ? classColorsHash[key] : '',
+                  backgroundColor: activeClass === key ? `${classColorsHash[key]}20` : ''
+                }}
               >
-                {data.icon} <span className="font-cinzel text-sm tracking-wide uppercase">{data.name}</span>
+                <div className={`absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500`} style={{ backgroundColor: classColorsHash[key] }}></div>
+                {data.icon} <span className="font-hero text-sm tracking-wide uppercase">{data.name}</span>
               </button>
             ))}
           </div>
@@ -788,7 +779,7 @@ const VaultOfArtifacts = () => {
               <button
                 key={key}
                 onClick={() => setActiveSpec(key)}
-                className={`text-sm font-cinzel tracking-widest uppercase transition-colors pb-2 border-b-2 flex items-center gap-2 ${activeSpec === key ? 'text-white border-amber-500' : 'text-stone-600 border-transparent hover:text-stone-400'
+                className={`text-sm font-hero tracking-widest uppercase transition-colors pb-2 border-b-2 flex items-center gap-2 ${activeSpec === key ? 'text-white border-amber-500' : 'text-stone-600 border-transparent hover:text-stone-400'
                   }`}
               >
                 <img src={spec.icon} className="w-5 h-5 object-contain" alt="" />
@@ -803,22 +794,37 @@ const VaultOfArtifacts = () => {
             {/* LEFT: Questline */}
             <div className="lg:col-span-7">
               <div className="bg-[#111] border border-stone-800 p-8 rounded-lg obsidian-texture">
-                <h3 className="font-cinzel text-3xl text-amber-500 mb-2">{activeSpecData.title}</h3>
+                <h3 className="font-hero text-3xl text-amber-500 mb-2">{activeSpecData.title}</h3>
                 <p className="font-body text-stone-400 mb-8 italic leading-relaxed border-l-2 border-amber-900/50 pl-4">
                   {activeSpecData.desc}
                 </p>
 
                 <div className="space-y-6">
-                  {activeSpecData.steps.map((step, i) => (
-                    <div key={i} className="relative pl-8 pb-6 border-l border-stone-800 last:border-0 last:pb-0">
-                      <div className="absolute left-0 top-0 -translate-x-1/2 w-4 h-4 rounded-full bg-[#0c0a09] border border-amber-700 flex items-center justify-center">
-                        <div className="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>
+                  {activeSpecData.steps.map((step, i) => {
+                    const stepKey = `${activeClass}-${activeSpec}-${i}`;
+                    const isCompleted = completedSteps[stepKey];
+                    return (
+                      <div
+                        key={i}
+                        onClick={() => toggleStep(i)}
+                        className={`relative pl-8 pb-6 border-l border-stone-800 last:border-0 last:pb-0 cursor-pointer group transition-all duration-300 ${isCompleted ? 'opacity-50 blur-[0.5px]' : 'opacity-100'}`}
+                      >
+                        <div className={`absolute left-0 top-0 -translate-x-1/2 w-4 h-4 rounded-full border flex items-center justify-center transition-colors duration-300
+                        ${isCompleted ? 'bg-green-900 border-green-500' : 'bg-[#0c0a09] border-amber-700 group-hover:border-amber-500'}
+                      `}>
+                          <div className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${isCompleted ? 'bg-green-500' : 'bg-amber-500 group-hover:bg-amber-400'}`}></div>
+                        </div>
+                        <p className="font-body text-stone-300 text-sm leading-relaxed">
+                          {formatText(step)}
+                        </p>
                       </div>
-                      <p className="font-body text-stone-300 text-sm leading-relaxed">
-                        {formatText(step)}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
+
+                  {/* Interactive Start Button */}
+                  <button className="mt-8 w-full py-3 border border-amber-900/50 text-amber-700 font-hero tracking-[0.2em] text-xs uppercase hover:bg-amber-900/10 hover:text-amber-500 transition-colors">
+                    Begin Quest
+                  </button>
                 </div>
               </div>
             </div>
@@ -827,7 +833,7 @@ const VaultOfArtifacts = () => {
             <div className="lg:col-span-5">
               <div className="sticky top-52">
                 <div className="flex justify-between items-end mb-4">
-                  <h4 className="font-cinzel text-stone-500 text-xs uppercase tracking-widest">Reward Preview</h4>
+                  <h4 className="font-hero text-stone-500 text-xs uppercase tracking-widest">Reward Preview</h4>
 
                   {/* Phase Toggle */}
                   <div className="flex bg-black border border-stone-800 rounded p-1">
@@ -835,10 +841,10 @@ const VaultOfArtifacts = () => {
                       <button
                         key={i}
                         onClick={() => setRelicPhase(i)}
-                        className={`px-3 py-1 text-[10px] font-cinzel font-bold transition-colors rounded ${relicPhase === i
+                        className={`px-3 py-1 text-[10px] font-hero font-bold transition-colors rounded ${relicPhase === i
                           ? 'bg-amber-900/40 text-amber-400'
                           : 'text-stone-600 hover:text-stone-400'
-                          }`}
+                          } ${i === 3 ? 'animate-pulse-slow text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.2)]' : ''}`}
                       >
                         PHASE {i + 1}
                       </button>

@@ -27,17 +27,22 @@ import {
 import HallOfLegends from './components/HallOfLegends';
 import TalentCalculator from './components/TalentCalculator';
 import TheNewBlood from './components/TheNewBlood';
-import TheAtlasOfOutland from './components/TheAtlasOfOutland';
+import TheAtlas from './components/TheAtlas';
+import AzerothCampaign from './components/AzerothCampaign';
+import TheChronicles from './components/TheChronicles';
 
 import VaultOfArtifacts from './components/VaultOfArtifacts';
 import TheArtisansCodex from './components/TheArtisansCodex';
 import Legendaries from './components/Legendaries';
-// import Lore from './components/Lore'; // Replaced by new Lore UI
+
 import TheTheaterOfWar from './components/TheTheaterOfWar';
 import TheArmory from './components/TheArmory';
 import TheGuildSanctum from './components/TheGuildSanctum';
-import DefendersOfAzeroth from './components/DefendersOfAzeroth';
+import TheHoard from './components/TheHoard';
+import ThePathfinder from './components/ThePathfinderV2';
+
 import Systems from './components/Systems';
+import InterfaceShowcase from './components/InterfaceShowcase';
 import Home from './components/Home';
 import TheHearthAndHome from './components/TheHearthAndHome';
 import TheIronSoul from './components/TheIronSoul';
@@ -45,13 +50,57 @@ import TheEtherealTrade from './components/TheEtherealTrade';
 import TheSeasonsOfOutland from './components/TheSeasonsOfOutland';
 import TheBardicArts from './components/TheBardicArts';
 import ThePathOfBetrayal from './components/ThePathOfBetrayal';
-import TheWeaversLoom from './components/TheWeaversLoom';
-import CompanionsOfConsequence from './components/CompanionsOfConsequence';
 import TheDarkmoonCarnival from './components/TheDarkmoonCarnival';
-import TheLibraryOfAlexandros from './components/TheLibraryOfAlexandros';
+import TheFactions from './components/TheFactions';
+import EnterWorld from './components/EnterWorld';
+import AmbientPlayer from './components/AmbientPlayer';
+import WeatherOverlay from './components/WeatherOverlay';
+import ScrollProgress from './components/ScrollProgress';
+import Breadcrumbs from './components/Breadcrumbs';
+import ErrorBoundary from './components/ErrorBoundary';
+
+const classColors = {
+  'druid': '#FF7D0A',
+  'hunter': '#ABD473',
+  'mage': '#40C7EB',
+  'paladin': '#F58CBA',
+  'priest': '#FFFFFF',
+  'rogue': '#FFF569',
+  'shaman': '#0070DE',
+  'warlock': '#8787ED',
+  'warrior': '#C79C6E',
+
+};
 
 const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
   const [openDropdown, setOpenDropdown] = useState(null);
+
+  const sectionIcons = {
+    classes: "https://i.imgur.com/I9kB9z6.png",
+    talents: "https://i.imgur.com/Pq3wKNM.png",
+    races: "https://i.imgur.com/ZwPQZNk.png",
+    armory: "https://i.imgur.com/cjYAb3L.png",
+    hoard: "https://i.imgur.com/Z6ZVYGG.png",
+    pathfinder: "https://i.imgur.com/KtvcQf2.png",
+    professions: "https://i.imgur.com/Jney6fs.png",
+    bard: "https://i.imgur.com/BRmJJeB.png",
+    atlas: "https://i.imgur.com/I9LdqMi.png",
+    chronicles: "https://i.imgur.com/0gcuUY9.png",
+    defenders: "https://i.imgur.com/lC4y137.png",
+    seasons: "https://i.imgur.com/H3VpwrD.png",
+    darkmoon: "https://i.imgur.com/3v7pM13.png",
+    factions: "https://i.imgur.com/caMZUQ7.png",
+    systems: "https://i.imgur.com/zGnPmkr.png",
+    interface: "https://i.imgur.com/Rx9weCp.png",
+    pvp: "https://i.imgur.com/uEwR7oV.png",
+    sanctum: "https://i.imgur.com/hUTewNC.png",
+    economy: "https://i.imgur.com/G9jcDE3.png",
+    housing: "https://i.imgur.com/V72eNrE.png",
+    pinnacle: "https://i.imgur.com/2ITISCO.png",
+    legendaries: "https://i.imgur.com/oCON76W.png",
+    hardcore: "https://i.imgur.com/GruxtyX.jpeg",
+    betrayal: "https://i.imgur.com/4hVxkEM.jpeg",
+  };
 
   // Categorized Navigation
   const navCategories = [
@@ -63,20 +112,22 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
         { id: 'talents', label: 'Talents' },
         { id: 'races', label: 'Races' },
         { id: 'armory', label: 'Armory' },
+        { id: 'hoard', label: 'Collections' },
+        { id: 'pathfinder', label: 'Achievements' },
         { id: 'professions', label: 'Professions' },
         { id: 'bard', label: 'Bard Analysis' },
-        { id: 'transmog', label: 'Transmog' },
       ]
     },
     {
       id: 'world',
       label: 'World',
       items: [
-        { id: 'content', label: 'Outland Atlas' },
-        { id: 'defenders', label: 'Defenders (Azeroth)' },
+        { id: 'atlas', label: 'The Atlas' },
+        { id: 'chronicles', label: 'The Chronicles' },
+        { id: 'defenders', label: 'Azeroth Campaign' },
         { id: 'seasons', label: 'Seasonal Content' },
         { id: 'darkmoon', label: 'Darkmoon Carnival' },
-        { id: 'lore', label: 'Lore Library' },
+        { id: 'factions', label: 'Factions' },
       ]
     },
     {
@@ -84,11 +135,11 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
       label: 'Systems',
       items: [
         { id: 'systems', label: 'Core Systems' },
+        { id: 'interface', label: 'Interface 2.0' },
         { id: 'pvp', label: 'PvP & Arena' },
         { id: 'sanctum', label: 'Guild Sanctum' },
         { id: 'economy', label: 'Economy' },
         { id: 'housing', label: 'Housing' },
-        { id: 'followers', label: 'Followers' },
       ]
     },
     {
@@ -129,6 +180,7 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
               Home
             </button>
 
+
             {navCategories.map((category) => (
               <div
                 key={category.id}
@@ -146,7 +198,7 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
 
                 {/* Dropdown Menu */}
                 <div
-                  className={`absolute left-0 top-16 w-56 bg-slate-900 border border-green-900/50 shadow-xl rounded-b-lg overflow-hidden transition-all duration-200 origin-top z-[100]
+                  className={`absolute left-0 top-16 w-64 bg-slate-900 border border-green-900/50 shadow-xl rounded-b-lg overflow-hidden transition-all duration-200 origin-top z-[100]
                     ${openDropdown === category.id ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'}`}
                 >
                   <div className="py-2">
@@ -158,10 +210,19 @@ const NavBar = ({ active, set, mobileOpen, setMobileOpen }) => {
                           set(item.id);
                           setOpenDropdown(null);
                         }}
-                        className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-slate-800 hover:text-green-400
+                        className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm transition-colors hover:bg-slate-800 hover:text-green-400
                           ${active === item.id ? 'text-green-400 bg-slate-800/50' : 'text-gray-400'}`}
                       >
-                        {item.label}
+                        {sectionIcons[item.id] && (
+                          <div className="w-8 h-8 rounded-md border border-[#c29c55]/30 overflow-hidden shadow-md shrink-0">
+                            <img
+                              src={sectionIcons[item.id]}
+                              alt=""
+                              className="w-full h-full object-cover scale-125"
+                            />
+                          </div>
+                        )}
+                        <span className="font-hero tracking-wide">{item.label}</span>
                       </button>
                     ))}
                   </div>
@@ -264,9 +325,34 @@ const App = () => {
   const [activePage, setActivePage] = useState('home');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState('druid');
+  const [selectedRace, setSelectedRace] = useState('goblins');
+  const [hasEntered, setHasEntered] = useState(false);
+  const [navParams, setNavParams] = useState(null);
+
+  const handleNavigation = (page, params = null) => {
+    setNavParams(params);
+    setActivePage(page);
+  };
+
+  // Apply Class Color Global Variable
+  useEffect(() => {
+    const color = classColors[selectedClass] || '#00FF96'; // Default TBC Green
+    document.documentElement.style.setProperty('--class-color', color);
+    // Also update selection color to match class
+    document.documentElement.style.setProperty('--selection-color', color + '40'); // 25% opacity
+  }, [selectedClass]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans selection:bg-green-500/30 selection:text-green-100">
+    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans selection:bg-[var(--selection-color)] selection:text-white">
+      {!hasEntered && <EnterWorld onEnter={() => setHasEntered(true)} />}
+
+      {hasEntered && (
+        <>
+          <AmbientPlayer />
+          <WeatherOverlay type="none" /> {/* logic to change this later */}
+        </>
+      )}
+
       <NavBar
         active={activePage}
         set={setActivePage}
@@ -274,22 +360,66 @@ const App = () => {
         setMobileOpen={setMobileOpen}
       />
 
+      {hasEntered && <ErrorBoundary><ScrollProgress /></ErrorBoundary>}
+      {hasEntered && (
+        <Breadcrumbs
+          page={activePage}
+          subPage={
+            activePage === 'classes' ? selectedClass :
+              activePage === 'races' ? selectedRace :
+                null
+          }
+          setPage={setActivePage}
+        />
+      )}
+
       <main>
         {activePage === 'home' && (
           <Home setPage={setActivePage} />
         )}
         {/* Page Routing */}
-        {/* {activePage === 'lore' && <Lore />} */}
-        {activePage === 'classes' && <HallOfLegends setPage={setActivePage} setSelectedClass={setSelectedClass} />}
-        {activePage === 'talents' && <TalentCalculator initialClass={selectedClass} />}
-        {activePage === 'races' && <TheNewBlood />}
-        {activePage === 'armory' && <TheArmory />}
-        {activePage === 'sanctum' && <TheGuildSanctum />}
-        {activePage === 'pvp' && <TheTheaterOfWar />}
-        {activePage === 'professions' && <TheArtisansCodex />}
-        {activePage === 'systems' && <Systems />}
-        {activePage === 'content' && <TheAtlasOfOutland />}
-        {activePage === 'defenders' && <DefendersOfAzeroth />}
+
+        {activePage === 'classes' && (
+          <ErrorBoundary>
+            <HallOfLegends
+              setPage={setActivePage}
+              setSelectedClass={setSelectedClass}
+              initialClass={selectedClass}
+            />
+          </ErrorBoundary>
+        )}
+        {activePage === 'talents' && (
+          <ErrorBoundary>
+            <TalentCalculator initialClass={selectedClass} />
+          </ErrorBoundary>
+        )}
+        {activePage === 'races' && (
+          <ErrorBoundary>
+            <TheNewBlood
+              setPage={setActivePage}
+              initialRace={selectedRace}
+              setInitialRace={setSelectedRace}
+            />
+          </ErrorBoundary>
+        )}
+        {activePage === 'armory' && <ErrorBoundary><TheArmory setPage={setActivePage} /></ErrorBoundary>}
+        {activePage === 'sanctum' && <ErrorBoundary><TheGuildSanctum /></ErrorBoundary>}
+        {activePage === 'hoard' && <ErrorBoundary><TheHoard setPage={setActivePage} /></ErrorBoundary>}
+        {activePage === 'pathfinder' && <ErrorBoundary><ThePathfinder setPage={setActivePage} /></ErrorBoundary>}
+        {activePage === 'pvp' && <ErrorBoundary><TheTheaterOfWar /></ErrorBoundary>}
+        {activePage === 'professions' && <ErrorBoundary><TheArtisansCodex /></ErrorBoundary>}
+        {activePage === 'systems' && <ErrorBoundary><Systems setPage={setActivePage} /></ErrorBoundary>}
+        {activePage === 'interface' && (
+          <InterfaceShowcase
+            setPage={setActivePage}
+            setSelectedClass={setSelectedClass}
+            setSelectedRace={setSelectedRace}
+          />
+        )}
+        {/* Updated Components accepting navParams */}
+        {activePage === 'atlas' && <TheAtlas setPage={setActivePage} initialParams={navParams} />}
+        {activePage === 'chronicles' && <TheChronicles setPage={handleNavigation} />}
+        {activePage === 'defenders' && <AzerothCampaign setPage={setActivePage} initialParams={navParams} />}
 
         {activePage === 'housing' && <TheHearthAndHome />}
         {activePage === 'hardcore' && <TheIronSoul />}
@@ -297,10 +427,8 @@ const App = () => {
         {activePage === 'seasons' && <TheSeasonsOfOutland />}
         {activePage === 'bard' && <TheBardicArts />}
         {activePage === 'betrayal' && <ThePathOfBetrayal />}
-        {activePage === 'transmog' && <TheWeaversLoom />}
-        {activePage === 'followers' && <CompanionsOfConsequence />}
         {activePage === 'darkmoon' && <TheDarkmoonCarnival />}
-        {activePage === 'lore' && <TheLibraryOfAlexandros />}
+        {activePage === 'factions' && <TheFactions />}
 
         {activePage === 'pinnacle' && <VaultOfArtifacts />}
         {activePage === 'legendaries' && <Legendaries />}
@@ -313,3 +441,4 @@ const App = () => {
 };
 
 export default App;
+// TBC+ v1.2 - Import Fix Deployment

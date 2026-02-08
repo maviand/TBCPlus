@@ -10,9 +10,9 @@ export const druidTalents = {
             { id: "improved-natures-grasp", name: "Imp. Nature's Grasp", icon: "spell_nature_naturetouchgrow", row: 0, col: 3, maxPoints: 2, prereq: "natures-grasp", description: (rank) => `Increases the chance for your Nature's Grasp to entangle an enemy by ${rank * 30}%.` },
 
             // ROW 2
-            { id: "control-of-nature", name: "Control of Nature", icon: "spell_nature_stranglevines", row: 1, col: 0, maxPoints: 3, description: (rank) => `Gives you a ${rank * 33}% chance to avoid interruption caused by damage while casting Entangling Roots and Cyclone. Also decreases the cooldown of Hurricane by ${rank === 3 ? 100 : rank * 33}%.` },
+            { id: "control-of-nature", name: "Nature's Focus", icon: "spell_nature_stranglevines", row: 1, col: 0, maxPoints: 5, description: (rank) => `Gives you a ${rank * 14}% chance to avoid interruption caused by damage while casting any Druid spell.` },
             { id: "focused-starlight", name: "Focused Starlight", icon: "spell_arcane_starfire", row: 1, col: 1, maxPoints: 2, description: (rank) => `Increases the critical strike chance of your Wrath and Starfire spells by ${rank * 2}%.` },
-            { id: "improved-moonfire", name: "Improved Moonfire", icon: "spell_nature_starfall", row: 1, col: 2, maxPoints: 2, description: (rank) => `Increases the damage and critical strike chance of your Moonfire spell by ${rank * 5}%.` },
+            { id: "improved-moonfire", name: "Improved Moonfire", icon: "spell_nature_starfall", row: 1, col: 2, maxPoints: 2, description: (rank) => `Increases the damage and critical strike chance of your Moonfire spell by ${rank * 5}%. Your Moonfire now gains bonus damage equal to ${rank * 7.5}% of your Attack Power or ${rank * 12.5}% of your +Healing, whichever is higher.` },
 
             // ROW 3
             { id: "brambles", name: "Brambles", icon: "spell_nature_thorns", row: 0, col: 0, maxPoints: 2, description: (rank) => `Increases damage caused by your Thorns and Entangling Roots spells by ${rank * 20}% of your Intellect and damage done by your Treants by ${rank * 10}%.` },
@@ -21,7 +21,7 @@ export const druidTalents = {
 
             // ROW 4
             { id: "vengeance", name: "Vengeance", icon: "spell_nature_purge", row: 3, col: 1, maxPoints: 5, prereq: "focused-starlight", description: (rank) => `Increases the critical strike damage bonus of your Starfire, Starfall, and Wrath spells by ${rank * 20}%.` },
-            { id: "celestial-focus", name: "Celestial Focus", icon: "spell_arcane_starfire", row: 3, col: 2, maxPoints: 3, description: (rank) => `Gives your Starfire spell a ${rank * 5}% chance to stun the target for 3 sec.` },
+            { id: "celestial-focus", name: "Celestial Focus", icon: "spell_arcane_starfire", row: 3, col: 2, maxPoints: 3, description: (rank) => `Gives your Starfire spell a ${rank * 5}% chance to stun the target for 3 sec. If the target is immune to Stun, the unstable astral energy instead triggers 'Moonfury.'\nEffect: Your Starfire echoes instantly, dealing 50% of its damage to the target and generating slightly reduced threat.` },
 
             // ROW 5
             { id: "lunar-guidance", name: "Dreamstate Guidance", icon: "spell_arcane_prismaticcloak", row: 4, col: 0, maxPoints: 3, description: (rank) => `Increases your spell damage and healing by ${rank * 8}% of your total Intellect. Regenerates mana equal to ${rank * 4}% of your Intellect every 5 sec, even while casting.` },
@@ -38,7 +38,7 @@ export const druidTalents = {
             { id: "improved-moonkin-form", name: "Imp. Moonkin Form", icon: "spell_nature_forceofnature", row: 6, col: 2, maxPoints: 2, prereq: "moonkin-form", description: (rank) => `Your Moonkin Form also increases ${rank * 1.5}% Spell Haste to party.` },
 
             // ROW 8
-            { id: "wrath-of-cenarius", name: "Wrath of Cenarius", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_twilightswrath.jpg", row: 7, col: 1, maxPoints: 5, description: (rank) => `Your Starfire spell gains an additional ${rank * 4}% and your Wrath gains an additional ${rank * 2}% of your bonus damage effects.` },
+            { id: "wrath-of-cenarius", name: "Wrath of Cenarius", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_twilightswrath.jpg", row: 7, col: 1, maxPoints: 5, description: (rank) => `“The storm does not strike from a distance; it surrounds you.”\n\nIncreases the damage of Starfire by ${rank * 2}% and Wrath by ${rank * 1}%. \n\nCasting Starfire: Charges your weapons with astral energy. Your next melee attack deals Arcane Damage equal to ${rank * 8}% of your Spell Power and restores ${rank * 1}% Mana.\n\nCasting Wrath: Infuses you with solar vigor. Your next Healing spell has its Cast Time reduced by ${rank * 10}%.` },
 
             // ROW 9
             { id: "starfall", name: "Starfall", icon: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_starfall.jpg", row: 8, col: 1, description: (rank) => `You summon a flurry of stars from the sky on all targets within 30 yards of the caster, each dealing 145-167 Arcane damage. Maximum 20 stars. Last 10 seconds. Shapeshifting into an animal form or mounting cancels the effect. Any effect which causes you to lose control of your character will suppress the starfall effect.`, maxPoints: 1 },
@@ -57,7 +57,7 @@ export const druidTalents = {
             { id: "feral-instinct", name: "Feral Instinct", icon: "ability_ambush", row: 1, col: 0, maxPoints: 3, description: (rank) => `Increases threat caused in Bear Form by ${rank * 5}% and reduces the chance enemies have to detect you while Prowling. In addition, your Swipe ability hits ${rank} additional targets and applies a 'Gaping Wound' bleed for ${rank * 15}% of the direct damage dealt over 6 sec.` },
             { id: "savage-fury", name: "Savage Fury", icon: "ability_druid_ravage", row: 1, col: 1, maxPoints: 2, description: (rank) => `Increases the damage caused by your Claw, Rake, Mangle (Cat), Mangle (Bear) and Maul capabilities by ${rank * 10}%.` },
             { id: "primal-precision", name: "Primal Precision", icon: "ability_druid_primalprecision", row: 1, col: 2, maxPoints: 2, description: (rank) => `Reduces the chance your attacks will be parried by ${rank}%. Additionally, when your attacks are dodged, parried, or miss, you are refunded ${rank * 40}% of the Energy or Rage cost.` },
-            { id: "thick-hide", name: "Thick Hide", icon: "inv_misc_pelt_bear_03", row: 1, col: 3, maxPoints: 2, description: (rank) => `Increases your Armor contribution from items by ${rank * 5}%.` },
+            { id: "thick-hide", name: "Thick Hide", icon: "inv_misc_pelt_bear_03", row: 1, col: 3, maxPoints: 2, description: (rank) => `Increases your Armor contribution from items by ${rank * 5}% and reduces the duration of all Bleed, Poison, and Disease effects by ${rank * 15}%.` },
 
             // ROW 3
             { id: "feral-swiftness", name: "Feral Swiftness", icon: "https://wow.zamimg.com/images/wow/icons/large/spell_nature_spiritwolf.jpg", row: 2, col: 0, maxPoints: 2, description: (rank) => `Increases your movement speed by ${rank * 15}% in Cat Form and increases your chance to dodge while in Cat Form, Bear Form and Dire Bear Form by ${rank * 2}%.` },
@@ -67,7 +67,7 @@ export const druidTalents = {
 
             // ROW 4
             { id: "shredding-attacks", name: "Shredding Attacks", icon: "spell_shadow_vampiricaura", row: 3, col: 0, maxPoints: 2, description: (rank) => `Reduces the energy cost of your Shred ability by ${rank * 9} and the rage cost of your Lacerate ability by ${rank}.` },
-            { id: "predatory-strikes", name: "Predatory Strikes", icon: "ability_hunter_pet_cat", row: 3, col: 1, maxPoints: 3, description: (rank) => `Increases your Melee Attack Power in Cat, Bear, Dire Bear and Moonkin Forms by ${rank * 50}% of your level.` },
+            { id: "predatory-strikes", name: "Predatory Strikes", icon: "ability_hunter_pet_cat", row: 3, col: 1, maxPoints: 3, description: (rank) => `Increases your Attack Power by ${rank * 10}% of your Strength and Agility. Your finishing moves have a 20% chance per Combo Point to expose the target's weakness, granting 'Sudden Opportunity.'\nEffect: Your next Ravage (Cat) can be used out of stealth and costs no Energy. Your next Maul (Bear) is a critical strike.` },
             { id: "primal-fury", name: "Primal Fury", icon: "ability_racial_cannibalize", row: 3, col: 2, maxPoints: 2, prereq: "sharpened-claws", description: (rank) => `Gives you a ${rank * 50}% chance to gain an additional 5 Rage anytime you get a critical strike while in Bear and Dire Bear Form.` },
 
             // ROW 5
@@ -85,7 +85,7 @@ export const druidTalents = {
             { id: "improved-leader-of-the-pack", name: "Improved LotP", icon: "spell_nature_unyeildingstamina", row: 6, col: 2, maxPoints: 2, prereq: "leader-of-the-pack", description: (rank) => `Your LotP also causes affected targets to heal for ${rank * 2}% of total health when they crit. In addition: \n\nBear: Redirects ${rank * 1.5}% of party damage taken (within 20 yds) to you.\nCat: Party bleed effects deal ${rank * 2.5}% increased damage to targets you bleed.` },
 
             // ROW 8
-            { id: "predatory-instincts", name: "Predatory Instincts", icon: "ability_druid_predatoryinstincts", row: 7, col: 2, maxPoints: 5, description: (rank) => `Increases the damage dealt by your critical strikes by ${rank * 2}%.` },
+            { id: "predatory-instincts", name: "Predatory Instincts", icon: "ability_druid_predatoryinstincts", row: 7, col: 2, maxPoints: 5, description: (rank) => `Increases your melee critical strike damage by ${rank * 2}% and reduces damage taken from Area of Effect attacks by ${rank * 3}%. Triggers 'Fight or Flight' reflexes.\nEffect: When you take Area of Effect damage or Dodge an attack, you instantly gain ${rank * 3} Energy (Cat) or ${rank * 2} Rage (Bear) and your movement speed is increased by ${rank * 6}% for 3 seconds. (This effect has a 6-second internal cooldown).` },
 
             // ROW 9
             { id: "berserk", name: "Berserk", icon: "ability_druid_berserk", row: 8, col: 1, maxPoints: 1, prereq: "leader-of-the-pack", description: (rank) => `Reduces energy cost of Cat abilities by 50% and grants immunity to Fear effects for 15s. 3 min CD.` },
@@ -97,13 +97,13 @@ export const druidTalents = {
         background: "https://i.imgur.com/DNJwQ3e.jpeg",
         talents: [
             // ROW 1
-            { id: "improved-mark", name: "Improved Mark of the Wild", icon: "spell_nature_regeneration", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the effects of your Mark of the Wild and Gift of the Wild spells by ${rank * 7}%.` },
+            { id: "improved-mark", name: "Improved Mark of the Wild", icon: "spell_nature_regeneration", row: 0, col: 1, maxPoints: 5, description: (rank) => `Increases the effect of your Mark of the Wild and Gift of the Wild spells by ${rank * 7}%. Imbues the target with 'Adaptive Fur.'\nEffect: When the target takes Elemental damage (Fire, Frost, Nature, Shadow, Arcane), the Mark reacts, reducing damage taken from that specific school by ${rank * 2}% for 6 seconds. (This effect has a 10-second internal cooldown per target).` },
             { id: "furor", name: "Furor", icon: "spell_holy_blessingofstamina", row: 0, col: 2, maxPoints: 5, description: (rank) => `Gives you ${rank * 20}% chance to gain 10 Rage when you shapeshift into Bear Form or 40 Energy when you shapeshift into Cat Form.` },
 
             // ROW 2
             { id: "naturalist", name: "Naturalist", icon: "spell_nature_healingtouch", row: 1, col: 0, maxPoints: 5, description: (rank) => `Reduces the cast time of your Healing Touch spell by ${rank * 0.1} sec and increases physical damage you deal by ${rank * 2}%.` },
             { id: "nature-focus", name: "Nature's Focus", icon: "spell_nature_healingwavegreater", row: 1, col: 1, maxPoints: 5, description: (rank) => `Gives you a ${rank * 14}% chance to avoid interruption caused by damage while casting Healing Touch, Regrowth and Tranquility.` },
-            { id: "natural-shapeshifter", name: "Natural Shapeshifter", icon: "spell_nature_wispsplode", row: 1, col: 2, maxPoints: 3, description: (rank) => `Reduces the mana cost of all shapeshifting by ${rank * 10}%.` },
+            { id: "natural-shapeshifter", name: "Natural Shapeshifter", icon: "spell_nature_wispsplode", row: 1, col: 2, maxPoints: 3, description: (rank) => `Reduces the mana cost of shapeshifting by ${rank * 10}%. Shifting forms preserves your momentum, granting 'Residual Instincts' for 6 seconds.\n\nShift into Animal (Feral): You retain ${rank * 10}% of your Spell Damage as Attack Power. Your first auto-attack deals Arcane damage (ignoring Armor).\nShift into Caster (Balance/Resto): You retain ${rank * 10}% of your Agility as Spell Power. Your next spell suffers no pushback from damage.` },
 
             // ROW 3
             { id: "intensity", name: "Intensity", icon: "spell_frost_windwalkon", row: 2, col: 0, maxPoints: 3, description: (rank) => `Allows ${rank * 10}% of your Mana regeneration to continue while casting.` },
@@ -129,7 +129,7 @@ export const druidTalents = {
             { id: "natural-perfection", name: "Natural Perfection", icon: "spell_nature_protectionformnature", row: 6, col: 2, maxPoints: 3, description: (rank) => `Your critical strike heals give you the Natural Perfection buff, reducing all damage taken by ${rank * 1}%. Stacks 3 times.` },
 
             // ROW 8
-            { id: "empowered-rejuvenation", name: "Empowered Rejuve", icon: "ability_druid_empoweredrejuvination", row: 7, col: 1, maxPoints: 5, description: (rank) => `The bonus healing effects of your healing over time spells is increased by ${rank * 4}%.` },
+            { id: "empowered-rejuvenation", name: "Empowered Rejuve", icon: "ability_druid_empoweredrejuvination", row: 7, col: 1, maxPoints: 5, description: (rank) => `“Nature reacts to the scent of blood.”\n\nThe bonus healing effects of your healing over time spells is increased by ${rank * 4}%. \n\nIf the target drops below 50% Health, your Rejuvenation ticks ${rank * 20}% faster (healing every 1.5s instead of 3s) until they recover or the spell expires.` },
 
             // ROW 9
             { id: "tree-of-life", name: "Tree of Life", icon: "ability_druid_treeoflife", row: 8, col: 1, maxPoints: 1, description: (rank) => `3-minute cooldown. Transforms the Druid into the Tree of Life for 25 seconds. While in this form, Healing Touch becomes instant cast, Regrowth applies both HoTs instantly, mana cost of healing spells reduced by 20%, and party members receive 10% increased healing from the Druid. Cannot cast damaging spells.` },

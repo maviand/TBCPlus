@@ -11,7 +11,7 @@ const TheBardicArts = () => {
     return (
         <div className="min-h-screen bg-[#0f0a0a] text-stone-200 font-sans selection:bg-pink-900 selection:text-white overflow-x-hidden">
             <UnifiedHeader
-                icon={<Music className="w-8 h-8 text-pink-500" />}
+                icon="https://i.imgur.com/BRmJJeB.png"
                 background={`/TBCPlus/images/header_bards.png`}
                 section="Secondary Profession"
                 sub="Strum, Sing, Inspire"
@@ -27,7 +27,7 @@ const TheBardicArts = () => {
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-pink-900/20 text-pink-400 border border-pink-900/50 rounded-full text-xs font-bold uppercase tracking-widest">
                             <Star size={12} /> New For TBC+
                         </div>
-                        <h2 className="text-5xl font-cinzel text-white leading-tight">More Than Just <br /><span className="text-pink-500">Noise</span></h2>
+                        <h2 className="text-5xl font-hero text-white leading-tight">More Than Just <br /><span className="text-pink-500">Noise</span></h2>
                         <p className="text-lg text-stone-400 leading-relaxed font-light">
                             {parseBold(`Available to **all classes**, the Bardic Arts is a new secondary profession focused on social interaction and downtime utility.
                             It is not about combat damage; it's about morale, atmosphere, and the joy of creation.`)}
@@ -70,7 +70,7 @@ const TheBardicArts = () => {
                         <div className="w-14 h-14 bg-pink-900/20 rounded-full flex items-center justify-center text-pink-500 mb-6 group-hover:bg-pink-900/40 transition-colors">
                             <Play size={28} />
                         </div>
-                        <h3 className="text-xl font-cinzel text-white mb-4">Rhythm Minigame</h3>
+                        <h3 className="text-xl font-hero text-white mb-4">Rhythm Minigame</h3>
                         <p className="text-sm text-stone-400 leading-relaxed mb-6">
                             Playing an instrument triggers a unique UI overlay. Hit the notes in time with the song to maintain your "Melody Streak."
                             Miss a note, and your character plays a discordant wrong chord.
@@ -86,7 +86,7 @@ const TheBardicArts = () => {
                         <div className="w-14 h-14 bg-amber-900/20 rounded-full flex items-center justify-center text-amber-500 mb-6 group-hover:bg-amber-900/40 transition-colors">
                             <Coins size={28} />
                         </div>
-                        <h3 className="text-xl font-cinzel text-white mb-4">Busking</h3>
+                        <h3 className="text-xl font-hero text-white mb-4">Busking</h3>
                         <p className="text-sm text-stone-400 leading-relaxed mb-6">
                             {parseBold('Place your "Bard\'s Hat" on the ground. Other players can click it to tip you gold.\n                            While busking, you grant a **Rest State** buff to everyone nearby, making you a welcome sight in cities.')}
                         </p>
@@ -101,7 +101,7 @@ const TheBardicArts = () => {
                         <div className="w-14 h-14 bg-indigo-900/20 rounded-full flex items-center justify-center text-indigo-500 mb-6 group-hover:bg-indigo-900/40 transition-colors">
                             <MoreHorizontal size={28} />
                         </div>
-                        <h3 className="text-xl font-cinzel text-white mb-4">The Composer</h3>
+                        <h3 className="text-xl font-hero text-white mb-4">The Composer</h3>
                         <p className="text-sm text-stone-400 leading-relaxed mb-6">
                             Write your own songs using a simple in-game MIDI editor. Save them to "Sheet Music" items.
                             Trade your masterpieces to other Bards or sell them on the Auction House.
@@ -117,7 +117,7 @@ const TheBardicArts = () => {
                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-pink-600 to-transparent opacity-50"></div>
                     <div className="text-center mb-10">
                         <span className="text-pink-500 text-xs font-bold uppercase tracking-widest">Gear for the Gig</span>
-                        <h3 className="text-3xl font-cinzel text-white mt-2">Instruments of War</h3>
+                        <h3 className="text-3xl font-hero text-white mt-2">Instruments of War</h3>
                     </div>
 
                     <div className="flex flex-wrap justify-center gap-6">
