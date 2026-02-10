@@ -1460,7 +1460,6 @@ export const raidLootData = {
                         name: "Pauldrons of Primal Fury",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_shoulder_25.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nShoulder  Plate\n1650 Armor\n+58 Strength\n+62 Stamina\nBlue Socket\nRed Socket\nSocket Bonus: +3 Defense Rating\nEquip: Improves defense rating by 38.\nEquip: Improves hit rating by 24.\nEquip: Increases shield block value by 42.",
                         after: "Binds when picked up\nShoulder  Plate\n1650 Armor\n+58 Strength\n+62 Stamina\nBlue Socket\nRed Socket\nSocket Bonus: +3 Defense Rating\nEquip: Improves defense rating by 38.\nEquip: Improves hit rating by 24 (1.52% @ L70).\nEquip: Increases shield block value by 42.",
                         rationale: "Solid defensive plate shoulders."
                     },
@@ -1468,7 +1467,6 @@ export const raidLootData = {
                         name: "Jungle Stompers",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_boots_chain_04.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFeet  Mail\n885 Armor\n+48 Agility\n+65 Stamina\n+38 Intellect\nRed Socket\nRed Socket\nSocket Bonus: +3 Agility\nEquip: Increases attack power by 84.\nEquip: Improves hit rating by 22.",
                         after: "Binds when picked up\nFeet  Mail\n885 Armor\n+48 Agility\n+65 Stamina\n+38 Intellect\nRed Socket\nRed Socket\nSocket Bonus: +3 Agility\nEquip: Increases attack power by 84.\nEquip: Improves hit rating by 22 (1.39% @ L70).",
                         rationale: "Mail boots with strong attack power and hit."
                     },
@@ -1476,7 +1474,6 @@ export const raidLootData = {
                         name: "Mask of the Bear Spirit",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_helmet_04.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nHead  Leather\n440 Armor\n+62 Agility\n+75 Stamina\nMeta Socket\nYellow Socket\nSocket Bonus: +4 Agility\nEquip: Improves hit rating by 30.\nEquip: Increases attack power by 110.",
                         after: "Binds when picked up\nHead  Leather\n440 Armor\n+62 Agility\n+75 Stamina\nMeta Socket\nYellow Socket\nSocket Bonus: +4 Agility\nEquip: Improves hit rating by 30 (1.90% @ L70).\nEquip: Increases attack power by 110.",
                         rationale: "A powerhouse leather helm for druids and rogues."
                     },
@@ -1484,7 +1481,6 @@ export const raidLootData = {
                         name: "Fury",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_weapon_hand_04.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nOff Hand  Fist Weapon\n1.50 Speed\n105 - 198 Damage\n+22 Agility\n+24 Stamina\nEquip: Increases critical strike rating by 22.\nEquip: Increases attack power by 44.",
                         rationale: "Fast off-hand fist weapon for combat rogues and fury warriors."
                     },
@@ -1492,7 +1488,6 @@ export const raidLootData = {
                         name: "Pauldrons of Nalorakk",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_shoulder_23.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nShoulder  Mail\n+28 Intellect\n+25 Stamina\n+20 MP5\nRed Socket\nBlue Socket\nSocket Bonus: +3 MP5\nEquip: Increases healing done by spells and effects by up to 68.",
                         rationale: "Good restoration mail shoulders."
                     },
@@ -1500,7 +1495,6 @@ export const raidLootData = {
                         name: "Bladeangel's Money Belt",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_belt_14.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nWaist  Leather\n+35 Agility\n+38 Stamina\nRed Socket\nYellow Socket\nSocket Bonus: +3 Hit Rating\nEquip: Increases attack power by 72.\nEquip: Increases hit rating by 22.",
                         rationale: "Rogue/Feral belt with sockets."
                     }
@@ -1513,7 +1507,6 @@ export const raidLootData = {
                         name: "Staff of the Amani Diviner",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_staff_32.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nTwo-Hand  Staff\n165 - 318 Damage\nSpeed 3.20\n+70 Stamina\n+72 Intellect\n+55 Spirit\nRed Socket\nBlue Socket\nBlue Socket\nSocket Bonus: +5 Spell Power\nEquip: Increases damage and healing done by magical spells and effects by up to 265.\nEquip: Improves spell haste rating by 58.",
                         after: "Binds when picked up\nTwo-Hand  Staff\n165 - 318 Damage\nSpeed 3.20\n+70 Stamina\n+72 Intellect\n+55 Spirit\nRed Socket\nBlue Socket\nBlue Socket\nSocket Bonus: +5 Spell Power\nEquip: Increases damage and healing done by magical spells and effects by up to 265.\nEquip: Improves spell haste rating by 58 (3.68% @ L70).",
                         rationale: "A massive caster staff with significant haste."
                     },
@@ -1521,7 +1514,6 @@ export const raidLootData = {
                         name: "Brooch of Nature's Mercy",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_necklace_21.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nNeck\n+40 Stamina\n+38 Intellect\n+35 Spirit\nYellow Socket\nSocket Bonus: +2 Mana Regen\nEquip: Increases healing done by up to 96 and damage done by up to 32.\nEquip: Restores 14 mana per 5 sec.",
                         after: "Binds when picked up\nNeck\n+40 Stamina\n+38 Intellect\n+35 Spirit\nYellow Socket\nSocket Bonus: +2 Mana Regen\nEquip: Increases healing done by up to 96 and damage done by up to 32.\nEquip: Restores 14 mana per 5 sec.",
                         rationale: "Premium healer neck with a socket."
                     },
@@ -1529,7 +1521,6 @@ export const raidLootData = {
                         name: "Talon of the Tempest",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_60.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFinger\n+38 Stamina\n+35 Intellect\nEquip: Increases damage and healing done by magical spells and effects by up to 52.\nEquip: Improves spell critical strike rating by 34.\nEquip: Improves spell hit rating by 28.",
                         after: "Binds when picked up\nFinger\n+38 Stamina\n+35 Intellect\nEquip: Increases damage and healing done by magical spells and effects by up to 52.\nEquip: Improves spell critical strike rating by 34 (1.54% @ L70).\nEquip: Improves spell hit rating by 28 (2.22% @ L70).",
                         rationale: "Great caster ring with Hit and Crit."
                     },
@@ -1537,7 +1528,6 @@ export const raidLootData = {
                         name: "Akil'zon's Talonblade",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_sword_27.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nOne-Hand  Sword\n2.60 Speed\n185 - 345 Damage\n+24 Agility\n+22 Stamina\nEquip: Increases attack power by 46.\nEquip: Increases armor penetration rating by 115.",
                         rationale: "Armor pen sword for combat rogues/warriors."
                     },
@@ -1545,7 +1535,6 @@ export const raidLootData = {
                         name: "Mojo-Mender's Gloves",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_gauntlets_14.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nHands  Leather\n+35 Intellect\n+30 Stamina\n+28 Spirit\nRed Socket\nBlue Socket\nSocket Bonus: +3 Healing\nEquip: Increases healing done by spells and effects by up to 72.",
                         rationale: "Resto druid gloves."
                     },
@@ -1553,7 +1542,6 @@ export const raidLootData = {
                         name: "Chestguard of the Eagle",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_chest_chain_14.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nChest  Mail\n+45 Agility\n+42 Stamina\n+30 Intellect\nRed Socket\nYellow Socket\nBlue Socket\nSocket Bonus: +6 Attack Power\nEquip: Increases attack power by 92.",
                         rationale: "Hunter/Enhancement chest with great sockets."
                     }
@@ -1566,7 +1554,6 @@ export const raidLootData = {
                         name: "Wub's Cursed Hexblade",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_sword_27.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nMain Hand  Sword\n+20 Intellect\n+20 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 203.\nEquip: Improves spell hit rating by 19.",
                         after: "Binds when picked up\nMain Hand  Sword\n+20 Intellect\n+20 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 203.\nEquip: Improves spell hit rating by 19 (1.5% @ L70).",
                         rationale: "Caster sword with hit."
                     },
@@ -1574,7 +1561,6 @@ export const raidLootData = {
                         name: "Embroidered Spellpyre Boots",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_boots_cloth_16.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFeet  Cloth\n134 Armor\n+25 Intellect\n+18 Stamina\nRed Socket\nYellow Socket\nSocket Bonus: +4 Spell Power\nEquip: Increases damage and healing done by magical spells and effects by up to 39.",
                         after: "Binds when picked up\nFeet  Cloth\n134 Armor\n+25 Intellect\n+18 Stamina\nRed Socket\nYellow Socket\nSocket Bonus: +4 Spell Power\nEquip: Increases damage and healing done by magical spells and effects by up to 39.\nEquip: Improves spell haste rating by 24.",
                         rationale: "Cloth boots with added haste."
                     },
@@ -1582,7 +1568,6 @@ export const raidLootData = {
                         name: "Runed Spell-Cuffs",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_bracer_07.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nWrist  Cloth\n84 Armor\n+15 Intellect\n+12 Stamina\n+15 Spirit\nEquip: Increases damage and healing done by magical spells and effects by up to 29.",
                         after: "Binds when picked up\nWrist  Cloth\n84 Armor\n+15 Intellect\n+12 Stamina\n+15 Spirit\nEquip: Increases damage and healing done by magical spells and effects by up to 29.\nEquip: Improves spell hit rating by 14.",
                         rationale: "Spirit/Hit bracers for priests."
                     },
@@ -1590,7 +1575,6 @@ export const raidLootData = {
                         name: "Bulwark of the Amani Empire",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_shield_20.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nOff Hand  Shield\n5400 Armor\n141 Block\n+42 Stamina\nRed Socket\nSocket Bonus: +3 Stamina\nEquip: Increases shield block rating by 19.\nEquip: Increases shield block value by 42.",
                         after: "Binds when picked up\nOff Hand  Shield\n5400 Armor\n141 Block\n+42 Stamina\nRed Socket\nSocket Bonus: +3 Stamina\nEquip: Increases defense rating by 32.\nEquip: Increases shield block rating by 22.",
                         rationale: "Solid tanking shield with a socket."
                     },
@@ -1598,7 +1582,6 @@ export const raidLootData = {
                         name: "Signet of Primal Wrath",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_56.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nUnique-Equipped\nFinger\n+18 Agility\n+28 Stamina\nEquip: Increases attack power by 58.\nEquip: Attacks ignore 126 of the target's armor.",
                         after: "Binds when picked up\nUnique-Equipped\nFinger\n+28 Agility\n+28 Stamina\nEquip: Increases attack power by 58.\nEquip: Attacks ignore 126 of the target's armor.",
                         rationale: "BiS Physical DPS ring."
                     },
@@ -1606,7 +1589,6 @@ export const raidLootData = {
                         name: "Amani'shi Bracers",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_bracer_18.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nWrist  Leather\n118 Armor\n+20 Agility\n+18 Stamina\nRed Socket\nSocket Bonus: +2 Critical Strike Rating\nEquip: Increases attack power by 38.",
                         after: "Binds when picked up\nWrist  Leather\n118 Armor\n+20 Agility\n+18 Stamina\nRed Socket\nSocket Bonus: +2 Critical Strike Rating\nEquip: Increases attack power by 52.\nEquip: Attacks ignore 70 of the target's armor.",
                         rationale: "Leather bracers with ArP."
                     }
@@ -1619,7 +1601,6 @@ export const raidLootData = {
                         name: "Shoulderpads of Dancing Blades",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_shoulder_21.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nShoulder  Leather\n20 Armor\n+19 Agility\n+36 Stamina\nRed Socket\nYellow Socket\nSocket Bonus: +3 Agility\nEquip: Improves critical strike rating by 9.",
                         after: "Binds when picked up\nShoulder  Leather\n20 Armor\n+19 Agility\n+36 Stamina\nRed Socket\nYellow Socket\nSocket Bonus: +3 Agility\nEquip: Increases attack power by 94.\nEquip: Improves haste rating by 42 (2.66% @ L70).",
                         rationale: "Leather shoulders with added AP/Haste."
                     },
@@ -1627,7 +1608,6 @@ export const raidLootData = {
                         name: "Cloak of Ancient Rituals",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_cape_18.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nBack\n+16 Intellect\n+15 Stamina\nEquip: Increases healing done by up to 35 and damage done by up to 12.\nEquip: Restores 6 mana per 5 sec.",
                         after: "Binds when picked up\nBack\n+16 Intellect\n+15 Stamina\nEquip: Increases healing done by up to 35 and damage done by up to 12.\nEquip: Restores 6 mana per 5 sec.",
                         rationale: "Healer cloak."
                     },
@@ -1635,7 +1615,6 @@ export const raidLootData = {
                         name: "Hood of the Third Eye",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_helmet_31.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nHead  Cloth\n+25 Intellect\n+27 Stamina\nMeta Socket\nBlue Socket\nSocket Bonus: +5 Spell Power\nEquip: Increases damage and healing done by magical spells and effects by up to 41.",
                         after: "Binds when picked up\nHead  Cloth\n+25 Intellect\n+27 Stamina\nMeta Socket\nBlue Socket\nSocket Bonus: +5 Spell Power\nEquip: Increases damage and healing done by magical spells and effects by up to 68.\nEquip: Improves spell hit rating by 24 (1.90% @ L70).",
                         rationale: "Hit-heavy cloth hood."
                     },
@@ -1643,7 +1622,6 @@ export const raidLootData = {
                         name: "Staff of Primal Fury",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_staff_33.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nTwo-Hand  Staff\n+52 Agility\n+48 Stamina\nEquip: Increases attack power by 975 in Cat, Bear, Dire Bear, and Moonkin forms only.",
                         after: "Binds when picked up\nTwo-Hand  Staff\n+52 Agility\n+48 Stamina\nEquip: Increases attack power by 975 in Cat, Bear, Dire Bear, and Moonkin forms only.",
                         rationale: "Feral Druid staff."
                     },
@@ -1651,7 +1629,6 @@ export const raidLootData = {
                         name: "Shimmerclaw Band",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_57.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFinger\n+22 Agility\n+18 Stamina\nEquip: Increases attack power by 44.\nEquip: Improves hit rating by 15.",
                         after: "Binds when picked up\nFinger\n+35 Agility\n+28 Stamina\nEquip: Increases attack power by 54.\nEquip: Improves hit rating by 15.",
                         rationale: "Physical DPS ring."
                     },
@@ -1659,7 +1636,6 @@ export const raidLootData = {
                         name: "Wristwraps of Departed Spirits",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_bracer_02.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nWrist  Cloth\n+15 Intellect\n+12 Spirit\nEquip: Increases healing done by up to 33 and damage done by up to 11.",
                         after: "Binds when picked up\nWrist  Cloth\n+15 Intellect\n+12 Spirit\nEquip: Increases healing done by up to 33 and damage done by up to 11.",
                         rationale: "Spirit Healer bracers."
                     }
@@ -1672,7 +1648,6 @@ export const raidLootData = {
                         name: "Hex Shrunken Head",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_troll_01.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nUnique-Equipped\nTrinket\nEquip: Increases damage and healing done by magical spells and effects by up to 53.\nUse: Increases damage and healing done by magical spells and effects by up to 211 for 20 sec. (2 Min Cooldown)",
                         after: "Binds when picked up\nUnique-Equipped\nTrinket\nEquip: Increases damage and healing done by magical spells and effects by up to 53.\nUse: Increases damage and healing done by magical spells and effects by up to 211 for 20 sec. (2 Min Cooldown)",
                         rationale: "Iconic caster trinket, unchanged."
                     },
@@ -1680,7 +1655,6 @@ export const raidLootData = {
                         name: "Tome of the Diabolic",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_offhand_bloodelf_01.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nHeld In Off-hand\n+15 Intellect\n+15 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 28.\nEquip: Improves spell hit rating by 12.",
                         after: "Binds when picked up\nHeld In Off-hand\n+15 Intellect\n+15 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 28.\nEquip: Improves spell hit rating by 12.",
                         rationale: "Caster off-hand."
                     },
@@ -1688,7 +1662,6 @@ export const raidLootData = {
                         name: "Coif of the Jungle Stalker",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_helmet_32.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nHead  Mail\n+40 Agility\n+40 Stamina\nMeta Socket\nRed Socket\nSocket Bonus: +4 Agility\nEquip: Increases attack power by 84.\nEquip: Improves hit rating by 24.",
                         after: "Binds when picked up\nHead  Mail\n+40 Agility\n+40 Stamina\nMeta Socket\nRed Socket\nSocket Bonus: +4 Agility\nEquip: Increases attack power by 84.\nEquip: Improves hit rating by 24.",
                         rationale: "Physical DPS mail helm."
                     },
@@ -1696,7 +1669,6 @@ export const raidLootData = {
                         name: "Cloak of the Fiend-Slayer",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_misc_cape_20.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nBack\n+20 Agility\n+20 Stamina\nEquip: Increases attack power by 48.\nEquip: Attacks ignore 75 of the target's armor.",
                         after: "Binds when picked up\nBack\n+20 Agility\n+20 Stamina\nEquip: Increases attack power by 48.\nEquip: Attacks ignore 75 of the target's armor.",
                         rationale: "ArP cloak."
                     },
@@ -1704,7 +1676,6 @@ export const raidLootData = {
                         name: "Ring of the Ancient Hex",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_68.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFinger\n+25 Intellect\n+20 Stamina\nEquip: Increases healing done by up to 58.\nEquip: Restores 10 mana per 5 sec.",
                         after: "Binds when picked up\nFinger\n+25 Intellect\n+20 Stamina\nEquip: Increases healing done by up to 58.\nEquip: Restores 10 mana per 5 sec.",
                         rationale: "Healer ring."
                     },
@@ -1712,7 +1683,6 @@ export const raidLootData = {
                         name: "Band of the Eternal Sage",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_62.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFinger\n+25 Intellect\n+20 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 34.\nEquip: Improves spell critical strike rating by 22.",
                         after: "Binds when picked up\nFinger\n+25 Intellect\n+20 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 34.\nEquip: Improves spell critical strike rating by 22.",
                         rationale: "Caster crit ring."
                     }
@@ -1725,7 +1695,6 @@ export const raidLootData = {
                         name: "Jin'rohk, The Great Apocalypse (Ancient)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_sword_25.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nTwo-Hand  Sword\n545 - 818 Damage\nSpeed 3.70\n+85 Stamina\nEquip: Improves hit rating by 55.\nEquip: Increases attack power by 155.\nEquip: Your critical strikes have a chance to sunder the target's armor, reducing it by 200 for 10 sec. Stacks up to 5 times.",
                         after: "Binds when picked up\nTwo-Hand  Sword\n545 - 818 Damage\nSpeed 3.70\n+85 Stamina\nEquip: Improves hit rating by 55 (3.5% @ L70).\nEquip: Increases attack power by 155.\nEquip: Your critical strikes have a chance to sunder the target's armor, reducing it by 200 for 10 sec. Stacks up to 5 times.",
                         rationale: "The iconic ZA sword. Added an armor pen proc to make it a true alternative to Cataclysm's Edge."
                     },
@@ -1733,7 +1702,6 @@ export const raidLootData = {
                         name: "Ancient Amani Longbow (Ancient)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_weapon_bow_30.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nRanged  Bow\n288 - 536 Damage\nSpeed 3.00\nEquip: Increases attack power by 72.\nEquip: Improves critical strike rating by 24.\nEquip: Attacks ignore 175 of the target's armor.",
                         after: "Binds when picked up\nRanged  Bow\n288 - 536 Damage\nSpeed 3.00\nEquip: Increases attack power by 72.\nEquip: Improves critical strike rating by 24 (1.09% @ L70).\nEquip: Attacks ignore 175 of the target's armor.",
                         rationale: "Stat stick for Warriors/Rogues, powerful weapon for Hunters."
                     },
@@ -1741,7 +1709,6 @@ export const raidLootData = {
                         name: "Berserker's Call (Ancient)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_talisman_06.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nUnique-Equipped\nTrinket\nEquip: Increases attack power by 90.\nUse: Increases attack power by 360 for 20 sec.",
                         after: "Binds when picked up\nUnique-Equipped\nTrinket\nEquip: Increases attack power by 130.\nUse: Increases attack power by 460 for 20 sec. (2 Min CD)",
                         rationale: "Best-in-slot trinket for many physical DPS classes until SWP."
                     },
@@ -1749,7 +1716,6 @@ export const raidLootData = {
                         name: "Dark Blessing (Ancient)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_mace_74.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nMain Hand  Mace\n155 - 322 Damage\nSpeed 2.60\n+45 Stamina\n+42 Intellect\nEquip: Increases healing done by up to 485 and damage done by up to 162.\nEquip: Restores 14 mana per 5 sec.\nEquip: Your direct healing spells have a chance to bless the target, reducing magical damage taken by 5% for 8 sec.",
                         after: "Binds when picked up\nMain Hand  Mace\n155 - 322 Damage\nSpeed 2.60\n+45 Stamina\n+42 Intellect\nEquip: Increases healing done by up to 485 and damage done by up to 162.\nEquip: Restores 14 mana per 5 sec.\nEquip: Your direct healing spells have a chance to bless the target, reducing magical damage taken by 5% for 8 sec.",
                         rationale: "Healer mace with a unique damage reduction proc."
                     },
@@ -1757,7 +1723,6 @@ export const raidLootData = {
                         name: "Chestguard of the Warlord",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_chest_plate_12.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nChest  Plate\n+65 Strength\n+75 Stamina\nRed Socket\nYellow Socket\nBlue Socket\nSocket Bonus: +6 Strength\nEquip: Increases critical strike rating by 32.\nEquip: Increases attack power by 24.",
                         rationale: "Massive plate chest for Warriors/Paladins."
                     },
@@ -1765,7 +1730,6 @@ export const raidLootData = {
                         name: "Helm of the Amani Empire",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_helmet_09.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nHead  Plate\n+55 Stamina\n+40 Strength\nMeta Socket\nBlue Socket\nSocket Bonus: +4 Defense\nEquip: Increases defense rating by 35.\nEquip: Increases dodge rating by 24.",
                         rationale: "Tanking helm."
                     }
@@ -1778,7 +1742,6 @@ export const raidLootData = {
                         name: "Signet of the Quiet Forest (Timed Chest 3)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_68.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFinger\n+38 Stamina\n+35 Intellect\nEquip: Increases healing done by up to 88 and damage done by up to 29.\nEquip: Restores 12 mana per 5 sec.\nUse: Increases Spirit by 80 for 15 sec.",
                         after: "Binds when picked up\nFinger\n+38 Stamina\n+35 Intellect\nEquip: Increases healing done by up to 88 and damage done by up to 29.\nEquip: Restores 12 mana per 5 sec.\nUse: Increases Spirit by 80 for 15 sec. (2 Min CD).",
                         rationale: "Healer ring with a spirit burst."
                     },
@@ -1786,7 +1749,6 @@ export const raidLootData = {
                         name: "Ring of the Amani Empire (Timed Chest 4)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_70.jpg",
                         quality: 'Epic',
-                        original: "Binds when picked up\nFinger\n+42 Agility\n+55 Stamina\nEquip: Increases attack power by 72.\nEquip: Improves hit rating by 24.\nEquip: Improves critical strike rating by 32.",
                         after: "Binds when picked up\nFinger\n+42 Agility\n+55 Stamina\nEquip: Increases attack power by 72.\nEquip: Improves hit rating by 24 (1.52% @ L70).\nEquip: Improves critical strike rating by 32 (1.45% @ L70).",
                         rationale: "The hunter/melee reward for a perfect run."
                     },
@@ -1794,7 +1756,6 @@ export const raidLootData = {
                         name: "Amani War Bear",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/ability_druid_challengingroar.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nMount\nRequires Level 70\nRequires Riding (150)\nUse: Teaches you how to summon this mount. This is a very fast mount.",
                         rationale: "The ultimate status symbol."
                     },
@@ -1802,7 +1763,6 @@ export const raidLootData = {
                         name: "Mana-Attuned Band (Timed Chest 2)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_67.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nFinger\n+22 Intellect\n+25 Stamina\nEquip: Increases damage and healing done by magical spells and effects by up to 35.\nEquip: Improves spell haste rating by 24.",
                         rationale: "Caster haste ring."
                     },
@@ -1810,7 +1770,6 @@ export const raidLootData = {
                         name: "Steps of the Bear (Timed Chest 1)",
                         icon: "https://wow.zamimg.com/images/wow/icons/large/inv_boots_plate_05.jpg",
                         quality: 'Epic',
-                        original: null,
                         after: "Binds when picked up\nFeet  Plate\n1450 Armor\n+40 Strength\n+55 Stamina\nRed Socket\nYellow Socket\nSocket Bonus: +3 Defense\nEquip: Increases defense rating by 25.\nEquip: Increases shield block value by 32.",
                         rationale: "Early tanking plate boots."
                     }
