@@ -344,7 +344,7 @@ const RaidLootView = () => {
                                                     {/* Original - Strictly hidden for ZA */}
                                                     {showOriginalStats && (
                                                         <div className="bg-[#0a0a0a] p-3 rounded border border-white/5 opacity-60">
-                                                            <LootTooltip text={item.original} subtext="Original Stats (2.4.3)" item={item} />
+                                                            <LootTooltip text={item.original} subtext="Legacy Stats" item={item} />
                                                         </div>
                                                     )}
 
