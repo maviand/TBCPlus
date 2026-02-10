@@ -337,23 +337,27 @@ const RaidLootView = () => {
                                             </div>
                                         </div>
 
-                                        {/* Comparison */}
-                                        <div className={`flex-1 w-full grid ${activeRaid === 'tier6_5_za' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-4`}>
-                                            {/* Original - Strictly hidden for ZA */}
-                                            {activeRaid !== 'tier6_5_za' && (
-                                                <div className="bg-[#0a0a0a] p-3 rounded border border-white/5 opacity-60">
-                                                    <LootTooltip text={item.original} subtext="Original Stats (2.4.3)" item={item} />
-                                                </div>
-                                            )}
+                                        {(() => {
+                                            const showOriginalStats = activeRaid !== 'tier6_5_za';
+                                            return (
+                                                <div className={`flex-1 w-full grid ${showOriginalStats ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'} gap-4`}>
+                                                    {/* Original - Strictly hidden for ZA */}
+                                                    {showOriginalStats && (
+                                                        <div className="bg-[#0a0a0a] p-3 rounded border border-white/5 opacity-60">
+                                                            <LootTooltip text={item.original} subtext="Original Stats (2.4.3)" item={item} />
+                                                        </div>
+                                                    )}
 
-                                            {/* New */}
-                                            <div className="bg-[#0a0a0a] p-3 rounded border border-green-900/30 relative overflow-hidden">
-                                                <div className="absolute top-0 right-0 p-1">
-                                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
+                                                    {/* New */}
+                                                    <div className="bg-[#0a0a0a] p-3 rounded border border-green-900/30 relative overflow-hidden">
+                                                        <div className="absolute top-0 right-0 p-1">
+                                                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
+                                                        </div>
+                                                        <LootTooltip text={item.after} subtext={showOriginalStats ? "Restored Stats" : "Item Stats"} item={item} />
+                                                    </div>
                                                 </div>
-                                                <LootTooltip text={item.after} subtext={activeRaid === 'tier6_5_za' ? "Item Stats" : "Restored Stats"} item={item} />
-                                            </div>
-                                        </div>
+                                            );
+                                        })()}
                                     </div>
 
                                     {/* Rationale */}
