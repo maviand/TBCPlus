@@ -1323,6 +1323,85 @@ export const contentData = {
             mechanics: "**Protect the Target:** \nKeep Lothar alive during a skirmish. He fights back, but can be overwhelmed."
         }
     ],
+    quel_danas: [
+        {
+            name: 'Sunwell Plateau (Retuned)',
+            type: '25-Man Raid (Tier 6.5)',
+            tier: 6.5,
+            image: "https://i.imgur.com/2FiV4uZ.jpeg",
+            lore: "The desecration is complete. Kil'jaeden the Deceiver has been summoned by Kael’thas Sunstrider. The Sunwell, once the font of high elven magic, is now a portal for the Burning Legion’s supreme commander. This is not just a raid; it is a war for the soul of Azeroth.",
+            geography: "**The Lay of the Land:**\nThe Isle of Quel'Danas is a warzone. The Shattered Sun Offensive holds the beachhead, but the plateau itself is a fortress of magic and steel. The raid progresses from the external defenses (Kalecgos), through the burning streets (Brutallus/Felmyst), into the inner sanctum (Twins/M'uru), and finally to the Sunwell itself.",
+            sunwellData: {
+                title: "Sunwell Plateau",
+                overview: {
+                    rationale: "**Architect's Notes**\n\n**v2.4 (Live)**\n**Historical Context:**\nSunwell Plateau was technically the pinnacle of TBC raiding, offering the tightest tuning and most demanding execution. However, it suffered from \"Artificial Difficulty\"—specifically *Sunwell Radiance* (-20% Chance to Dodge), which was a lazy fix to handle tank scaling. It also enforced a rigid \"Class Stacking\" meta (Chain Heal spam, Drum rotations) that excluded 70% of the roster.\n\n**The Vision for Plus:**\nWe are keeping the *difficulty* but removing the *meta-gaming*. The challenge should come from reacting to mechanics, not from having the right buff composition. We are leaning into the \"Star Wars / High Fantasy\" aesthetic—this is a war for the cosmic soul of the planet.",
+                    issues: [
+                        "**Sunwell Radiance:** A hidden aura that reduced Tank avoidance by 20%. It felt cheap and invalidated geasing choices.",
+                        "**The Drum Meta:** Leatherworking was mandatory. If you didn't have drums, you were grieving the raid.",
+                        "**Roster Boss:** M'uru required 5 Shamans and 3 Warlocks. If one called out sick, the raid was cancelled.",
+                        "**Kil'jaeden's Model:** The \"Toilet Bowl\" model was static and lacked the grandeur of a demon lord."
+                    ],
+                    environment: [
+                        { title: "The Sun-Cliffs", desc: "For the first time, players assault the plateau from the sea. We've added verticality—fighting up the cliffside while Fel-Cannons bombard the raid." },
+                        { title: "The Dead Scar", desc: "A literal wound in the earth. The corrupted ley-lines here deal constant Shadow damage, forcing players to stick to the 'Light-infused' cobblestone paths." },
+                        { title: "The Inner Sanctum", desc: "Architecture that screams 'Arcane Mastery'. Floating crystals, zero-gravity books, and mana-wyrms that act as ambient lighting." }
+                    ]
+                },
+                mechanics: "**Core Mechanic: Solar Flare** \nThe hated 'Sunwell Radiance' (-20% Dodge) is removed. It is replaced by **Solar Flare**, a stacking environmental aura that deals Fire damage to the entire raid depending on the sun's position in the skybox.\n\n**Impact:** \nThis acts as a 'soft enrage' on the entire zone. At 'High Noon' (Phase 2 of the raid), the stacks build faster. It rewards maximizing DPS uptime to push phases before the heat becomes unhealable.",
+                bosses: [
+                    {
+                        name: "Kalecgos (The Blue Aspect)",
+                        desc: "**The Mechanic: Spectral Sync.**\nUnlike the RNG portals of 2007, the **'Spectral Rifts'** are now physical objects that spawn on the map. \n\n**Change:** The raid must split manually. Sending your Burst DPS (Mages/Rogues) into the Spectral Realm deals x2 damage to the Demon, but leaves the physical dragon vulnerable to Enrage. It is a communication check: 'Physical side stabilizing, send in the nukers!'"
+                    },
+                    {
+                        name: "Brutallus (The Pit Lord)",
+                        desc: "**The Mechanic: Tectonic Slam.**\nBrutallus doesn't just hit the tank; he hits the *zone*. \n\n**Change:** **'Meteor Slash'** now cracks the ground, leaving permanent fissures of Fel Lava. The raid's movement space shrinks throughout the fight. It turns the DPS check into a positioning tetris puzzle—kill him before you run out of floor."
+                    },
+                    {
+                        name: "Felmyst (The Sky Terror)",
+                        desc: "**The Mechanic: Encapsulate.**\nPreviously a grief mechanic, it is now a 'Hot Potato'. \n\n**Change:** The player targeted by **Encapsulate** levitates and takes massive damage, but deals massive AoE damage to the Boss. They must stay in *as long as possible* before passing it to a tank. Risk vs. Reward."
+                    },
+                    {
+                        name: "The Eredar Twins",
+                        desc: "**The Mechanic: Shadow & Flame.**\nAlythess and Sacrolash rely on 'Sync' mechanics. \n\n**Change:** **'Conflagration'** is no longer a disorient; it's a 'Living Bomb'. The affected player explodes every 2 seconds. They must sprint to the Shadow Twin's side of the room to detonate, where the explosion clears the 'Shadow Nova' clouds. Use their mechanics against them."
+                    },
+                    {
+                        name: "M'uru / Entropius",
+                        desc: "**The Mechanic: The Void Shift.**\nThe hardest boss in TBC history. We kept the difficulty but removed the roster requirement. \n\n**Change:** **'Darkness'** (thehealing dead-zone) is now a localized black hole that moves. The raid must orbit M'uru to stay in the light. **Phase 2 (Entropius):** The boss consumes the room's light. Players must use 'Naaru Shards' dropped by adds to create temporary safe zones."
+                    },
+                    {
+                        name: "Kil'jaeden (The Deceiver)",
+                        desc: "**The Mechanic: The Soul of Azeroth.**\nWe fixed the 'Toilet Bowl'. At 50% HP, Kil'jaeden is fully summoned—legs and all. \n\n**Phase 4 (New):** He pulls the entire raid *into* the Sunwell's energy. In this realm, Mana is infinite, Cooldowns are reduced by 80%, but you take 200% damage. It is a 60-second 'God Mode' burn phase where the raid unleashes everything to push him back through the portal."
+                    }
+                ],
+                sectors: [
+                    { name: "The Sun-Cliffs", theme: "Coastal Assault", hazard: "Fel-Artillery Bombardment" },
+                    { name: "The Dead Scar", theme: "Corrupted Earth", hazard: "Void Zones (Permanent)" },
+                    { name: "Chamber of the Sun", theme: "Holy/Arcane", hazard: "Radiant Heat (Stacking Dot)" }
+                ],
+                trash: {
+                    desc: "Trash in Sunwell was notoriously brutal. We've reduced the pack count by 40% but made each mob a tactical threat. No more 'AoE and pray'.",
+                    types: [
+                        "Sunblade Protectors: They cast 'Divine Shield' on their allies. This shield must be Mass Dispelled or shattered by Warrior's Shattering Throw.",
+                        "Shadowsword Vanguards: They use 'Void Hook', gripping the furthest healer into melee range. Hunters/Mages must bait this ability.",
+                        "Cataclysm Hounds: They act as 'Mana Batteries'. When killed, they explode, restoring 20% mana to nearby players. Kill them *strategically* when healers are low."
+                    ]
+                },
+                misc: {
+                    npcs: [
+                        { name: "Lady Liadrin", role: "Redemption arc fully voiced. Leads the Blood Knight charge." },
+                        { name: "Prophet Velen", role: "Interacts with M'uru's spark. Grants 'Prophet's Insight' buff." },
+                        { name: "Kalecgos (Human)", role: "Fights alongside you on the bridge. Can be healed to buff his damage." }
+                    ],
+                    loot: [
+                        { name: "Thori'dal, the Stars' Fury", desc: "**Legendary Bow.** \n**Effect:** 'Equip: The bow generates its own magical ammunition. Auto-shots have a 15% chance to trigger *Star-Shot*, dealing Arcane damage and granting the user 50 Energy/Rage/Mana.'", category: "Legendary" },
+                        { name: "Hand of the Deceiver", desc: "**Epic Mount.** \n**Flavor:** 'A piece of Kil'jaeden's armor, twisted into a flying disc. It leaves a trail of fel-smoke.'", category: "Mount" },
+                        { name: "Golden Staff of the Sin'dorei", desc: "**Healer Staff.** \n**Effect:** 'Use: Channels the power of the Sunwell, restoring 2000 health to all party members over 4 sec.'", category: "Weapon" }
+                    ]
+                }
+            }
+        }
+    ],
     far_reach: [
         {
             name: 'The Citadel of the Void',
@@ -2179,68 +2258,7 @@ export const contentData = {
                 ]
             }
         },
-        {
-            name: 'Sunwell Plateau',
-            type: '25-Man Raid (Tier 6.5)',
-            tier: 6.5,
-            image: 'https://i.imgur.com/2FiV4uZ.jpeg', // Sunwell/Quel'Danas
-            lore: "The Final Confrontation. \n**Changes:** \nSunwell Radiance is replaced by **Solar Flare** (Stacking Fire DoT). The 'Drum Meta' is dead. Mechanics that forced class stacking are removed. Sunwell is now about execution, not roster composition.",
-            sunwellData: {
-                title: "Sunwell Plateau",
-                overview: {
-                    rationale: "Sunwell was the best raid in TBC technically, but it suffered from 'Artificial Difficulty' (Sunwell Radiance) and 'Class Stacking' (Chain Heal / Destro Lock). We want to keep the challenge but open the roster.",
-                    issues: [
-                        "Sunwell Radiance (-20% Chance to Dodge) felt like a band-aid fix for tank scaling.",
-                        "Leatherworking Drums were mandatory for every party member.",
-                        "Recruiting Shaman just for Chain Heal was tedious."
-                    ],
-                    environment: [
-                        { title: "The Holy Font", desc: "A pristine, high-elf sanctuary defiled by the Legion." },
-                        { title: "Burning Skies", desc: "The skybox slowly turns from blue to fel-green as you progress." }
-                    ]
-                },
-                bosses: [
-                    {
-                        tier: "The Plateau",
-                        bosses: [
-                            { name: "Kalecgos", desc: "No more RNG portals. 'Portal Rifts' manifest physically; players click to enter the Spectral Realm. This allows coordinated teams to send their best burst DPS inside exactly when needed." },
-                            { name: "Brutallus", desc: "Burn damage is smoothed to prevent one-shot spikes, but increases Fire Damage Taken. 'Meteor Slash' now requires precise positioning rather than just healing through it. Taunts are guaranteed to hit." },
-                            { name: "Felmyst", desc: "Visual Clarity update: 'Encapsulate' now has a bright target marker. 'Demonic Vapor' trails are high-contrast green flame with clear borders to prevent 'invisible clipping' deaths." }
-                        ]
-                    },
-                    {
-                        tier: "The Gauntlet",
-                        bosses: [
-                            { name: "Eredar Twins", desc: "Conflagration is no longer a disorient. It is a Root/Stun, allowing the tank to hold aggro while stunned. Shadow priests are no longer mandatory to soak (anyone can soak with a potion)." },
-                            { name: "M'uru / Entropius", desc: "Aura of Concentration: Shadowsword adds drop zones that grant pushback resistance to casters standing in them. Void Spawn AoE reduced by 15% to make melee viable." }
-                        ]
-                    },
-                    {
-                        tier: "The Sunwell",
-                        bosses: [
-                            { name: "Kil'jaeden", desc: "Shield Orbs have normalized hitboxes (melee can hit them easily). Rotating Vulnerability: He gains +50% dmg from Spells or Physical on a timer. Dragonflight Breath now grants a massive Haste buff to the raid." }
-                        ]
-                    },
-                ],
-                wings: [
-                    { name: "The Plateau", theme: "Elven Architecture", hazard: "Patrolling Robots" },
-                    { name: "The Shrine", theme: "Interior Temple", hazard: "Magic Feedback" }
-                ],
-                misc: {
-                    npcs: [
-                        { name: "Kalecgos", role: "Aids you after his defeat." },
-                        { name: "Prophet Velen", role: "Cleanses M'uru." }
-                    ],
-                    loot: [
-                        { category: "Tier 6.5", desc: "Sunwell Tier pieces (Wrists, Boots, Belt)." },
-                        { category: "Thori'dal", desc: "The Legendary Bow. Now creates its own magical ammo (no quiver needed)." }
-                    ]
-                }
-            },
-            mechanics: "**Core Mechanic: Solar Flare** \nThe hated 'Sunwell Radiance' (-20% Dodge) is removed. It is replaced by **Solar Flare**, a stacking environmental aura that deals Fire damage to the entire raid. \n\n**Impact:** \nThis acts as a 'soft enrage' on all trash and bosses. It rewards maximizing DPS uptime and efficient chain-healing. The faster you kill, the less damage you take.",
-            philosophy: { tbc: "Class stacking required.", plus: "Execution > Composition. Bring the player, not the class." },
-            bosses: ["Kalecgos", "Brutallus", "Felmyst", "Eredar Twins", "M'uru", "Kil'jaeden"]
-        },
+
 
     ],
     // --- DEFENDERS (AZEROTH) ---

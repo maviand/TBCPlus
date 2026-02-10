@@ -209,6 +209,7 @@ const TheAtlas = ({ setPage, initialParams }) => {
       blades: { name: 'Blade\'s Edge', icon: <Sword className="w-4 h-4" />, level: '65-68', resources: ['Adamantite', 'Nightmare Vine'], faction: 'Ogri\'la' },
       nether: { name: 'Netherstorm', icon: <Zap className="w-4 h-4" />, level: '67-70', resources: ['Khorium', 'Netherbloom'], faction: 'The Consortium' },
       shadow: { name: 'Shadowmoon Valley', icon: <Skull className="w-4 h-4" />, level: '67-70', resources: ['Khorium', 'Nightmare Vine'], faction: 'Aldor / Scryer' },
+      quel_danas: { name: 'Isle of Quel\'Danas', icon: <Star className="w-4 h-4" />, level: '70+', resources: ['Khorium', 'Mana Berry'], faction: 'Shattered Sun' },
     },
     azeroth: {
       hyjal: { name: 'Mount Hyjal', icon: <Mountain className="w-4 h-4" />, level: '70+', resources: ['Eternium', 'Ancient Lichen'], faction: 'Scale of the Sands' },
@@ -417,12 +418,13 @@ const TheAtlas = ({ setPage, initialParams }) => {
     const [activeTab, setActiveTab] = useState(
       item?.vanguardData ? 'warband' :
         item?.blackTempleData ? 'overview' :
-          item?.chronicleData ? 'overview' :
-            item?.gruulMagData ? 'gruul' :
-              item?.karaData ? 'normal' :
-                item?.cryptsData ? 'overview' :
-                  richData ? 'summary' :
-                    'overview'
+          item?.sunwellData ? 'overview' :
+            item?.chronicleData ? 'overview' :
+              item?.gruulMagData ? 'gruul' :
+                item?.karaData ? 'normal' :
+                  item?.cryptsData ? 'overview' :
+                    richData ? 'summary' :
+                      'overview'
     );
     const [progressionLevel, setProgressionLevel] = useState('base');
     const [previewBoss, setPreviewBoss] = useState(null);
@@ -960,6 +962,132 @@ const TheAtlas = ({ setPage, initialParams }) => {
                           {item.blackTempleData.misc.loot.map((loot, i) => (
                             <li key={i} className="text-xs text-[#aeb6bf]">
                               <strong className="text-[#e0e0e0]">{loot.category}:</strong> {loot.desc}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : item.sunwellData ? (
+              // --- TABBED VIEW (SUNWELL PLATEAU) ---
+              <div className="flex-1 flex flex-col h-full bg-[#0a0a0a] min-h-0 overflow-hidden">
+                <div className="flex border-b border-[#2f2f35] bg-[#0c0c0c]">
+                  {['overview', 'bosses', 'sectors', 'trash', 'misc'].map((tabKey) => (
+                    <button
+                      key={tabKey}
+                      onClick={() => setActiveTab(tabKey)}
+                      className={`px-6 py-4 text-xs font-hero uppercase tracking-widest transition-colors ${activeTab === tabKey
+                        ? 'text-[#c29c55] border-b-2 border-[#c29c55] bg-[#c29c55]/5'
+                        : 'text-[#5c5c63] hover:text-[#e0e0e0] hover:bg-[#1a1c22]'
+                        }`}
+                    >
+                      {tabKey === 'overview' && 'Overview'}
+                      {tabKey === 'bosses' && 'Encounters'}
+                      {tabKey === 'sectors' && 'Sectors'}
+                      {tabKey === 'trash' && 'Trash'}
+                      {tabKey === 'misc' && 'Loot & Lore'}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex-1 overflow-y-auto custom-scrollbar p-8">
+                  {/* OVERVIEW */}
+                  {activeTab === 'overview' && (
+                    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4">
+                      <div className="p-6 bg-[#1a1c22] border-l-2 border-[#c29c55] rounded">
+                        <h3 className="font-hero text-lg text-[#f0e6d2] mb-4">Rationale</h3>
+                        <p className="text-[#aeb6bf] text-sm leading-relaxed">{formatText(item.sunwellData.overview.rationale)}</p>
+                      </div>
+
+                      {item.sunwellData.mechanics && (
+                        <div className="p-6 bg-[#111] border border-[#a335ee]/30 rounded relative overflow-hidden">
+                          <div className="absolute top-0 right-0 p-20 bg-[#a335ee]/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+                          <h3 className="font-hero text-lg text-[#d8b4fe] mb-4 flex items-center gap-2"><Zap className="w-4 h-4" /> Core Mechanic Update</h3>
+                          <p className="text-[#aeb6bf] text-sm leading-relaxed whitespace-pre-line relative z-10">{formatText(item.sunwellData.mechanics)}</p>
+                        </div>
+                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-[#111] p-5 border border-[#2f2f35] rounded">
+                          <h4 className="font-hero text-[#c29c55] text-xs uppercase mb-3">Core Issues</h4>
+                          <ul className="list-disc list-inside space-y-2 text-xs text-[#8a7b62]">
+                            {item.sunwellData.overview.issues.map((issue, i) => <li key={i}>{issue}</li>)}
+                          </ul>
+                        </div>
+                        <div className="bg-[#111] p-5 border border-[#2f2f35] rounded">
+                          <h4 className="font-hero text-[#c29c55] text-xs uppercase mb-3">Environment</h4>
+                          <ul className="space-y-3">
+                            {item.sunwellData.overview.environment.map((env, i) => (
+                              <li key={i} className="text-xs text-[#aeb6bf]">
+                                <strong className="text-[#e0e0e0]">{env.title}:</strong> {formatText(env.desc)}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* BOSSES */}
+                  {activeTab === 'bosses' && (
+                    <div className="max-w-4xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-4">
+                      {item.sunwellData.bosses.map((boss, i) => (
+                        <div key={i} className="bg-[#1a1c22] p-4 rounded border-l-2 border-[#5c5c63]">
+                          <strong className="text-[#e0e0e0] block mb-1">{boss.name}</strong>
+                          <p className="text-[#aeb6bf] text-xs">{formatText(boss.desc)}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* SECTORS */}
+                  {activeTab === 'sectors' && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4">
+                      {item.sunwellData.sectors.map((sector, i) => (
+                        <div key={i} className="bg-[#111] p-5 border border-[#2f2f35] rounded">
+                          <h4 className="font-hero text-[#f0e6d2] mb-2">{sector.name}</h4>
+                          <p className="text-xs text-[#aeb6bf] mb-1"><strong className="text-[#5c5c63]">Theme:</strong> {sector.theme}</p>
+                          <p className="text-xs text-[#aeb6bf]"><strong className="text-[#5c5c63]">Hazard:</strong> <span className="text-red-400">{sector.hazard}</span></p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* TRASH */}
+                  {activeTab === 'trash' && (
+                    <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4">
+                      <div className="bg-[#1a1c22] p-6 rounded border border-[#2f2f35]">
+                        <h4 className="font-hero text-[#c29c55] mb-4">Philosophy</h4>
+                        <p className="text-[#aeb6bf] text-sm leading-relaxed mb-6">{formatText(item.sunwellData.trash.desc)}</p>
+                        <h4 className="font-hero text-[#c29c55] mb-4">Enemy Types</h4>
+                        <ul className="space-y-3">
+                          {item.sunwellData.trash.types.map((type, i) => (
+                            <li key={i} className="text-xs text-[#e0e0e0] border-l border-[#5c5c63] pl-3">{formatText(type)}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MISC */}
+                  {activeTab === 'misc' && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4">
+                      <div className="bg-[#1a1c22] p-6 rounded border border-[#2f2f35]">
+                        <h4 className="font-hero text-[#c29c55] mb-4">NPC Integration</h4>
+                        <ul className="space-y-4">
+                          {item.sunwellData.misc.npcs.map((npc, i) => (
+                            <li key={i} className="text-xs text-[#aeb6bf]">
+                              <strong className="text-[#e0e0e0]">{npc.name}:</strong> {formatText(npc.role)}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="bg-[#1a1c22] p-6 rounded border border-[#2f2f35]">
+                        <h4 className="font-hero text-[#c29c55] mb-4">Key Loot</h4>
+                        <ul className="space-y-4">
+                          {item.sunwellData.misc.loot.map((loot, i) => (
+                            <li key={i} className="text-xs text-[#aeb6bf]">
+                              <strong className="text-[#e0e0e0]">{loot.name}:</strong> {formatText(loot.desc)}
                             </li>
                           ))}
                         </ul>

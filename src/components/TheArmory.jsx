@@ -3,9 +3,10 @@ import {
     Sword, Shield, Zap, Crosshair, Heart, Skull,
     Flame, Ghost, Hammer, Leaf, Star, Crown,
     LayoutGrid, Clock, Map as MapIcon, Share2,
-    BarChart2, Activity, Calendar, Download, Trophy
+    BarChart2, Activity, Calendar, Download, Trophy, ExternalLink, ArrowRight
 } from 'lucide-react';
 import UnifiedHeader from './UnifiedHeader';
+import { raidLootData } from '../data/item-tuning-data';
 
 // --- SUB-COMPONENTS ---
 
@@ -190,12 +191,289 @@ const ShareCard = ({ set, classData, onClose }) => (
     </div>
 );
 
+const LootTooltip = ({ text, subtext, item }) => {
+    if (!text) return null;
+
+    // Quality Colors
+    const getQualityColor = (quality) => {
+        switch (quality) {
+            case 'Legendary': return 'text-[#ff8000]';
+            case 'Epic': return 'text-[#a335ee]';
+            case 'Rare': return 'text-[#0070dd]';
+            case 'Uncommon': return 'text-[#1eff00]';
+            default: return 'text-[#a335ee]'; // Default to Epic for raids
+        }
+    };
+
+    const qualityColor = getQualityColor(item?.quality || 'Epic');
+
+    return (
+        <div className="font-sans text-sm leading-snug">
+            {/* Item Name Header (Only if item is provided) */}
+            {item && (
+                <div className={`font-bold text-[15px] mb-1 ${qualityColor}`}>
+                    {item.name}
+                </div>
+            )}
+
+            {/* Subtext (Original/Restored) - Kept small for context */}
+            {subtext && <div className={`text-[10px] uppercase font-bold mb-2 ${subtext.includes('Original') ? 'text-red-900/70' : 'text-green-500/70'}`}>{subtext}</div>}
+
+            {text.split('\n').map((line, i) => {
+                let className = "text-white"; // Default white
+                let content = line;
+
+                // Split Lines (e.g., "Head  Mail") - Detect double space
+                if (line.includes('  ') && !line.includes('Damage') && !line.startsWith('Equip')) {
+                    const parts = line.split('  ');
+                    return (
+                        <div key={i} className="flex justify-between text-white">
+                            <span>{parts[0]}</span>
+                            <span>{parts[1]}</span>
+                        </div>
+                    );
+                }
+
+                if (line.startsWith('Equip:') || line.startsWith('Use:') || line.startsWith('Chance on hit:') || line.startsWith('Proc:')) {
+                    className = "text-[#1eff00]"; // Bright Green
+                } else if (line.startsWith('Set:')) {
+                    className = "text-[#ffd100]"; // Set Name Gold
+                } else if (line.startsWith('Socket Bonus:')) {
+                    className = "text-[#808080]"; // Gray
+                } else if (line.startsWith('"') && line.endsWith('"')) {
+                    className = "text-[#ffd100]"; // Flavor Text Gold
+                } else if (line.startsWith('Item Level') || line.startsWith('Requires Level')) {
+                    // Item Level is usually Gold in modern WoW, but often White/Yellow in TBC. Let's go Gold for ILVL, White for Req.
+                    if (line.startsWith('Item Level')) className = "text-[#ffd100]";
+                    else className = "text-white";
+                } else if (line.includes('Socket') && !line.includes('Bonus')) {
+                    const getSocketIcon = () => {
+                        if (line.includes('Red')) return "https://i.imgur.com/vhyS9Bz.png";
+                        if (line.includes('Yellow')) return "https://i.imgur.com/AMiiZ42.png";
+                        if (line.includes('Blue')) return "https://i.imgur.com/tASSMFD.png";
+                        if (line.includes('Prismatic')) return "https://i.imgur.com/hPlKMiO.png";
+                        if (line.includes('Meta')) return "https://i.imgur.com/6V5ASQn.png";
+                        return null;
+                    };
+
+                    const icon = getSocketIcon();
+
+                    if (icon) {
+                        return (
+                            <div key={i} className="flex items-center gap-1.5 mt-0.5 mb-0.5">
+                                <img src={icon} alt="Socket" className="w-3.5 h-3.5" />
+                                <span className="text-[#a3a3a3]">{line}</span>
+                            </div>
+                        );
+                    }
+                    // Default for Meta or others without icon
+                    return <div key={i} className="text-[#808080]">{line}</div>;
+                } else if (line.match(/^\d+ Armor$/)) {
+                    className = "text-white";
+                }
+
+                return <div key={i} className={className}>{content}</div>;
+            })}
+        </div>
+    );
+};
+
+const RaidLootView = () => {
+    const [activeRaid, setActiveRaid] = useState('mh_bt');
+
+    return (
+        <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sidebar */}
+            <div className="w-full lg:w-64 space-y-2 flex-shrink-0">
+                <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest mb-4">Select Raid</h3>
+                {Object.values(raidLootData).filter(raid => raid.id !== 'tier5_5' && raid.id !== 'tier5_5_qd').map((raid) => (
+                    <button
+                        key={raid.id}
+                        onClick={() => setActiveRaid(raid.id)}
+                        className={`w-full text-left p-3 rounded border transition-all duration-300 ${activeRaid === raid.id
+                            ? 'bg-amber-900/20 border-amber-500/50 text-white shadow-[0_0_15px_rgba(245,158,11,0.1)]'
+                            : 'bg-[#151515] border-transparent text-stone-500 hover:text-stone-300 hover:bg-[#222]'
+                            }`}
+                    >
+                        <span className="font-hero tracking-wide">{raid.name}</span>
+                    </button>
+                ))}
+
+                <div className="mt-8 p-4 bg-blue-900/10 border border-blue-500/20 rounded-lg">
+                    <h4 className="text-blue-400 font-bold mb-2 text-xs uppercase flex items-center gap-2">
+                        <Activity size={12} />
+                        Design Philosophy
+                    </h4>
+                    <p className="text-stone-400 text-xs leading-relaxed">
+                        Loot tables have been retuned to address itemization gaps, dead stats (like Spirit on DPS gear), and weapon speed thresholds that negatively impacted rotation fluidity in the original game.
+                    </p>
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex-1 space-y-8">
+                <div className="bg-[#111] p-6 rounded-xl border border-white/5">
+                    <h2 className="text-2xl font-hero text-white mb-2">{raidLootData[activeRaid].name}</h2>
+                    <p className="text-stone-400 text-sm italic">{raidLootData[activeRaid].description}</p>
+                </div>
+
+                {raidLootData[activeRaid].bosses.map((boss, index) => (
+                    <div key={index} className="space-y-4">
+                        <div className="flex items-center gap-4">
+                            <h3 className="text-xl font-bold text-[#c29c55] border-b border-[#c29c55]/20 pb-2 w-full">{boss.name}</h3>
+                        </div>
+                        <div className="grid grid-cols-1 gap-4">
+                            {boss.items.map((item, i) => (
+                                <div key={i} className="bg-[#151515] border border-white/5 rounded-lg p-4 relative group hover:border-[#c29c55]/30 transition-colors">
+                                    <div className="flex flex-col md:flex-row gap-6 items-start">
+                                        {/* Icon & Name */}
+                                        <div className="flex items-center gap-4 min-w-[250px]">
+                                            <div className="w-12 h-12 bg-[#222] border border-stone-600 rounded flex-shrink-0 overflow-hidden">
+                                                <img src={item.icon} alt={item.name} className="w-full h-full object-cover" />
+                                            </div>
+                                            <div>
+                                                <h4 className="text-[#a335ee] font-bold text-lg">{item.name}</h4>
+                                                <span className="text-xs text-stone-600 uppercase tracking-wider">Item Modification</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Comparison */}
+                                        <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {/* Original */}
+                                            <div className="bg-[#0a0a0a] p-3 rounded border border-white/5 opacity-60">
+                                                <LootTooltip text={item.original} subtext="Original Stats (2.4.3)" item={item} />
+                                            </div>
+
+                                            {/* New */}
+                                            <div className="bg-[#0a0a0a] p-3 rounded border border-green-900/30 relative overflow-hidden">
+                                                <div className="absolute top-0 right-0 p-1">
+                                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
+                                                </div>
+                                                <LootTooltip text={item.after} subtext="Restored Stats" item={item} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Rationale */}
+                                    <div className="mt-4 pl-4 border-l-2 border-[#c29c55] ml-6">
+                                        <p className="text-[#c29c55] text-sm italic font-medium">
+                                            " {item.rationale} "
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const Tier55View = () => {
+    const [activeRaid, setActiveRaid] = useState('tier5_5');
+    const raid = raidLootData[activeRaid];
+
+    const raids = [
+        raidLootData['tier5_5'],
+        raidLootData['tier5_5_qd']
+    ].filter(Boolean);
+
+    return (
+        <div className="flex flex-col lg:flex-row gap-8 animate-fade-in">
+            {/* Sidebar / Context */}
+            <div className="w-full lg:w-64 space-y-6 flex-shrink-0">
+
+                {/* Raid Selector */}
+                <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest mb-2">Select Raid</h3>
+                    {raids.map((r) => (
+                        <button
+                            key={r.id}
+                            onClick={() => setActiveRaid(r.id)}
+                            className={`w-full text-left p-3 rounded border transition-all duration-300 ${activeRaid === r.id
+                                ? 'bg-cyan-900/20 border-cyan-500/50 text-white shadow-[0_0_15px_rgba(6,182,212,0.1)]'
+                                : 'bg-[#151515] border-transparent text-stone-500 hover:text-stone-300 hover:bg-[#222]'
+                                }`}
+                        >
+                            <span className="font-hero tracking-wide text-sm">{r.name}</span>
+                        </button>
+                    ))}
+                </div>
+
+                <div className="p-1 rounded-lg border border-cyan-500/30 bg-cyan-900/10 shadow-[0_0_20px_rgba(6,182,212,0.1)]">
+                    <div className="bg-[#050505] p-4 rounded border border-cyan-500/10">
+                        <h3 className="font-hero text-xl text-cyan-400 mb-2">{raid.name}</h3>
+                        <p className="text-xs text-cyan-200/60 leading-relaxed italic">{raid.description}</p>
+                    </div>
+                </div>
+
+                <div className="p-4 rounded-lg border border-white/5 bg-[#111]">
+                    <h4 className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <Star size={12} className="text-amber-500" /> New Content
+                    </h4>
+                    <p className="text-xs text-stone-400 leading-relaxed">
+                        These items are brand new additions to the game, designed to fill slot gaps and support underrepresented playstyles. They feature "Plus" itemization logic.
+                    </p>
+                </div>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex-1 space-y-8">
+                {raid.bosses.map((boss, index) => (
+                    <div key={index} className="space-y-6">
+                        <div className="flex items-center gap-4 border-b border-cyan-900/30 pb-4">
+                            <h3 className="text-2xl font-hero text-cyan-500 w-full drop-shadow-sm">{boss.name}</h3>
+                        </div>
+
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                            {boss.items.map((item, i) => (
+                                <div key={i} className="bg-[#080808] border border-cyan-500/10 rounded-xl p-5 relative group hover:border-cyan-500/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(6,182,212,0.05)]">
+                                    {/* Header: Icon & Name */}
+                                    <div className="flex items-center gap-5 mb-5 relative z-10">
+                                        <div className="w-14 h-14 bg-[#111] border border-stone-700 rounded-lg shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
+                                            <img src={item.icon} alt={item.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h4 className={`font-bold text-lg ${item.quality === 'Legendary' ? 'text-[#ff8000]' : 'text-[#a335ee]'}`}>{item.name}</h4>
+                                            <span className="text-[10px] text-cyan-400/60 uppercase tracking-widest font-bold">New Drop</span>
+                                        </div>
+
+                                        {/* Background effect */}
+                                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors"></div>
+                                    </div>
+
+                                    {/* Tooltip Display */}
+                                    <div className="bg-[#050510] p-4 rounded border border-white/5 shadow-inner relative z-10">
+                                        <LootTooltip text={item.after} subtext="Item Stats" item={item} />
+                                    </div>
+
+                                    {/* Design Notes */}
+                                    {item.rationale && (
+                                        <div className="mt-4 pt-3 border-t border-white/5">
+                                            <p className="text-xs text-stone-500 italic">
+                                                <span className="text-cyan-500/70 not-italic font-bold mr-1">Design Notes:</span>
+                                                {item.rationale}
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const TheArmory = ({ setPage }) => {
     const [activeClass, setActiveClass] = useState('warrior');
     const [activeSpec, setActiveSpec] = useState(0); // Index of the spec
     const [activeTier, setActiveTier] = useState('t4'); // t1, t2, t3, t4, t5, t6, t6.5
     const [selectedImage, setSelectedImage] = useState(null);
     const [showShare, setShowShare] = useState(false);
+    const [viewMode, setViewMode] = useState('sets'); // 'sets' | 'loot' | 'tier55'
 
     // Helper for bold text
     const formatText = (text) => {
@@ -309,6 +587,113 @@ const TheArmory = ({ setPage }) => {
                         },
                         t2: {
                             name: 'Battlegear of Wrath (Reforged)',
+                            image: 'https://i.imgur.com/kta2B5W.jpeg',
+                            bonus: '**2-Set:** **Taste for Blood:** Rend ticks have a 100% chance to allow the use of Overpower.\n**4-Set:** **Blade Master:** Bladestorm now fires "Blades of Wrath" at distant enemies, dealing 70% weapon damage.',
+                            classicBonus: 'See Vanilla WoW',
+                            stats: { str: 120, stam: 130, crit: '3%' },
+                            offPieces: ['Belt of Wrath', 'Boots of Wrath'],
+                            source: { helm: 'Nefarian (BWL)', shoulders: 'Chromaggus (BWL)', chest: 'Vaelastrasz (BWL)', gloves: 'Ebonroc (BWL)', legs: 'Ragnaros (MC)' },
+                            devNotes: "Reforged T2 focuses on the Bladestorm fantasy.",
+                            enchants: ['Crusader'],
+                            gems: ['Bold Living Ruby']
+                        },
+                        t3: {
+                            name: 'Dreadnaught\'s Battlegear (Reforged)',
+                            image: 'https://i.imgur.com/8nFaFqV.jpeg',
+                            bonus: '**2-Set:** **Execute Phase:** Your attacks against targets below 20% health generate double Rage.\n**4-Set:** **Sudden Doom:** Your auto attacks have a chance to reset the cooldown of Mortal Strike and make it cost no Rage.',
+                            classicBonus: 'See Vanilla WoW',
+                            stats: { str: 140, stam: 150, crit: '4%' },
+                            offPieces: ['Belt of Dreadnaught', 'Boots of Dreadnaught'],
+                            source: { helm: 'Kel\'Thuzad (Naxx)', shoulders: 'Loatheb (Naxx)', chest: '4 Horsemen (Naxx)', gloves: 'Maexxna (Naxx)', legs: 'Thaddius (Naxx)' },
+                            devNotes: "Reforged T3 brings Naxxramas power to the TBC prepatch era.",
+                            enchants: ['Mongoose'],
+                            gems: ['Bold Living Ruby']
+                        }
+                    }
+                },
+                {
+                    name: 'Fury',
+                    role: 'DPS',
+                    icon: 'https://wow.zamimg.com/images/wow/icons/large/ability_warrior_innerrage.jpg',
+                    legendaryLink: 'warglaives',
+                    weapons: [
+                        { tier: 't4', name: 'Dragonmaw', source: 'Blacksmithing' },
+                        { tier: 't5', name: 'Talon of Azshara', source: 'Morogrim Tidewalker' },
+                        { tier: 't6', name: 'Warglaive of Azzinoth', source: 'Illidan' },
+                        { tier: 's2', name: 'Merciless Gladiator\'s Slicer', source: 'Arena Vendor' }
+                    ],
+                    repRewards: [
+                        { faction: 'Honor Hold', name: 'Blade of the Archmage', type: 'Sword' }
+                    ],
+                    pvpSets: {
+                        s1: { name: 'Gladiator\'s Battlegear', iLvl: 123, image: 'https://wow.zamimg.com/modelviewer/tbc/webthumbs/item-set/1/1/184/696.webp', bonus: '**2-Set:** Reduces cooldown of Intercept by 5 sec.\n**4-Set:** +5% Weapon Damage.' },
+                        s2: { name: 'Merciless Gladiator\'s Battlegear', iLvl: 136, image: 'https://wow.zamimg.com/modelviewer/tbc/webthumbs/item-set/1/1/6/518.webp', bonus: '**2-Set:** Reduces cooldown of Intercept by 5 sec.\n**4-Set:** +5% Weapon Damage.' },
+                        s3: { name: 'Vengeful Gladiator\'s Battlegear', iLvl: 146, image: 'https://wow.zamimg.com/modelviewer/tbc/webthumbs/item-set/1/1/16/528.webp', bonus: '**2-Set:** Reduces cooldown of Intercept by 5 sec.\n**4-Set:** +5% Weapon Damage.' },
+                        s4: { name: 'Brutal Gladiator\'s Battlegear', iLvl: 159, image: 'https://wow.zamimg.com/modelviewer/tbc/webthumbs/item-set/1/1/2/514.webp', bonus: '**2-Set:** Reduces cooldown of Intercept by 5 sec.\n**4-Set:** +5% Weapon Damage.' }
+                    },
+                    sets: {
+                        t4: {
+                            name: 'Warbringer Battlegear',
+                            image: 'https://i.imgur.com/OT9zyqM.jpeg',
+                            bonus: '**2-Set:** Your Whirlwind ability costs 10 less rage.\n**4-Set:** You gain an additional 2 Rage each time you deal melee damage.',
+                            classicBonus: 'Standard T4',
+                            stats: { str: 145, crit: '5%', hit: '3%' },
+                            offPieces: ['Girdle of the Endless Pit', 'Boots of the Resilient'],
+                            source: { helm: 'Prince Malchezaar', shoulders: 'High King Maulgar', chest: 'Magtheridon', gloves: 'Curator', legs: 'Gruul' },
+                            devNotes: "No changes.",
+                            enchants: ['Mongoose', 'Savagery'],
+                            gems: ['Bold Living Ruby']
+                        },
+                        t5: {
+                            name: 'Destroyer Battlegear',
+                            image: 'https://i.imgur.com/NLimJLa.jpeg',
+                            bonus: '**2-Set:** Your Overpower ability grants you 100 Attack Power for 5 sec.\n**4-Set:** Your Bloodthirst and Mortal Strike abilities cost 5 less rage.',
+                            classicBonus: 'Standard T5',
+                            stats: { str: 175, crit: '6%', hit: '4%' },
+                            offPieces: ['Belt of One-Hundred Deaths', 'Boots of the Destroyer'],
+                            source: { helm: 'Lady Vashj', shoulders: 'Void Reaver', chest: 'Kael\'thas', gloves: 'Leotheras', legs: 'Karathress' },
+                            devNotes: "No changes.",
+                            enchants: ['Mongoose', 'Mongoose'],
+                            gems: ['Bold Living Ruby']
+                        },
+                        t6: {
+                            name: 'Onslaught Battlegear',
+                            image: 'https://i.imgur.com/JAATJWE.jpeg',
+                            bonus: '**2-Set:** Reduces the rage cost of your Execute ability by 3.\n**4-Set:** Increases the damage of your Mortal Strike and Bloodthirst abilities by 5%.',
+                            classicBonus: 'Standard T6',
+                            stats: { str: 210, crit: '7%', arp: '10%' },
+                            offPieces: ['Onslaught Belt (Gorefiend)', 'Onslaught Boots (Naj\'entus)', 'Onslaught Bracers (Rage Winterchill)'],
+                            source: { helm: 'Archimonde', shoulders: 'Shahraz', chest: 'Illidan', gloves: 'Azgalor', legs: 'Council', bracers: 'Rage Winterchill', belt: 'Teron Gorefiend', boots: 'Naj\'entus' },
+                            devNotes: "Bracers/Belt/Boots moved to BT/Hyjal.",
+                            enchants: ['Executioner'],
+                            gems: ['Bold Spinel']
+                        },
+                        't6.5': {
+                            name: 'Plate of Resounding Rings',
+                            image: 'https://i.imgur.com/CJudCyD.jpeg',
+                            bonus: '**2-Set:** Increases the duration of Enrage by 1.0 sec.\n**4-Set:** Enrage increases the damage of your Raging Blow by 20%.',
+                            classicBonus: 'N/A',
+                            stats: { str: 250, crit: '9%', arp: '20%' },
+                            offPieces: ['Belt of the Silent Heart', 'Boots of the Forgotten'],
+                            source: { helm: 'Kil\'jaeden', shoulders: 'Twins', chest: 'M\'uru', gloves: 'Kalecgos', legs: 'Felmyst' },
+                            devNotes: "High Enrage uptime focus.",
+                            enchants: ['Executioner', 'Mongoose'],
+                            gems: ['Bold Crimson Spinel']
+                        },
+                        t1: {
+                            name: 'Valor Plate (Reforged)',
+                            image: 'https://i.imgur.com/IWC7Pmb.jpeg',
+                            bonus: '**2-Set:** **Furious Strikes:** Bloodthirst has a +10% Critical Strike chance.\n**4-Set:** **Enraged Regeneration:** While Enraged, you regenerate 2% of your total health every 3 seconds.',
+                            classicBonus: 'Classic T1',
+                            stats: { str: 100, crit: '2%' },
+                            offPieces: ['Belt of Valor', 'Boots of Valor'],
+                            source: { helm: 'Garr', shoulders: 'Geddon', chest: 'Golemagg', gloves: 'Gehennas', legs: 'Magmadar' },
+                            devNotes: "Reforged for Sustain.",
+                            enchants: ['Crusader'],
+                            gems: ['Bold Living Ruby']
+                        },
+                        t2: {
+                            name: 'Wrath Plate (Reforged)',
                             image: 'https://i.imgur.com/kta2B5W.jpeg',
                             bonus: '**2-Set:** **Taste for Blood:** Rend ticks have a 100% chance to allow the use of Overpower.\n**4-Set:** **Blade Master:** Bladestorm now fires "Blades of Wrath" at distant enemies, dealing 70% weapon damage.',
                             classicBonus: 'See Vanilla WoW',
@@ -3182,15 +3567,7 @@ const TheArmory = ({ setPage }) => {
     if (!currentClass || !currentSpec) return <div className="p-20 text-center text-stone-500">Loading Armory Data...</div>;
 
     return (
-        <div className="min-h-screen bg-[#050505] text-gray-200 font-sans selection:bg-amber-900 selection:text-amber-100 overflow-x-hidden">
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Lato:wght@300;400;700&display=swap');
-                .font-hero { font-family: 'Cinzel', serif; }
-                .font-body { font-family: 'Lato', sans-serif; }
-                .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
-                @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-            `}</style>
-
+        <div className="min-h-screen bg-black font-sans selection:bg-amber-900/30">
             <UnifiedHeader
                 icon="https://i.imgur.com/cjYAb3L.png"
                 background="https://i.imgur.com/K7GQXVQ.jpeg"
@@ -3200,345 +3577,408 @@ const TheArmory = ({ setPage }) => {
                 quote="The finest craftsmanship of the Sha'tar, the Aldor, and the Scryers."
             />
 
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex flex-col lg:flex-row gap-8">
-                    {/* --- LEFT: CLASS SELECTOR --- */}
-                    <div className="lg:w-64 flex-shrink-0">
-                        <div className="sticky top-24 bg-[#0a0a0a] border border-white/10 rounded-lg overflow-hidden">
-                            <h3 className="bg-[#111] p-3 text-xs font-hero text-stone-500 uppercase tracking-widest border-b border-white/5">Select Class</h3>
-                            <div className="divide-y divide-white/5">
-                                {Object.entries(classes).map(([key, cls]) => (
-                                    <button
-                                        key={key}
-                                        onClick={() => { setActiveClass(key); setActiveSpec(0); }}
-                                        className={`w-full flex items-center gap-3 p-3 transition-all hover:bg-white/5 ${activeClass === key ? 'bg-white/10 border-l-2 border-amber-500' : 'border-l-2 border-transparent'}`}
-                                    >
-                                        <div className={`w-8 h-8 rounded bg-black/50 p-1 ${activeClass === key ? '' : 'opacity-50 grayscale'}`}>
-                                            <img src={cls.crest} alt={cls.name} className="w-full h-full object-contain" />
-                                        </div>
-                                        <span className={`font-hero text-sm ${activeClass === key ? 'text-white' : 'text-stone-500'}`}>
-                                            {cls.name}
-                                        </span>
-                                    </button>
-                                ))}
-                            </div>
+            <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                {/* Intro Section */}
+                <div className="mb-12 relative overflow-hidden rounded-2xl border border-white/10 bg-[#080808]">
+                    <div className="absolute inset-0 bg-[url('https://i.imgur.com/8yF9m9f.jpeg')] bg-cover bg-center opacity-20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+
+                    <div className="relative p-8 md:p-12 max-w-4xl">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-900/20 border border-amber-500/20 rounded-full mb-6">
+                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></div>
+                            <span className="text-amber-500 text-xs font-bold tracking-widest uppercase">The Armory</span>
+                        </div>
+
+                        <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight tracking-tight">
+                            FORGED IN <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ffd100] to-[#e6b400]">LEGEND</span>
+                        </h1>
+
+                        <p className="text-lg text-stone-300 leading-relaxed max-w-2xl mb-8">
+                            Browse the restored Tier sets and refined loot tables of TBC Plus.
+                            From retuned Karazhan drops to the mighty arsenal of the Black Temple, every item has been polished to perfection.
+                        </p>
+
+                        {/* Navigation Tabs */}
+                        <div className="flex gap-4 border-b border-white/10">
+                            <button
+                                onClick={() => setViewMode('sets')}
+                                className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-colors relative ${viewMode === 'sets' ? 'text-white' : 'text-stone-500 hover:text-stone-300'
+                                    }`}
+                            >
+                                <LayoutGrid size={16} className="inline mr-2 mb-1" />
+                                Class Sets
+                                {viewMode === 'sets' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500"></div>}
+                            </button>
+                            <button
+                                onClick={() => setViewMode('loot')}
+                                className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-colors relative ${viewMode === 'loot' ? 'text-white' : 'text-stone-500 hover:text-stone-300'
+                                    }`}
+                            >
+                                <Trophy size={16} className="inline mr-2 mb-1" />
+                                Raid Loot Retuning
+                                {viewMode === 'loot' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500"></div>}
+                            </button>
+                            <button
+                                onClick={() => setViewMode('tier55')}
+                                className={`pb-4 px-2 text-sm font-bold uppercase tracking-widest transition-colors relative ${viewMode === 'tier55' ? 'text-cyan-400' : 'text-stone-500 hover:text-stone-300'
+                                    }`}
+                            >
+                                <Star size={16} className="inline mr-2 mb-1" />
+                                Tier 5.5
+                                {viewMode === 'tier55' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400"></div>}
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    {/* --- RIGHT: CONTENT --- */}
-                    <div className="flex-grow animate-fade-in">
-                        {/* CLASS HEADER & SPEC TABS */}
-                        <div className="mb-8 border-b border-white/10 pb-6">
-                            <div className="flex justify-between items-start mb-6">
-                                <div className="flex items-center gap-4">
-                                    <div className={`p-4 rounded-lg bg-white/5 ${currentClass.color} border border-white/10`}>
-                                        <img src={currentClass.crest} alt={currentClass.name} className="w-12 h-12 object-contain" />
-                                    </div>
-                                    <div>
-                                        <h2 className="font-hero text-4xl text-[#c29c55]">{currentClass.name} Armory</h2>
-                                        <p className="text-stone-500 text-sm tracking-widest uppercase">Browse Tier & Gladiator Sets</p>
-                                    </div>
-                                </div>
-
-                                {/* Link to Interface */}
-                                <button
-                                    onClick={() => setPage('interface')}
-                                    className="flex items-center gap-2 px-4 py-2 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-400/50 transition-all text-xs font-hero tracking-wider uppercase text-stone-500 hover:text-cyan-400"
-                                >
-                                    <LayoutGrid className="w-4 h-4" /> Preview UI
-                                </button>
-                            </div>
-
-                            {/* ROLE & SPEC SELECTOR */}
-                            <div className="flex flex-wrap gap-4 items-center justify-between">
-                                <div className="flex gap-2">
-                                    {currentClass.specs.map((spec, idx) => (
+                {viewMode === 'loot' ? (
+                    <RaidLootView />
+                ) : viewMode === 'tier55' ? (
+                    <Tier55View />
+                ) : (
+                    <div className="flex flex-col lg:flex-row gap-8">
+                        {/* Sidebar */}
+                        <div className="w-full lg:w-64 space-y-8 flex-shrink-0">
+                            {/* Class Selector */}
+                            <div>
+                                <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest mb-4">Select Class</h3>
+                                <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-2 gap-2">
+                                    {Object.entries(classes).map(([key, data]) => (
                                         <button
-                                            key={idx}
-                                            onClick={() => setActiveSpec(idx)}
-                                            className={`px-4 py-2 rounded font-cinzel text-sm tracking-wider border transition-all flex items-center gap-2 ${activeSpec === idx
-                                                ? `bg-${activeClass === 'paladin' ? 'pink' : activeClass === 'shaman' ? 'blue' : 'amber'}-900/20 border-${activeClass === 'paladin' ? 'pink' : 'amber'}-500/50 text-white`
-                                                : 'border-transparent text-stone-500 hover:text-stone-300 hover:bg-white/5'}`}
+                                            key={key}
+                                            onClick={() => { setActiveClass(key); setActiveSpec(0); }}
+                                            className={`p-2 rounded border transition-all duration-300 flex items-center gap-3 ${activeClass === key
+                                                ? 'bg-amber-900/20 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.1)]'
+                                                : 'bg-[#151515] border-transparent grayscale opacity-60 hover:grayscale-0 hover:opacity-100 hover:bg-[#222]'
+                                                }`}
                                         >
-                                            <img src={spec.icon} alt="" className="w-5 h-5 object-contain" />
-                                            {spec.name}
-                                            {spec.role && <span className="text-[10px] bg-black/50 px-1.5 py-0.5 rounded text-stone-400 ml-1">{spec.role}</span>}
+                                            <img src={data.crest} alt={data.name} className="w-8 h-8 rounded-full border border-black" />
+                                            <span className={`text-xs font-bold uppercase tracking-wide hidden lg:inline ${activeClass === key ? 'text-white' : 'text-stone-500'}`}>
+                                                {data.name}
+                                            </span>
                                         </button>
                                     ))}
                                 </div>
-
-                                {/* TALENT & LEGENDARY LINKS */}
-                                <div className="flex gap-2">
-                                    {currentSpec.legendaryLink && (
-                                        <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-orange-900/20 border border-orange-500/30 text-orange-400 hover:bg-orange-900/40 text-xs font-hero tracking-widest uppercase transition-colors">
-                                            <Crown size={12} /> Legendary
-                                        </button>
-                                    )}
-                                    <button onClick={() => setPage('calculator')} className="flex items-center gap-2 px-3 py-1.5 rounded bg-blue-900/20 border border-blue-500/30 text-blue-400 hover:bg-blue-900/40 text-xs font-hero tracking-widest uppercase transition-colors">
-                                        <Zap size={12} /> Talents
-                                    </button>
-                                    <button onClick={() => setShowShare(true)} className="flex items-center gap-2 px-3 py-1.5 rounded bg-amber-900/20 border border-amber-500/30 text-amber-500 hover:bg-amber-900/40 text-xs font-hero tracking-widest uppercase transition-colors">
-                                        <Share2 size={12} /> Share
-                                    </button>
-                                </div>
                             </div>
                         </div>
 
-                        {/* MODE: PVE vs PVP */}
-                        <div className="mb-6 flex justify-center">
-                            <div className="bg-[#111] p-1 rounded-lg border border-white/10 flex gap-1">
-                                <button className={`px-6 py-2 rounded font-hero text-sm transition-all ${!activeTier.startsWith('s') ? 'bg-amber-900/40 text-amber-500 shadow-lg' : 'text-stone-500 hover:text-stone-300'}`} onClick={() => setActiveTier('t4')}>
-                                    Raid Tiers
-                                </button>
-                                <button className={`px-6 py-2 rounded font-hero text-sm transition-all ${activeTier.startsWith('s') ? 'bg-red-900/40 text-red-500 shadow-lg' : 'text-stone-500 hover:text-stone-300'}`} onClick={() => setActiveTier('s1')}>
-                                    Arena Seasons
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* TIER/SEASON SELECTOR */}
-                        <div className="mb-8">
-                            <div className="flex flex-wrap justify-center gap-3">
-                                {(!activeTier.startsWith('s') ? tiers : [
-                                    { id: 's1', label: 'Season 1', sub: 'Gladiator', iLvl: 123 },
-                                    { id: 's2', label: 'Season 2', sub: 'Merciless', iLvl: 136 },
-                                    { id: 's3', label: 'Season 3', sub: 'Vengeful', iLvl: 146 },
-                                    { id: 's4', label: 'Season 4', sub: 'Brutal', iLvl: 159 },
-                                ]).map((tier) => (
-                                    <button
-                                        key={tier.id}
-                                        onClick={() => setActiveTier(tier.id)}
-                                        className={`flex flex-col items-center justify-center px-4 py-3 rounded-lg border transition-all duration-300 min-w-[120px] ${activeTier === tier.id
-                                            ? 'bg-white/5 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.1)] transform scale-105'
-                                            : 'bg-[#111] border-white/5 hover:border-white/20 hover:bg-white/5'}`}
-                                    >
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <span className={`font-hero text-sm ${activeTier === tier.id ? 'text-[#c29c55]' : 'text-stone-400'}`}>{tier.label}</span>
-                                            <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${activeTier === tier.id ? 'bg-amber-500/20 text-amber-300' : 'bg-white/5 text-stone-600'}`}>
-                                                {tier.iLvl}
-                                            </span>
+                        {/* Main Content Area */}
+                        <div className="flex-1 min-h-[600px] animate-fade-in">
+                            {/* CLASS HEADER & SPEC TABS */}
+                            <div className="mb-8 border-b border-white/10 pb-6">
+                                <div className="flex justify-between items-start mb-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className={`p-4 rounded-lg bg-white/5 ${currentClass.color} border border-white/10`}>
+                                            <img src={currentClass.crest} alt={currentClass.name} className="w-12 h-12 object-contain" />
                                         </div>
-                                        <span className="text-[10px] text-stone-500 uppercase tracking-wider">{tier.sub}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* SET DISPLAY CARD */}
-                        {(() => {
-                            // Dynamic Set Resolution (PvE or PvP)
-                            const pveSet = currentSpec?.sets?.[activeTier];
-                            const pvpSet = currentSpec?.pvpSets?.[activeTier];
-                            const set = pveSet || pvpSet; // Tries PvE first, but if activeTier is s1-s4 it wont be in sets, so undefined. But wait, I need to check the activeTier ID specifically.
-
-                            // Logic: If activeTier starts with 's', use pvpSets. Else use sets.
-                            const displaySet = activeTier.startsWith('s') ? currentSpec?.pvpSets?.[activeTier] : currentSpec?.sets?.[activeTier];
-
-                            if (!displaySet) return (
-                                <div className="flex flex-col items-center justify-center p-32 text-stone-600 border border-dashed border-stone-800 rounded-xl bg-[#0a0a0a/50]">
-                                    <Clock size={48} className="mb-4 opacity-30" />
-                                    <h3 className="font-cinzel text-xl mb-2 text-stone-500">Data Artifact Missing</h3>
-                                    <p className="text-sm text-stone-600">This set data has not yet been chronicled.</p>
-                                </div>
-                            );
-
-                            return (
-                                <div className="bg-[#0a0a0a] rounded-xl overflow-hidden border border-white/10 shadow-2xl relative group">
-                                    <div className="absolute top-0 right-0 p-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
-
-                                    <div className="flex flex-col md:flex-row min-h-[600px]">
-                                        {/* IMAGE SECTION */}
-                                        <div className="md:w-5/12 relative bg-[#111] overflow-hidden flex items-center justify-center p-8 group-hover:bg-[#151515] transition-colors">
-                                            {/* Background Pattern */}
-                                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
-                                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                <span className="font-hero text-9xl text-white/5 select-none scale-150 transform">{activeTier.replace('t', '').replace('s', 'S').replace('.5', '½')}</span>
-                                            </div>
-
-                                            <img
-                                                src={displaySet.image || 'https://wow.zamimg.com/modelviewer/tbc/webthumbs/item-set/1/1/112/624.webp'}
-                                                alt={displaySet.name}
-                                                className="relative z-10 w-full h-[60vh] object-contain cursor-pointer hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
-                                                onClick={() => setSelectedImage(displaySet.image)}
-                                            />
-
-                                            {/* Weapons Carousel Placeholder if available */}
-                                            {currentSpec.weapons && (
-                                                <div className="absolute bottom-4 left-0 right-0 px-4">
-                                                    <div className="flex justify-center gap-2">
-                                                        {currentSpec.weapons?.filter(w => w.tier.startsWith(activeTier.substring(0, 2))).map((w, i) => (
-                                                            <div key={i} className="bg-black/80 p-2 rounded border border-white/10 flex items-center gap-2 backdrop-blur-md">
-                                                                <Sword size={12} className="text-red-500" />
-                                                                <div className="flex flex-col">
-                                                                    <span className="text-[10px] text-white font-bold leading-none">{w.name}</span>
-                                                                    <span className="text-[8px] text-stone-500 leading-none">{w.source}</span>
-                                                                </div>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            <div className="absolute top-4 left-4 z-20">
-                                                <div className="flex items-center gap-2 text-stone-400 bg-black/90 px-3 py-1.5 rounded-full border border-white/10 text-xs shadow-xl backdrop-blur-sm">
-                                                    <LayoutGrid size={12} className="text-amber-500" />
-                                                    <span className="font-medium">Click to Enlarge</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* INFO SECTION */}
-                                        <div className="md:w-7/12 p-8 md:p-10 relative z-10 flex flex-col bg-gradient-to-b from-white/5 to-transparent">
-                                            {/* Header */}
-                                            <div className="border-b border-white/10 pb-6 mb-8">
-                                                <h3 className="font-cinzel text-3xl md:text-4xl text-white mb-3 text-shadow-sm">{displaySet.name}</h3>
-                                                <div className="flex flex-wrap items-center gap-3 text-sm">
-                                                    <span className={`px-2.5 py-1 rounded ${activeTier.startsWith('s') ? 'bg-red-900/30 text-red-500 border-red-500/30' : 'bg-amber-900/30 text-amber-500 border-amber-500/30'} border font-medium tracking-wide`}>
-                                                        {activeTier.startsWith('s') ? 'Gladiator Wargear' : 'Legendary Battlegear'}
-                                                    </span>
-                                                    <span className="text-stone-600 hidden md:inline">•</span>
-                                                    <span className="text-stone-500">Requires Level 70</span>
-                                                    <span className="text-stone-600 hidden md:inline">•</span>
-                                                    <span className="text-stone-500">{currentClass.name} Only</span>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-8 flex-grow">
-                                                {/* Stats Grid & Radar & Gauge */}
-                                                {displaySet.stats && typeof displaySet.stats === 'object' && (
-                                                    <div className="flex flex-col xl:flex-row gap-6 mb-6">
-                                                        <div className="flex-1 space-y-4">
-                                                            <div className="grid grid-cols-4 gap-2">
-                                                                {Object.entries(displaySet.stats).map(([k, v]) => (
-                                                                    <div key={k} className="bg-black/40 p-2 rounded border border-white/5 flex flex-col items-center">
-                                                                        <span className="text-[10px] text-stone-500 uppercase tracking-widest">{k}</span>
-                                                                        <span className="text-sm font-bold text-white">{v}</span>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                            <div className="flex justify-center xl:justify-start gap-4">
-                                                                <GearScoreMeter iLvl={displaySet.iLvl || 120} />
-                                                                <div className="xl:hidden"><StatRadar stats={displaySet.stats} color={currentClass.color} /></div>
-                                                            </div>
-
-                                                            <ProgressionTrack tier={activeTier} />
-                                                        </div>
-                                                        <div className="hidden xl:block w-48 flex-shrink-0">
-                                                            <StatRadar stats={displaySet.stats} color={currentClass.color} />
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {/* Bonus Box */}
-                                                <div className="bg-[#080808] p-6 rounded-xl border border-white/5 relative overflow-hidden shadow-inner">
-                                                    <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/50"></div>
-                                                    <div className="relative z-10 text-stone-300 leading-relaxed">
-                                                        {/* Toggle for Classic Bonus if exists */}
-                                                        {displaySet.classicBonus && (
-                                                            <div className="flex justify-end mb-2">
-                                                                <span className="text-[10px] text-stone-600 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">Reforged Bonus</span>
-                                                            </div>
-                                                        )}
-                                                        {formatText(displaySet.bonus)}
-                                                    </div>
-
-                                                    {displaySet.devNotes && (
-                                                        <div className="mt-4 pt-4 border-t border-white/5">
-                                                            <p className="text-xs text-stone-500 italic">
-                                                                <span className="text-amber-500 not-italic font-bold mr-2">Dev Note:</span>
-                                                                "{displaySet.devNotes}"
-                                                            </p>
-                                                        </div>
-                                                    )}
-                                                </div>
-
-                                                {/* Sources & Off-Pieces Grid */}
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                    {/* Drop Locations */}
-                                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5">
-                                                        <h4 className="text-xs text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-2"><MapIcon size={12} /> Acquisition</h4>
-                                                        {displaySet.source && typeof displaySet.source === 'object' ? (
-                                                            <div className="space-y-1">
-                                                                {Object.entries(displaySet.source).map(([slot, boss]) => (
-                                                                    <div key={slot} className="flex justify-between text-xs">
-                                                                        <span className="text-stone-400 capitalize">{slot}</span>
-                                                                        <span className="text-stone-300">{boss}</span>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        ) : (
-                                                            <p className="text-stone-400 text-sm">{tiers.find(t => t.id === activeTier)?.sub || 'Vendor'}</p>
-                                                        )}
-                                                    </div>
-
-                                                    {/* Off-Pieces or Enchants */}
-                                                    <div className="bg-white/5 p-4 rounded-lg border border-white/5">
-                                                        <h4 className="text-xs text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={12} /> Completion</h4>
-                                                        {displaySet.offPieces ? (
-                                                            <ul className="space-y-1">
-                                                                {displaySet.offPieces.map((item, i) => (
-                                                                    <li key={i} className="text-xs text-stone-300 flex items-center gap-2">
-                                                                        <span className="w-1 h-1 bg-stone-500 rounded-full"></span>
-                                                                        {item}
-                                                                    </li>
-                                                                ))}
-                                                            </ul>
-                                                        ) : (
-                                                            <p className="text-stone-500 text-xs italic">No specific off-pieces listed.</p>
-                                                        )}
-
-                                                        {displaySet.enchants && (
-                                                            <div className="mt-3 pt-3 border-t border-white/5">
-                                                                <span className="text-[10px] text-stone-500 uppercase">Rec. Enchants: </span>
-                                                                <span className="text-xs text-stone-300">{displaySet.enchants.join(', ')}</span>
-                                                            </div>
-                                                        )}
-
-                                                        <div className="mt-4 pt-4 border-t border-white/5">
-                                                            <h5 className="text-[10px] text-stone-500 uppercase mb-2">Recommended Professions</h5>
-                                                            <div className="space-y-2">
-                                                                <div className="space-y-1">
-                                                                    <div className="flex justify-between text-xs text-stone-400"><span>Blacksmithing</span><span>375/375</span></div>
-                                                                    <div className="h-1 bg-black rounded overflow-hidden"><div className="h-full bg-orange-500/50 w-full"></div></div>
-                                                                </div>
-                                                                <div className="space-y-1">
-                                                                    <div className="flex justify-between text-xs text-stone-400"><span>Jewelcrafting</span><span>375/375</span></div>
-                                                                    <div className="h-1 bg-black rounded overflow-hidden"><div className="h-full bg-purple-500/50 w-full"></div></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Reputation Rewards */}
-                                                {currentSpec.repRewards && (
-                                                    <div className="bg-[#111] p-4 rounded-lg border border-amber-500/10 mt-6 relative overflow-hidden group/rep">
-                                                        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/5 to-transparent opacity-0 group-hover/rep:opacity-100 transition-opacity"></div>
-                                                        <h4 className="text-xs text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-2 relative z-10"><Star size={14} /> Faction Commander Rewards</h4>
-                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
-                                                            {currentSpec.repRewards?.map((rep, i) => (
-                                                                <div key={i} className="flex items-center justify-between bg-black/40 px-3 py-2 rounded border border-white/5">
-                                                                    <span className="text-sm font-medium text-stone-300">{rep.name}</span>
-                                                                    <span className="text-[10px] text-stone-500 bg-white/5 px-2 py-0.5 rounded">{rep.faction}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                )}
-
-                                                {/* Activity Heatmap Mock */}
-                                                <div className="mt-8 pt-6 border-t border-white/5">
-                                                    <ActivityHeatmap />
-                                                </div>
-                                            </div>
+                                        <div>
+                                            <h2 className="font-hero text-4xl text-[#c29c55]">{currentClass.name} Armory</h2>
+                                            <p className="text-stone-500 text-sm tracking-widest uppercase">Browse Tier & Gladiator Sets</p>
                                         </div>
                                     </div>
+
+                                    {/* Link to Interface */}
+                                    <button
+                                        onClick={() => setPage('interface')}
+                                        className="flex items-center gap-2 px-4 py-2 rounded border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-400/50 transition-all text-xs font-hero tracking-wider uppercase text-stone-500 hover:text-cyan-400"
+                                    >
+                                        <LayoutGrid className="w-4 h-4" /> Preview UI
+                                    </button>
                                 </div>
-                            );
-                        })()}
+
+                                {/* ROLE & SPEC SELECTOR */}
+                                <div className="flex flex-wrap gap-4 items-center justify-between">
+                                    <div className="flex gap-2">
+                                        {currentClass.specs.map((spec, idx) => (
+                                            <button
+                                                key={idx}
+                                                onClick={() => setActiveSpec(idx)}
+                                                className={`px-4 py-2 rounded font-cinzel text-sm tracking-wider border transition-all flex items-center gap-2 ${activeSpec === idx
+                                                    ? `bg-${activeClass === 'paladin' ? 'pink' : activeClass === 'shaman' ? 'blue' : 'amber'}-900/20 border-${activeClass === 'paladin' ? 'pink' : 'amber'}-500/50 text-white`
+                                                    : 'border-transparent text-stone-500 hover:text-stone-300 hover:bg-white/5'}`}
+                                            >
+                                                <img src={spec.icon} alt="" className="w-5 h-5 object-contain" />
+                                                {spec.name}
+                                                {spec.role && <span className="text-[10px] bg-black/50 px-1.5 py-0.5 rounded text-stone-400 ml-1">{spec.role}</span>}
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {/* TALENT & LEGENDARY LINKS */}
+                                    <div className="flex gap-2">
+                                        {currentSpec.legendaryLink && (
+                                            <button className="flex items-center gap-2 px-3 py-1.5 rounded bg-orange-900/20 border border-orange-500/30 text-orange-400 hover:bg-orange-900/40 text-xs font-hero tracking-widest uppercase transition-colors">
+                                                <Crown size={12} /> Legendary
+                                            </button>
+                                        )}
+                                        <button onClick={() => setPage('calculator')} className="flex items-center gap-2 px-3 py-1.5 rounded bg-blue-900/20 border border-blue-500/30 text-blue-400 hover:bg-blue-900/40 text-xs font-hero tracking-widest uppercase transition-colors">
+                                            <Zap size={12} /> Talents
+                                        </button>
+                                        <button onClick={() => setShowShare(true)} className="flex items-center gap-2 px-3 py-1.5 rounded bg-amber-900/20 border border-amber-500/30 text-amber-500 hover:bg-amber-900/40 text-xs font-hero tracking-widest uppercase transition-colors">
+                                            <Share2 size={12} /> Share
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* MODE: PVE vs PVP */}
+                            <div className="mb-6 flex justify-center">
+                                <div className="bg-[#111] p-1 rounded-lg border border-white/10 flex gap-1">
+                                    <button className={`px-6 py-2 rounded font-hero text-sm transition-all ${!activeTier.startsWith('s') ? 'bg-amber-900/40 text-amber-500 shadow-lg' : 'text-stone-500 hover:text-stone-300'}`} onClick={() => setActiveTier('t4')}>
+                                        Raid Tiers
+                                    </button>
+                                    <button className={`px-6 py-2 rounded font-hero text-sm transition-all ${activeTier.startsWith('s') ? 'bg-red-900/40 text-red-500 shadow-lg' : 'text-stone-500 hover:text-stone-300'}`} onClick={() => setActiveTier('s1')}>
+                                        Arena Seasons
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* TIER/SEASON SELECTOR */}
+                            <div className="mb-8">
+                                <div className="flex flex-wrap justify-center gap-3">
+                                    {(!activeTier.startsWith('s') ? tiers : [
+                                        { id: 's1', label: 'Season 1', sub: 'Gladiator', iLvl: 123 },
+                                        { id: 's2', label: 'Season 2', sub: 'Merciless', iLvl: 136 },
+                                        { id: 's3', label: 'Season 3', sub: 'Vengeful', iLvl: 146 },
+                                        { id: 's4', label: 'Season 4', sub: 'Brutal', iLvl: 159 },
+                                    ]).map((tier) => (
+                                        <button
+                                            key={tier.id}
+                                            onClick={() => setActiveTier(tier.id)}
+                                            className={`flex flex-col items-center justify-center px-4 py-3 rounded-lg border transition-all duration-300 min-w-[120px] ${activeTier === tier.id
+                                                ? 'bg-white/5 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.1)] transform scale-105'
+                                                : 'bg-[#111] border-white/5 hover:border-white/20 hover:bg-white/5'}`}
+                                        >
+                                            <div className="flex items-center gap-2 mb-1">
+                                                <span className={`font-hero text-sm ${activeTier === tier.id ? 'text-[#c29c55]' : 'text-stone-400'}`}>{tier.label}</span>
+                                                <span className={`text-xs font-bold px-1.5 py-0.5 rounded ${activeTier === tier.id ? 'bg-amber-500/20 text-amber-300' : 'bg-white/5 text-stone-600'}`}>
+                                                    {tier.iLvl}
+                                                </span>
+                                            </div>
+                                            <span className="text-[10px] text-stone-500 uppercase tracking-wider">{tier.sub}</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* SET DISPLAY CARD */}
+                            {
+                                (() => {
+                                    // Dynamic Set Resolution (PvE or PvP)
+                                    const pveSet = currentSpec?.sets?.[activeTier];
+                                    const pvpSet = currentSpec?.pvpSets?.[activeTier];
+                                    const set = pveSet || pvpSet;
+
+                                    // Logic: If activeTier starts with 's', use pvpSets. Else use sets.
+                                    const displaySet = activeTier.startsWith('s') ? currentSpec?.pvpSets?.[activeTier] : currentSpec?.sets?.[activeTier];
+
+                                    if (!displaySet) return (
+                                        <div className="flex flex-col items-center justify-center p-32 text-stone-600 border border-dashed border-stone-800 rounded-xl bg-[#0a0a0a/50]">
+                                            <Clock size={48} className="mb-4 opacity-30" />
+                                            <h3 className="font-cinzel text-xl mb-2 text-stone-500">Data Artifact Missing</h3>
+                                            <p className="text-sm text-stone-600">This set data has not yet been chronicled.</p>
+                                        </div>
+                                    );
+
+                                    return (
+                                        <div className="bg-[#0a0a0a] rounded-xl overflow-hidden border border-white/10 shadow-2xl relative group">
+                                            <div className="absolute top-0 right-0 p-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                                            <div className="flex flex-col md:flex-row min-h-[600px]">
+                                                {/* IMAGE SECTION */}
+                                                <div className="md:w-5/12 relative bg-[#111] overflow-hidden flex items-center justify-center p-8 group-hover:bg-[#151515] transition-colors">
+                                                    {/* Background Pattern */}
+                                                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                                                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                                        <span className="font-hero text-9xl text-white/5 select-none scale-150 transform">{activeTier.replace('t', '').replace('s', 'S').replace('.5', '½')}</span>
+                                                    </div>
+
+                                                    <img
+                                                        src={displaySet.image || 'https://wow.zamimg.com/modelviewer/tbc/webthumbs/item-set/1/1/112/624.webp'}
+                                                        alt={displaySet.name}
+                                                        className="relative z-10 w-full h-[60vh] object-contain cursor-pointer hover:scale-105 transition-transform duration-500 drop-shadow-2xl"
+                                                        onClick={() => setSelectedImage(displaySet.image)}
+                                                    />
+
+                                                    {/* Weapons Carousel Placeholder if available */}
+                                                    {currentSpec.weapons && (
+                                                        <div className="absolute bottom-4 left-0 right-0 px-4">
+                                                            <div className="flex justify-center gap-2">
+                                                                {currentSpec.weapons?.filter(w => w.tier.startsWith(activeTier.substring(0, 2))).map((w, i) => (
+                                                                    <div key={i} className="bg-black/80 p-2 rounded border border-white/10 flex items-center gap-2 backdrop-blur-md">
+                                                                        <Sword size={12} className="text-red-500" />
+                                                                        <div className="flex flex-col">
+                                                                            <span className="text-[10px] text-white font-bold leading-none">{w.name}</span>
+                                                                            <span className="text-[8px] text-stone-500 leading-none">{w.source}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    <div className="absolute top-4 left-4 z-20">
+                                                        <div className="flex items-center gap-2 text-stone-400 bg-black/90 px-3 py-1.5 rounded-full border border-white/10 text-xs shadow-xl backdrop-blur-sm">
+                                                            <LayoutGrid size={12} className="text-amber-500" />
+                                                            <span className="font-medium">Click to Enlarge</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* INFO SECTION */}
+                                                <div className="md:w-7/12 p-8 md:p-10 relative z-10 flex flex-col bg-gradient-to-b from-white/5 to-transparent">
+                                                    {/* Header */}
+                                                    <div className="border-b border-white/10 pb-6 mb-8">
+                                                        <h3 className="font-cinzel text-3xl md:text-4xl text-white mb-3 text-shadow-sm">{displaySet.name}</h3>
+                                                        <div className="flex flex-wrap items-center gap-3 text-sm">
+                                                            <span className={`px-2.5 py-1 rounded ${activeTier.startsWith('s') ? 'bg-red-900/30 text-red-500 border-red-500/30' : 'bg-amber-900/30 text-amber-500 border-amber-500/30'} border font-medium tracking-wide`}>
+                                                                {activeTier.startsWith('s') ? 'Gladiator Wargear' : 'Legendary Battlegear'}
+                                                            </span>
+                                                            <span className="text-stone-600 hidden md:inline">•</span>
+                                                            <span className="text-stone-500">Requires Level 70</span>
+                                                            <span className="text-stone-600 hidden md:inline">•</span>
+                                                            <span className="text-stone-500">{currentClass.name} Only</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="space-y-8 flex-grow">
+                                                        {/* Stats Grid & Radar & Gauge */}
+                                                        {displaySet.stats && typeof displaySet.stats === 'object' && (
+                                                            <div className="flex flex-col xl:flex-row gap-6 mb-6">
+                                                                <div className="flex-1 space-y-4">
+                                                                    <div className="grid grid-cols-4 gap-2">
+                                                                        {Object.entries(displaySet.stats).map(([k, v]) => (
+                                                                            <div key={k} className="bg-black/40 p-2 rounded border border-white/5 flex flex-col items-center">
+                                                                                <span className="text-[10px] text-stone-500 uppercase tracking-widest">{k}</span>
+                                                                                <span className="text-sm font-bold text-white">{v}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                    <div className="flex justify-center xl:justify-start gap-4">
+                                                                        <GearScoreMeter iLvl={displaySet.iLvl || 120} />
+                                                                        <div className="xl:hidden"><StatRadar stats={displaySet.stats} color={currentClass.color} /></div>
+                                                                    </div>
+
+                                                                    <ProgressionTrack tier={activeTier} />
+                                                                </div>
+                                                                <div className="hidden xl:block w-48 flex-shrink-0">
+                                                                    <StatRadar stats={displaySet.stats} color={currentClass.color} />
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Bonus Box */}
+                                                        <div className="bg-[#080808] p-6 rounded-xl border border-white/5 relative overflow-hidden shadow-inner">
+                                                            <div className="absolute top-0 left-0 w-1 h-full bg-amber-500/50"></div>
+                                                            <div className="relative z-10 text-stone-300 leading-relaxed">
+                                                                {/* Toggle for Classic Bonus if exists */}
+                                                                {displaySet.classicBonus && (
+                                                                    <div className="flex justify-end mb-2">
+                                                                        <span className="text-[10px] text-stone-600 uppercase tracking-widest bg-white/5 px-2 py-1 rounded">Reforged Bonus</span>
+                                                                    </div>
+                                                                )}
+                                                                {formatText(displaySet.bonus)}
+                                                            </div>
+
+                                                            {displaySet.devNotes && (
+                                                                <div className="mt-4 pt-4 border-t border-white/5">
+                                                                    <p className="text-xs text-stone-500 italic">
+                                                                        <span className="text-amber-500 not-italic font-bold mr-2">Dev Note:</span>
+                                                                        "{displaySet.devNotes}"
+                                                                    </p>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Sources & Off-Pieces Grid */}
+                                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                            {/* Drop Locations */}
+                                                            <div className="bg-white/5 p-4 rounded-lg border border-white/5">
+                                                                <h4 className="text-xs text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-2"><MapIcon size={12} /> Acquisition</h4>
+                                                                {displaySet.source && typeof displaySet.source === 'object' ? (
+                                                                    <div className="space-y-1">
+                                                                        {Object.entries(displaySet.source).map(([slot, boss]) => (
+                                                                            <div key={slot} className="flex justify-between text-xs">
+                                                                                <span className="text-stone-400 capitalize">{slot}</span>
+                                                                                <span className="text-stone-300">{boss}</span>
+                                                                            </div>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : (
+                                                                    <p className="text-stone-400 text-sm">{tiers.find(t => t.id === activeTier)?.sub || 'Vendor'}</p>
+                                                                )}
+                                                            </div>
+
+                                                            {/* Off-Pieces or Enchants */}
+                                                            <div className="bg-white/5 p-4 rounded-lg border border-white/5">
+                                                                <h4 className="text-xs text-stone-500 uppercase tracking-widest mb-3 flex items-center gap-2"><Shield size={12} /> Completion</h4>
+                                                                {displaySet.offPieces ? (
+                                                                    <ul className="space-y-1">
+                                                                        {displaySet.offPieces.map((item, i) => (
+                                                                            <li key={i} className="text-xs text-stone-300 flex items-center gap-2">
+                                                                                <span className="w-1 h-1 bg-stone-500 rounded-full"></span>
+                                                                                {item}
+                                                                            </li>
+                                                                        ))}
+                                                                    </ul>
+                                                                ) : (
+                                                                    <p className="text-stone-500 text-xs italic">No specific off-pieces listed.</p>
+                                                                )}
+
+                                                                {displaySet.enchants && (
+                                                                    <div className="mt-3 pt-3 border-t border-white/5">
+                                                                        <span className="text-[10px] text-stone-500 uppercase">Rec. Enchants: </span>
+                                                                        <span className="text-xs text-stone-300">{displaySet.enchants.join(', ')}</span>
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="mt-4 pt-4 border-t border-white/5">
+                                                                    <h5 className="text-[10px] text-stone-500 uppercase mb-2">Recommended Professions</h5>
+                                                                    <div className="space-y-2">
+                                                                        <div className="space-y-1">
+                                                                            <div className="flex justify-between text-xs text-stone-400"><span>Blacksmithing</span><span>375/375</span></div>
+                                                                            <div className="h-1 bg-black rounded overflow-hidden"><div className="h-full bg-orange-500/50 w-full"></div></div>
+                                                                        </div>
+                                                                        <div className="space-y-1">
+                                                                            <div className="flex justify-between text-xs text-stone-400"><span>Jewelcrafting</span><span>375/375</span></div>
+                                                                            <div className="h-1 bg-black rounded overflow-hidden"><div className="h-full bg-purple-500/50 w-full"></div></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {/* Reputation Rewards */}
+                                                        {currentSpec.repRewards && (
+                                                            <div className="bg-[#111] p-4 rounded-lg border border-amber-500/10 mt-6 relative overflow-hidden group/rep">
+                                                                <div className="absolute inset-0 bg-gradient-to-r from-amber-900/5 to-transparent opacity-0 group-hover/rep:opacity-100 transition-opacity"></div>
+                                                                <h4 className="text-xs text-amber-500 uppercase tracking-widest mb-3 flex items-center gap-2 relative z-10"><Star size={14} /> Faction Commander Rewards</h4>
+                                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 relative z-10">
+                                                                    {currentSpec.repRewards?.map((rep, i) => (
+                                                                        <div key={i} className="flex items-center justify-between bg-black/40 px-3 py-2 rounded border border-white/5">
+                                                                            <span className="text-sm font-medium text-stone-300">{rep.name}</span>
+                                                                            <span className="text-[10px] text-stone-500 bg-white/5 px-2 py-0.5 rounded">{rep.faction}</span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        )}
+
+                                                        {/* Activity Heatmap Mock */}
+                                                        <div className="mt-8 pt-6 border-t border-white/5">
+                                                            <ActivityHeatmap />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })()
+                            }
+                        </div>
                     </div>
-                </div>
-            </div>
+                )}
+            </main>
 
             {/* IMAGE ZOOM MODAL */}
             {selectedImage && (
