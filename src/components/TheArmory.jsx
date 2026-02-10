@@ -339,7 +339,7 @@ const RaidLootView = () => {
 
                                         {/* Comparison */}
                                         <div className={`flex-1 w-full grid ${activeRaid === 'tier6_5_za' ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'} gap-4`}>
-                                            {/* Original */}
+                                            {/* Original - Strictly hidden for ZA */}
                                             {activeRaid !== 'tier6_5_za' && (
                                                 <div className="bg-[#0a0a0a] p-3 rounded border border-white/5 opacity-60">
                                                     <LootTooltip text={item.original} subtext="Original Stats (2.4.3)" item={item} />
@@ -351,7 +351,7 @@ const RaidLootView = () => {
                                                 <div className="absolute top-0 right-0 p-1">
                                                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.8)]"></div>
                                                 </div>
-                                                <LootTooltip text={item.after} subtext="Restored Stats" item={item} />
+                                                <LootTooltip text={item.after} subtext={activeRaid === 'tier6_5_za' ? "Item Stats" : "Restored Stats"} item={item} />
                                             </div>
                                         </div>
                                     </div>
